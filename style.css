@@ -451,11 +451,11 @@ nav ul a:hover { color: var(--pink-mid); }
 }
 
 .skill-group {
-  padding: 2rem 1.5rem 2rem 0;
+  padding: 2rem;
   border-right: 1px solid rgba(26,35,64,0.15);
 }
 
-.skill-group:last-child { border-right: none; padding-right: 0; }
+.skill-group:last-child { border-right: none; }
 
 .skill-group h4 {
   font-size: 0.7rem;
