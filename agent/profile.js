@@ -117,6 +117,63 @@ apps, AI agents, and design culture change.
     "Regular contributor to conversations on design maturity in large organisations.",
   ],
 
+  /**
+   * LinkedIn posts — Priscilla's own writing (not reposts).
+   * Add new posts here as you publish them.
+   */
+  linkedInPosts: [
+    {
+      date: "2024-09",
+      url: "https://www.linkedin.com/in/prisc/",
+      summary: "Shared reflections on HCI vs UX in the age of AI — arguing that as AI 'eats the tech world', UX stays front-line relevant (AI needs a face, interaction spreads beyond screens) while HCI quietly becomes the hidden power source behind the scenes for trust, bias, ethics, and adaptive interfaces.",
+      fullText: `Blueprint for reference. Consistent focus on engagement, leading me to think how UX or design will evolve. I thought Human-Computer Interaction (HCI) might be more encompassing and put more focus on the "Computer" side of the equation.
+
+Here is what AI have to say:
+
+"If AI keeps eating the tech world (and it will), UX becomes more directly relevant for most industry roles, while HCI quietly becomes the hidden power source behind the scenes.
+
+Why UX stays front-line relevant: AI needs a face — The more 'black box' the tech, the more critical it is to design clear, trustworthy, and human-friendly interactions. With AI, interaction spreads beyond screens to voice, gestures, and mixed reality. UX will be about orchestrating all those touchpoints.
+
+Why HCI quietly gains influence: New interaction paradigms — AI changes how we give instructions (natural language, multimodal prompts, emotional cues). HCI research helps us understand those new patterns. Trust, bias, and ethics — HCI's deep methods for studying human perception, cognitive load, and decision-making become critical in AI safety and explainability. Adaptive interfaces — AI will personalise experiences on the fly."
+
+Interesting time.`,
+    },
+    {
+      date: "2024-08",
+      url: "https://www.linkedin.com/in/prisc/",
+      summary: "Shared SP Group's internal AI safety tool (for 8,000+ contractors and staff), calling out just how lean the squad was — one domain expert, a product owner, a designer and a developer, all juggling multiple other jobs — and still achieved product CSAT above 80%.",
+      fullText: `One of the internal tools we shipped — what is not mentioned is just how lean this squad is.
+
+A domain expert, a product owner, a designer and a developer. All of them juggling multiple other jobs. Product CSAT above 80%.`,
+    },
+    {
+      date: "2024-07",
+      url: "https://medium.com/building-enterprise-systems-vision-needs-structure",
+      title: "Building Enterprise Systems: Vision Needs Structure, Structure Needs Vision",
+      summary: "Published on Medium — explores the tension between visionaries and incrementalists in enterprise design. Covers how to navigate this in Grid Operations at SP Group: balancing futuristic ideas with legacy constraints, building MVPs where some experiments are bound to fail, in a risk-averse environment designing for systems that actually power lives.",
+      fullText: `Visionaries vs Incrementalists.
+
+In this piece, I share how we navigate this tension in Grid Operations — turning moonshot ideas into measurable MVPs.
+
+From balancing futuristic ideas with legacy constraints, to building MVPs where some experiments are bound to fail... in a risk-adverse environment — this is the reality of designing for systems that actually power lives.`,
+    },
+  ],
+
+  /**
+   * LinkedIn recommendations — paste any received recommendations here.
+   * Format: { author, title, relationship, date, text }
+   */
+  recommendations: [
+    // Example (replace with real ones when available):
+    // {
+    //   author: "Jane Smith",
+    //   title: "VP Product at Acme Corp",
+    //   relationship: "Managed Priscilla directly",
+    //   date: "2024",
+    //   text: "Priscilla is an exceptional design leader..."
+    // },
+  ],
+
   // Add anything else here — certifications, awards, education, publications, etc.
   additionalContext: `
 Priscilla is currently open to senior leadership conversations — VP/Head of Design, Chief Product

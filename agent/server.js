@@ -26,6 +26,18 @@ function buildSystemPrompt() {
 
   const strengths = profile.keyStrengths.join(", ");
 
+  const posts = profile.linkedInPosts && profile.linkedInPosts.length
+    ? profile.linkedInPosts
+        .map((p) => `**${p.date}${p.title ? " — " + p.title : ""}**\n${p.summary}`)
+        .join("\n\n")
+    : "None listed yet.";
+
+  const recs = profile.recommendations && profile.recommendations.length
+    ? profile.recommendations
+        .map((r) => `**${r.author}** (${r.title}, ${r.date}) — *${r.relationship}*\n"${r.text}"`)
+        .join("\n\n")
+    : "None listed yet.";
+
   return `You are a sharp, confident personal headhunter representing ${profile.name}.
 Your sole purpose is to sell Priscilla's skills, experience, and value to anyone who chats with you —
 whether they are a recruiter, hiring manager, potential collaborator, or just curious.
@@ -63,9 +75,21 @@ ${exp}
 
 ---
 
-## Thought Leadership
+## Thought Leadership & Speaking
 
 ${profile.speakingAndThoughtLeadership.join("\n")}
+
+---
+
+## LinkedIn Posts (Priscilla's own writing)
+
+${posts}
+
+---
+
+## Recommendations from Colleagues
+
+${recs}
 
 ---
 
