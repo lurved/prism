@@ -374,5 +374,266 @@
   </footer>
 
   <script src="script.js"></script>
+
+  <!-- ── AI Headhunter Chat Widget ── -->
+  <div id="chat-bubble" title="Chat with my AI agent" aria-label="Open chat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </div>
+
+  <div id="chat-panel" role="dialog" aria-modal="true" aria-label="AI headhunter chat">
+    <div id="chat-header">
+      <div id="chat-header-info">
+        <div id="chat-avatar">P</div>
+        <div>
+          <strong>Priscilla's Agent</strong>
+          <span id="chat-status">● Online</span>
+        </div>
+      </div>
+      <button id="chat-close" aria-label="Close chat">✕</button>
+    </div>
+
+    <div id="chat-messages">
+      <div class="msg msg-agent">
+        <p>Hi! I'm Priscilla's AI agent. I'm here to tell you about her background and why she could be a great fit for your team. What brings you here today?</p>
+      </div>
+    </div>
+
+    <div id="chat-input-row">
+      <input id="chat-input" type="text" placeholder="Ask me anything…" autocomplete="off" />
+      <button id="chat-send" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <style>
+    /* ── Chat bubble ── */
+    #chat-bubble {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #1a1a2e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      z-index: 9000;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    #chat-bubble:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,0,0,0.35); }
+    #chat-bubble svg { width: 24px; height: 24px; }
+
+    /* ── Panel ── */
+    #chat-panel {
+      position: fixed;
+      bottom: 96px;
+      right: 28px;
+      width: 360px;
+      max-width: calc(100vw - 40px);
+      height: 520px;
+      max-height: calc(100vh - 120px);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+      z-index: 9001;
+      opacity: 0;
+      transform: translateY(16px) scale(0.97);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      font-family: inherit;
+    }
+    #chat-panel.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    /* ── Header ── */
+    #chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: #1a1a2e;
+      border-radius: 16px 16px 0 0;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    #chat-header-info { display: flex; align-items: center; gap: 10px; }
+    #chat-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: #e8637c;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px;
+    }
+    #chat-header strong { display: block; font-size: 14px; }
+    #chat-status { font-size: 11px; color: #7cf5b3; }
+    #chat-close {
+      background: none; border: none; color: #aaa;
+      font-size: 18px; cursor: pointer; padding: 4px; line-height: 1;
+    }
+    #chat-close:hover { color: #fff; }
+
+    /* ── Messages ── */
+    #chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      scroll-behavior: smooth;
+    }
+    .msg { max-width: 85%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
+    .msg p { margin: 0; }
+    .msg-agent { background: #f4f1ea; color: #1a1a2e; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg-user  { background: #1a1a2e; color: #fff;    align-self: flex-end;   border-bottom-right-radius: 4px; }
+    .msg-typing span {
+      display: inline-block; width: 6px; height: 6px;
+      background: #999; border-radius: 50%; margin: 0 2px;
+      animation: bounce 1.2s infinite;
+    }
+    .msg-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .msg-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30%           { transform: translateY(-6px); }
+    }
+
+    /* ── Input row ── */
+    #chat-input-row {
+      display: flex;
+      padding: 12px;
+      border-top: 1px solid #eee;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    #chat-input {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-radius: 22px;
+      padding: 9px 14px;
+      font-size: 14px;
+      outline: none;
+      font-family: inherit;
+    }
+    #chat-input:focus { border-color: #1a1a2e; }
+    #chat-send {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: #1a1a2e;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    #chat-send:hover { background: #e8637c; }
+    #chat-send svg { width: 16px; height: 16px; }
+    #chat-send:disabled { background: #ccc; cursor: not-allowed; }
+  </style>
+
+  <script>
+    (function () {
+      // ── Config: point to your deployed agent URL in production ──
+      const API_URL = "http://localhost:3001/chat";
+
+      const bubble  = document.getElementById("chat-bubble");
+      const panel   = document.getElementById("chat-panel");
+      const closeBtn= document.getElementById("chat-close");
+      const input   = document.getElementById("chat-input");
+      const sendBtn = document.getElementById("chat-send");
+      const msgList = document.getElementById("chat-messages");
+
+      // conversation history sent to the API
+      const history = [];
+
+      function openPanel()  { panel.classList.add("open"); input.focus(); }
+      function closePanel() { panel.classList.remove("open"); }
+
+      bubble.addEventListener("click", () =>
+        panel.classList.contains("open") ? closePanel() : openPanel()
+      );
+      closeBtn.addEventListener("click", closePanel);
+
+      function scrollBottom() {
+        msgList.scrollTop = msgList.scrollHeight;
+      }
+
+      function appendMessage(text, role) {
+        const div = document.createElement("div");
+        div.className = "msg msg-" + (role === "user" ? "user" : "agent");
+        div.innerHTML = "<p>" + text.replace(/</g, "&lt;").replace(/\n/g, "<br>") + "</p>";
+        msgList.appendChild(div);
+        scrollBottom();
+        return div;
+      }
+
+      function showTyping() {
+        const div = document.createElement("div");
+        div.className = "msg msg-agent msg-typing";
+        div.id = "typing-indicator";
+        div.innerHTML = "<span></span><span></span><span></span>";
+        msgList.appendChild(div);
+        scrollBottom();
+      }
+      function hideTyping() {
+        const t = document.getElementById("typing-indicator");
+        if (t) t.remove();
+      }
+
+      async function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+
+        input.value = "";
+        sendBtn.disabled = true;
+
+        appendMessage(text, "user");
+        history.push({ role: "user", content: text });
+
+        showTyping();
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ messages: history }),
+          });
+
+          const data = await res.json();
+          hideTyping();
+
+          const reply = data.reply || data.error || "Sorry, something went wrong.";
+          appendMessage(reply, "agent");
+          history.push({ role: "assistant", content: reply });
+        } catch (err) {
+          hideTyping();
+          appendMessage("Hmm, I couldn't connect right now. Try emailing prisms@outlook.com directly.", "agent");
+        } finally {
+          sendBtn.disabled = false;
+          input.focus();
+        }
+      }
+
+      sendBtn.addEventListener("click", sendMessage);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+      });
+    })();
+  </script>
 </body>
 </html>

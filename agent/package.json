@@ -1,0 +1,12 @@
+{
+  "name": "priscilla-headhunter-agent",
+  "version": "1.0.0",
+  "description": "AI headhunter agent for Priscilla Liu's personal site",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0"
+  }
+}
