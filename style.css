@@ -14,13 +14,14 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 
 body {
   font-family: var(--font);
   color: var(--text-dark);
   background: var(--white);
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
 /* NAV */
@@ -79,12 +80,14 @@ nav ul a:hover { color: var(--pink-mid); }
 }
 
 .hero h1 {
-  font-size: clamp(4rem, 10vw, 8rem);
+  font-size: clamp(2.4rem, 9vw, 8rem);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 0.95;
   color: var(--navy);
   margin-bottom: 2rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .hero h1 .highlight {
@@ -632,10 +635,11 @@ footer p {
   text-transform: uppercase;
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE — tablet */
 @media (max-width: 900px) {
   nav ul { display: none; }
-  .hero h1 { font-size: 3.5rem; }
+  .hero { padding: 100px 1.5rem 60px; }
+  .hero h1 { font-size: clamp(2.4rem, 8vw, 3.5rem); }
   .hero-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
   .about-grid { grid-template-columns: 1fr; gap: 2rem; }
   .highlights-grid { grid-template-columns: 1fr; }
@@ -646,4 +650,25 @@ footer p {
   .speaking-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .stats-inner { grid-template-columns: 1fr; gap: 3rem; }
   .stats-right { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* RESPONSIVE — mobile */
+@media (max-width: 480px) {
+  nav { padding: 0 1rem; }
+  .hero { padding: 80px 1.25rem 50px; min-height: auto; }
+  .hero h1 { font-size: clamp(2rem, 10vw, 2.8rem); margin-bottom: 1.25rem; }
+  .hero-tagline { font-size: 0.9rem; margin-bottom: 2rem; }
+  .hero-grid { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; padding-top: 1.5rem; }
+  .hero-grid-item { padding-right: 0.5rem; }
+  .pull-quote { padding: 4rem 1.25rem; }
+  .stats { padding: 4rem 1.25rem; }
+  .section, .section-alt, .section-pink { padding: 4rem 1.25rem; }
+  .section-navy, .section-contact { padding: 4rem 1.25rem; }
+  .container { padding: 0; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .leadership-grid { grid-template-columns: 1fr; }
+  .stats-right { grid-template-columns: 1fr 1fr; }
+  .tag { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+  .contact-links { flex-direction: column; gap: 0.75rem; }
+  .btn-primary, .btn-ghost { text-align: center; }
 }
