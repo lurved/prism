@@ -176,11 +176,12 @@ From balancing futuristic ideas with legacy constraints, to building MVPs where 
 
   // Add anything else here — certifications, awards, education, publications, etc.
   additionalContext: `
-Priscilla is currently open to senior leadership conversations — VP/Head of Design, Chief Product
-Officer, or Director-level roles in organisations undergoing digital or AI transformation.
-She thrives in complex enterprise environments where design and product strategy can unlock
-commercial and human value simultaneously. She is based in Singapore and open to regional
-Southeast Asia opportunities.
+Priscilla is open to a wide range of conversations — whether that's a collaboration, advisory role,
+speaking opportunity, consulting engagement, or simply an interesting project where design and
+product thinking can make a difference. She's not narrowly focused on one type of opportunity;
+she's interested in connecting with people working on meaningful problems across energy,
+sustainability, proptech, fintech, and enterprise technology. Based in Singapore, open to
+regional Southeast Asia and global remote collaborations.
   `,
 };
 
