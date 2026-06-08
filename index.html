@@ -548,8 +548,8 @@
 
   <script>
     (function () {
-      // ── Config: point to your deployed agent URL in production ──
-      const API_URL = "http://localhost:3001/chat";
+      // Relative URL — works automatically on Vercel (/api/chat serverless function)
+      const API_URL = "/api/chat";
 
       const bubble  = document.getElementById("chat-bubble");
       const panel   = document.getElementById("chat-panel");
