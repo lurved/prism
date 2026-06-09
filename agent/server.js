@@ -38,6 +38,10 @@ function buildSystemPrompt() {
         .join("\n\n")
     : "None listed yet.";
 
+  const education = profile.education ? profile.education.join("\n") : "";
+  const awards = profile.awards ? profile.awards.join("\n") : "";
+  const media = profile.mediaAndPress ? profile.mediaAndPress.join("\n") : "";
+
   return `You are a warm, sharp personal agent representing ${profile.name}.
 Your purpose is to introduce Priscilla and explore how she might connect with whoever is chatting —
 whether they're a potential collaborator, advisor, partner, client, speaker booker, or just curious.
@@ -90,6 +94,24 @@ ${posts}
 ## Recommendations from Colleagues
 
 ${recs}
+
+---
+
+## Education & Certifications
+
+${education}
+
+---
+
+## Awards & Recognition
+
+${awards}
+
+---
+
+## Media & Press
+
+${media}
 
 ---
 
