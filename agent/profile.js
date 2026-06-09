@@ -7,7 +7,7 @@
 
 const profile = {
   name: "Priscilla Liu",
-  title: "Head of User Experience and Research",
+  title: "Agile and Product Lab Head & Head of Experience and Research",
   location: "Singapore",
   email: "prisms@outlook.com",
   linkedin: "https://www.linkedin.com/in/prisc/",
@@ -71,11 +71,12 @@ AI agents, GenAI integration, and design culture change.
     {
       company: "SP Group",
       period: "May 2022–Present",
-      role: "Head of User Experience and Research",
+      role: "Agile and Product Lab Head & Head of Experience and Research",
       highlights: [
-        "Lead end-to-end product, user experience, and insights strategy across B2E, B2B, and B2C platforms for a top-tier utilities and energy company in Asia Pacific.",
-        "Established Digital Transformation Lab — delivered 14 MVPs in under 3 months (vs. projected 12–24 months), boosting productivity by 40%.",
+        "Set up agile and product practice in SP Group — delivered 14 MVPs in under 3 months (vs. projected 12–24 months); $600,000 annualised savings in first year.",
+        "Managed chapter leads AI, Data Governance, Infra and UX. Acting Product Chapter Lead.",
         "Spearheaded GenAI adoption in operations and training, achieving 20% improvement in workforce efficiency.",
+        "Lead end-to-end product, user experience, and insights strategy across B2E, B2B, and B2C platforms for a top-tier utilities and energy company in Asia Pacific.",
         "Directed enterprise SaaS platform development for national grid operations, integrating IoT and AI — cut operational costs by 25%, delivering 5-year payback.",
         "Oversaw digital platform growth for EV charging, smart buildings, and energy storage — achieved NPAT positive in 2025.",
         "Maintained 4.6 App Store rating and strong MAU growth on B2C SP mobile platform.",
@@ -154,6 +155,7 @@ AI agents, GenAI integration, and design culture change.
     "Omni-Experience Innovator of the Year — 2018",
     "United Nations UNLEASH — 2018",
     "Mob-Ex Awards — 2016",
+    "Community Cares Award by Ministry of Social and Family Development, Singapore — 2023",
   ],
 
   speakingAndThoughtLeadership: [
