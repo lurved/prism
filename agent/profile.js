@@ -7,114 +7,171 @@
 
 const profile = {
   name: "Priscilla Liu",
-  title: "Director of Product and Experience Design",
+  title: "Head of User Experience and Research",
   location: "Singapore",
   email: "prisms@outlook.com",
   linkedin: "https://www.linkedin.com/in/prisc/",
 
   summary: `
-Priscilla Liu is a Director-level Experience Design and Product Strategy leader with 15+ years
-driving digital transformation, AI products, and enterprise UX across energy, proptech, and
-financial services. She builds and leads cross-functional teams that deliver measurable outcomes —
-for users, businesses, and the people who run them. Her work spans enterprise platforms, consumer
-apps, AI agents, and design culture change.
+Priscilla Liu is an executive digital leader with 15+ years transforming enterprises, scaling
+platforms, and building profitable digital ecosystems across energy, banking, and PropTech.
+She has scaled platforms to 24M+ users, delivered NPAT-positive growth, and is a trusted
+advisor to boards and C-level teams — building future-ready digital ecosystems across
+regulated and high-growth markets. Her work spans enterprise platforms, consumer apps,
+AI agents, GenAI integration, and design culture change.
   `,
 
   keyStrengths: [
-    "Human-Centered Design (HCD)",
-    "Product Strategy & Roadmapping",
-    "AI & Digital Transformation",
-    "Design Systems",
-    "Enterprise UX",
-    "Stakeholder Engagement & C-Suite Advisory",
-    "Agile / Lean Delivery",
-    "Cross-Functional Team Leadership",
-    "Data-Led Decision Making",
-    "Organizational Change Management",
+    "Digital & Enterprise Transformation",
+    "P&L Ownership",
+    "C-Level & Board Stakeholder Engagement",
+    "Scalable Product Strategy",
+    "GenAI Integration",
+    "Agile Portfolio Management",
+    "CX & UI/UX Strategy",
+    "Data-Driven Product Development",
+    "Design Systems & Research Ops",
+    "AI/IoT & Enterprise Systems",
   ],
 
   highlights: [
     {
-      title: "AI Agents at Scale",
-      detail:
-        "Launched multiple business-unit AI agents (Customer Service, HR, Fieldwork, L&D, Sustainability) within 3–6 months each — achieving 95%+ accuracy and 80% user satisfaction.",
-    },
-    {
-      title: "48.65% YOY Revenue Growth",
-      detail:
-        'Launched "Agent Boost" at PropertyGuru, generating ~SGD 88.44M in revenue with 48.65% year-over-year growth from 2017–2018.',
-    },
-    {
       title: "Digital Transformation Lab",
       detail:
-        "Built SP Group's transformation lab — 75% reduction in time-to-market, 40% productivity gain, SGD 600K annualised savings, 17 MVPs in year one.",
+        "Established SP Group's Digital Transformation Lab — delivered 14 MVPs in under 3 months (vs. projected 12–24 months), 75% reduction in time-to-market, 40% productivity gain.",
+    },
+    {
+      title: "40% YOY Revenue Growth",
+      detail:
+        "At PropertyGuru, drove 40% year-over-year revenue growth from new product initiatives and launched agent subscription products delivering 25% CAGR, contributing to Series D valuation increase.",
+    },
+    {
+      title: "Platform Scale: 24M MAUs",
+      detail:
+        "Scaled PropertyGuru platform to 2.7M listings and 45K active agents; MAUs grew 50% to 24M across Singapore, Vietnam, Malaysia, and Thailand.",
     },
     {
       title: "App Rating 2.4 → 4.6",
       detail:
-        "Grew SP Digital's monthly active users from 80K to 800K out of 1.4M households while transforming the app experience.",
+        "Grew SP Digital's monthly active users from 80K to 800K out of 1.4M households while transforming the app experience and rating.",
+    },
+    {
+      title: "25% OPEX Reduction",
+      detail:
+        "Directed enterprise SaaS platform development for national grid operations, integrating IoT and AI — cut operational costs by 25%, delivering 5-year payback.",
     },
     {
       title: "Market Expansion — Commonwealth Bank",
       detail:
-        "Developed mobile-first product suite for business savings and loans across emerging Asian markets — iOS top-ranked finance app.",
-    },
-    {
-      title: "Enterprise Systems & CX",
-      detail:
-        "Rebuilt SAP-adjacent field ops, customer, and billing platforms. Coached C-level leaders on CX and data-led delivery models across 3,000+ staff.",
+        "Launched 4 financial products for businesses in emerging Asian markets (Indonesia, Vietnam) — iOS top-ranked finance app, 10% conversion rate outperforming legacy loan products.",
     },
   ],
 
   experience: [
     {
       company: "SP Group",
-      period: "2022–Present",
-      role: "Director, Product and Experience",
+      period: "May 2022–Present",
+      role: "Head of User Experience and Research",
       highlights: [
-        "Led enterprise transformation across customer service, IT, and field operations for 3,000+ frontline and back-office staff.",
-        "Guided business units in launching AI agents — 95%+ accuracy, 80% user satisfaction, within 3–6 months each.",
-        "Established design culture: embedded UX across 7 business units, coaching 150+ staff.",
-        "Led SP Digital consumer app from 80K to 800K MAU; app rating improved from 2.4 to 4.6.",
-        "Built the Digital Transformation Lab — 75% faster time-to-market, SGD 600K annualised savings.",
-        "Sat on the Emerging Technology Committee shaping AI governance and ethical frameworks.",
+        "Lead end-to-end product, user experience, and insights strategy across B2E, B2B, and B2C platforms for a top-tier utilities and energy company in Asia Pacific.",
+        "Established Digital Transformation Lab — delivered 14 MVPs in under 3 months (vs. projected 12–24 months), boosting productivity by 40%.",
+        "Spearheaded GenAI adoption in operations and training, achieving 20% improvement in workforce efficiency.",
+        "Directed enterprise SaaS platform development for national grid operations, integrating IoT and AI — cut operational costs by 25%, delivering 5-year payback.",
+        "Oversaw digital platform growth for EV charging, smart buildings, and energy storage — achieved NPAT positive in 2025.",
+        "Maintained 4.6 App Store rating and strong MAU growth on B2C SP mobile platform.",
+      ],
+    },
+    {
+      company: "SP Group",
+      period: "May 2017–May 2022",
+      role: "Director, SP Digital",
+      highlights: [
+        "Spearheaded enterprise-wide digital transformation across B2B, B2C, and B2E platforms.",
+        "Grew monthly active users from 80K to 800K out of 1.4M households; app rating improved from 2.4 to 4.6.",
+        "Delivered new digital revenue streams through sustainable energy and enterprise design thinking consulting — achieved NPAT positive within 4 years.",
+        "Part of executive leadership team, accountable for user experience, customer insights, and digital strategy across consumer and enterprise touchpoints.",
       ],
     },
     {
       company: "PropertyGuru",
-      period: "2015–2022",
-      role: "Head of Product & UX (multiple senior roles)",
+      period: "May 2015–May 2017",
+      role: "Head of Product and User Experience",
       highlights: [
-        'Launched "Agent Boost" generating ~SGD 88.44M revenue, 48.65% YOY growth.',
-        "Led product and design for South-East Asia's leading property marketplace.",
-        "Managed end-to-end product lifecycle from research through delivery.",
-        "Built and scaled cross-functional product squads.",
+        "Led product and UX for PropertyGuru (NYSE: PGRU), a leading PropTech company across Singapore, Vietnam, Malaysia, and Thailand.",
+        "Drove regional product strategy and subscription revenue — launched agent subscription products delivering 25% CAGR, contributing to Series D valuation increase.",
+        "Achieved 40% YOY revenue growth from new product initiatives.",
+        "Scaled platform to 2.7M listings and 45K active agents; MAUs grew 50% to 24M.",
+        "Reduced listing approval time from 3 days to 1 day through automation.",
       ],
     },
     {
       company: "Commonwealth Bank of Australia",
-      period: "2012–2015",
-      role: "Senior Product Designer / UX Lead",
+      period: "Dec 2013–May 2015",
+      role: "Associate Director, Product and UX",
       highlights: [
-        "Developed mobile-first product suite for business savings and loans across emerging Asian markets.",
-        "Achieved iOS top-ranked finance app status in target markets.",
+        "Designed and launched top-ranking financial products across emerging Asian markets (Indonesia, Vietnam).",
+        "Led product and design teams to build a series of financial products for businesses — iOS top-ranked finance app.",
+        "Launched 4 financial products with up to 10% conversion rates, outperforming legacy loan products.",
+        "Opened new revenue streams across Asia and embedded user-centered design practices into the product lifecycle.",
       ],
     },
     {
       company: "First Advantage",
-      period: "2009–2012",
-      role: "Product & UX Lead",
+      period: "Dec 2011–Dec 2013",
+      role: "Product and Operations Platform Lead",
       highlights: [
-        "Led UX for background screening and compliance products.",
-        "Drove enterprise UX improvements across global client base.",
+        "Owned product and operations platform for First Advantage (Nasdaq: FA) — background check solutions across 200+ countries, 29 offices, 6,400+ staff.",
+        "Led global product strategy for background screening across EMEA and APAC.",
+        "Owned end-to-end operations platform with operations based in Manila.",
+      ],
+    },
+    {
+      company: "Media Development Authority",
+      period: "2009–2010",
+      role: "Management Executive",
+      highlights: [
+        "Supported creation of the Interactive Digital Media Programme Office (IDMPO) — awarded SGD 265.6M in grants, creating 1,300+ jobs.",
+      ],
+    },
+    {
+      company: "MINDEF",
+      period: "2008",
+      role: "Web Manager",
+      highlights: [
+        "Managed 60 websites and 160 webmasters, overseeing content operations for MINDEF.gov.sg.",
       ],
     },
   ],
 
+  education: [
+    "M.Sc. — Nanyang Technological University",
+    "B.A. — National University of Singapore",
+    "Certified Professional Scrum Master & Product Owner — Scrum.org",
+    "Finance & Quantitative Modeling for Analysts — University of Pennsylvania",
+  ],
+
+  awards: [
+    "Omni-Experience Innovator of the Year — 2018",
+    "United Nations UNLEASH — 2018",
+    "Mob-Ex Awards — 2016",
+  ],
+
   speakingAndThoughtLeadership: [
-    "Keynote speaker on AI transformation and design leadership across Singapore and Southeast Asia.",
-    "Panelist on enterprise AI adoption, ethical AI, and human-centred innovation.",
-    "Regular contributor to conversations on design maturity in large organisations.",
+    "Keynote — Chief Data & Analytics Officer (CDAO) Singapore, 2023–2024",
+    "Keynote — CHIUXID: UX in Energy & Utilities",
+    "Mind the Product — Stakeholder Management Interview Series",
+    "DesignUP — Future of UX Panel",
+    "UXSEA — Research & Insights Facilitator",
+  ],
+
+  mediaAndPress: [
+    "International Women's Day: Priscilla Liu on Taking a Leap of Faith — purpose-driven work and commitment to data and user-centered products.",
+    "Purpose-Driven Tech: Meet the UX Designer on a Mission to Help the Planet and the Community — enabling consumers to visualise their carbon footprint and encouraging greener lifestyles.",
+    "IxD Session: A Conversation with Priscilla Liu — insights on journey in data and insights.",
+  ],
+
+  volunteering: [
+    "Chairperson, SP Heart Workers — 2021 to 2023",
   ],
 
   /**
