@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/sustainability/report_comparison/:path*",
+      "destination": "https://temasek-esg-tracker.vercel.app/sustainability/report_comparison/:path*"
+    }
+  ]
+}
