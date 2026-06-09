@@ -6,6 +6,7 @@
   <meta name="description" content="Priscilla Liu — building at the intersection of AI, product, and human experience. 15+ years across energy, PropTech, and financial services. Looking for collaborators." />
   <title>Priscilla Liu — Building with AI</title>
   <link rel="stylesheet" href="style.css" />
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
 
@@ -558,7 +559,7 @@
       // conversation history sent to the API
       const history = [];
 
-      function openPanel()  { panel.classList.add("open"); input.focus(); }
+      function openPanel()  { panel.classList.add("open"); input.focus(); window.va?.('event', { name: 'Chat Opened' }); }
       function closePanel() { panel.classList.remove("open"); }
 
       bubble.addEventListener("click", () =>
@@ -601,6 +602,7 @@
 
         appendMessage(text, "user");
         history.push({ role: "user", content: text });
+        window.va?.('event', { name: 'Chat Message Sent' });
 
         showTyping();
 
