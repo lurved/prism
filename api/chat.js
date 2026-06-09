@@ -5,7 +5,16 @@
  */
 
 const Anthropic = require("@anthropic-ai/sdk");
+const { Redis } = require("@upstash/redis");
 const profile = require("../agent/profile");
+
+// Redis client — env vars set automatically by Vercel Upstash integration
+const redis = process.env.UPSTASH_REDIS_REST_URL
+  ? new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    })
+  : null;
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -169,6 +178,17 @@ module.exports = async function handler(req, res) {
     });
 
     const text = result.content.find((b) => b.type === "text")?.text ?? "";
+
+    // Log exchange to Upstash Redis (fire-and-forget, won't block response)
+    if (redis) {
+      const entry = JSON.stringify({
+        ts: new Date().toISOString(),
+        user: messages[messages.length - 1]?.content ?? "",
+        agent: text,
+      });
+      redis.lpush("chat_logs", entry).catch((e) => console.error("Redis log error:", e));
+    }
+
     return res.status(200).json({ reply: text });
   } catch (err) {
     console.error(err);
