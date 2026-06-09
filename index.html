@@ -388,6 +388,9 @@
       <div class="msg msg-agent">
         <p>Hi! I'm Priscilla's agent. Tell me what you're working on — I'd love to explore if there's a way to connect.</p>
       </div>
+      <div class="msg msg-disclaimer">
+        <p>⚠️ This agent is still being trained and may occasionally make mistakes. For anything important, please verify directly with Priscilla at <a href="mailto:prisms@outlook.com">prisms@outlook.com</a>.</p>
+      </div>
     </div>
 
     <div id="chat-input-row">
@@ -490,6 +493,8 @@
     .msg p { margin: 0; }
     .msg-agent { background: #f4f1ea; color: #1a1a2e; align-self: flex-start; border-bottom-left-radius: 4px; }
     .msg-user  { background: #1a1a2e; color: #fff;    align-self: flex-end;   border-bottom-right-radius: 4px; }
+    .msg-disclaimer { background: #fff8e1; color: #7a6500; border: 1px solid #ffe082; font-size: 12px; align-self: stretch; max-width: 100%; border-radius: 8px; }
+    .msg-disclaimer a { color: #7a6500; text-decoration: underline; }
     .msg-typing span {
       display: inline-block; width: 6px; height: 6px;
       background: #999; border-radius: 50%; margin: 0 2px;
