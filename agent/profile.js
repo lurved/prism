@@ -78,7 +78,7 @@ AI agents, GenAI integration, and design culture change.
         "Spearheaded GenAI adoption in operations and training, achieving 20% improvement in workforce efficiency.",
         "Lead end-to-end product, user experience, and insights strategy across B2E, B2B, and B2C platforms for a top-tier utilities and energy company in Asia Pacific.",
         "Directed enterprise SaaS platform development for national grid operations, integrating IoT and AI — cut operational costs by 25%, delivering 5-year payback.",
-        "Oversaw digital platform growth for EV charging, smart buildings, and energy storage — achieved NPAT positive in 2025.",
+        "Oversaw digital platform growth for EV charging, smart buildings, and energy storage.",
         "Maintained 4.6 App Store rating and strong MAU growth on B2C SP mobile platform.",
       ],
     },
