@@ -127,14 +127,6 @@ AI agents, GenAI integration, and design culture change.
       ],
     },
     {
-      company: "Media Development Authority",
-      period: "2009–2010",
-      role: "Management Executive",
-      highlights: [
-        "Supported creation of the Interactive Digital Media Programme Office (IDMPO) — awarded SGD 265.6M in grants, creating 1,300+ jobs.",
-      ],
-    },
-    {
       company: "MINDEF",
       period: "2008",
       role: "Web Manager",
