@@ -83,7 +83,7 @@ AI agents, GenAI integration, and design culture change.
       ],
     },
     {
-      company: "SP Group",
+      company: "Space Ltd",
       period: "May 2017–May 2022",
       role: "Director, SP Digital",
       highlights: [
