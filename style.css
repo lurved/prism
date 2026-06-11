@@ -63,6 +63,7 @@ nav ul a {
 }
 
 nav ul a:hover { color: var(--pink-mid); }
+nav ul a.active { color: var(--pink-mid); font-weight: 600; }
 
 /* HERO — pink block */
 .hero {
@@ -356,9 +357,7 @@ nav ul a:hover { color: var(--pink-mid); }
 }
 
 .highlight-card h3::after {
-  content: '›';
-  font-size: 1rem;
-  color: var(--pink-mid);
+  content: '';
 }
 
 .highlight-card p {

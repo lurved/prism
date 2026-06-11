@@ -193,6 +193,24 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // Active nav link on scroll
+    (function () {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('nav ul a[href^="#"]');
+      function onScroll() {
+        let current = '';
+        sections.forEach(s => {
+          if (window.scrollY >= s.offsetTop - 120) current = s.id;
+        });
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 
   <!-- ── AI Headhunter Chat Widget ── -->
   <div id="chat-bubble" title="Chat with my AI agent" aria-label="Open chat">
