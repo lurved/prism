@@ -13,11 +13,8 @@
   <nav>
     <span class="nav-name">Priscilla</span>
     <ul>
-      <li><a href="/about">Work & Experience</a></li>
-      <li><a href="#tools">Tools</a></li>
-      <li><a href="#highlights">Projects</a></li>
-      <li><a href="#speaking">Speaking</a></li>
-      <li><a href="#contact">Let's talk</a></li>
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/about">About</a></li>
     </ul>
   </nav>
 
@@ -193,24 +190,6 @@
   </footer>
 
   <script src="script.js"></script>
-  <script>
-    // Active nav link on scroll
-    (function () {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('nav ul a[href^="#"]');
-      function onScroll() {
-        let current = '';
-        sections.forEach(s => {
-          if (window.scrollY >= s.offsetTop - 120) current = s.id;
-        });
-        navLinks.forEach(a => {
-          a.classList.toggle('active', a.getAttribute('href') === '#' + current);
-        });
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-    })();
-  </script>
 
   <!-- ── AI Headhunter Chat Widget ── -->
   <div id="chat-bubble" title="Chat with my AI agent" aria-label="Open chat">
