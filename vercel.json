@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "src": "/about",
+      "dest": "/about.html"
+    },
+    {
       "src": "/sustainability/report_comparison(.*)",
       "dest": "https://temasek-esg-tracker.vercel.app/sustainability/report_comparison$1",
       "check": true
