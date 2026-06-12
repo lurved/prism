@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SP Group | FY 2025/2026 Sustainability Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            /* ── Design System Palette ── */
+            licorice:  '#292F45',   /* Primary text, dark nav */
+            pepper:    '#818A91',   /* Secondary text         */
+            smoke:     '#BFC9CF',   /* Placeholder / subtle   */
+            ice:       '#FAFDFF',   /* App background         */
+            salt:      '#FFFFFF',   /* Card background        */
+            mint:      '#00B0B2',   /* Primary action / CTA   */
+            darkmint:  '#00878A',   /* Emphasis on dark bg    */
+            charcoal:  '#4F5A60',   /* Mid-dark surfaces      */
+            lettuce:   '#48DCC0',   /* Bright accent on dark  */
+            water:     '#3384E1',   /* Secondary accent blue / Responsible Growth */
+            rose:      '#C2748D',   /* Caring for People & Community */
+            guava:     '#F291B0',
+            raspberry: '#F65B7D',
+            grape:     '#586EC7',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* Accordion */
+    .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .accordion-body.open { max-height: 1200px; }
+    .accordion-icon { transition: transform 0.3s ease; }
+    .accordion-icon.open { transform: rotate(180deg); }
+
+    /* DMA tab active */
+    .tab-btn.active { background: #00B0B2; color: #fff; border-color: #00B0B2; }
+
+    /* Stakeholder panel */
+    .stakeholder-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .stakeholder-panel.open { max-height: 600px; }
+
+    /* Card hover lift */
+    .pillar-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .pillar-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,176,178,0.12); }
+    .metric-card { transition: transform 0.2s ease; }
+    .metric-card:hover { transform: translateY(-2px); }
+
+    /* Sticky nav glass */
+    #topnav { backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+    /* Hero decorative lines */
+    .hero-lines { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  </style>
+</head>
+<body class="font-sans bg-ice text-licorice antialiased">
+
+<!-- ============================================================
+     TOP NAV — Licorice background, Mint CTA
+============================================================ -->
+<nav id="topnav" class="fixed top-0 left-0 right-0 z-50 bg-licorice/95 border-b border-white/10 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+    <a href="#home" class="flex items-center gap-3 shrink-0">
+      <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-mint text-white font-bold text-sm">SP</span>
+      <span class="font-semibold text-sm leading-tight hidden sm:block">
+        SP Group<br />
+        <span class="font-normal text-smoke text-xs">Sustainability Report FY25/26</span>
+      </span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden lg:flex items-center gap-1 text-sm font-medium">
+      <a href="#about"       class="px-3 py-2 rounded hover:bg-white/10 transition">About Us</a>
+      <a href="#framework"   class="px-3 py-2 rounded hover:bg-white/10 transition">Framework</a>
+      <a href="#materiality" class="px-3 py-2 rounded hover:bg-white/10 transition">Materiality</a>
+      <a href="#governance"  class="px-3 py-2 rounded hover:bg-white/10 transition">Governance</a>
+      <a href="#stakeholders"class="px-3 py-2 rounded hover:bg-white/10 transition">Stakeholders</a>
+      <a href="https://www.spgroup.com.sg/contact-us" target="_blank"
+         class="ml-2 px-4 py-2 rounded-lg bg-mint text-white font-semibold hover:bg-darkmint transition text-sm">
+        Contact
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="hamburger" class="lg:hidden p-2 rounded hover:bg-white/10 transition" aria-label="Open menu">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="lg:hidden hidden bg-licorice border-t border-white/10 px-4 pb-4">
+    <div class="flex flex-col gap-1 pt-2 text-sm font-medium">
+      <a href="#about"        class="px-3 py-2 rounded hover:bg-white/10 transition">About Us</a>
+      <a href="#framework"    class="px-3 py-2 rounded hover:bg-white/10 transition">Framework</a>
+      <a href="#materiality"  class="px-3 py-2 rounded hover:bg-white/10 transition">Materiality</a>
+      <a href="#governance"   class="px-3 py-2 rounded hover:bg-white/10 transition">Governance</a>
+      <a href="#stakeholders" class="px-3 py-2 rounded hover:bg-white/10 transition">Stakeholders</a>
+      <a href="https://www.spgroup.com.sg/contact-us" target="_blank"
+         class="mt-2 px-4 py-2 rounded-lg bg-mint text-white font-semibold text-center hover:bg-darkmint transition">
+        Contact Us
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     A. HERO — Licorice → Charcoal gradient, Lettuce headlines
+============================================================ -->
+<section id="home" class="relative min-h-screen flex flex-col justify-center overflow-hidden pt-16"
+         style="background: linear-gradient(135deg, #292F45 0%, #4F5A60 60%, #3384E1 100%);">
+
+  <!-- Decorative SVG waves -->
+  <div class="hero-lines">
+    <svg viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice"
+         class="absolute inset-0 w-full h-full opacity-20" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#48DCC0" stop-opacity="0"/>
+          <stop offset="50%"  stop-color="#48DCC0" stop-opacity="1"/>
+          <stop offset="100%" stop-color="#48DCC0" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="waveGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%"   stop-color="#00B0B2" stop-opacity="0"/>
+          <stop offset="50%"  stop-color="#00B0B2" stop-opacity="0.8"/>
+          <stop offset="100%" stop-color="#00B0B2" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="M-100 600 Q360 400 720 550 T1540 400" stroke="url(#waveGrad)"  stroke-width="1.5" fill="none"/>
+      <path d="M-100 650 Q360 450 720 600 T1540 450" stroke="url(#waveGrad)"  stroke-width="1"   fill="none" opacity="0.5"/>
+      <path d="M-100 500 Q500 300 900 480 T1540 300" stroke="url(#waveGrad2)" stroke-width="1"   fill="none" opacity="0.6"/>
+      <path d="M0 700 Q400 500 800 650 T1440 500"    stroke="url(#waveGrad2)" stroke-width="0.8" fill="none" opacity="0.3"/>
+      <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+        <circle cx="20" cy="20" r="1" fill="#48DCC0" opacity="0.25"/>
+      </pattern>
+      <rect width="1440" height="800" fill="url(#dots)"/>
+    </svg>
+  </div>
+
+  <!-- Mint glow blobs -->
+  <div class="absolute top-1/4 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none" style="background:#00B0B2; opacity:0.08;"></div>
+  <div class="absolute bottom-1/4 left-0 w-72 h-72 rounded-full blur-3xl pointer-events-none" style="background:#3384E1; opacity:0.10;"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-white">
+    <div class="max-w-3xl">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold uppercase tracking-widest mb-6"
+           style="background:rgba(0,176,178,0.15); border-color:rgba(0,176,178,0.4); color:#48DCC0;">
+        <span class="w-2 h-2 rounded-full bg-lettuce animate-pulse"></span>
+        FY 2025/2026 · 7th Sustainability Report
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+        Empowering the<br />
+        <span style="color:#48DCC0;">Future of Energy</span>
+      </h1>
+
+      <p class="text-lg sm:text-xl max-w-2xl leading-relaxed mb-8" style="color:#BFC9CF;">
+        SP Group's FY 2025/2026 Sustainability Report — aligned with IFRS S1 &amp; S2,
+        covering Singapore, China, Vietnam, and Thailand.
+      </p>
+
+      <div class="flex flex-wrap gap-4">
+        <a href="#metrics"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold hover:opacity-90 transition text-sm text-white"
+           style="background:#00B0B2;">
+          View Key Highlights
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </a>
+        <a href="#about"
+           class="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/30 text-white font-semibold hover:bg-white/10 transition text-sm">
+          About This Report
+        </a>
+      </div>
+    </div>
+
+    <!-- Stat chips -->
+    <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+      <div class="rounded-xl p-4 border border-white/10" style="background:rgba(255,255,255,0.08);">
+        <div class="text-2xl font-extrabold" style="color:#48DCC0;">7th</div>
+        <div class="text-xs mt-1" style="color:#BFC9CF;">Annual Report</div>
+      </div>
+      <div class="rounded-xl p-4 border border-white/10" style="background:rgba(255,255,255,0.08);">
+        <div class="text-2xl font-extrabold" style="color:#48DCC0;">4</div>
+        <div class="text-xs mt-1" style="color:#BFC9CF;">Countries Covered</div>
+      </div>
+      <div class="rounded-xl p-4 border border-white/10" style="background:rgba(255,255,255,0.08);">
+        <div class="text-2xl font-extrabold" style="color:#48DCC0;">IFRS</div>
+        <div class="text-xs mt-1" style="color:#BFC9CF;">S1 &amp; S2 Aligned</div>
+      </div>
+      <div class="rounded-xl p-4 border border-white/10" style="background:rgba(255,255,255,0.08);">
+        <div class="text-2xl font-extrabold" style="color:#48DCC0;">1.7M</div>
+        <div class="text-xs mt-1" style="color:#BFC9CF;">Customer Accounts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave divider -->
+  <div class="absolute bottom-0 left-0 right-0">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" class="w-full h-16 sm:h-20" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#FAFDFF"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============================================================
+     KEY METRICS DASHBOARD
+============================================================ -->
+<section id="metrics" class="py-20 bg-ice">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <p class="font-semibold text-sm uppercase tracking-widest mb-2" style="color:#00B0B2;">FY25/26</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-licorice mb-4">Key Performance Highlights</h2>
+      <p class="text-pepper max-w-2xl mx-auto">
+        Our three strategic pillars delivered measurable impact across the environment, people, and responsible growth.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <!-- Pillar 1: Environmental — Mint accent -->
+      <div class="pillar-card bg-salt rounded-2xl overflow-hidden border border-smoke/30 shadow-sm">
+        <div class="h-1.5" style="background: linear-gradient(90deg, #00B0B2, #48DCC0);"></div>
+        <div class="p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:#00B0B2 14;">
+              <svg class="w-6 h-6" style="color:#00B0B2;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-licorice text-base">Stewarding Environmental Action</h3>
+              <p class="text-xs text-pepper">Climate Action &amp; Resilience</p>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="metric-card rounded-xl p-4" style="background:rgba(0,176,178,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#00878A;" data-count="533810" data-suffix=" tCO₂e">533,810 tCO₂e</div>
+              <div class="text-xs text-pepper mt-1">Scope 1 &amp; 2 emissions in FY25/26</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(0,176,178,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#00878A;">3.53M</div>
+              <div class="text-xs text-pepper mt-1">tonnes CO₂ reduced for customers through sustainable energy solutions since FY21/22</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(0,176,178,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#00878A;">68%</div>
+              <div class="text-xs text-pepper mt-1">of fleet converted to electric vehicles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillar 2: People — Rose accent -->
+      <div class="pillar-card bg-salt rounded-2xl overflow-hidden border border-smoke/30 shadow-sm">
+        <div class="h-1.5" style="background: linear-gradient(90deg, #C2748D, #d48fa6);"></div>
+        <div class="p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(194,116,141,0.12);">
+              <svg class="w-6 h-6" style="color:#C2748D;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-licorice text-base">Caring for Our People &amp; Community</h3>
+              <p class="text-xs text-pepper">WSH · Workforce · Community</p>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="metric-card rounded-xl p-4" style="background:rgba(194,116,141,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#C2748D;">36 hrs &amp; ~S$2,000</div>
+              <div class="text-xs text-pepper mt-1">Training hours &amp; investment per employee, focusing on emerging technologies</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(194,116,141,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#C2748D;">21,000</div>
+              <div class="text-xs text-pepper mt-1">Beneficiaries reached through corporate giving programmes</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(194,116,141,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#C2748D;">0.17 LTIFR</div>
+              <div class="text-xs text-pepper mt-1">Lost Time Injury Frequency Rate — outperforming the 0.53 global utility benchmark</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(194,116,141,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#C2748D;">S$7M</div>
+              <div class="text-xs text-pepper mt-1">Committed to sustained community giving</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillar 3: Growth — Water accent -->
+      <div class="pillar-card bg-salt rounded-2xl overflow-hidden border border-smoke/30 shadow-sm">
+        <div class="h-1.5" style="background: linear-gradient(90deg, #3384E1, #586EC7);"></div>
+        <div class="p-6">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:rgba(51,132,225,0.10);">
+              <svg class="w-6 h-6" style="color:#3384E1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-licorice text-base">Championing Responsible Growth</h3>
+              <p class="text-xs text-pepper">Reliability · Ethics · Digitalisation</p>
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="metric-card rounded-xl p-4" style="background:rgba(51,132,225,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#3384E1;">0.328 / 0.003 min</div>
+              <div class="text-xs text-pepper mt-1">SAIDI — Electricity &amp; Gas. One of the world's most reliable networks.</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(51,132,225,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#3384E1;">S$1,281M NPAT</div>
+              <div class="text-xs text-pepper mt-1">Net Profit After Tax — 10.2% YoY growth in FY25/26</div>
+            </div>
+            <div class="metric-card rounded-xl p-4" style="background:rgba(51,132,225,0.07);">
+              <div class="text-2xl font-extrabold" style="color:#3384E1;">Zero Tolerance</div>
+              <div class="text-xs text-pepper mt-1">ISO 37001:2016 Anti-Bribery &amp; ISO 27001 certified. Data Protection Trustmark accredited.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     B. ABOUT US & BUSINESS ECOSYSTEM
+============================================================ -->
+<section id="about" class="py-20 bg-salt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+      <div>
+        <p class="font-semibold text-sm uppercase tracking-widest mb-3" style="color:#00B0B2;">About SP Group</p>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-licorice mb-6">Leading Utilities Provider in Asia Pacific</h2>
+        <p class="text-pepper leading-relaxed mb-5">
+          SP Group is the leading utilities provider in the Asia Pacific region, delivering reliable electricity and gas services and enabling a low carbon, smart energy future through its sustainable solutions. SP Group owns and operates electricity and gas transmission and distribution networks in Singapore and Australia.
+        </p>
+        <p class="text-pepper leading-relaxed mb-5">
+          As Singapore's national grid operator, SP Group serves around <strong class="text-licorice">1.7 million</strong> industrial, commercial, and residential customer accounts with world-class network reliability. Building on over 30 years of powering Singapore since 1995, SP Group continues to transform with resilience under steady leadership.
+        </p>
+        <p class="text-pepper leading-relaxed">
+          Beyond Singapore, SP Group steadily expands into <strong class="text-licorice">China, Thailand, and Vietnam</strong>, providing integrated sustainable energy solutions including district cooling and heating, renewable energy, EV charging infrastructure, and digital energy platforms.
+        </p>
+
+        <div class="mt-8 p-4 rounded-xl border text-sm" style="background:rgba(0,176,178,0.06); border-color:rgba(0,176,178,0.2); color:#00878A;">
+          <strong>About This Report:</strong> SP Group's 7th sustainability report, covering FY ended 31 March 2026. Aligned with IFRS S1 &amp; S2 and the GHG Protocol. A phased approach to external assurance is underway in line with ACRA requirements.
+        </div>
+      </div>
+
+      <!-- Business Model Map -->
+      <div>
+        <h3 class="text-xl font-bold text-licorice mb-6">Business Model &amp; Value Chain</h3>
+        <div class="space-y-4">
+
+          <div class="rounded-2xl border border-smoke/30 overflow-hidden">
+            <div class="px-5 py-3 font-semibold text-sm flex items-center gap-2 text-white" style="background:#292F45;">
+              <svg class="w-4 h-4" style="color:#48DCC0;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Transmission &amp; Distribution
+            </div>
+            <div class="grid sm:grid-cols-2">
+              <div class="p-4 border-r border-smoke/30">
+                <div class="text-xs font-bold uppercase tracking-wide mb-2" style="color:#00B0B2;">Transmission</div>
+                <ul class="text-sm text-pepper space-y-1">
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>Electricity Operations</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>Gas Operations</li>
+                </ul>
+              </div>
+              <div class="p-4">
+                <div class="text-xs font-bold uppercase tracking-wide mb-2" style="color:#3384E1;">Distribution</div>
+                <ul class="text-sm text-pepper space-y-1">
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>Electricity Operations</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>Gas Operations</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-smoke/30 overflow-hidden">
+            <div class="px-5 py-3 font-semibold text-sm flex items-center gap-2 text-white" style="background:#4F5A60;">
+              <svg class="w-4 h-4" style="color:#48DCC0;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+              </svg>
+              Solutions &amp; Services
+            </div>
+            <div class="grid sm:grid-cols-2">
+              <div class="p-4 border-r border-smoke/30">
+                <div class="text-xs font-bold uppercase tracking-wide mb-2" style="color:#00B0B2;">Commercial &amp; Industrial</div>
+                <ul class="text-sm text-pepper space-y-1">
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>Market Support Services</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>District Cooling &amp; Heating</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>Electric Vehicle Solutions</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>Renewable Energy</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-mint"></span>Digital Products</li>
+                </ul>
+              </div>
+              <div class="p-4">
+                <div class="text-xs font-bold uppercase tracking-wide mb-2" style="color:#3384E1;">Consumers</div>
+                <ul class="text-sm text-pepper space-y-1">
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>Market Support Services</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>Residential Cooling</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>EV Charging</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>Energy Storage</li>
+                  <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-water"></span>Engineering Services</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     C. SUSTAINABILITY FRAMEWORK
+============================================================ -->
+<section id="framework" class="py-20 bg-ice">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <p class="font-semibold text-sm uppercase tracking-widest mb-2" style="color:#00B0B2;">Strategy</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-licorice mb-4">Our Sustainability Framework</h2>
+      <p class="text-pepper max-w-2xl mx-auto">
+        SP Group views sustainability as a strategic imperative, structured around three pillars and seven material topics determined through a structured Double Materiality Assessment.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <!-- Pillar 1 -->
+      <div class="pillar-card bg-salt rounded-2xl p-7 shadow-sm border border-smoke/30">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+             style="background: linear-gradient(135deg, #00B0B2, #48DCC0);">
+          <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-licorice text-lg mb-2">Stewarding Environmental Action</h3>
+        <p class="text-pepper text-sm leading-relaxed mb-4">Leading the energy transition through green and smart grid technologies, net-zero pathways, and climate scenario analysis.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1); color:#00878A;">Climate Action</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1); color:#00878A;">Resilience</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1); color:#00878A;">Net Zero 2050</span>
+        </div>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="pillar-card bg-salt rounded-2xl p-7 shadow-sm border border-smoke/30">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+             style="background: linear-gradient(135deg, #C2748D, #d48fa6);">
+          <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-licorice text-lg mb-2">Caring for Our People &amp; Community</h3>
+        <p class="text-pepper text-sm leading-relaxed mb-4">Fostering a safety-first culture, empowering our workforce, and investing in communities where we operate.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(194,116,141,0.1); color:#C2748D;">WSH</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(194,116,141,0.1); color:#C2748D;">Workforce Dev.</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(194,116,141,0.1); color:#C2748D;">Community</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="pillar-card bg-salt rounded-2xl p-7 shadow-sm border border-smoke/30">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+             style="background: linear-gradient(135deg, #3384E1, #586EC7);">
+          <svg class="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-licorice text-lg mb-2">Championing Responsible Growth</h3>
+        <p class="text-pepper text-sm leading-relaxed mb-4">Maintaining world-class reliability, robust governance, and forward-looking digitalisation while managing risk proactively.</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1); color:#3384E1;">Reliability</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1); color:#3384E1;">Business Ethics</span>
+          <span class="px-2.5 py-1 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1); color:#3384E1;">Cybersecurity</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DOUBLE MATERIALITY ASSESSMENT
+============================================================ -->
+<section id="materiality" class="py-20 bg-salt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <p class="font-semibold text-sm uppercase tracking-widest mb-2" style="color:#00B0B2;">DMA 2025</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-licorice mb-4">Double Materiality Assessment</h2>
+      <p class="text-pepper max-w-2xl mx-auto">
+        In 2025, SP Group completed its DMA, evaluating impacts on the economy, environment and people (impact materiality) and the potential financial effects of sustainability-related risks and opportunities (financial materiality).
+      </p>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex flex-wrap gap-2 justify-center mb-8">
+      <button class="tab-btn active px-4 py-2 rounded-full border border-smoke text-sm font-semibold transition" data-filter="all">All Topics</button>
+      <button class="tab-btn px-4 py-2 rounded-full border border-smoke text-sm font-semibold text-pepper hover:bg-ice transition" data-filter="environmental">Environmental</button>
+      <button class="tab-btn px-4 py-2 rounded-full border border-smoke text-sm font-semibold text-pepper hover:bg-ice transition" data-filter="social">Social</button>
+      <button class="tab-btn px-4 py-2 rounded-full border border-smoke text-sm font-semibold text-pepper hover:bg-ice transition" data-filter="governance">Governance</button>
+    </div>
+
+    <!-- DMA Table -->
+    <div class="overflow-x-auto rounded-2xl border border-smoke/40 shadow-sm">
+      <table class="w-full text-sm" id="dma-table">
+        <thead>
+          <tr style="background:#292F45;" class="text-white">
+            <th class="text-left px-5 py-4 font-semibold w-44">Material Topic</th>
+            <th class="text-left px-5 py-4 font-semibold">Description of IROs</th>
+            <th class="text-left px-5 py-4 font-semibold w-48">Value Chain Impact</th>
+            <th class="text-left px-5 py-4 font-semibold">Our Approach &amp; Achievements</th>
+          </tr>
+        </thead>
+        <tbody id="dma-tbody" class="divide-y divide-smoke/20">
+
+          <!-- Climate Action -->
+          <tr class="dma-row hover:bg-ice transition" data-category="environmental">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#00B0B2;"></span>
+                <span class="font-semibold text-licorice">Climate Action &amp; Resilience</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Investing in green and smart grid technologies reduces environmental impacts from transmission losses. Climate change poses regulatory and infrastructure risks. Innovations in climate solutions offer opportunities to enhance energy management and financial resilience.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1);color:#3384E1;">Upstream</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(191,201,207,0.3);color:#4F5A60;">Downstream</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Net zero target for Scope 1 &amp; 2 by 2050. FY25/26 Scope 1 &amp; 2: <strong class="text-licorice">533,810 tCO₂e</strong> (92% from T&amp;D losses). Two-pronged approach: reduce directly-controlled emissions through energy efficiency, onsite solar, and fleet electrification; and enable system decarbonisation through grid flexibility.
+            </td>
+          </tr>
+
+          <!-- WSH -->
+          <tr class="dma-row hover:bg-ice transition" data-category="social">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#C2748D;"></span>
+                <span class="font-semibold text-licorice">Workplace Safety &amp; Health</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Fostering a safety-first culture is key in protecting employees, contractors and customers. Non-compliance with safety and health regulations poses regulatory, compliance and reputational risks. Prioritising WSH lowers incidents, enhances loyalty, and boosts productivity.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1);color:#3384E1;">Upstream</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(191,201,207,0.3);color:#4F5A60;">Downstream</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              ISO 45001 certified management system. Zero fatalities. LTIFR of <strong class="text-licorice">0.17</strong>, outperforming 0.53 target. Strengthened via proactive inspections, SAFE365 digital platform for contractors, and sustained leadership engagement.
+            </td>
+          </tr>
+
+          <!-- Workforce Development -->
+          <tr class="dma-row hover:bg-ice transition" data-category="social">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#C2748D;"></span>
+                <span class="font-semibold text-licorice">Workforce Development &amp; Management</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Fair, equal and inclusive human capital management improves morale. Inadequate training and skill gaps may cause disruption and reputational damage. Effective workforce development enhances long-term value.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Average <strong class="text-licorice">36 training hours</strong> per employee; approx. S$2,000 invested per employee. Low resignation among high performers. Initiatives: Learning Roadmap 2030, AI capability-building, workforce transformation programmes.
+            </td>
+          </tr>
+
+          <!-- Community Engagement -->
+          <tr class="dma-row hover:bg-ice transition" data-category="social">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#C2748D;"></span>
+                <span class="font-semibold text-licorice">Community Engagement &amp; Relations</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Community initiatives strengthen social impact and local resilience. Proactive engagement fosters closer association with SP Group, boosting brand reputation and investor confidence.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1);color:#3384E1;">Upstream</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(191,201,207,0.3);color:#4F5A60;">Downstream</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Invested approx. <strong class="text-licorice">S$7 million</strong> in community giving. 12,000 volunteer hours; 40% employee participation. Reached <strong class="text-licorice">~21,000 beneficiaries</strong> through programmes supporting seniors, children and youth from lower-income backgrounds.
+            </td>
+          </tr>
+
+          <!-- Reliability -->
+          <tr class="dma-row hover:bg-ice transition" data-category="governance">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#3384E1;"></span>
+                <span class="font-semibold text-licorice">Reliability &amp; Customer Satisfaction</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Reliable services ensure service continuity and enhanced customer experience. Compromises may lead to disruptions and dissatisfaction. Reliable services enhance revenue through strong reputation and customer retention.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1);color:#3384E1;">Upstream</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(191,201,207,0.3);color:#4F5A60;">Downstream</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              World-class reliability: SAIDI of <strong class="text-licorice">0.328 min</strong> (electricity) and <strong class="text-licorice">0.003 min</strong> (gas). Forward-looking investments in digitalisation, grid resilience, and future-ready infrastructure.
+            </td>
+          </tr>
+
+          <!-- Business Ethics -->
+          <tr class="dma-row hover:bg-ice transition" data-category="governance">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#3384E1;"></span>
+                <span class="font-semibold text-licorice">Business Ethics &amp; Compliance</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Strong corporate governance protects communities through ethical conduct. Non-compliance risks fines, reputational damage, and loss of licence. Robust anti-corruption compliance creates opportunities to strengthen stakeholder confidence.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1);color:#3384E1;">Upstream</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(191,201,207,0.3);color:#4F5A60;">Downstream</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              100% anti-bribery and corruption training completion. ISO 37001:2016 Anti-Bribery Management System certified. Annual Code of Conduct training, conflict-of-interest declarations, active whistleblowing channels, and rigorous compliance oversight.
+            </td>
+          </tr>
+
+          <!-- Digitalisation -->
+          <tr class="dma-row hover:bg-ice transition" data-category="governance">
+            <td class="px-5 py-5 align-top">
+              <span class="inline-flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:#3384E1;"></span>
+                <span class="font-semibold text-licorice">Digitalisation, Cybersecurity &amp; Data Privacy</span>
+              </span>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Effective cybersecurity safeguards data, operations and stakeholder trust. Cyber-attacks can lead to data theft and financial loss. Innovation and digitalisation investments open new revenue streams and enhance market position.
+            </td>
+            <td class="px-5 py-5 align-top">
+              <div class="flex flex-wrap gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(0,176,178,0.1);color:#00878A;">Own Ops</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(51,132,225,0.1);color:#3384E1;">Upstream</span>
+                <span class="px-2 py-0.5 rounded-full text-xs font-medium" style="background:rgba(191,201,207,0.3);color:#4F5A60;">Downstream</span>
+              </div>
+            </td>
+            <td class="px-5 py-5 align-top text-pepper leading-relaxed">
+              Smart grid technologies, digital twins and AI-enabled asset management. Integrated Fusion Centre for cyber resilience. <strong class="text-licorice">ISO 27001</strong> certified. Data Protection Trustmark. Full compliance with PDPA and Cybersecurity Act. 100% cybersecurity awareness training completion.
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Emerging Topics Alert — Guava/warm tint -->
+    <div class="mt-8 rounded-2xl border p-6" style="background:#FFF8F0; border-color:#F291B0;">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style="background:#F291B0 22;">
+          <svg class="w-5 h-5" style="color:#F65B7D;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div>
+          <h4 class="font-bold mb-2" style="color:#292F45;">Emerging Topics — Under Progressive Development</h4>
+          <p class="text-sm mb-4" style="color:#4F5A60;">Through the DMA, SP Group identified three emerging topics that may increase in importance as stakeholder expectations, regulatory requirements and market dynamics evolve. Baselines, targets, and consistent metrics are still being developed.</p>
+          <div class="flex flex-wrap gap-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold border" style="background:#FFF0F5; border-color:#F291B0; color:#292F45;">
+              🌿 Nature &amp; Biodiversity
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold border" style="background:#FFF0F5; border-color:#F291B0; color:#292F45;">
+              ♻️ Resource Efficiency
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold border" style="background:#FFF0F5; border-color:#F291B0; color:#292F45;">
+              🔗 Supply Chain Management
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     D. SUSTAINABILITY GOVERNANCE
+============================================================ -->
+<section id="governance" class="py-20 bg-ice">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <p class="font-semibold text-sm uppercase tracking-widest mb-2" style="color:#00B0B2;">IFRS S1 27a · IFRS S2 6a/6b</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-licorice mb-4">Sustainability Governance</h2>
+      <p class="text-pepper max-w-2xl mx-auto">SP Group has established a clear governance structure led by the Board with dedicated oversight from the Board Sustainability Committee.</p>
+    </div>
+
+    <!-- Governance Flowchart -->
+    <div class="max-w-2xl mx-auto mb-14">
+      <!-- Board -->
+      <div class="rounded-2xl p-5 text-center shadow-lg text-white" style="background:#292F45;">
+        <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#48DCC0;">Ultimate Responsibility</div>
+        <div class="font-bold text-lg">Board Members</div>
+        <div class="text-sm mt-1" style="color:#BFC9CF;">Oversight of SrROs, CrROs and long-term sustainability strategy</div>
+      </div>
+      <!-- Arrow -->
+      <div class="flex justify-center my-2"><div class="w-0.5 h-8" style="background:#BFC9CF;"></div></div>
+      <div class="flex justify-center -mt-1 mb-1">
+        <svg class="w-4 h-4" style="color:#BFC9CF;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 14l-5-5h10l-5 5z"/></svg>
+      </div>
+      <!-- SC -->
+      <div class="rounded-2xl p-5 text-center shadow-md text-white" style="background:#4F5A60;">
+        <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:#48DCC0;">Board Level</div>
+        <div class="font-bold text-base">Board Sustainability Committee (SC)</div>
+        <div class="text-sm mt-1" style="color:#BFC9CF;">Oversees progress against sustainability strategy and CrROs. Convenes quarterly. SC Chair updates Board after each meeting.</div>
+      </div>
+      <!-- Arrow -->
+      <div class="flex justify-center my-2"><div class="w-0.5 h-8" style="background:#BFC9CF;"></div></div>
+      <div class="flex justify-center -mt-1 mb-1">
+        <svg class="w-4 h-4" style="color:#BFC9CF;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 14l-5-5h10l-5 5z"/></svg>
+      </div>
+      <!-- ELT -->
+      <div class="rounded-2xl p-5 text-center shadow-md text-white" style="background:#00B0B2;">
+        <div class="text-xs font-bold uppercase tracking-widest mb-1" style="color:rgba(255,255,255,0.8);">Management Level</div>
+        <div class="font-bold text-base">Executive Leadership Team (ELT)</div>
+        <div class="text-sm mt-1" style="color:rgba(255,255,255,0.8);">Senior management steering growth and development. Engaged on material matters at least quarterly.</div>
+      </div>
+      <!-- Arrow -->
+      <div class="flex justify-center my-2"><div class="w-0.5 h-8" style="background:#BFC9CF;"></div></div>
+      <div class="flex justify-center -mt-1 mb-1">
+        <svg class="w-4 h-4" style="color:#BFC9CF;" fill="currentColor" viewBox="0 0 20 20"><path d="M10 14l-5-5h10l-5 5z"/></svg>
+      </div>
+      <!-- Bottom row -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-salt rounded-2xl p-4 text-center border border-smoke/30 shadow-sm">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center mx-auto mb-2" style="background:rgba(0,176,178,0.1);">
+            <svg class="w-5 h-5" style="color:#00B0B2;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <div class="font-semibold text-licorice text-sm">Sustainability Team</div>
+          <div class="text-xs text-pepper mt-1">Coordinating disclosures, policies &amp; metrics. Sustainability business partners assigned to each BU.</div>
+        </div>
+        <div class="bg-salt rounded-2xl p-4 text-center border border-smoke/30 shadow-sm">
+          <div class="w-9 h-9 rounded-xl flex items-center justify-center mx-auto mb-2" style="background:rgba(51,132,225,0.1);">
+            <svg class="w-5 h-5" style="color:#3384E1;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <div class="font-semibold text-licorice text-sm">Sustainability Taskforce</div>
+          <div class="text-xs text-pepper mt-1">Cross-functional hub with BU representatives. Meets monthly to review progress and key issues.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accordions -->
+    <div class="max-w-3xl mx-auto space-y-3">
+
+      <div class="accordion-item bg-salt rounded-2xl border border-smoke/30 overflow-hidden shadow-sm">
+        <button class="accordion-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-ice transition">
+          <span class="font-semibold text-licorice flex items-center gap-3">
+            <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#292F45;">
+              <svg class="w-4 h-4" style="color:#48DCC0;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              </svg>
+            </span>
+            Board's Role
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="accordion-body">
+          <div class="px-6 pb-6 pt-2 text-pepper text-sm leading-relaxed space-y-3">
+            <p>The Board holds ultimate responsibility for sustainability and climate-related oversight, including SrROs and CrROs. The Board formed the Sustainability Committee (SC) to oversee sustainability- and climate-related disclosures.</p>
+            <p>The SC reviews and recommends related strategies, plans, commitments, and policies, and oversees the execution of Board-approved initiatives. The SC convenes quarterly.</p>
+            <p>SP Group provides ongoing training for the Board, SC, and management. In 2025, the SC and ELT received training on IFRS S1 and S2 disclosure requirements, emissions accounting fundamentals, and climate resilience.</p>
+            <p>The Board evaluates decarbonisation pathways for impact on operational resilience, weighing near-term costs against long-term risk mitigation and strategic objectives.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bg-salt rounded-2xl border border-smoke/30 overflow-hidden shadow-sm">
+        <button class="accordion-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-ice transition">
+          <span class="font-semibold text-licorice flex items-center gap-3">
+            <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#4F5A60;">
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+            </span>
+            Management's Role &amp; Internal Controls
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="accordion-body">
+          <div class="px-6 pb-6 pt-2 text-pepper text-sm leading-relaxed space-y-3">
+            <p>Management is responsible for implementing Board-approved sustainability strategy and embedding material sustainability and climate-related risks into SP Group's ERM, internal control, and business processes.</p>
+            <p>Management establishes processes, controls and reporting mechanisms integrating sustainability into business planning, capital investment evaluation, and operational decisions.</p>
+            <p>The Sustainability Team coordinates sustainability disclosures, supports enterprise risk management, and delivers training to build organisational capability.</p>
+            <p>Sustainability-related KPIs (service reliability, cybersecurity, safety, workforce) are embedded in executive and senior management remuneration, including at Group level.</p>
+            <p>The Sustainability Taskforce serves as a collaborative hub of BU and function representatives, meeting monthly to review progress and key issues.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bg-salt rounded-2xl border border-smoke/30 overflow-hidden shadow-sm">
+        <button class="accordion-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-ice transition">
+          <span class="font-semibold text-licorice flex items-center gap-3">
+            <span class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style="background:#00B0B2;">
+              <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </span>
+            Enterprise Risk Management (ERM) Framework
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div class="accordion-body">
+          <div class="px-6 pb-6 pt-2 text-pepper text-sm leading-relaxed space-y-3">
+            <p>SP Group manages risks through its Enterprise Risk Management and governance frameworks. Risk owners within the Corporate Office and each Principal Operating Subsidiary (POS) apply the ERM methodology to assess and prioritise risks.</p>
+            <p>SP Group adopts both <strong class="text-licorice">top-down</strong> (guidance from BRMC and Management, including risk appetite and limits) and <strong class="text-licorice">bottom-up</strong> (employees escalate day-to-day risk issues) approaches.</p>
+            <p>Sustainability and climate-related risks are identified through market research, regulatory updates, expert insights, and climate scenario analysis. Significant risks are escalated to the Board Risk Management Committee (BRMC).</p>
+            <p>Climate scenario analysis identifies and assesses physical and transition risks over different scenarios and time horizons. Results inform the ERM process and are integrated for ongoing monitoring.</p>
+            <p>Climate-related opportunities are managed through existing business and strategy processes — exemplified by the Sustainable Energy Solutions (SES) business segment.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     E. STAKEHOLDER ENGAGEMENT
+============================================================ -->
+<section id="stakeholders" class="py-20 bg-salt">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14">
+      <p class="font-semibold text-sm uppercase tracking-widest mb-2" style="color:#00B0B2;">Engagement</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-licorice mb-4">Stakeholder Engagement</h2>
+      <p class="text-pepper max-w-2xl mx-auto">SP Group values the interests of both internal and external stakeholders. We maintain structured, ongoing engagement to surface expectations, inform sustainability strategy, and strengthen overall ESG performance.</p>
+    </div>
+
+    <div class="space-y-3 max-w-4xl mx-auto">
+
+      <!-- Regulator -->
+      <div class="stakeholder-item bg-ice rounded-2xl border border-smoke/30 overflow-hidden">
+        <button class="stakeholder-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-smoke/10 transition">
+          <span class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0" style="background:#292F45;">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+            </span>
+            <div>
+              <div class="font-semibold text-licorice">Regulator &amp; Government Agencies</div>
+              <div class="text-xs text-pepper mt-0.5">Electricity, gas, market support services, district cooling, infrastructure leasing</div>
+            </div>
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="stakeholder-panel">
+          <div class="px-6 pb-6 pt-2 grid sm:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#00B0B2;">Stakeholder Priorities</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Compliance to performance standards, regulations and licence obligations</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Prompt redress of public feedback</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Collaborations for public interests</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#3384E1;">Main Mode of Engagement</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Regulatory consultations and joint studies</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Submissions on tariffs, performance standards, regulatory audits</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Meetings and correspondences with government agencies</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Industry and sector working groups and panels</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shareholder -->
+      <div class="stakeholder-item bg-ice rounded-2xl border border-smoke/30 overflow-hidden">
+        <button class="stakeholder-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-smoke/10 transition">
+          <span class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0" style="background:#4F5A60;">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </span>
+            <div>
+              <div class="font-semibold text-licorice">Shareholder (Temasek)</div>
+              <div class="text-xs text-pepper mt-0.5">Principal shareholder engagement</div>
+            </div>
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="stakeholder-panel">
+          <div class="px-6 pb-6 pt-2 grid sm:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#00B0B2;">Stakeholder Priorities</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Operational and financial performance</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Business planning and strategy</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Sustainability and ESG</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#3384E1;">Main Mode of Engagement</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Annual Board Strategic Review</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Regular business performance &amp; strategy review sessions with Portfolio Development Group</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Direct engagements on strategic matters</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suppliers -->
+      <div class="stakeholder-item bg-ice rounded-2xl border border-smoke/30 overflow-hidden">
+        <button class="stakeholder-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-smoke/10 transition">
+          <span class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0" style="background:#00B0B2;">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            </span>
+            <div>
+              <div class="font-semibold text-licorice">Suppliers</div>
+              <div class="text-xs text-pepper mt-0.5">Procurement, contracts, and supply chain sustainability</div>
+            </div>
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="stakeholder-panel">
+          <div class="px-6 pb-6 pt-2 grid sm:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#00B0B2;">Stakeholder Priorities</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Fair and transparent procurement practices</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Payment terms and contract management</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Health, safety and sustainability-related tender requirements</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#3384E1;">Main Mode of Engagement</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Supplier code of conduct</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Half-yearly engagement sessions with key suppliers</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Annual procurement plan on SP Group website</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Tender process and briefings</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customers -->
+      <div class="stakeholder-item bg-ice rounded-2xl border border-smoke/30 overflow-hidden">
+        <button class="stakeholder-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-smoke/10 transition">
+          <span class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0" style="background:#3384E1;">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            </span>
+            <div>
+              <div class="font-semibold text-licorice">Customers</div>
+              <div class="text-xs text-pepper mt-0.5">Industrial, commercial, and residential</div>
+            </div>
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="stakeholder-panel">
+          <div class="px-6 pb-6 pt-2 grid sm:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#00B0B2;">Stakeholder Priorities</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Reliable supply of electricity and gas</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Efficient customer service</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Data protection and cybersecurity</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Sustainable energy solutions</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#3384E1;">Main Mode of Engagement</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Customer satisfaction surveys and account managers</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Customer Service Centre, hotlines, and WhatsApp</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Website and SP app feedback mechanisms</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Seminars and conferences</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employees -->
+      <div class="stakeholder-item bg-ice rounded-2xl border border-smoke/30 overflow-hidden">
+        <button class="stakeholder-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-smoke/10 transition">
+          <span class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0" style="background:#C2748D;">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </span>
+            <div>
+              <div class="font-semibold text-licorice">Employees &amp; Union (UPAGE)</div>
+              <div class="text-xs text-pepper mt-0.5">Internal workforce and Union of Power and Gas Employees</div>
+            </div>
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="stakeholder-panel">
+          <div class="px-6 pb-6 pt-2 grid sm:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#00B0B2;">Stakeholder Priorities</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Company strategy, progress and performance</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Workplace safety and health</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Wellbeing and benefits</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Career development and capability building</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Employee engagement and organisational culture</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#3384E1;">Main Mode of Engagement</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Annual SP Group Town Hall</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Management dialogues at business level</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Internal communications (intranet and emails)</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Wellbeing events; annual engagement survey; UPAGE dialogues</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Community & Lenders -->
+      <div class="stakeholder-item bg-ice rounded-2xl border border-smoke/30 overflow-hidden">
+        <button class="stakeholder-trigger w-full flex items-center justify-between px-6 py-4 text-left hover:bg-smoke/10 transition">
+          <span class="flex items-center gap-4">
+            <span class="w-10 h-10 rounded-xl flex items-center justify-center text-white shrink-0" style="background:#00878A;">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+            </span>
+            <div>
+              <div class="font-semibold text-licorice">Local Community, Lenders &amp; Rating Agencies</div>
+              <div class="text-xs text-pepper mt-0.5">Community investment; bank lenders, institutional debt investors, Moody's and S&amp;P</div>
+            </div>
+          </span>
+          <svg class="accordion-icon w-5 h-5 text-smoke shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div class="stakeholder-panel">
+          <div class="px-6 pb-6 pt-2 grid sm:grid-cols-2 gap-6">
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#00B0B2;">Stakeholder Priorities</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Safety and works affecting road users/communities</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Community investment and outreach</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Strategy, business performance, sustainability and climate-related risks (Lenders)</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#00B0B2;"></span>Liquidity, funding profile and credit risk (Lenders)</li>
+              </ul>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold uppercase tracking-widest mb-3" style="color:#3384E1;">Main Mode of Engagement</h5>
+              <ul class="text-sm text-pepper space-y-2">
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Community engagement and outreach programs; dialogue sessions</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Feedback via website, hotlines, SP app</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Non-deal roadshows with institutional debt investors</li>
+                <li class="flex items-start gap-2"><span class="w-1.5 h-1.5 rounded-full mt-1.5 shrink-0" style="background:#3384E1;"></span>Regular meetings with Moody's and S&amp;P (at least 3×/year)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER — Licorice
+============================================================ -->
+<footer class="pt-14 pb-8 text-white" style="background:#292F45;">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-white/10">
+
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl font-bold text-sm text-white" style="background:#00B0B2;">SP</span>
+          <span class="font-semibold">SP Group</span>
+        </div>
+        <p class="text-sm leading-relaxed" style="color:#BFC9CF;">Empowering the future of energy for everyone. Singapore's national grid operator since 1995.</p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-4 text-sm uppercase tracking-widest" style="color:#818A91;">Report Contents</h4>
+        <ul class="space-y-2 text-sm" style="color:#BFC9CF;">
+          <li><a href="#about"        class="transition hover:text-lettuce">About Us &amp; Business</a></li>
+          <li><a href="#framework"    class="transition hover:text-lettuce">Sustainability Framework</a></li>
+          <li><a href="#materiality"  class="transition hover:text-lettuce">Materiality Assessment</a></li>
+          <li><a href="#governance"   class="transition hover:text-lettuce">Governance &amp; Risk</a></li>
+          <li><a href="#stakeholders" class="transition hover:text-lettuce">Stakeholder Engagement</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold mb-4 text-sm uppercase tracking-widest" style="color:#818A91;">Feedback &amp; Contact</h4>
+        <p class="text-sm mb-4" style="color:#BFC9CF;">We welcome feedback on our sustainability performance and disclosures. Please direct comments to the Head, Sustainability.</p>
+        <a href="https://www.spgroup.com.sg/contact-us" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white transition hover:opacity-90"
+           style="background:#00B0B2;">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          Contact Us
+        </a>
+        <p class="text-xs mt-3" style="color:#818A91;">www.spgroup.com.sg/contact-us</p>
+      </div>
+
+    </div>
+
+    <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style="color:#818A91;">
+      <p>© 2026 SP Group. FY 2025/2026 Sustainability Report. Aligned with IFRS S1 &amp; S2.</p>
+      <p>Reporting Period: FY ended 31 March 2026 · Coverage: Singapore, China, Vietnam, Thailand</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  // Hamburger
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobile-menu a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden'));
+  });
+
+  // Accordion (one-at-a-time per group)
+  document.querySelectorAll('.accordion-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.accordion-item');
+      const body = item.querySelector('.accordion-body');
+      const icon = trigger.querySelector('.accordion-icon');
+      const isOpen = body.classList.contains('open');
+      item.parentElement.querySelectorAll('.accordion-body').forEach(b => b.classList.remove('open'));
+      item.parentElement.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('open'));
+      if (!isOpen) { body.classList.add('open'); icon.classList.add('open'); }
+    });
+  });
+
+  // Stakeholder panels (multi-open)
+  document.querySelectorAll('.stakeholder-trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.stakeholder-item');
+      const panel = item.querySelector('.stakeholder-panel');
+      const icon = trigger.querySelector('.accordion-icon');
+      panel.classList.toggle('open');
+      icon.classList.toggle('open');
+    });
+  });
+
+  // DMA filter tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.classList.add('text-pepper');
+      });
+      btn.classList.add('active');
+      btn.classList.remove('text-pepper');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('#dma-tbody .dma-row').forEach(row => {
+        row.style.display = (filter === 'all' || row.dataset.category === filter) ? '' : 'none';
+      });
+    });
+  });
+
+  // Animated counter on scroll
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('[data-count]').forEach(animateCounter);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.metric-card').forEach(c => counterObserver.observe(c));
+
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.count, 10);
+    if (isNaN(target)) return;
+    const suffix = el.dataset.suffix || '';
+    const start = performance.now();
+    const duration = 1500;
+    (function step(ts) {
+      const p = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    })(performance.now());
+  }
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('#topnav a[href^="#"]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+    navLinks.forEach(link => {
+      link.classList.toggle('bg-white/10', link.getAttribute('href') === '#' + current);
+    });
+  }, { passive: true });
+</script>
+
+</body>
+</html>
