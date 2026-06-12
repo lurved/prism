@@ -4,6 +4,7 @@ import { useState } from "react";
 import { companies } from "@/data/esgData";
 import { MetricTable } from "@/components/MetricTable";
 import { EsgChart } from "@/components/EsgChart";
+import { SourcesFooter } from "@/components/SourcesFooter";
 import type { Company } from "@/data/types";
 
 export default function ComparePage() {
@@ -87,10 +88,7 @@ export default function ComparePage() {
         N/D = not disclosed in public report
       </div>
 
-      <footer className="mt-12 pt-6 border-t border-slate-200 text-xs text-slate-400 flex flex-wrap gap-4 justify-between">
-        <span>Data sourced from public sustainability reports (FY2023–FY2024). For reference only.</span>
-        <span>Built for pris.la · Temasek ESG Tracker</span>
-      </footer>
+      <SourcesFooter />
     </div>
   );
 }

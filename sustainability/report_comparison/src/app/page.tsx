@@ -1,9 +1,10 @@
 import { companies, aggregateTotals } from "@/data/esgData";
 import { CompanyCard } from "@/components/CompanyCard";
 import { EsgChart } from "@/components/EsgChart";
+import { SourcesFooter } from "@/components/SourcesFooter";
 import { formatNumber } from "@/lib/utils";
 import { Leaf, Users, Shield, TrendingDown, CheckCircle2, Info } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 function fmtKt(ktCO2e: number): string {
   if (ktCO2e >= 1_000) return `${(ktCO2e / 1_000).toFixed(1)}M tCO₂e`;
@@ -175,31 +176,7 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* Data Sources */}
-      <section className="mt-10 p-4 bg-slate-50 rounded-xl border border-slate-200">
-        <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Data Sources</h3>
-        <div className="space-y-2">
-          {companies.map((c) => (
-            <div key={c.id} className="flex gap-3 text-xs">
-              <div
-                className="w-5 h-5 rounded flex-shrink-0 flex items-center justify-center text-white text-[9px] font-bold"
-                style={{ backgroundColor: c.accentColor }}
-              >
-                {c.logoInitials}
-              </div>
-              <div>
-                <span className="font-medium text-slate-700">{c.dataSource.reportTitle}</span>
-                <span className="text-slate-400"> · {c.dataSource.reportingPeriod} · Accessed {c.dataSource.accessDate}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <footer className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-400 flex flex-wrap gap-4 justify-between">
-        <span>All data sourced from official company sustainability/annual reports. For reference only — verify against original source documents.</span>
-        <span>Built for pris.la · Temasek ESG Tracker</span>
-      </footer>
+      <SourcesFooter />
     </div>
   );
 }
