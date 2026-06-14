@@ -40,10 +40,26 @@ nav {
 
 .nav-name {
   font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
-  color: var(--text-dark);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--navy);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  line-height: 1;
+}
+
+.nav-logo-circle {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  background: var(--navy);
+  border-radius: 50%;
+  margin: 0 0.02em;
+  vertical-align: middle;
+  position: relative;
+  top: -0.04em;
 }
 
 nav ul {
