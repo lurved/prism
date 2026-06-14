@@ -2,15 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, BarChart3, GitCompare, Leaf, ExternalLink } from "lucide-react";
+import { LayoutDashboard, GitCompare, Leaf, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const BASE = "/sustainability/report_comparison";
-
+// NOTE: hrefs are relative to the configured basePath
+// (/sustainability/report_comparison). Next.js <Link> prepends basePath
+// automatically, and usePathname() returns paths WITHOUT it.
 const navItems = [
-  { label: "Overview", href: BASE, icon: LayoutDashboard },
-  { label: "Compare", href: `${BASE}/compare`, icon: GitCompare },
+  { label: "Overview", href: "/", icon: LayoutDashboard },
+  { label: "Compare", href: "/compare", icon: GitCompare },
 ];
+
+function isActive(pathname: string | null, href: string): boolean {
+  const path = (pathname ?? "/").replace(/\/$/, "") || "/";
+  if (href === "/") return path === "/";
+  return path === href || path.startsWith(`${href}/`);
+}
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -31,7 +38,7 @@ export function Sidebar() {
 
       <nav className="flex-1 px-3 py-4 space-y-0.5">
         {navItems.map(({ label, href, icon: Icon }) => {
-          const active = pathname === href || (href !== BASE && pathname?.startsWith(href));
+          const active = isActive(pathname, href);
           return (
             <Link
               key={href}
@@ -81,7 +88,7 @@ export function MobileNav() {
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-800 flex">
       {navItems.map(({ label, href, icon: Icon }) => {
-        const active = pathname === href || (href !== BASE && pathname?.startsWith(href));
+        const active = isActive(pathname, href);
         return (
           <Link
             key={href}
