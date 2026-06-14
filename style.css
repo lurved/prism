@@ -50,6 +50,12 @@ nav {
   line-height: 1;
 }
 
+.nav-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
 .nav-logo-circle {
   display: inline-block;
   width: 0.72em;
