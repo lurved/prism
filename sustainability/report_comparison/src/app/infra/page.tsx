@@ -4,7 +4,7 @@ import { ExternalLink, FileText, Info } from "lucide-react";
 
 export const metadata = {
   title: "Dense-City Operators — ESG Comparison",
-  description: "ESG comparison of dense-city Asian infrastructure operators: SMRT and Meralco (CLP pending).",
+  description: "ESG comparison of dense-city Asian infrastructure operators: SMRT, Meralco, and CLP.",
 };
 
 export default function PeersPage() {

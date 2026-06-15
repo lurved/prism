@@ -4,7 +4,7 @@ import { useState } from "react";
 import { CheckCircle2, XCircle, HelpCircle, AlertTriangle, Ban } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { peerCompanies, CLP_PENDING_NOTE, type PeerCompany } from "@/data/peerData";
+import { peerCompanies, type PeerCompany } from "@/data/peerData";
 
 type View = "absolute" | "normalized";
 
@@ -114,7 +114,7 @@ export function PeerComparison() {
             Normalized &amp; Comparable
           </button>
         </div>
-        <span className="text-[11px] text-slate-400">{companies.length} of 3 operators · CLP pending</span>
+        <span className="text-[11px] text-slate-400">{companies.length} operators</span>
       </div>
 
       {/* View-specific caveat */}
@@ -123,8 +123,8 @@ export function PeerComparison() {
           <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="text-xs text-red-800">
             <span className="font-semibold">Do not rank these absolute numbers against each other.</span> A mass-transit
-            operator (SMRT) and an integrated electric utility (Meralco) have completely different emission boundaries —
-            Meralco&apos;s Scope 1 is dominated by power <em>generation</em> it owns; SMRT has no generation. Larger
+            operator (SMRT) and integrated electric utilities (Meralco, CLP) have completely different emission boundaries —
+            Meralco&apos;s and CLP&apos;s Scope 1 is dominated by power <em>generation</em> they own; SMRT has no generation. Larger
             ≠ worse. Use these only to understand each company&apos;s own footprint.
           </div>
         </div>
@@ -228,12 +228,6 @@ export function PeerComparison() {
           <span className="flex items-center gap-1.5"><Ban className="w-3 h-3" /> N/A = not applicable to this business model</span>
           <span>Emissions in tCO₂e, as reported.</span>
         </div>
-      </div>
-
-      {/* CLP pending */}
-      <div className="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-lg flex gap-2.5">
-        <HelpCircle className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-slate-500">{CLP_PENDING_NOTE}</p>
       </div>
 
       {/* Per-company data notes */}

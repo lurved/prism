@@ -205,19 +205,75 @@ export const peerCompanies: PeerCompany[] = [
     ],
   },
 
-  /* ───────────────────────────────────────────────────────────────
-     CLP POWER HONG KONG — PENDING (intentionally omitted for now)
-     Reason: CLP's sustainability portal and CDN block automated retrieval
-     (HTTP 403). Only two figures could be verified from CLP's HKEX 2025
-     annual-results filing: GHG intensity 0.50 kg CO₂e/kWh (Group, FY2025)
-     and net-zero Scope 1+2 by 2050. Detailed scopes/SF₆/social metrics
-     require the ESG Databook, which was not obtainable via automation.
-     To be added once the official databook can be sourced.
-  ─────────────────────────────────────────────────────────────── */
+  /* ═══════════════════════════════════════════════════════════════
+     CLP GROUP / CLP POWER HONG KONG
+     Source: CLP Holdings 2025 Annual Report (integrated; KPMG-assured
+     Five-Year ESG Data summary), filed on HKEX 11 Mar 2026.
+     PDF: www1.hkexnews.hk/.../2026/0311/2026031100298.pdf
+     Reporting period: FY2025 (calendar year ended 31 Dec 2025).
+     Figures = CLP GROUP on an equity basis (HK + Mainland China +
+     Australia + India + Taiwan/SE Asia), unless noted. 2025 ESG-table
+     figures independently verified by KPMG (ISAE 3000 / ISAE 3410).
+     NOTE: CLP's own portal (sustainability.clpgroup.com) blocks automated
+     retrieval (403); data was sourced from the HKEX-filed Annual Report,
+     whose Five-Year ESG Data summary carries the KPMG-assured figures.
+     Verified June 2026.
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    id: "clp",
+    name: "CLP Group (CLP Power Hong Kong)",
+    shortName: "CLP",
+    logoInitials: "CL",
+    accentColor: "#00843d",
+    country: "Hong Kong",
+    city: "Hong Kong",
+    climateContext: "Dense vertical city, humid subtropical climate",
+    businessModel: "Vertically integrated electric utility",
+    reportingPeriod: "FY2025",
+    dataSource: {
+      reportTitle: "CLP Holdings 2025 Annual Report (KPMG-assured Five-Year ESG Data)",
+      reportingPeriod: "FY2025 (calendar year ended 31 Dec 2025)",
+      url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0311/2026031100298.pdf",
+      accessDate: "June 2026",
+    },
+    scope1: 34_356_000,          // 34,356 kt — dominated by power generation (equity basis)
+    scope2: 302_000,             // 302 kt — basis (location/market) not labelled in the table
+    scope3: 11_125_000,          // 11,125 kt — Cats 1,2,3,5,6,7,11 (Cat 3 fuel/energy = 8,433 kt)
+    totalGHG: 45_783_000,        // 45,783 kt total CO2e (equity basis)
+    scope2Basis: "N/D (single Scope 2 figure; location/market basis not labelled)",
+    intensityValue: 0.50,        // kg CO2e/kWh — S1+S2+S3(Cat3), equity + long-term capacity/energy-purchase basis (S1+S2-only = 0.58)
+    intensityUnit: "kg CO2e/kWh (S1+2+S3 Cat3)",
+    sf6tCO2e: null,              // SF6 disclosed as MASS (3 t SF6), not tCO2e — see dataNotes
+    systemLossPct: null,         // N/D — CLP discloses reliability indices, not a network-loss %
+    renewableNote:
+      "Renewables (wind/solar/hydro/WtE) 23.3% of equity capacity (4,363 MW); non-carbon incl. nuclear 33%. Renewable energy sent out 10.9% (6,501 GWh). Coal phase-out (Castle Peak) by 2035.",
+    netZeroYear: 2050,
+    reductionTarget:
+      "Science-based targets vs 2019 baseline. Absolute GHG of electricity sold fell from 60,644 kt (2019) to 24,520 kt (2025), ≈ −60%. Net-zero Scope 1+2 by 2050 (ambition to extend to Scope 3).",
+    headcount: 8_539,            // Group (HK 5,484; Mainland 788; Australia 2,267)
+    femaleBoardPct: 38,
+    femaleWorkforcePct: 26.5,
+    trainingHoursPerEmployee: 51.9, // Group average; HK 63.3
+    injuryMetricValue: 0.04,
+    injuryMetricUnit: "Lost-time injury rate per 200,000 work hours",
+    communityInvestmentNative: "HK$240M",
+    communityInvestmentNote:
+      "HK$240M allocated under the CLP Community Energy Saving Fund (programme allocation). A single consolidated community-investment total is not disclosed in the Annual Report.",
+    independentDirectorsPct: 54,  // Independent Non-executive Directors, 13-member board
+    antiCorruptionTrainingPct: null, // Ongoing fraud-risk training, but % of staff not disclosed; 0 convicted corruption cases 2021–2025
+    externalAssurance: true,
+    externalAssuranceProvider: "KPMG (ISAE 3000 (Revised); ISAE 3410 for GHG)",
+    frameworks: ["HKEX ESG Code", "HKFRS S1", "HKFRS S2", "GRI", "SASB (IF-EU)"],
+    naMetrics: [],
+    dataNotes: [
+      "CLP is a VERTICALLY INTEGRATED electric utility (generation + transmission + distribution + retail). Scope 1 (34,356 kt) is dominated by power generation it owns, so absolute emissions are not comparable with SMRT (transit) and only loosely with Meralco.",
+      "All ESG figures are CLP GROUP (Hong Kong + Mainland China + Australia + India + Taiwan/SE Asia) on an equity basis — NOT CLP Power Hong Kong alone. CLP Power HK (the Scheme-of-Control business) serves ~2.9M customer accounts and 35,760 GWh of sales but does not publish its own Scope 1/2/3 split.",
+      "FY2025 ESG figures are independently assured by KPMG (ISAE 3000 / ISAE 3410).",
+      "Carbon intensity 0.50 kg CO₂e/kWh is the S1+S2+S3(Cat3) equity + long-term-purchase basis; the equity-only S1+S2 intensity is 0.58 kg CO₂e/kWh. Denominator (per-kWh) is not comparable with SMRT's per-revenue or Meralco's per-GWh metric.",
+      "SF₆ is reported as mass (3 tonnes of SF₆ gas), not in tCO₂e, so the tCO₂e field is shown as N/D to avoid an unlabelled derived value.",
+      "System/T&D loss % is N/D (not disclosed); CLP reports reliability indices instead (e.g. supply availability 99.999%). The metric applies to its business — this is N/D, not N/A.",
+      "Injury rate uses a per-200,000-work-hours basis — different from Meralco's per-million-hours LTIFR and SMRT's per-100,000-employees rate; not directly comparable.",
+      "Community figure is the HK$240M CLP Community Energy Saving Fund allocation; a consolidated community-investment total is not disclosed in the Annual Report.",
+    ],
+  },
 ];
-
-export const CLP_PENDING_NOTE =
-  "CLP Power Hong Kong (vertically integrated utility; Hong Kong, dense subtropical city) is a planned third operator. " +
-  "Its data is pending: CLP's official sustainability portal blocks automated retrieval. " +
-  "Verified so far from CLP's HKEX 2025 annual-results filing only: Group GHG intensity 0.50 kg CO₂e/kWh (FY2025) and a net-zero Scope 1+2 target by 2050. " +
-  "Detailed figures will be added once the official ESG Databook is obtained — no estimated or third-party data will be used.";
