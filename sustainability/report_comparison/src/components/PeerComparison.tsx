@@ -114,7 +114,7 @@ export function PeerComparison() {
             Normalized &amp; Comparable
           </button>
         </div>
-        <span className="text-[11px] text-slate-400">{companies.length} operators</span>
+        <span className="text-[11px] text-slate-400">{companies.length} electricity utilities</span>
       </div>
 
       {/* View-specific caveat */}
@@ -122,20 +122,20 @@ export function PeerComparison() {
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2.5">
           <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
           <div className="text-xs text-red-800">
-            <span className="font-semibold">Do not rank these absolute numbers against each other.</span> A mass-transit
-            operator (SMRT) and integrated electric utilities (Meralco, CLP) have completely different emission boundaries —
-            Meralco&apos;s and CLP&apos;s Scope 1 is dominated by power <em>generation</em> they own; SMRT has no generation. Larger
-            ≠ worse. Use these only to understand each company&apos;s own footprint.
+            <span className="font-semibold">Do not rank these absolute numbers against each other.</span> Meralco
+            (Philippines distribution + MGen generation) and CLP (a multinational group, equity basis incl. Australia,
+            India and Mainland China) have very different reporting boundaries and scales — larger ≠ worse. Use these
+            only to understand each company&apos;s own footprint.
           </div>
         </div>
       ) : (
         <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
           <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="text-xs text-amber-800">
-            <span className="font-semibold">Carbon-intensity denominators differ by business model</span> (per-revenue
-            for transit vs. per-GWh for a utility) and are <span className="font-semibold">not cross-comparable</span>.
-            The social &amp; governance metrics below (headcount, board %, training, independent directors) <em>are</em>
-            broadly comparable.
+            <span className="font-semibold">Carbon-intensity units differ</span> — Meralco reports tCO₂e/GWh, CLP reports
+            kg CO₂e/kWh (1 tCO₂e/GWh = 0.001 kg CO₂e/kWh); convert before comparing, and note the differing scopes
+            (Meralco Philippines-only vs. CLP multinational group). The social &amp; governance metrics below (headcount,
+            board %, training, independent directors) <em>are</em> broadly comparable.
           </div>
         </div>
       )}

@@ -4,17 +4,17 @@ import { ExternalLink, FileText, Info } from "lucide-react";
 
 export const metadata = {
   title: "Dense-City Operators — ESG Comparison",
-  description: "ESG comparison of dense-city Asian infrastructure operators: SMRT, Meralco, and CLP.",
+  description: "ESG comparison of dense-city Asian electricity utilities: Meralco and CLP.",
 };
 
 export default function PeersPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
       <div className="mb-6">
-        <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Dense-City Operators · ESG Comparison</p>
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">Dense-City Infrastructure Operators</h1>
+        <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Dense-City Electricity Utilities · ESG Comparison</p>
+        <h1 className="text-2xl font-bold text-slate-900 mb-1">Dense-City Electricity Utilities</h1>
         <p className="text-sm text-slate-500 max-w-2xl">
-          A comparison of infrastructure operators in dense, tropical Asian cities. Data is taken only from each
+          A comparison of electricity utilities serving dense, tropical/subtropical Asian cities. Data is taken only from each
           company&apos;s latest official report; anything not disclosed is marked <span className="font-medium text-slate-700">N/D</span>,
           and metrics that don&apos;t apply to a business model are marked <span className="font-medium text-slate-700">N/A</span>.
         </p>
@@ -24,7 +24,7 @@ export default function PeersPage() {
       <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-lg flex gap-2.5">
         <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
         <div className="text-xs text-blue-900">
-          <span className="font-semibold">Why two views?</span> These operators have different business models, so their
+          <span className="font-semibold">Why two views?</span> These utilities have different reporting scopes and scales, so their
           carbon figures are not directly comparable. The <span className="font-semibold">As-Reported</span> view shows
           absolute emissions exactly as published (do not rank them). The <span className="font-semibold">Normalized &amp;
           Comparable</span> view focuses on per-unit and social/governance metrics, flagging where denominators differ.

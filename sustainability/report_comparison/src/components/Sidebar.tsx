@@ -21,7 +21,7 @@ const navGroups: { section: string; items: NavItem[] }[] = [
   {
     section: "Dense City Infra",
     items: [
-      { label: "Operators", short: "Infra", href: "/infra", icon: Building2 },
+      { label: "Electricity Utility", short: "Utility", href: "/infra", icon: Building2 },
     ],
   },
 ];

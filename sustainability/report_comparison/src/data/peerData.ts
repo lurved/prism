@@ -8,10 +8,11 @@
  *  - No figure is inferred, estimated, or taken from third-party aggregators.
  *  - Currency conversions are labelled approximate with the rate + date stated.
  *
- * NOTE ON COMPARABILITY: these operators have fundamentally different business
- * models (mass-transit vs. integrated electric utility). Absolute emissions and
- * carbon-intensity denominators are therefore NOT directly comparable. The UI
- * states this prominently. Social/governance metrics are broadly comparable.
+ * NOTE ON COMPARABILITY: these electricity utilities have different reporting
+ * scopes and scales (Meralco = Philippines distribution + MGen generation;
+ * CLP = multinational group on an equity basis). Absolute emissions and
+ * carbon-intensity units are therefore NOT directly comparable. The UI states
+ * this prominently. Social/governance metrics are broadly comparable.
  */
 
 export type PeerBusinessModel =
@@ -81,68 +82,6 @@ export interface PeerCompany {
 
 export const peerCompanies: PeerCompany[] = [
   /* ═══════════════════════════════════════════════════════════════
-     SMRT CORPORATION
-     Source: SMRT Sustainability Report 2024/25 (FY24/25: 1 Apr 2024 – 31 Mar 2025)
-     PDF: smrt.com.sg/.../SMRT-Sustainability-Report-2024_25.pdf
-     All figures = SMRT Group unless noted. Verified June 2026.
-  ═══════════════════════════════════════════════════════════════ */
-  {
-    id: "smrt",
-    name: "SMRT Corporation",
-    shortName: "SMRT",
-    logoInitials: "SM",
-    accentColor: "#c8102e",
-    country: "Singapore",
-    city: "Singapore",
-    climateContext: "Dense city-state, tropical rainforest climate",
-    businessModel: "Mass transit operator",
-    reportingPeriod: "FY2024/25",
-    dataSource: {
-      reportTitle: "SMRT Sustainability Report 2024/25",
-      reportingPeriod: "FY2024/25 (1 Apr 2024 – 31 Mar 2025)",
-      url: "https://www.smrt.com.sg/getmedia/8cd6126b-4f4f-49d4-819e-f7ae4aae0117/SMRT-Sustainability-Report-2024_25.pdf",
-      accessDate: "June 2026",
-    },
-    scope1: 129_195,
-    scope2: 372_164,
-    scope3: 209_757,
-    totalGHG: 711_116,
-    scope2Basis: "N/D",          // report does not specify location- vs market-based in the snapshot
-    intensityValue: 295,         // Rail GHG intensity (Scope 1+2), excl. Thomson-East Coast Line
-    intensityUnit: "tCO2e/S$M revenue (Rail, S1+2)",
-    sf6tCO2e: null,
-    systemLossPct: null,
-    renewableNote:
-      "Onsite renewable electricity 4,864,298 kWh of 893,001,643 kWh total energy (≈0.5%). Exploring renewable energy procurement.",
-    netZeroYear: 2050,
-    reductionTarget: "Reduce GHG emissions 20% from 2022 levels by 2030 (aligned with Singapore's 2030 target).",
-    headcount: 9_056,
-    femaleBoardPct: 25,          // 3 women of 12 directors (Board Diversity)
-    femaleWorkforcePct: 15.6,
-    trainingHoursPerEmployee: 65.8,
-    injuryMetricValue: 593,
-    injuryMetricUnit: "Workplace Injury Rate per 100,000 employees",
-    communityInvestmentNative: "S$2.2M",
-    communityInvestmentNote:
-      "S$2.2M contributed (FY24/25, incl. in-kind e.g. 46,000 EZ-Link cards to nurses), as explicitly stated. A separate 3-year monetary series (S$1.7M/7.2M/20.4M) appears in the CSR snapshot but its definition is ambiguous in the extracted report and was not used.",
-    independentDirectorsPct: 83.4,
-    antiCorruptionTrainingPct: null,  // 0 corruption cases reported; training % not disclosed
-    externalAssurance: false,
-    externalAssuranceProvider:
-      "None this cycle — internal audit of Scope 1 & 2 only; external assurance targeted from FY2032 (ACRA requirement).",
-    frameworks: ["GRI 2021", "ISSB S1 & S2", "UN SDGs"],
-    naMetrics: ["sf6tCO2e", "systemLossPct"],
-    dataNotes: [
-      "SMRT is a mass-transit operator (rail, bus, taxi), NOT a grid operator — grid metrics (SF₆, system/T&D loss) are N/A.",
-      "Scope 2 (372,164 tCO₂e) is the largest source (>50% of total) — traction electricity to run trains. Scope 2 accounting basis (location vs market) not specified in the snapshot.",
-      "Carbon-intensity figure is Rail Scope 1+2 per S$M revenue, excluding the Thomson-East Coast Line — it is NOT comparable with a utility's tCO₂e/GWh.",
-      "Female senior management: 33 of 137 (≈24.1%). Independent non-executive directors: 83.4% of a 12-member board.",
-      "Injury metric is per 100,000 employees — NOT the per-million-hours basis used by utilities, so it is not directly comparable.",
-      "No external assurance obtained for this reporting cycle (internal audit of Scope 1 & 2 only).",
-    ],
-  },
-
-  /* ═══════════════════════════════════════════════════════════════
      MERALCO (Manila Electric Company) — "One Meralco" group
      Source: One Meralco 2024 Integrated Report (FY2024, calendar year)
      PDF: meralcomain.s3.../one_meralco_2024_integrated_report_0.pdf
@@ -198,10 +137,10 @@ export const peerCompanies: PeerCompany[] = [
       "CRITICAL: the 'One Meralco' report CONSOLIDATES generation via subsidiary MGen (coal/gas), so group Scope 1 (6.63M tCO₂e) is dominated by power GENERATION, not the distribution 'wires' business. At group level Meralco is effectively an integrated utility, not pure distribution.",
       "Scope 2 (2.42M tCO₂e) is dominated by system (distribution) loss emissions: 2.35M tCO₂e.",
       "System loss 5.99% (2024) is the distribution-network loss rate, below the 6.50% regulatory cap.",
-      "Carbon intensity (134 tCO₂e/GWh, Scope 1+2) uses a per-GWh denominator — not comparable with SMRT's per-revenue transit metric.",
+      "Carbon intensity (134 tCO₂e/GWh, Scope 1+2) uses a per-GWh denominator; CLP reports per-kWh — convert before comparing.",
       "LTIFR rose to 1.42 (2024) from 0.35 (2023). Figures are equity-adjusted group totals.",
       "No explicit dated net-zero commitment found in the report; targets are 'coal-free by 2050' plus '30 by '30' interim goals.",
-      "Community investment: PhP 224M (2024) ≈ S$5.1M at PhP→SGD ≈ 0.0228 (mid-2025, approximate). The native PhP figure is authoritative; SMRT's is reported in S$ — the two are shown in native currency and not ranked against each other.",
+      "Community investment: PhP 224M (2024) ≈ S$5.1M at PhP→SGD ≈ 0.0228 (mid-2025, approximate); the native PhP figure is authoritative. CLP reports in HK$ — figures are shown in native currency and not ranked against each other.",
     ],
   },
 
@@ -266,13 +205,13 @@ export const peerCompanies: PeerCompany[] = [
     frameworks: ["HKEX ESG Code", "HKFRS S1", "HKFRS S2", "GRI", "SASB (IF-EU)"],
     naMetrics: [],
     dataNotes: [
-      "CLP is a VERTICALLY INTEGRATED electric utility (generation + transmission + distribution + retail). Scope 1 (34,356 kt) is dominated by power generation it owns, so absolute emissions are not comparable with SMRT (transit) and only loosely with Meralco.",
+      "CLP is a VERTICALLY INTEGRATED electric utility (generation + transmission + distribution + retail). Scope 1 (34,356 kt) is dominated by power generation it owns. Absolute emissions are only loosely comparable with Meralco given CLP's much wider multinational group boundary.",
       "All ESG figures are CLP GROUP (Hong Kong + Mainland China + Australia + India + Taiwan/SE Asia) on an equity basis — NOT CLP Power Hong Kong alone. CLP Power HK (the Scheme-of-Control business) serves ~2.9M customer accounts and 35,760 GWh of sales but does not publish its own Scope 1/2/3 split.",
       "FY2025 ESG figures are independently assured by KPMG (ISAE 3000 / ISAE 3410).",
-      "Carbon intensity 0.50 kg CO₂e/kWh is the S1+S2+S3(Cat3) equity + long-term-purchase basis; the equity-only S1+S2 intensity is 0.58 kg CO₂e/kWh. Denominator (per-kWh) is not comparable with SMRT's per-revenue or Meralco's per-GWh metric.",
+      "Carbon intensity 0.50 kg CO₂e/kWh is the S1+S2+S3(Cat3) equity + long-term-purchase basis; the equity-only S1+S2 intensity is 0.58 kg CO₂e/kWh. Meralco reports per-GWh (134 tCO₂e/GWh = 0.134 kg CO₂e/kWh) — convert before comparing.",
       "SF₆ is reported as mass (3 tonnes of SF₆ gas), not in tCO₂e, so the tCO₂e field is shown as N/D to avoid an unlabelled derived value.",
       "System/T&D loss % is N/D (not disclosed); CLP reports reliability indices instead (e.g. supply availability 99.999%). The metric applies to its business — this is N/D, not N/A.",
-      "Injury rate uses a per-200,000-work-hours basis — different from Meralco's per-million-hours LTIFR and SMRT's per-100,000-employees rate; not directly comparable.",
+      "Injury rate uses a per-200,000-work-hours basis — different from Meralco's per-million-hours LTIFR; not directly comparable.",
       "Community figure is the HK$240M CLP Community Energy Saving Fund allocation; a consolidated community-investment total is not disclosed in the Annual Report.",
     ],
   },
