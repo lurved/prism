@@ -3,7 +3,7 @@ import { companies } from "@/data/esgData";
 
 const REPORT_URLS: Record<string, string> = {
   sembcorp: "https://media.sembcorp.com/data/cms/ar/ar2025/index.html",
-  spgroup:  "https://www.spgroup.com.sg/dam/spgroup/pdf/about-us/our-sustainability-commitment/SP-Group-Sustainability-Report-FY2023-24.pdf",
+  smrt:     "https://www.smrt.com.sg/getmedia/8cd6126b-4f4f-49d4-819e-f7ae4aae0117/SMRT-Sustainability-Report-2024_25.pdf",
   singtel:  "https://www.singtel.com/about-us/sustainability/sustainability-reports/2025",
 };
 
@@ -19,30 +19,20 @@ const SUPPLEMENTARY: Array<{ label: string; url: string; note: string }> = [
     note:  "Used to confirm headcount, training hours, female leadership %, injury rates",
   },
   {
-    label: "SP Group Board of Directors",
-    url:   "https://www.spgroup.com.sg/about-us/board-of-directors",
-    note:  "Used to confirm board composition: 10 directors, 3 female (30%), 8 independent (80%)",
-  },
-  {
     label: "Singtel Corporate Governance",
     url:   "https://www.singtel.com/about-us/company/corporate-governance",
     note:  "Used to confirm 9 of 11 directors are independent (81.8%)",
   },
-  {
-    label: "SP Group Annual Report FY2023-24 highlights",
-    url:   "https://www.spgroup.com.sg/about-us/media-resources/energy-hub/annual-report",
-    note:  "Used to confirm LTIR 0.22, employee engagement 87.5%, community investment S$5.3M",
-  },
 ];
 
 const DATA_CAVEATS = [
-  "Sembcorp (FY2025, Jan–Dec) and Singtel (FY2025, Apr–Mar 2025) use different fiscal years — figures are not from the same calendar period.",
-  "SP Group FY2024-25 Sustainability Report (published Aug 2025) exists but could not be extracted — all SP Group figures reflect FY2023/24.",
-  "Emissions are not comparable across sectors: Sembcorp is an energy generator (utility scale); SP Group is a grid operator; Singtel is a telecom provider.",
-  "Sembcorp Scope 3 (15.3M tCO₂e) includes Category 15 Investments — a convention that significantly inflates Scope 3 relative to telecom/grid peers.",
+  "These companies span different sectors (energy, transport, telecom) and fiscal years (Sembcorp Jan–Dec FY2025; SMRT & Singtel Apr–Mar FY2024/25 & FY2025) — figures are not from the same calendar period.",
+  "Emissions are not comparable across sectors: Sembcorp is an energy generator (utility scale); SMRT is a mass-transit operator; Singtel is a telecom provider.",
+  "Sembcorp Scope 3 (15.3M tCO₂e) includes Category 15 Investments — a convention that significantly inflates Scope 3 relative to transport/telecom peers.",
   "Singtel FY2025 Scope 1 (13.2k tCO₂e) increased 57% YoY due to expansion of reporting scope to include Global Offices and NCS, not an actual emissions increase.",
-  "SP Group Scope 1+2 total (464k tCO₂e) is dominated by hard-to-abate electricity grid transmission losses (~93%) — not comparable to direct fuel combustion in other sectors.",
-  "Water consumption: available for Singtel only (618,885 m³); not disclosed in extracted data for Sembcorp or SP Group.",
+  "SMRT's largest source is Scope 2 traction electricity (>50% of total); its emissions have risen with network expansion, so no reduction-vs-baseline is shown (target: −20% vs 2022 by 2030).",
+  "SMRT reports its injury rate per 100,000 employees (593, FY24/25), a different basis from the per-million-hours LTIR used by the others — shown as N/D to avoid a misleading comparison.",
+  "SMRT obtained no external assurance this cycle (internal audit of Scope 1 & 2 only; external targeted FY2032).",
   "N/D (Not Disclosed) means the metric was not found in the official published report or could not be confirmed from extracted data.",
 ];
 

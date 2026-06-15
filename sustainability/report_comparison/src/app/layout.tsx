@@ -4,7 +4,7 @@ import { Sidebar, MobileNav } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
   title: "Temasek Portfolio ESG Tracker",
-  description: "Compare sustainability metrics across Temasek portfolio companies: Sembcorp, SP Group, and Singtel.",
+  description: "Compare sustainability metrics across Temasek portfolio companies: Sembcorp, SMRT, and Singtel.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

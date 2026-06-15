@@ -1,4 +1,4 @@
-export type Sector = "Energy" | "Grid/Infrastructure" | "Telecom";
+export type Sector = "Energy" | "Grid/Infrastructure" | "Telecom" | "Transport";
 
 export type ReportingFramework = "GRI" | "IFRS S2" | "TCFD" | "SASB" | "UN SDGs" | "SGX Core ESG";
 
@@ -26,7 +26,7 @@ export interface SocialMetrics {
   femaleLeadershipPct: number | null; // % female in senior management/executive roles; null if not disclosed
   totalHeadcount: number;
   employeeEngagementScore: number | null; // % or index; null if not disclosed
-  lostTimeInjuryRate: number;        // per million man-hours worked (employees)
+  lostTimeInjuryRate: number | null; // per million man-hours worked (employees); null if reported on a non-comparable basis
   lostTimeInjuryRateNote: string;    // clarification of metric used
   communityInvestmentSGDm: number;   // SGD millions
 }

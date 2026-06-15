@@ -48,7 +48,7 @@ export function EsgChart({ companies }: EsgChartProps) {
     { label: "S1+S2 Reduction %",  key: "reduction",           max: 50,  get: (c: Company) => c.environmental.scope1and2ReductionPct ?? 0 },
     { label: "Community Invest.",  key: "community",           max: 40,  get: (c: Company) => c.social.communityInvestmentSGDm },
     { label: "Indep. Directors %", key: "indepDir",            max: 100, get: (c: Company) => c.governance.independentDirectorsPct ?? 0 },
-    { label: "Injury Rate (inv.)", key: "safetyInv",           max: 2,   get: (c: Company) => Math.max(0, 2 - c.social.lostTimeInjuryRate) }, // inverted: lower = better
+    { label: "Injury Rate (inv.)", key: "safetyInv",           max: 2,   get: (c: Company) => c.social.lostTimeInjuryRate === null ? 0 : Math.max(0, 2 - c.social.lostTimeInjuryRate) }, // inverted: lower = better; 0 if not comparable
   ];
 
   const radarData = radarMetrics.map((m) => ({
@@ -155,7 +155,7 @@ export function EsgChart({ companies }: EsgChartProps) {
         <div className="mt-3 space-y-1">
           {mode === "bar" && (
             <>
-              <p className="text-xs text-slate-400 text-center">Scope 2 = market-based. Scope 3 = 0 where not disclosed. Note: Sembcorp operates at energy utility scale — its emissions are orders of magnitude larger than SP Group and Singtel.</p>
+              <p className="text-xs text-slate-400 text-center">Scope 2 = market-based. Scope 3 = 0 where not disclosed. Note: Sembcorp operates at energy utility scale — its emissions are orders of magnitude larger than SMRT and Singtel.</p>
               <p className="text-xs text-amber-600 text-center font-medium">⚠ Sembcorp Scope 3 (15.3M tCO₂e) includes Category 15 Investments — a common energy company reporting convention that inflates Scope 3 vs telecom/grid peers.</p>
             </>
           )}

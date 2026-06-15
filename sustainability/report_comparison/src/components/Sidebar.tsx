@@ -62,7 +62,7 @@ export function Sidebar() {
         <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">Companies</p>
         {[
           { name: "Sembcorp", color: "#259466" },
-          { name: "SP Group", color: "#1e6fb5" },
+          { name: "SMRT", color: "#c8102e" },
           { name: "Singtel", color: "#e05a1e" },
         ].map((c) => (
           <div key={c.name} className="flex items-center gap-2 py-1.5">

@@ -90,81 +90,75 @@ export const companies: Company[] = [
   },
 
   /* ═══════════════════════════════════════════════════════════════
-     SP GROUP
-     Source: SP Group Sustainability Review FY2023/24
-     PDF: spgroup.com.sg/dam/spgroup/pdf/about-us/our-sustainability-commitment/SP-Group-Sustainability-Report-FY2023-24.pdf
-     Reporting period: FY2023/24 (1 Apr 2023 – 31 Mar 2024)
-     Note: FY2024-25 report exists (published Aug 2025) but PDF too large
-           to extract via automated tools. FY2023-24 is the latest confirmed data.
-     Board composition from: spgroup.com.sg/about-us/board-of-directors
-     Accessed: June 2026
+     SMRT CORPORATION
+     Source: SMRT Sustainability Report 2024/25 (FY24/25: 1 Apr 2024 – 31 Mar 2025)
+     PDF: smrt.com.sg/.../SMRT-Sustainability-Report-2024_25.pdf
+     All figures = SMRT Group unless noted. Verified June 2026.
   ═══════════════════════════════════════════════════════════════ */
   {
-    id: "spgroup",
-    name: "SP Group",
-    shortName: "SP Group",
-    sector: "Grid/Infrastructure",
-    logoInitials: "SP",
-    accentColor: "#1e6fb5",
-    reportingPeriod: "FY2023/24",
-    baselineYear: "FY2021/22",
-    baselineScope1and2ktCO2e: 498.1, // FY2021/22: S1(78.2) + S2 MB(419.9) = 498.1 ktCO2e
+    id: "smrt",
+    name: "SMRT Corporation",
+    shortName: "SMRT",
+    sector: "Transport",
+    logoInitials: "SM",
+    accentColor: "#c8102e",
+    reportingPeriod: "FY2024/25",
+    baselineYear: "2022",
+    baselineScope1and2ktCO2e: null, // 2010 baseline ~570 ktCO2e (total GHG); no clean S1+2 baseline figure stated
     strategy:
-      "Empowering the Future of Energy — SP Group operates Singapore's electricity and gas transmission and distribution networks. Sustainability focus: decarbonising grid operations, scaling renewable energy solutions (district cooling, EV charging, solar), and achieving net-zero by 2050 (contingent on technology and policy conditions).",
-    prioritySDGs: ["SDG 7", "SDG 11", "SDG 13", "SDG 9"],
+      "Singapore's multi-modal public transport operator (rail, bus, taxi). Decarbonisation focus: traction-energy efficiency, cleaner bus/taxi fleet, and exploring renewable energy procurement, aligned with Singapore's net-zero-by-2050 goal.",
+    prioritySDGs: ["SDG 7", "SDG 11", "SDG 13"],
     dataSource: {
-      reportTitle: "SP Group Sustainability Review FY2023/24",
-      reportingPeriod: "FY2023/24 (1 Apr 2023 – 31 Mar 2024)",
-      url: "https://www.spgroup.com.sg/dam/spgroup/pdf/about-us/our-sustainability-commitment/SP-Group-Sustainability-Report-FY2023-24.pdf",
+      reportTitle: "SMRT Sustainability Report 2024/25",
+      reportingPeriod: "FY2024/25 (1 Apr 2024 – 31 Mar 2025)",
+      url: "https://www.smrt.com.sg/getmedia/8cd6126b-4f4f-49d4-819e-f7ae4aae0117/SMRT-Sustainability-Report-2024_25.pdf",
       accessDate: "June 2026",
     },
     environmental: {
-      // Source: emissions table in Metrics and Targets section of FY23/24 Sustainability Review
-      scope1Emissions: 70.333,    // ktCO2e — mainly SF6 fugitive losses (93%) + operational vehicles
-      scope2Emissions: 393.874,   // ktCO2e — market-based (using RECs); location-based: 397.097 ktCO2e
-      scope3Emissions: 684.860,   // ktCO2e — spend-based methodology; FY22/23: 757.5 ktCO2e
-      ghgIntensityValue: 9.05,
-      ghgIntensityUnit: "tCO2e/MWh (Scope 1+2)",
-      renewableEnergyPct: null,   // REC coverage for HQ only; % of total grid is not reported as a single figure
-      renewableCapacityGW: 1.7,   // Secured renewable capacity (solar + regional), GW, as of Mar 2024
+      // Source: SMRT Group GHG table, Sustainability Snapshot (p.7) & Performance (p.35)
+      scope1Emissions: 129.195,   // ktCO2e — SMRT Group FY24/25
+      scope2Emissions: 372.164,   // ktCO2e — largest source (traction electricity); basis (location/market) not specified
+      scope3Emissions: 209.757,   // ktCO2e — Group FY24/25
+      ghgIntensityValue: 295,
+      ghgIntensityUnit: "tCO2e/S$M revenue (Rail, S1+2)",
+      renewableEnergyPct: null,   // Onsite renewable 4,864,298 kWh of 893,001,643 kWh total (~0.5%); not reported as a % — see dataNotes
+      renewableCapacityGW: null,  // N/A — SMRT is not a power generator
       netZeroTargetYear: 2050,
-      scope1and2ReductionPct: 6.8, // S1+S2: FY21/22 498.1 ktCO2e → FY23/24 464.2 ktCO2e = -6.8%
-      // Note: SP's 30-30-30 target is to help customers reduce carbon footprint by 30% by 2030
-      waterConsumptionM3: null,   // Not disclosed in FY2023-24 Sustainability Review
+      scope1and2ReductionPct: null, // Total GHG has risen with network expansion; no reduction-vs-baseline achieved. Target: −20% vs 2022 by 2030
+      waterConsumptionM3: 1_599_629, // SMRT Group water consumption FY24/25
     },
     social: {
-      trainingHoursPerEmployee: 43,      // 159,000 total training hours ÷ 3,700 employees = 43 hrs — confirmed in report table
-      femaleBoardPct: 30,                // 3 female out of 10 directors — from SP Group Board of Directors page (current composition)
-      femaleLeadershipPct: null,         // Not disclosed in FY2023-24 Sustainability Review
-      totalHeadcount: 3_700,             // "as of end March 2024" — stated in report
-      employeeEngagementScore: 87.5,     // From FY2024 Annual Report highlights (87.5%)
-      lostTimeInjuryRate: 0.22,         // Lost Time Injury Frequency Rate per million man-hours — stated as "all-time best" in FY2024 Annual Report
-      lostTimeInjuryRateNote: "Lost Time Injury Frequency Rate per million man-hours (staff + contractors). Stated as all-time best in FY2024 Annual Report.",
-      communityInvestmentSGDm: 5.3,     // "S$5.3 million in donations and staff volunteering" — FY2023/24 Sustainability Review
+      trainingHoursPerEmployee: 65.8,    // Average structured training hours/employee FY24/25
+      femaleBoardPct: 25,                // 3 women of 12 directors (Board Diversity)
+      femaleLeadershipPct: 24.1,         // 33 of 137 senior management
+      totalHeadcount: 9_056,             // Overall workforce FY24/25
+      employeeEngagementScore: null,     // Workforce Engagement Survey run; single score not disclosed
+      lostTimeInjuryRate: null,          // SMRT reports WIR per 100,000 employees — non-comparable basis; see note
+      lostTimeInjuryRateNote: "SMRT reports a Workplace Injury Rate of 593 per 100,000 employees (FY24/25) — NOT the per-million-man-hours basis used by the other companies, so it is not directly comparable and is shown as N/D in this column.",
+      communityInvestmentSGDm: 2.2,     // "S$2.2M contributed" FY24/25 (incl. in-kind); see dataNotes on an ambiguous larger series
     },
     governance: {
-      reportingFrameworks: ["TCFD", "SGX Core ESG"],
-      // TCFD adopted FY2021/22. GRI not confirmed in text extracted from FY2023-24 report.
-      externalAssurance: false,  // DNV provides second-party opinion on Green Finance Framework only; full report assurance not confirmed
-      externalAssuranceProvider: null,
-      independentDirectorsPct: 80, // 8 independent out of 10 directors — from SP Group Board of Directors page
-      esgLinkedExecutiveComp: null,  // Not confirmed in extracted data
-      antiCorruptionTrainingPct: null, // Not disclosed in extracted FY2023-24 report
+      reportingFrameworks: ["GRI", "IFRS S2", "UN SDGs"],
+      externalAssurance: false,
+      externalAssuranceProvider: "None this cycle — internal audit of Scope 1 & 2 only; external assurance targeted FY2032 (ACRA)",
+      independentDirectorsPct: 83.4, // Independent non-executive directors (12-member board)
+      esgLinkedExecutiveComp: null,  // GHG targets referenced in annual planning; explicit link to exec comp not confirmed
+      antiCorruptionTrainingPct: null, // 0 corruption cases reported; training % not disclosed
     },
     historicalEmissions: [
-      // Source: Emissions table (tCO2e) — FY2023/24 Sustainability Review
-      // All figures in ktCO2e. Scope 2 = market-based.
-      { year: "FY2021/22", scope1: 78.2, scope2: 420.0, scope3: null    },
-      { year: "FY2022/23", scope1: 76.7, scope2: 347.3, scope3: 757.5  },
-      { year: "FY2023/24", scope1: 70.3, scope2: 393.9, scope3: 684.9  },
+      // Source: SMRT Group GHG performance table (ktCO2e). Scope 2 basis not specified.
+      { year: "FY2022/23", scope1: 101.934, scope2: 329.681, scope3: 193.309 },
+      { year: "FY2023/24", scope1: 103.785, scope2: 357.330, scope3: 197.636 },
+      { year: "FY2024/25", scope1: 129.195, scope2: 372.164, scope3: 209.757 },
     ],
     dataNotes: [
-      "93% of SP Group's Scope 1+2 emissions arise from hard-to-abate transmission losses (electricity grid) and gas pipeline fugitive losses — beyond direct operational control.",
-      "Scope 3 uses spend-based methodology; supplier-specific data collection is in progress.",
-      "Scope 2 market-based is lower than location-based due to Renewable Energy Certificate (REC) purchases covering Singapore HQ electricity consumption.",
-      "FY2024-25 Sustainability Report exists (published Aug 2025) but was inaccessible for automated extraction — this data reflects FY2023-24.",
-      "Board composition (30% female, 80% independent) is from the current SP Group Board of Directors webpage, not confirmed from FY2023-24 report text.",
-      "Net-zero 2050 target is contingent upon technological advances (green hydrogen, EVs for heavy transport) and international policy collaboration.",
+      "SMRT is a mass-transit operator (rail, bus, taxi), not an energy company — its largest emission source is Scope 2 traction electricity (>50% of total).",
+      "GHG intensity shown is Rail Scope 1+2 per S$M revenue (excl. Thomson-East Coast Line) — not comparable with the energy companies' tCO₂e/MWh.",
+      "Onsite renewable electricity was 4,864,298 kWh of 893,001,643 kWh total energy (~0.5%); the report does not state a renewable-energy percentage, so it is shown as N/D.",
+      "Total GHG has risen with network expansion, so there is no reduction-vs-baseline achieved; the stated target is −20% vs 2022 levels by 2030.",
+      "Injury rate is reported as 593 per 100,000 employees — a different basis from the other companies' per-million-hours LTIR — so it is marked N/D here to avoid a misleading comparison.",
+      "No external assurance was obtained this reporting cycle (internal audit of Scope 1 & 2 only; external assurance targeted from FY2032).",
+      "Community contribution shown is the explicitly-stated S$2.2M (FY24/25, incl. in-kind). A separate 3-year monetary series (S$1.7M/7.2M/20.4M) appears in the CSR snapshot but its definition is ambiguous in the report and was not used.",
     ],
   },
 
@@ -217,7 +211,7 @@ export const companies: Company[] = [
       totalHeadcount: 24_284,           // Group total employees FY2025 (Singtel + Optus + NCS + Digital InfraCo) — GRI 2-7
       employeeEngagementScore: null,    // Not disclosed as a single Group score in extracted data
       lostTimeInjuryRate: 1.02,        // Workplace injury frequency rate per million hours worked — Group FY2024 from Excel (FY2025 TRIR: 2.1 per 1,000 employees)
-      lostTimeInjuryRateNote: "Workplace injury frequency rate per million hours worked, Group FY2024. FY2025 incidence rate = 2.1 per 1,000 employees (different metric). Different methodology from Sembcorp/SP Group.",
+      lostTimeInjuryRateNote: "Workplace injury frequency rate per million hours worked, Group FY2024. FY2025 incidence rate = 2.1 per 1,000 employees (different metric). Methodology differs from the other companies.",
       communityInvestmentSGDm: 32.8,   // Group total FY2025 (Singtel SG: S$7.7M + Optus equivalent in SGD) — GRI 413-1
     },
     governance: {
@@ -240,10 +234,10 @@ export const companies: Company[] = [
       "FY2025 Scope 2 (market-based) decreased 15.5% YoY due to increased renewable energy procurement.",
       "Scope 3 SBTi-covered categories (1, 2, 11, 13, 15) = 2,220.3 ktCO2e; full 15-category total = 2,309.4 ktCO2e.",
       "FY2023 Scope 1/Scope 2 split is estimated (S1~12.2, S2~428.4) — only confirmed total is 440,600 tCO2e (SBTi baseline).",
-      "GHG intensity metric (tCO2e/TB) is a telecom-specific measure and is not comparable with Sembcorp (tCO2e/MWh) or SP Group.",
+      "GHG intensity metric (tCO2e/TB) is a telecom-specific measure and is not comparable with Sembcorp (tCO2e/MWh) or SMRT (tCO2e/S$M revenue).",
       "Renewable energy % (9.33%) is from FY2024 confirmed data; FY2025 is confirmed as higher but exact % not extracted.",
       "Community investment S$32.8M (Group) includes Optus (Australia) contribution; Singtel Singapore entity alone: S$7.7M.",
-      "Total headcount 24,284 covers entire Singtel Group globally — much larger scope than Sembcorp (Singapore-centric) and SP Group (Singapore operations).",
+      "Total headcount 24,284 covers entire Singtel Group globally — much larger scope than Sembcorp and SMRT (both Singapore-centric).",
       "Singtel fiscal year runs April–March; FY2025 = 1 Apr 2024 – 31 Mar 2025.",
     ],
   },

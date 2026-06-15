@@ -77,7 +77,7 @@ export default function DashboardPage() {
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Sustainability Tracker</h1>
         <p className="text-slate-500 text-sm max-w-2xl">
           Environmental, social, and governance data sourced directly from the latest published sustainability
-          reports of Sembcorp Industries (FY2025), SP Group (FY2023/24), and Singtel Group (FY2025).
+          reports of Sembcorp Industries (FY2025), SMRT Corporation (FY2024/25), and Singtel Group (FY2025).
           All figures are verified. <span className="font-medium text-slate-700">N/D = not disclosed in official report.</span>
         </p>
       </div>
@@ -86,9 +86,8 @@ export default function DashboardPage() {
       <div className="mb-6 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
         <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
         <div className="text-xs text-amber-800">
-          <span className="font-semibold">Data source note:</span> Sembcorp and Singtel use different fiscal years (Jan–Dec and Apr–Mar respectively).
-          SP Group data reflects FY2023/24 — their FY2024/25 report (published Aug 2025) was inaccessible for automated extraction.
-          Emissions metrics are <span className="font-semibold">not directly comparable across sectors</span> — Sembcorp operates at energy utility scale.
+          <span className="font-semibold">Data source note:</span> these companies span different sectors (energy, transport, telecom) and fiscal years (Sembcorp Jan–Dec; SMRT &amp; Singtel Apr–Mar).
+          Emissions metrics are <span className="font-semibold">not directly comparable across sectors</span> — Sembcorp operates at energy-utility scale, while SMRT is a mass-transit operator whose emissions are dominated by Scope 2 traction electricity.
         </div>
       </div>
 
@@ -144,7 +143,7 @@ export default function DashboardPage() {
               </div>
               <div className="flex justify-between text-[9px] text-slate-300 mt-4 pt-3 border-t border-slate-100">
                 <span>← More ambitious</span>
-                <span>2045 Singtel · 2050 Sembcorp &amp; SP Group</span>
+                <span>2045 Singtel · 2050 Sembcorp &amp; SMRT</span>
                 <span>Less ambitious →</span>
               </div>
             </div>
