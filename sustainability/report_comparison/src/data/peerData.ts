@@ -217,7 +217,7 @@ export const peerCompanies: PeerCompany[] = [
 ];
 
 export const CLP_PENDING_NOTE =
-  "CLP Power Hong Kong (vertically integrated utility; Hong Kong, dense subtropical city) is a planned third peer. " +
+  "CLP Power Hong Kong (vertically integrated utility; Hong Kong, dense subtropical city) is a planned third operator. " +
   "Its data is pending: CLP's official sustainability portal blocks automated retrieval. " +
   "Verified so far from CLP's HKEX 2025 annual-results filing only: Group GHG intensity 0.50 kg CO₂e/kWh (FY2025) and a net-zero Scope 1+2 target by 2050. " +
   "Detailed figures will be added once the official ESG Databook is obtained — no estimated or third-party data will be used.";

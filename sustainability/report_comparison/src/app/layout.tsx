@@ -3,7 +3,7 @@ import "./globals.css";
 import { Sidebar, MobileNav } from "@/components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "Temasek Portfolio ESG Tracker",
+  title: "ESG Tracker",
   description: "Compare sustainability metrics across Temasek portfolio companies: Sembcorp, SMRT, and Singtel.",
 };
 

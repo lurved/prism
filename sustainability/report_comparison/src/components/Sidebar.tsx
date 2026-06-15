@@ -8,11 +8,30 @@ import { cn } from "@/lib/utils";
 // NOTE: hrefs are relative to the configured basePath
 // (/sustainability/report_comparison). Next.js <Link> prepends basePath
 // automatically, and usePathname() returns paths WITHOUT it.
-const navItems = [
-  { label: "Overview", href: "/", icon: LayoutDashboard },
-  { label: "Compare", href: "/compare", icon: GitCompare },
-  { label: "Dense-City Peers", href: "/peers", icon: Building2 },
+type NavItem = { label: string; short: string; href: string; icon: typeof LayoutDashboard };
+
+const navGroups: { section: string; items: NavItem[] }[] = [
+  {
+    section: "Temasek Portfolio",
+    items: [
+      { label: "Portfolio Overview", short: "Overview", href: "/", icon: LayoutDashboard },
+      { label: "Portfolio Comparison", short: "Compare", href: "/compare", icon: GitCompare },
+    ],
+  },
+  {
+    section: "Dense City Infra",
+    items: [
+      { label: "Operators", short: "Infra", href: "/peers", icon: Building2 },
+    ],
+  },
 ];
+
+const allNavItems: NavItem[] = navGroups.flatMap((g) => g.items);
+
+const DISCLAIMER =
+  "This output was generated with AI assistance and may contain errors or omissions. " +
+  "All figures, claims, and sources should be independently verified before use in " +
+  "decision-making, reporting, or publication.";
 
 function isActive(pathname: string | null, href: string): boolean {
   const path = (pathname ?? "/").replace(/\/$/, "") || "/";
@@ -25,51 +44,71 @@ export function Sidebar() {
 
   return (
     <aside className="w-60 flex-shrink-0 hidden md:flex flex-col h-screen sticky top-0 bg-slate-900 text-white">
+      {/* Brand */}
       <div className="px-5 py-6 border-b border-slate-800">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center">
             <Leaf className="w-4 h-4 text-white" />
           </div>
           <div>
-            <p className="text-xs font-bold text-white leading-tight">Temasek ESG</p>
-            <p className="text-[10px] text-slate-400 leading-tight">Portfolio Tracker</p>
+            <p className="text-sm font-bold text-white leading-tight">ESG Tracker</p>
+            <p className="text-[10px] text-slate-400 leading-tight">Sustainability Report Comparison</p>
           </div>
         </div>
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-0.5">
-        {navItems.map(({ label, href, icon: Icon }) => {
-          const active = isActive(pathname, href);
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                active
-                  ? "bg-brand-600 text-white"
-                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
-              )}
-            >
-              <Icon className="w-4 h-4 flex-shrink-0" />
-              {label}
-            </Link>
-          );
-        })}
+      {/* Nav (grouped) */}
+      <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
+        {navGroups.map((group) => (
+          <div key={group.section}>
+            <p className="px-3 mb-1 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+              {group.section}
+            </p>
+            <div className="space-y-0.5">
+              {group.items.map(({ label, href, icon: Icon }) => {
+                const active = isActive(pathname, href);
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                      active
+                        ? "bg-brand-600 text-white"
+                        : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                    )}
+                  >
+                    <Icon className="w-4 h-4 flex-shrink-0" />
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
+      {/* Footer: companies, disclaimer, link */}
       <div className="px-4 pb-5 border-t border-slate-800 pt-4">
-        <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">Companies</p>
+        <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">Temasek Portfolio</p>
         {[
           { name: "Sembcorp", color: "#259466" },
           { name: "SMRT", color: "#c8102e" },
           { name: "Singtel", color: "#e05a1e" },
         ].map((c) => (
-          <div key={c.name} className="flex items-center gap-2 py-1.5">
+          <div key={c.name} className="flex items-center gap-2 py-1">
             <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: c.color }} />
             <span className="text-xs text-slate-400">{c.name}</span>
           </div>
         ))}
+
+        {/* Disclaimer */}
+        <div className="mt-4 pt-4 border-t border-slate-800">
+          <p className="text-[9px] leading-snug text-slate-500">
+            <span className="font-semibold text-slate-400">Disclaimer:</span> {DISCLAIMER}
+          </p>
+        </div>
+
         <div className="mt-4 pt-4 border-t border-slate-800">
           <a
             href="https://pris.la"
@@ -88,7 +127,7 @@ export function MobileNav() {
   const pathname = usePathname();
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-900 border-t border-slate-800 flex">
-      {navItems.map(({ label, href, icon: Icon }) => {
+      {allNavItems.map(({ short, href, icon: Icon }) => {
         const active = isActive(pathname, href);
         return (
           <Link
@@ -100,7 +139,7 @@ export function MobileNav() {
             )}
           >
             <Icon className="w-5 h-5" />
-            {label}
+            {short}
           </Link>
         );
       })}

@@ -114,7 +114,7 @@ export function PeerComparison() {
             Normalized &amp; Comparable
           </button>
         </div>
-        <span className="text-[11px] text-slate-400">{companies.length} of 3 peers · CLP pending</span>
+        <span className="text-[11px] text-slate-400">{companies.length} of 3 operators · CLP pending</span>
       </div>
 
       {/* View-specific caveat */}
