@@ -88,22 +88,10 @@ export function Sidebar() {
         ))}
       </nav>
 
-      {/* Footer: companies, disclaimer, link */}
+      {/* Footer: disclaimer, link */}
       <div className="px-4 pb-5 border-t border-slate-800 pt-4">
-        <p className="text-[10px] text-slate-500 uppercase tracking-wider mb-2">Temasek Portfolio</p>
-        {[
-          { name: "Sembcorp", color: "#259466" },
-          { name: "SMRT", color: "#c8102e" },
-          { name: "Singtel", color: "#e05a1e" },
-        ].map((c) => (
-          <div key={c.name} className="flex items-center gap-2 py-1">
-            <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: c.color }} />
-            <span className="text-xs text-slate-400">{c.name}</span>
-          </div>
-        ))}
-
         {/* Disclaimer */}
-        <div className="mt-4 pt-4 border-t border-slate-800">
+        <div>
           <p className="text-[9px] leading-snug text-slate-500">
             <span className="font-semibold text-slate-400">Disclaimer:</span> {DISCLAIMER}
           </p>
