@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, GitCompare, Leaf, ExternalLink } from "lucide-react";
+import { LayoutDashboard, GitCompare, Building2, Leaf, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // NOTE: hrefs are relative to the configured basePath
@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { label: "Overview", href: "/", icon: LayoutDashboard },
   { label: "Compare", href: "/compare", icon: GitCompare },
+  { label: "Dense-City Peers", href: "/peers", icon: Building2 },
 ];
 
 function isActive(pathname: string | null, href: string): boolean {
