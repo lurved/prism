@@ -147,7 +147,6 @@ AI agents, GenAI integration, and design culture change.
     "Omni-Experience Innovator of the Year — 2018",
     "United Nations UNLEASH — 2018",
     "Mob-Ex Awards — 2016",
-    "Community Cares Award by Ministry of Social and Family Development, Singapore — 2023",
   ],
 
   speakingAndThoughtLeadership: [
