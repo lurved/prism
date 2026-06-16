@@ -2,31 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, GitCompare, Building2, Leaf, ExternalLink } from "lucide-react";
+import { Landmark, Building2, Leaf, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // NOTE: hrefs are relative to the configured basePath
 // (/sustainability/report_comparison). Next.js <Link> prepends basePath
 // automatically, and usePathname() returns paths WITHOUT it.
-type NavItem = { label: string; short: string; href: string; icon: typeof LayoutDashboard };
+type NavItem = { label: string; short: string; href: string; icon: typeof Landmark };
 
-const navGroups: { section: string; items: NavItem[] }[] = [
-  {
-    section: "Temasek Portfolio",
-    items: [
-      { label: "Portfolio Overview", short: "Overview", href: "/", icon: LayoutDashboard },
-      { label: "Portfolio Comparison", short: "Compare", href: "/compare", icon: GitCompare },
-    ],
-  },
-  {
-    section: "Dense City Infra",
-    items: [
-      { label: "Electricity Utility", short: "Utility", href: "/infra", icon: Building2 },
-    ],
-  },
+const allNavItems: NavItem[] = [
+  { label: "Temasek Portfolio", short: "Temasek", href: "/", icon: Landmark },
+  { label: "Electricity Utility", short: "Utility", href: "/infra", icon: Building2 },
 ];
-
-const allNavItems: NavItem[] = navGroups.flatMap((g) => g.items);
 
 const DISCLAIMER =
   "This output was generated with AI assistance and may contain errors or omissions. " +
@@ -57,35 +44,26 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* Nav (grouped) */}
-      <nav className="flex-1 px-3 py-4 space-y-4 overflow-y-auto">
-        {navGroups.map((group) => (
-          <div key={group.section}>
-            <p className="px-3 mb-1 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-              {group.section}
-            </p>
-            <div className="space-y-0.5">
-              {group.items.map(({ label, href, icon: Icon }) => {
-                const active = isActive(pathname, href);
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                      active
-                        ? "bg-brand-600 text-white"
-                        : "text-slate-400 hover:bg-slate-800 hover:text-white"
-                    )}
-                  >
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    {label}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+      {/* Nav */}
+      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+        {allNavItems.map(({ label, href, icon: Icon }) => {
+          const active = isActive(pathname, href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
+                active
+                  ? "bg-brand-600 text-white"
+                  : "text-slate-400 hover:bg-slate-800 hover:text-white"
+              )}
+            >
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              {label}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Footer: disclaimer, link */}

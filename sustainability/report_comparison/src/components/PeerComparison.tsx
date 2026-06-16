@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { CheckCircle2, XCircle, HelpCircle, AlertTriangle, Ban } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { peerCompanies, type PeerCompany } from "@/data/peerData";
 
@@ -228,26 +227,6 @@ export function PeerComparison() {
           <span className="flex items-center gap-1.5"><Ban className="w-3 h-3" /> N/A = not applicable to this business model</span>
           <span>Emissions in tCO₂e, as reported.</span>
         </div>
-      </div>
-
-      {/* Per-company data notes */}
-      <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {companies.map((c) => (
-          <Card key={c.id}>
-            <CardContent className="pt-4">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-6 h-6 rounded flex items-center justify-center text-white font-bold text-[10px]"
-                  style={{ backgroundColor: c.accentColor }}>{c.logoInitials}</div>
-                <span className="text-xs font-semibold text-slate-700">{c.name}</span>
-              </div>
-              <ul className="space-y-1.5">
-                {c.dataNotes.map((n, i) => (
-                  <li key={i} className="text-[11px] text-slate-500 pl-3 border-l-2 border-slate-200 leading-snug">{n}</li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        ))}
       </div>
     </div>
   );
