@@ -3,6 +3,7 @@ import { CompanyCard } from "@/components/CompanyCard";
 import { EsgChart } from "@/components/EsgChart";
 import { MetricTable } from "@/components/MetricTable";
 import { SourcesFooter } from "@/components/SourcesFooter";
+import { RequestCta } from "@/components/RequestCta";
 import { SectionHeading } from "@/components/ui/section";
 import { formatNumber } from "@/lib/utils";
 import { Leaf, Users, Shield, TrendingDown, CheckCircle2, Gauge, Info } from "lucide-react";
@@ -96,10 +97,13 @@ export default function TemasekPage() {
       </section>
 
       {/* 6 — Sources & Caveats */}
-      <section>
+      <section className="mb-8">
         <SectionHeading>Sources &amp; Caveats</SectionHeading>
         <SourcesFooter />
       </section>
+
+      {/* CTA */}
+      <RequestCta />
     </div>
   );
 }

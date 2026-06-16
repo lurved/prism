@@ -3,6 +3,7 @@ import { PeerSnapshot } from "@/components/PeerSnapshot";
 import { PeerEmissionsChart } from "@/components/PeerEmissionsChart";
 import { PeerCompanyCard } from "@/components/PeerCompanyCard";
 import { SectionHeading } from "@/components/ui/section";
+import { RequestCta } from "@/components/RequestCta";
 import { peerCompanies } from "@/data/peerData";
 import { ExternalLink, FileText, AlertCircle, CheckCircle2 } from "lucide-react";
 
@@ -105,6 +106,9 @@ export default function InfraPage() {
           notes &amp; caveats are in the Company Profiles section above. Verify against source documents before use.</span>
         </div>
       </section>
+
+      {/* CTA */}
+      <RequestCta />
 
       <footer className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-400 flex flex-wrap gap-4 justify-between">
         <span>Output generated with AI assistance — independently verify all figures before use in decision-making, reporting, or publication.</span>
