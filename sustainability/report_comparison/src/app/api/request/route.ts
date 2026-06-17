@@ -6,13 +6,17 @@ export const dynamic = "force-dynamic";
 /**
  * Receives "add a company / new category" requests and emails the site owner.
  *
- * The destination address is NEVER exposed to the client — it lives only in the
- * server-side env var REQUEST_TO_EMAIL (masked). Delivery uses Resend's HTTP API.
+ * The destination address is NEVER exposed to the client (masked). Delivery is
+ * server-side via whichever provider is configured (set env vars in Vercel):
  *
- * Required env vars (set in the Vercel project, not committed):
- *   REQUEST_TO_EMAIL    the owner's inbox (recipient — masked; never in the repo)
- *   RESEND_API_KEY      Resend API key
- *   REQUEST_FROM_EMAIL  optional, defaults to "ESG Tracker <onboarding@resend.dev>"
+ *   Option A — Web3Forms (recommended; no account, key emailed instantly):
+ *     WEB3FORMS_ACCESS_KEY   the access key (maps to the owner's email on
+ *                            Web3Forms' side, so the address is never in the repo)
+ *
+ *   Option B — Resend:
+ *     RESEND_API_KEY         Resend API key
+ *     REQUEST_TO_EMAIL       recipient address (server-side only)
+ *     REQUEST_FROM_EMAIL     optional, defaults to onboarding@resend.dev
  */
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
@@ -40,41 +44,59 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "That email address doesn't look valid." }, { status: 400 });
   }
 
+  const web3Key = process.env.WEB3FORMS_ACCESS_KEY;
+  const resendKey = process.env.RESEND_API_KEY;
   const to = process.env.REQUEST_TO_EMAIL;
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.REQUEST_FROM_EMAIL || "ESG Tracker <onboarding@resend.dev>";
 
-  if (!to || !apiKey) {
+  const subject = `[ESG Tracker] ${requestType}${target ? `: ${target}` : ""}`;
+
+  try {
+    // ── Option A: Web3Forms (recipient is mapped to the key, never sent here) ──
+    if (web3Key) {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: web3Key,
+          subject,
+          from_name: "ESG Tracker",
+          ...(email ? { replyto: email } : {}),
+          "Request type": requestType,
+          "Company / category": target || "—",
+          "From name": name || "—",
+          "Reply email": email || "—",
+          Message: message,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (res.ok && json.success) return NextResponse.json({ ok: true });
+      return NextResponse.json({ error: "Could not send your request. Please try again later." }, { status: 502 });
+    }
+
+    // ── Option B: Resend ──
+    if (resendKey && to) {
+      const from = process.env.REQUEST_FROM_EMAIL || "ESG Tracker <onboarding@resend.dev>";
+      const text =
+        `New ESG Tracker request\n\n` +
+        `Type:             ${requestType}\n` +
+        `Company/Category: ${target || "—"}\n` +
+        `From:             ${name || "—"}\n` +
+        `Reply-to:         ${email || "—"}\n\n` +
+        `Message:\n${message}\n`;
+      const res = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ from, to: [to], subject, text, ...(email ? { reply_to: email } : {}) }),
+      });
+      if (res.ok) return NextResponse.json({ ok: true });
+      return NextResponse.json({ error: "Could not send your request. Please try again later." }, { status: 502 });
+    }
+
+    // Neither provider configured.
     return NextResponse.json(
       { error: "The request inbox isn't configured yet. Please try again later." },
       { status: 503 },
     );
-  }
-
-  const text =
-    `New ESG Tracker request\n\n` +
-    `Type:        ${requestType}\n` +
-    `Company/Category: ${target || "—"}\n` +
-    `From:        ${name || "—"}\n` +
-    `Reply-to:    ${email || "—"}\n\n` +
-    `Message:\n${message}\n`;
-
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        subject: `[ESG Tracker] ${requestType}${target ? `: ${target}` : ""}`,
-        text,
-        ...(email ? { reply_to: email } : {}),
-      }),
-    });
-    if (!res.ok) {
-      return NextResponse.json({ error: "Could not send your request. Please try again later." }, { status: 502 });
-    }
-    return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ error: "Could not send your request. Please try again later." }, { status: 502 });
   }
