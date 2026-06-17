@@ -47,10 +47,10 @@ export function PeerEmissionsChart() {
         <div className="mt-3 p-2.5 bg-red-50 border border-red-200 rounded-lg flex gap-2">
           <AlertTriangle className="w-3.5 h-3.5 text-red-600 flex-shrink-0 mt-0.5" />
           <p className="text-[11px] text-red-800">
-            <span className="font-semibold">Not a like-for-like comparison.</span> CLP&apos;s figures are a multinational
-            group (equity basis, incl. Australia/India/China); Meralco&apos;s are Philippines-only and consolidate MGen
-            generation. Both Scope 1 totals are dominated by power generation. Larger ≠ worse — use only to read each
-            company&apos;s own footprint.
+            <span className="font-semibold">Not a like-for-like comparison.</span> The three utilities differ in scope and
+            scale — Meralco (Philippines, incl. MGen generation), CLP (Asia-equity group) and National Grid (a much larger
+            UK + US T&amp;D group whose Scope 3 is ~53% sold gas). Different boundaries mean larger ≠ worse — use only to
+            read each company&apos;s own footprint.
           </p>
         </div>
       </CardContent>

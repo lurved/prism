@@ -8,11 +8,13 @@
  *  - No figure is inferred, estimated, or taken from third-party aggregators.
  *  - Currency conversions are labelled approximate with the rate + date stated.
  *
- * NOTE ON COMPARABILITY: these electricity utilities have different reporting
- * scopes and scales (Meralco = Philippines distribution + MGen generation;
- * CLP = multinational group on an equity basis). Absolute emissions and
- * carbon-intensity units are therefore NOT directly comparable. The UI states
- * this prominently. Social/governance metrics are broadly comparable.
+ * NOTE ON COMPARABILITY: these electricity utilities have very different
+ * business models, scopes and scales (Meralco = Philippines distribution +
+ * MGen generation; CLP = Asia-centric vertically integrated group, equity
+ * basis; National Grid = large UK+US transmission & distribution group).
+ * Absolute emissions and carbon-intensity units are therefore NOT directly
+ * comparable. The UI states this prominently. Social/governance metrics are
+ * broadly comparable.
  */
 
 export type PeerBusinessModel =
@@ -213,6 +215,80 @@ export const peerCompanies: PeerCompany[] = [
       "System/T&D loss % is N/D (not disclosed); CLP reports reliability indices instead (e.g. supply availability 99.999%). The metric applies to its business — this is N/D, not N/A.",
       "Injury rate uses a per-200,000-work-hours basis — different from Meralco's per-million-hours LTIFR; not directly comparable.",
       "Community figure is the HK$240M CLP Community Energy Saving Fund allocation; a consolidated community-investment total is not disclosed in the Annual Report.",
+    ],
+  },
+
+  /* ═══════════════════════════════════════════════════════════════
+     NATIONAL GRID plc
+     Source: National Grid plc Annual Report and Accounts 2025/26
+     (Form 20-F filed with the US SEC, 13 May 2026).
+     PDF/HTML: sec.gov/Archives/edgar/data/1004315/000100431526000006/nggtf-20260331.htm
+     Reporting period: FY2025/26 (1 Apr 2025 – 31 Mar 2026).
+     Figures = National Grid Group (UK + USA), GHG Protocol operational control.
+     NOTE: nationalgrid.com is Cloudflare-blocked to automation; data was taken
+     from the SEC-filed 20-F (the same document as the Annual Report). A few
+     metrics that appear only in the separate Responsible Business databook
+     (also blocked) are marked N/D. Verified June 2026.
+  ═══════════════════════════════════════════════════════════════ */
+  {
+    id: "nationalgrid",
+    name: "National Grid plc",
+    shortName: "National Grid",
+    logoInitials: "NG",
+    accentColor: "#1a3a6b",
+    country: "UK / USA",
+    city: "London (HQ); New York & New England (US)",
+    climateContext: "Large multinational T&D operator; temperate UK + NE US",
+    businessModel: "Transmission & distribution only",
+    reportingPeriod: "FY2025/26",
+    dataSource: {
+      reportTitle: "National Grid plc Annual Report and Accounts 2025/26 (Form 20-F)",
+      reportingPeriod: "FY2025/26 (1 Apr 2025 – 31 Mar 2026)",
+      url: "https://www.sec.gov/Archives/edgar/data/1004315/000100431526000006/nggtf-20260331.htm",
+      accessDate: "June 2026",
+    },
+    scope1: 5_001_000,         // incl. Long Island fossil generation, gas leaks, SF6, fleet
+    scope2: 2_510_000,         // location-based; almost entirely electricity line losses
+    scope3: 29_503_000,        // full value chain; dominated by sold gas (Cat 11: 19,736 kt)
+    totalGHG: 37_015_000,      // S1+S2+S3 full footprint
+    scope2Basis: "Location-based (explicitly stated; market-based not reported)",
+    intensityValue: 425,
+    intensityUnit: "tCO2e/£M revenue (S1+2, operational control)",
+    sf6tCO2e: null,            // absolute N/D in 20-F; only −43% vs 2018/19 stated — see dataNotes
+    systemLossPct: null,       // N/D; line losses 15,111 GWh disclosed but not as a % of throughput
+    renewableNote:
+      "T&D/networks operator with no material generation (divested National Grid Renewables in FY2025/26). Its climate role is enabling renewable generation to connect to its networks; no renewable energy % is reported.",
+    netZeroYear: 2050,
+    reductionTarget:
+      "Scope 1+2: −60% by 2030/31 vs 2018/19 (SBTi-approved, 1.5°C); current −3%, stated as outside the Climate Transition Plan range due to higher Long Island generation. Scope 3 (excl. sold electricity): −37.5% by 2033. Net zero by 2050.",
+    headcount: 33_017,         // permanent employees, 31 Mar 2026
+    femaleBoardPct: 46,        // 5 of 11 directors
+    femaleWorkforcePct: 25,    // 8,214 of 33,017
+    trainingHoursPerEmployee: null, // N/D in 20-F (in blocked Responsible Business databook)
+    injuryMetricValue: 0.11,
+    injuryMetricUnit: "LTIFR per 100,000 hours worked (employees + contractors)",
+    communityInvestmentNative: "£6.8M/yr",
+    communityInvestmentNote:
+      "Grid for Good Energy Affordability Fund: £3.5M/yr (UK) + £3.3M/yr (US) ≈ £6.8M/yr. A consolidated total community-investment figure is not disclosed in the 20-F.",
+    independentDirectorsPct: 81.8, // 9 of 11 (8 independent NEDs + independent-on-appointment Chair)
+    antiCorruptionTrainingPct: null, // mandatory e-learning confirmed; completion % not disclosed
+    externalAssurance: true,
+    externalAssuranceProvider: "Deloitte LLP (ISAE 3000 Revised; ISAE 3410 for GHG)",
+    frameworks: ["GRI", "SASB", "TCFD", "EU Taxonomy", "GHG Protocol (operational control)"],
+    naMetrics: [],
+    dataNotes: [
+      "SCALE: National Grid is a large MULTINATIONAL utility (UK + USA, ~33,000 employees) — far larger in scale and different in geography from Meralco and CLP. Absolute emission and community totals must NOT be compared directly.",
+      "BUSINESS MODEL: predominantly a T&D/networks operator. Scope 1 (5,001 kt) is partly driven by Long Island fossil-fuel generation contracted to LIPA, not core T&D operations. It divested National Grid Renewables and Grain LNG in FY2025/26.",
+      "Scope 2 (2,510 kt, location-based) is almost entirely electricity network line losses — the expected profile for a T&D operator. No market-based Scope 2 is reported.",
+      "Scope 3 (29,503 kt) is dominated by sold gas (Category 11 = 19,736 kt, ~53% of total footprint) — a fundamentally different Scope 3 profile from Meralco/CLP; not comparable as a single headline.",
+      "GHG intensity (425 tCO₂e/£M revenue) is a revenue-based metric — not comparable with CLP's per-kWh or Meralco's per-GWh intensities.",
+      "SF₆: absolute value is N/D in the 20-F (only a −43% reduction vs 2018/19 baseline is stated; target −50% by 2030/31). The absolute figure sits in the separate Responsible Business databook, which is blocked to automation.",
+      "System/T&D loss %: N/D — line losses are disclosed in GWh (15,111 GWh Group) but not as a percentage of throughput.",
+      "Training hours/employee, anti-corruption training %: N/D in the 20-F (in the separate, blocked Responsible Business data tables).",
+      "Community figure (£6.8M/yr, GBP) is the Grid for Good fund only; do not aggregate or rank against CLP's HK$ or Meralco's PhP figures.",
+      "Independent directors 81.8% (9 of 11) uses the Companies Act basis (8 independent NEDs + Chair independent on appointment); NED-only would be 72.7%.",
+      "External assurance by Deloitte LLP (limited assurance, ISAE 3000 / ISAE 3410) on ESG/Responsible Business metrics.",
+      "Data taken from the SEC-filed Form 20-F because nationalgrid.com is Cloudflare-blocked to automated access. Fiscal year ends 31 March.",
     ],
   },
 ];

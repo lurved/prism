@@ -19,13 +19,14 @@ export function PeerSnapshot() {
   const assured = peerCompanies.filter((c) => c.externalAssurance === true).length;
   const allNetZero2050 = peerCompanies.every((c) => c.netZeroYear === 2050);
 
+  const names = peerCompanies.map((c) => c.shortName).join(" · ");
   const tiles = [
-    { label: "Utilities Compared", value: String(peerCompanies.length), sublabel: "Meralco · CLP", icon: Building2, color: "text-slate-700", bg: "bg-slate-100" },
+    { label: "Utilities Compared", value: String(peerCompanies.length), sublabel: names, icon: Building2, color: "text-slate-700", bg: "bg-slate-100" },
     { label: "Combined S1+S2", value: `${fmtT(combinedScope1and2)} tCO₂e`, sublabel: "⚠ different boundaries", icon: Leaf, color: "text-slate-700", bg: "bg-slate-100" },
     { label: "Combined Workforce", value: combinedHeadcount.toLocaleString(), sublabel: "Total employees", icon: Users, color: "text-violet-700", bg: "bg-violet-50" },
-    { label: "Net-Zero Target", value: allNetZero2050 ? "2050" : "Mixed", sublabel: "Scope 1+2 (both)", icon: Gauge, color: "text-emerald-700", bg: "bg-emerald-50" },
-    { label: "External Assurance", value: `${assured} of ${peerCompanies.length}`, sublabel: "KPMG · DNV", icon: Shield, color: "text-amber-700", bg: "bg-amber-50" },
-    { label: "Carbon Intensity", value: "0.13–0.50", sublabel: "kg CO₂e/kWh*", icon: CheckCircle2, color: "text-blue-700", bg: "bg-blue-50" },
+    { label: "Net-Zero Target", value: allNetZero2050 ? "2050" : "Mixed", sublabel: "Scope 1+2 (all)", icon: Gauge, color: "text-emerald-700", bg: "bg-emerald-50" },
+    { label: "External Assurance", value: `${assured} of ${peerCompanies.length}`, sublabel: "KPMG · DNV · Deloitte", icon: Shield, color: "text-amber-700", bg: "bg-amber-50" },
+    { label: "Female Board", value: "38–46%", sublabel: "disclosed range", icon: CheckCircle2, color: "text-blue-700", bg: "bg-blue-50" },
   ];
 
   return (

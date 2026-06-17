@@ -9,7 +9,7 @@ import { ExternalLink, FileText, AlertCircle, CheckCircle2 } from "lucide-react"
 
 export const metadata = {
   title: "Electricity Utility — ESG Comparison",
-  description: "ESG comparison of dense-city Asian electricity utilities: Meralco and CLP.",
+  description: "ESG comparison of electricity utilities: Meralco, CLP, and National Grid.",
 };
 
 export default function InfraPage() {
@@ -19,13 +19,13 @@ export default function InfraPage() {
       <div className="mb-8">
         <div className="flex items-center gap-2 text-xs text-slate-400 uppercase tracking-wider mb-2">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-          Dense-City Electricity Utilities · ESG Intelligence
+          Electricity Utilities · ESG Intelligence
         </div>
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Electricity Utility</h1>
         <p className="text-slate-500 text-sm max-w-2xl">
-          Environmental, social, and governance data for electricity utilities serving dense, tropical/subtropical Asian
-          cities — Meralco (FY2024) and CLP (FY2025). All figures are taken only from each company&apos;s latest official
-          report. <span className="font-medium text-slate-700">N/D = not disclosed; N/A = not applicable.</span>
+          Environmental, social, and governance data for electricity utilities — Meralco (FY2024), CLP (FY2025) and
+          National Grid (FY2025/26). All figures are taken only from each company&apos;s latest official report.
+          <span className="font-medium text-slate-700"> N/D = not disclosed; N/A = not applicable.</span>
         </p>
       </div>
 
@@ -33,11 +33,12 @@ export default function InfraPage() {
       <div className="mb-8 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
         <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
         <div className="text-xs text-amber-800">
-          <span className="font-semibold">Data source note:</span> these utilities differ in scope and scale — Meralco is
-          Philippines-only and consolidates MGen generation; CLP is a multinational group reported on an equity basis
-          (incl. Australia, India, Mainland China). Absolute emissions are <span className="font-semibold">not directly
-          comparable</span>; carbon-intensity units differ (per-GWh vs. per-kWh). Both are <span className="font-semibold">
-          vertically integrated</span>, so Scope 1 includes power generation.
+          <span className="font-semibold">Data source note:</span> these utilities differ sharply in business model, scope
+          and scale — Meralco (Philippines distribution + MGen generation), CLP (Asia-centric vertically integrated group,
+          equity basis) and National Grid (a ~10× larger UK + US transmission &amp; distribution group). Absolute emissions
+          are <span className="font-semibold">not directly comparable</span>, and carbon-intensity denominators differ
+          (per-GWh, per-kWh, per-£M revenue). Compare social/governance metrics and each company&apos;s own trajectory rather
+          than ranking absolute totals.
         </div>
       </div>
 
@@ -46,8 +47,9 @@ export default function InfraPage() {
         <SectionHeading>Snapshot</SectionHeading>
         <PeerSnapshot />
         <p className="text-[10px] text-slate-400 mt-2">
-          *Carbon intensity: Meralco 0.13 (134 tCO₂e/GWh = 0.134 kg CO₂e/kWh) · CLP 0.50 kg CO₂e/kWh. Combined S1+S2 spans
-          different reporting boundaries — shown for context only, not as a like-for-like total.
+          Combined Scope 1+2 spans different reporting boundaries (Philippines / Asia-equity / UK-US group) — shown for
+          context only, never as a like-for-like total. Female-board range covers CLP (38%) and National Grid (46%);
+          Meralco does not disclose a board-gender %.
         </p>
       </section>
 
