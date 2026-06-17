@@ -36,9 +36,12 @@ export function RequestCta() {
 function RequestModal({ onClose }: { onClose: () => void }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [msgLen, setMsgLen] = useState(0);
   const firstFieldRef = useRef<HTMLSelectElement>(null);
+  const MAX_MSG = 4000;
 
   useEffect(() => {
+    const prevFocus = document.activeElement as HTMLElement | null;
     firstFieldRef.current?.focus();
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
@@ -46,6 +49,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      prevFocus?.focus?.(); // restore focus to the trigger on close
     };
   }, [onClose]);
 
@@ -80,7 +84,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-label="Send a request"
+      aria-labelledby="req-modal-title"
     >
       <div
         className="w-full max-w-md bg-white rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto"
@@ -89,7 +93,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
         {/* Header */}
         <div className="flex items-start justify-between p-5 border-b border-slate-100">
           <div>
-            <h2 className="text-base font-semibold text-slate-900">Request a company or category</h2>
+            <h2 id="req-modal-title" className="text-base font-semibold text-slate-900">Request a company or category</h2>
             <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
               <Lock className="w-3 h-3" /> Sent privately to the site owner
             </p>
@@ -115,14 +119,14 @@ function RequestModal({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-5 space-y-4">
-            {/* Honeypot — visually hidden, off-screen; bots fill it */}
+            {/* Honeypot — off-screen (present in DOM so bots fill it, invisible to humans) */}
             <input
               type="text"
               name="website"
               tabIndex={-1}
               autoComplete="off"
               aria-hidden="true"
-              className="hidden"
+              style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
             />
 
             <Field label="Request type" required>
@@ -155,9 +159,12 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 name="message"
                 required
                 rows={3}
+                maxLength={MAX_MSG}
+                onChange={(e) => setMsgLen(e.target.value.length)}
                 placeholder="What would you like added, and why? Add a report link if you have one."
                 className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
               />
+              <span className="block text-right text-[10px] text-slate-300 mt-0.5">{msgLen}/{MAX_MSG}</span>
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
