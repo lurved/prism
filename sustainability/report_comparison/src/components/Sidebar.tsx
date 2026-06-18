@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Landmark, Building2, Leaf, ExternalLink } from "lucide-react";
+import { Landmark, Building2, Banknote, Leaf, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // NOTE: hrefs are relative to the configured basePath
@@ -13,6 +13,7 @@ type NavItem = { label: string; short: string; href: string; icon: typeof Landma
 const allNavItems: NavItem[] = [
   { label: "Temasek Portfolio", short: "Temasek", href: "/", icon: Landmark },
   { label: "Electricity Utility", short: "Utility", href: "/infra", icon: Building2 },
+  { label: "Banks", short: "Banks", href: "/banks", icon: Banknote },
 ];
 
 const DISCLAIMER =

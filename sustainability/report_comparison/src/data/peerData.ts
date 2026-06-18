@@ -21,7 +21,8 @@ export type PeerBusinessModel =
   | "Mass transit operator"
   | "Integrated electric utility (distribution + generation)"
   | "Vertically integrated electric utility"
-  | "Transmission & distribution only";
+  | "Transmission & distribution only"
+  | "Universal bank (commercial + retail + wealth)";
 
 export interface PeerDataSource {
   reportTitle: string;

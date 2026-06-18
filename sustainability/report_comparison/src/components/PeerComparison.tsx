@@ -77,18 +77,48 @@ const rows: Row[] = [
   { key: "training", label: "Training hrs / employee", view: "normalized",
     render: (c) => ({ text: c.trainingHoursPerEmployee === null ? "N/D" : `${c.trainingHoursPerEmployee} hrs`, nd: c.trainingHoursPerEmployee === null }) },
   { key: "injury", label: "Injury rate", sublabel: "basis differs", view: "normalized",
-    render: (c) => c.injuryMetricValue === null
-      ? { text: "N/D", nd: true }
-      : { text: `${c.injuryMetricValue} (${c.injuryMetricUnit})` } },
+    render: (c) => c.naMetrics.includes("injuryMetricValue")
+      ? { text: "N/A", na: true }
+      : c.injuryMetricValue === null
+        ? { text: "N/D", nd: true }
+        : { text: `${c.injuryMetricValue} (${c.injuryMetricUnit})` } },
   { key: "community", label: "Community investment", view: "normalized",
     render: (c) => ({ text: c.communityInvestmentNative }) },
   { key: "indepDir", label: "Independent directors %", view: "normalized",
     render: (c) => ({ text: fmtNum(c.independentDirectorsPct, "%"), nd: c.independentDirectorsPct === null }) },
 ];
 
-export function PeerComparison() {
+interface PeerComparisonProps {
+  companies?: PeerCompany[];
+  groupLabel?: string;       // e.g. "electricity utilities" / "banks"
+  absoluteCaveat?: React.ReactNode;
+  normalizedCaveat?: React.ReactNode;
+}
+
+const defaultAbsoluteCaveat = (
+  <>
+    <span className="font-semibold">Do not rank these absolute numbers against each other.</span> Meralco
+    (Philippines distribution + MGen generation), CLP (Asia-centric vertically integrated group, equity basis)
+    and National Grid (a much larger UK + US T&amp;D group) have very different reporting boundaries and scales —
+    larger ≠ worse. Use these only to understand each company&apos;s own footprint.
+  </>
+);
+const defaultNormalizedCaveat = (
+  <>
+    <span className="font-semibold">Carbon-intensity units differ</span> — Meralco reports tCO₂e/GWh, CLP kg CO₂e/kWh,
+    and National Grid tCO₂e/£M revenue — so the intensity row is <span className="font-semibold">not cross-comparable</span>.
+    The social &amp; governance metrics below (headcount, board %, training, independent directors) <em>are</em>
+    broadly comparable.
+  </>
+);
+
+export function PeerComparison({
+  companies = peerCompanies,
+  groupLabel = "electricity utilities",
+  absoluteCaveat = defaultAbsoluteCaveat,
+  normalizedCaveat = defaultNormalizedCaveat,
+}: PeerComparisonProps) {
   const [view, setView] = useState<View>("absolute");
-  const companies = peerCompanies;
   const visibleRows = rows.filter((r) => r.view === view || r.view === "both");
 
   return (
@@ -113,29 +143,19 @@ export function PeerComparison() {
             Normalized &amp; Comparable
           </button>
         </div>
-        <span className="text-[11px] text-slate-400">{companies.length} electricity utilities</span>
+        <span className="text-[11px] text-slate-400">{companies.length} {groupLabel}</span>
       </div>
 
       {/* View-specific caveat */}
       {view === "absolute" ? (
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2.5">
           <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
-          <div className="text-xs text-red-800">
-            <span className="font-semibold">Do not rank these absolute numbers against each other.</span> Meralco
-            (Philippines distribution + MGen generation), CLP (Asia-centric vertically integrated group, equity basis)
-            and National Grid (a much larger UK + US T&amp;D group) have very different reporting boundaries and scales —
-            larger ≠ worse. Use these only to understand each company&apos;s own footprint.
-          </div>
+          <div className="text-xs text-red-800">{absoluteCaveat}</div>
         </div>
       ) : (
         <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
           <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div className="text-xs text-amber-800">
-            <span className="font-semibold">Carbon-intensity units differ</span> — Meralco reports tCO₂e/GWh, CLP kg CO₂e/kWh,
-            and National Grid tCO₂e/£M revenue — so the intensity row is <span className="font-semibold">not cross-comparable</span>.
-            The social &amp; governance metrics below (headcount, board %, training, independent directors) <em>are</em>
-            broadly comparable.
-          </div>
+          <div className="text-xs text-amber-800">{normalizedCaveat}</div>
         </div>
       )}
 
