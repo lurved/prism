@@ -82,6 +82,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
           from_name: "ESG Tracker Request",
           ...(data.email ? { replyto: data.email } : {}),
           "Request type": data.requestType,
+          "Open to pay for tokens": data.payTokens || "—",
           "Company / category": data.target || "—",
           "From": data.name || "—",
           "Reply email": data.email || "—",
@@ -190,6 +191,20 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
               />
               <span className="block text-right text-[10px] text-slate-300 mt-0.5">{msgLen}/{MAX_MSG}</span>
+            </Field>
+
+            <Field label="Are you open to pay for tokens?" required>
+              <div className="flex flex-wrap gap-2 pt-0.5">
+                {["Yes", "No", "What is this?"].map((opt) => (
+                  <label
+                    key={opt}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-sm text-slate-700 cursor-pointer hover:border-brand-400 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-800"
+                  >
+                    <input type="radio" name="payTokens" value={opt} required className="accent-brand-600" />
+                    {opt}
+                  </label>
+                ))}
+              </div>
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
