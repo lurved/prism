@@ -3,7 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Plus, X, Send, CheckCircle2, AlertCircle, Lock } from "lucide-react";
 
-const BASE = "/sustainability/report_comparison";
+// Web3Forms access key — a PUBLIC token by design (it only permits submitting
+// to the mapped inbox, never reading anything). The recipient email is NOT here;
+// Web3Forms maps the key to the address on its servers, so the email stays masked.
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -56,21 +59,42 @@ function RequestModal({ onClose }: { onClose: () => void }) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries());
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, string>;
+
+    // Honeypot — if filled, a bot submitted it. Pretend success and drop.
+    if (data.botcheck) { setStatus("sent"); return; }
+
+    if (!WEB3FORMS_KEY) {
+      setStatus("error");
+      setErrorMsg("The request form isn't configured yet. Please try again later.");
+      return;
+    }
+
     setStatus("sending");
     setErrorMsg("");
     try {
-      const res = await fetch(`${BASE}/api/request/`, {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `[ESG Tracker] ${data.requestType}${data.target ? `: ${data.target}` : ""}`,
+          from_name: "ESG Tracker Request",
+          ...(data.email ? { replyto: data.email } : {}),
+          "Request type": data.requestType,
+          "Company / category": data.target || "—",
+          "From": data.name || "—",
+          "Reply email": data.email || "—",
+          Message: data.message,
+          botcheck: "",
+        }),
       });
       const json = await res.json().catch(() => ({}));
-      if (res.ok) {
+      if (res.ok && json.success) {
         setStatus("sent");
       } else {
         setStatus("error");
-        setErrorMsg(json.error || "Something went wrong. Please try again.");
+        setErrorMsg(json.message || "Couldn't send your request. Please try again.");
       }
     } catch {
       setStatus("error");
@@ -119,10 +143,11 @@ function RequestModal({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="p-5 space-y-4">
-            {/* Honeypot — off-screen (present in DOM so bots fill it, invisible to humans) */}
+            {/* Honeypot — off-screen (present in DOM so bots fill it, invisible to humans).
+                Named "botcheck" so Web3Forms' native honeypot also rejects spam. */}
             <input
               type="text"
-              name="website"
+              name="botcheck"
               tabIndex={-1}
               autoComplete="off"
               aria-hidden="true"
