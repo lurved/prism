@@ -673,7 +673,7 @@ footer .footer-help {
 
 /* RESPONSIVE — tablet */
 @media (max-width: 900px) {
-  nav ul { display: none; }
+  nav ul { display: flex; gap: 1rem; }
   .hero { padding: 100px 1.5rem 60px; }
   .hero h1 { font-size: clamp(2.4rem, 8vw, 3.5rem); }
   .hero-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
