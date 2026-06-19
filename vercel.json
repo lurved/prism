@@ -5,6 +5,18 @@
       "dest": "/about.html"
     },
     {
+      "src": "/typeme/u/([^/]+)/rate/?",
+      "dest": "/api/typeme/hub?slug=$1&mode=rate"
+    },
+    {
+      "src": "/typeme/u/([^/]+)/?",
+      "dest": "/api/typeme/hub?slug=$1"
+    },
+    {
+      "src": "/typeme/?",
+      "dest": "/typeme/index.html"
+    },
+    {
       "src": "/sustainability/sr2026",
       "dest": "/sustainability/sr2026/index.html"
     },
