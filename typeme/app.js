@@ -218,6 +218,16 @@
       body.appendChild(resultBlock(data));
     }
 
+    // Fresh visitor who can still rate → surface the ask up top, with the
+    // current spread below as the hook (page stays fully public — the result
+    // is the shareable brag, the rate prompt is the recruiting nudge).
+    const topCta = (!isOwner && !ratedAlready && raterCount > 0)
+      ? el("div", { class: "rise", style: { marginTop: "16px", background: C.accentSoft, borderRadius: "16px", padding: "16px 18px" } },
+          el("div", { style: { fontSize: "15px", color: C.ink, fontWeight: "600" } }, `Add your read on ${name}.`),
+          el("p", { style: { fontSize: "13px", color: C.muted, margin: "4px 0 12px", lineHeight: "1.5" } }, "Four taps, anonymous — then see how everyone landed."),
+          el("button", { class: "btn-accent", onclick: () => navigate(`/typeme/u/${slug}/rate`) }, `Rate ${name}`))
+      : null;
+
     // Calls to action — different for owner vs visitor.
     const cta = el("div", { style: { marginTop: "24px" } });
     if (showReveal) {
@@ -238,7 +248,7 @@
     const footnote = el("p", { style: { marginTop: "28px", paddingTop: "18px", borderTop: `1px solid ${C.hair}`, fontSize: "12px", lineHeight: "1.5", color: C.muted } },
       `This is how ${name}'s friends see ${name} — not a personality test, and not the truth about who they are. The interesting part is where they disagree.`);
 
-    mount(el("div", { style: { paddingTop: "8px" } }, head, body, cta, footnote));
+    mount(el("div", { style: { paddingTop: "8px" } }, head, topCta, body, cta, footnote));
   }
 
   function emptyState(name) {
