@@ -21,8 +21,9 @@ type RowConfig = {
   sublabel?: string;
   category: string;
   getValue: (c: Company) => number | null;
-  format: (v: number) => string;
+  format: (v: number, c: Company) => string;
   lowerIsBetter: boolean;
+  noBest?: boolean; // skip best-performer highlighting (e.g. when units differ across companies)
 };
 
 const rows: RowConfig[] = [
@@ -53,11 +54,12 @@ const rows: RowConfig[] = [
   },
   {
     label: "GHG Intensity",
-    sublabel: "Per activity unit",
+    sublabel: "different units — not comparable",
     category: "Environmental",
     getValue: (c) => c.environmental.ghgIntensityValue,
-    format: (v) => `${v}`,
+    format: (v, c) => `${v} ${c.environmental.ghgIntensityUnit}`,
     lowerIsBetter: true,
+    noBest: true,
   },
   {
     label: "Renewable Capacity",
@@ -226,7 +228,7 @@ export function MetricTable({ companies }: MetricTableProps) {
                     </td>
                     {companies.map((c, i) => {
                       const val = values[i];
-                      const isBest = val !== null && val === best && values.filter(v => v === best).length < values.length;
+                      const isBest = !row.noBest && val !== null && val === best && values.filter(v => v === best).length < values.length;
                       return (
                         <td key={c.id} className="py-2.5 px-4 text-center">
                           {val === null ? (
@@ -242,7 +244,7 @@ export function MetricTable({ companies }: MetricTableProps) {
                               {isBest && (
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
                               )}
-                              {row.format(val)}
+                              {row.format(val, c)}
                             </span>
                           )}
                         </td>
