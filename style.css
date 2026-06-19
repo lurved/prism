@@ -591,11 +591,11 @@ nav ul a.active { color: var(--pink-mid); font-weight: 600; }
 .copyright {
   text-align: center;
   font-size: 0.8rem;
-  opacity: 0.45;
-  color: var(--navy);
-  padding-top: 3rem;
+  opacity: 0.4;
+  color: white;
+  margin-top: 3rem;
   max-width: none !important;
-  margin: 0;
+  margin-bottom: 0;
 }
 
 .contact-inner {
