@@ -45,8 +45,8 @@
       if (!t) { t = "r_" + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("tm:raterToken", t); }
       return t;
     },
-    markRated: (slug) => localStorage.setItem("tm:rated:" + slug, "1"),
-    hasRated: (slug) => localStorage.getItem("tm:rated:" + slug) === "1",
+    markRated: (slug, round) => localStorage.setItem("tm:rated:" + slug, String(round || 1)),
+    hasRated: (slug, round) => localStorage.getItem("tm:rated:" + slug) === String(round || 1),
   };
 
   // ── scoring (mirror of server _lib.score, for the local mock) ──
@@ -90,6 +90,11 @@
       if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "Could not submit.");
       return r.json();
     },
+    async resetSubject(slug) {
+      const r = await fetch(`/api/typeme/reset?slug=${encodeURIComponent(slug)}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ownerToken: store.ownerToken(slug) }) });
+      if (!r.ok) throw new Error((await r.json().catch(() => ({}))).error || "Could not reset.");
+      return r.json();
+    },
   };
 
   const mockApi = {
@@ -99,14 +104,14 @@
     async createSubject(name) {
       const slug = Math.random().toString(36).slice(2, 10);
       const ownerToken = "owner_" + Math.random().toString(36).slice(2);
-      this._write(slug, { name, ownerToken, ratings: [] });
+      this._write(slug, { name, ownerToken, round: 1, ratings: [] });
       return { slug, ownerToken };
     },
     async getSubject(slug) {
       const s = this._read(slug);
       if (!s) return null;
       const res = scoreClient(s.ratings);
-      return { name: s.name, ...res, isOwner: store.ownerToken(slug) === s.ownerToken };
+      return { name: s.name, round: s.round || 1, ...res, isOwner: store.ownerToken(slug) === s.ownerToken };
     },
     async addRating(slug, letters) {
       const s = this._read(slug);
@@ -116,6 +121,15 @@
       s.ratings.push({ ei: letters.EI, sn: letters.SN, tf: letters.TF, jp: letters.JP, rt });
       this._write(slug, s);
       return { ok: true, already: false, raterCount: s.ratings.length };
+    },
+    async resetSubject(slug) {
+      const s = this._read(slug);
+      if (!s) throw new Error("Not found");
+      if (store.ownerToken(slug) !== s.ownerToken) throw new Error("Not authorized");
+      s.round = (s.round || 1) + 1;
+      s.ratings = [];
+      this._write(slug, s);
+      return { ok: true, raterCount: 0, round: s.round };
     },
   };
   const API = isLocal ? mockApi : realApi;
@@ -202,7 +216,7 @@
     if (!data) { mount(notFoundView()); return; }
 
     const { name, raterCount, isOwner } = data;
-    const ratedAlready = store.hasRated(slug);
+    const ratedAlready = store.hasRated(slug, data.round);
     const showReveal = justRated;
     justRated = false;
 
@@ -381,7 +395,41 @@
         hasResult ? "Send the link to more friends to sharpen the read — three is the magic number." : "You can't type yourself — send this to a few friends and watch the spread fill in."),
       copyBtn,
       navigator.share ? el("button", { class: "link-quiet", style: { display: "block", margin: "14px auto 0", textDecoration: "none" }, onclick: nativeShare }, "or share…") : null,
-      card);
+      card,
+      hasResult ? resetControl(slug, data.raterCount) : null);
+  }
+
+  // Owner-only "start fresh" — wipes all reads, with an inline confirm.
+  function resetControl(slug, raterCount) {
+    const wrap = el("div", { style: { marginTop: "20px", paddingTop: "16px", borderTop: `1px solid ${C.hair}` } });
+    const label = `${raterCount} ${raterCount === 1 ? "read" : "reads"}`;
+
+    function idle() {
+      wrap.innerHTML = "";
+      wrap.appendChild(el("button", { class: "link-quiet", onclick: confirm }, "Start fresh — clear all reads"));
+    }
+    function confirm() {
+      wrap.innerHTML = "";
+      wrap.appendChild(el("p", { style: { fontSize: "13px", color: C.ink, lineHeight: "1.5", margin: "0 0 12px" } },
+        `Clear all ${label}? This can't be undone — friends who already rated can rate again.`));
+      const yes = el("button", { style: { background: C.ink, color: C.card, border: "none", borderRadius: "999px", padding: "10px 18px", fontSize: "13px", fontWeight: "500" }, onclick: doReset }, "Yes, reset");
+      const no = el("button", { class: "link-quiet", style: { marginLeft: "14px" }, onclick: idle }, "Cancel");
+      wrap.appendChild(el("div", { style: { display: "flex", alignItems: "center" } }, yes, no));
+    }
+    async function doReset() {
+      wrap.innerHTML = "";
+      wrap.appendChild(el("p", { style: { fontSize: "13px", color: C.muted, margin: "0" } }, "Clearing…"));
+      try {
+        await API.resetSubject(slug);
+        toast("Reset — your page is fresh");
+        render();
+      } catch (err) {
+        toast(err.message || "Couldn't reset.");
+        idle();
+      }
+    }
+    idle();
+    return wrap;
   }
 
   function makeYourOwn() {
@@ -396,8 +444,8 @@
     if (!data) { mount(notFoundView()); return; }
     const name = data.name;
 
-    // already rated → straight to the reveal
-    if (store.hasRated(slug)) { navigate(`/typeme/u/${slug}`); return; }
+    // already rated this round → straight to the reveal
+    if (store.hasRated(slug, data.round)) { navigate(`/typeme/u/${slug}`); return; }
 
     let step = 0;
     const answers = {};
@@ -417,7 +465,7 @@
       mount(el("div", { class: "rise", style: { paddingTop: "40px", color: C.muted, fontSize: "15px" } }, "Submitting your read…"));
       try {
         await API.addRating(slug, answers);
-        store.markRated(slug);
+        store.markRated(slug, data.round);
         navigate(`/typeme/u/${slug}`, { justRated: true });
       } catch (err) {
         toast(err.message || "Couldn't submit.");

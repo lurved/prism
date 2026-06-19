@@ -98,9 +98,21 @@ async function createSubject(name) {
   if (!slug) throw new Error("slug-collision");
 
   const ownerToken = token();
-  const subject = { name, ownerToken, createdAt: new Date().toISOString() };
+  const subject = { name, ownerToken, round: 1, createdAt: new Date().toISOString() };
   await redis.set(`tm:subject:${slug}`, JSON.stringify(subject));
   return { slug, ownerToken };
+}
+
+// Owner-only fresh start: wipe ratings + dedupe set, bump the round so
+// previously-rated friends are no longer blocked from rating again.
+async function resetSubject(slug) {
+  if (!redis) throw new Error("store-unavailable");
+  const subject = await getSubject(slug);
+  if (!subject) return null;
+  subject.round = (subject.round || 1) + 1;
+  await redis.set(`tm:subject:${slug}`, JSON.stringify(subject));
+  await redis.del(`tm:ratings:${slug}`, `tm:raters:${slug}`);
+  return subject.round;
 }
 
 async function getSubject(slug) {
@@ -184,6 +196,6 @@ function score(ratings) {
 module.exports = {
   redis, TARGET_RATERS, AXES, TYPES,
   nanoid, token, rateLimit, clientIp,
-  createSubject, getSubject, getRatings, addRating,
+  createSubject, resetSubject, getSubject, getRatings, addRating,
   validateLetters, score,
 };

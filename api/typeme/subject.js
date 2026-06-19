@@ -28,6 +28,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({
       name: subject.name,
+      round: subject.round || 1,
       raterCount: result.raterCount,
       tallies: result.tallies,
       code: result.code,
