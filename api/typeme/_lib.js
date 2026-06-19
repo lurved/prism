@@ -11,14 +11,18 @@
  */
 
 const crypto = require("crypto");
-const { Redis } = require("@upstash/redis");
+const Redis = require("ioredis");
 
-const redis = process.env.UPSTASH_REDIS_REST_URL
-  ? new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+// TCP Redis via the project's REDIS_URL (rediss:// → TLS auto-detected).
+// Module-level singleton so warm invocations reuse the connection.
+const redis = process.env.REDIS_URL
+  ? new Redis(process.env.REDIS_URL, {
+      maxRetriesPerRequest: 3,
+      enableReadyCheck: false,
+      lazyConnect: false,
     })
   : null;
+if (redis) redis.on("error", (e) => console.error("redis:", e.message));
 
 const TARGET_RATERS = 3;
 

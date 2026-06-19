@@ -4,6 +4,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
     "@upstash/redis": "^1.38.0",
-    "@vercel/og": "^0.6.4"
+    "@vercel/og": "^0.6.4",
+    "ioredis": "^5.4.1"
   }
 }

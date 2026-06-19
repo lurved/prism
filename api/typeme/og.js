@@ -5,48 +5,22 @@
  * Runs on the edge with @vercel/og. Brand fonts are shipped alongside the fn.
  */
 import { ImageResponse } from "@vercel/og";
-import { Redis } from "@upstash/redis";
 
 export const config = { runtime: "edge" };
 
 const C = { paper: "#F2F1ED", card: "#FBFAF7", ink: "#1C1B18", muted: "#918C7E", hair: "#DAD7CD", accent: "#2F6F62" };
 
-const AX = [
-  { key: "EI", left: "E", right: "I", ll: "Extrovert", rl: "Introvert" },
-  { key: "SN", left: "S", right: "N", ll: "Grounded", rl: "Abstract" },
-  { key: "TF", left: "T", right: "F", ll: "Logic", rl: "Heart" },
-  { key: "JP", left: "J", right: "P", ll: "Planned", rl: "Loose" },
-];
-const F = { EI: "ei", SN: "sn", TF: "tf", JP: "jp" };
+const AXMAP = {
+  EI: { left: "E", right: "I", ll: "Extrovert", rl: "Introvert" },
+  SN: { left: "S", right: "N", ll: "Grounded", rl: "Abstract" },
+  TF: { left: "T", right: "F", ll: "Logic", rl: "Heart" },
+  JP: { left: "J", right: "P", ll: "Planned", rl: "Loose" },
+};
 const NAMES = { INTJ: "The Architect", INTP: "The Logician", ENTJ: "The Commander", ENTP: "The Debater", INFJ: "The Advocate", INFP: "The Mediator", ENFJ: "The Protagonist", ENFP: "The Campaigner", ISTJ: "The Logistician", ISFJ: "The Defender", ESTJ: "The Executive", ESFJ: "The Consul", ISTP: "The Virtuoso", ISFP: "The Adventurer", ESTP: "The Entrepreneur", ESFP: "The Entertainer" };
 
 // plain-object element helper (JSX-equivalent for Satori)
 function h(type, props, ...children) {
   return { type, props: { ...(props || {}), children: children.length === 0 ? undefined : children.length === 1 ? children[0] : children } };
-}
-
-function score(ratings) {
-  const n = ratings.length;
-  const tallies = AX.map((a) => {
-    let left = 0;
-    ratings.forEach((r) => { if (r[F[a.key]] === a.left) left++; });
-    const right = n - left;
-    let lead = null;
-    if (left > right) lead = a.left; else if (right > left) lead = a.right;
-    return { a, left, right, lead };
-  });
-  const hasTie = n > 0 && tallies.some((t) => t.lead === null);
-  const code = n > 0 && !hasTie ? tallies.map((t) => t.lead).join("") : null;
-  return { n, tallies, hasTie, code };
-}
-
-let _redis;
-function getRedis() {
-  if (_redis === undefined) _redis = null;
-  if (!_redis && process.env.UPSTASH_REDIS_REST_URL) {
-    _redis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN });
-  }
-  return _redis;
 }
 
 function dot(filled, accent) {
@@ -66,22 +40,27 @@ function inviteCard() {
       h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 36, color: C.ink } }, "type me")));
 }
 
-function resultCard(name, res) {
-  const codeEls = res.tallies.map((t) => {
-    if (t.lead) return h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontSize: 150, lineHeight: 1 } }, t.lead);
+// `data` is the /api/typeme/subject JSON: { name, raterCount, code,
+//   tallies: [{ key, leftCount, rightCount, leadLetter }] }
+function resultCard(name, data) {
+  const codeEls = data.tallies.map((t) => {
+    const ax = AXMAP[t.key];
+    if (t.leadLetter) return h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontSize: 150, lineHeight: 1 } }, t.leadLetter);
     return h("div", { style: { display: "flex", flexDirection: "column", color: C.accent, fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 70, lineHeight: 0.92, justifyContent: "center" } },
-      h("div", { style: { display: "flex" } }, t.a.left),
-      h("div", { style: { display: "flex", opacity: 0.55 } }, t.a.right));
+      h("div", { style: { display: "flex" } }, ax.left),
+      h("div", { style: { display: "flex", opacity: 0.55 } }, ax.right));
   });
 
-  const heroLine = res.code ? (NAMES[res.code] || "") : "Still deciding — one more friend settles it";
+  const heroLine = data.code ? (NAMES[data.code] || "") : "Still deciding — one more friend settles it";
 
-  const rows = res.tallies.map((t) => {
-    const filledL = []; for (let i = 0; i < t.left; i++) filledL.push(dot(true, false)); for (let i = 0; i < t.right; i++) filledL.push(dot(false, false));
+  const rows = data.tallies.map((t) => {
+    const ax = AXMAP[t.key];
+    const left = t.leftCount, right = t.rightCount;
+    const filledL = []; for (let i = 0; i < left; i++) filledL.push(dot(true, false)); for (let i = 0; i < right; i++) filledL.push(dot(false, false));
     return h("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 } },
-      h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 22, color: t.left >= t.right ? C.ink : C.muted, width: 200 } }, t.a.ll),
+      h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 22, color: left >= right ? C.ink : C.muted, width: 200 } }, ax.ll),
       h("div", { style: { display: "flex", gap: 8 } }, ...filledL),
-      h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 22, color: t.right > t.left ? C.ink : C.muted, width: 160, justifyContent: "flex-end" } }, t.a.rl));
+      h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 22, color: right > left ? C.ink : C.muted, width: 160, justifyContent: "flex-end" } }, ax.rl));
   });
 
   return h("div", { style: { display: "flex", width: "100%", height: "100%", background: C.paper, color: C.ink, padding: "64px 76px" } },
@@ -110,21 +89,18 @@ export default async function handler(req) {
     { name: "Instrument Serif", data: serifItalic, style: "italic", weight: 400 },
   ];
 
+  // Edge can't open a TCP Redis connection, so read the subject through the
+  // Node JSON API on this same deployment. Falls back to the invite card.
   let element = inviteCard();
   try {
-    const redis = getRedis();
-    if (slug && redis) {
-      const raw = await redis.get(`tm:subject:${slug}`);
-      const subject = raw ? (typeof raw === "string" ? JSON.parse(raw) : raw) : null;
-      if (subject) {
-        const rows = await redis.lrange(`tm:ratings:${slug}`, 0, -1);
-        const ratings = rows.map((r) => (typeof r === "string" ? JSON.parse(r) : r));
-        const res = score(ratings);
-        if (res.n > 0) element = resultCard(subject.name, res);
+    if (slug) {
+      const res = await fetch(`${url.origin}/api/typeme/subject?slug=${encodeURIComponent(slug)}`, { headers: { "x-og": "1" } });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.raterCount > 0) element = resultCard(data.name, data);
       }
     }
   } catch (err) {
-    // fall back to the invite card on any read/render trouble
     console.error("og:", err);
     element = inviteCard();
   }
