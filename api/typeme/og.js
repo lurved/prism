@@ -63,7 +63,7 @@ function inviteCard() {
         "Get typed by the people who know you. Four taps, one verdict.")),
     h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-end" } },
       h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 30, color: C.muted } }, "The interesting part is where they disagree."),
-      h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 36, color: C.ink } }, "type me 👀")));
+      h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 36, color: C.ink } }, "type me")));
 }
 
 function resultCard(name, res) {
@@ -101,7 +101,7 @@ export default async function handler(req) {
   const url = new URL(req.url);
   const slug = url.searchParams.get("slug") || "";
 
-  const interData = await fetch(new URL("./fonts/Inter-var.ttf", import.meta.url)).then((r) => r.arrayBuffer());
+  const interData = await fetch(new URL("./fonts/Inter-Regular.woff", import.meta.url)).then((r) => r.arrayBuffer());
   const serifData = await fetch(new URL("./fonts/InstrumentSerif-Regular.ttf", import.meta.url)).then((r) => r.arrayBuffer());
   const serifItalic = await fetch(new URL("./fonts/InstrumentSerif-Italic.ttf", import.meta.url)).then((r) => r.arrayBuffer());
   const fonts = [
