@@ -16,6 +16,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
+h2 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+
 body {
   font-family: var(--font);
   color: var(--text-dark);
@@ -589,12 +591,13 @@ nav ul a.active { color: var(--pink-mid); font-weight: 600; }
 .contact-inner {
   max-width: 1000px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .section-contact h2 {
-  font-size: clamp(3rem, 7vw, 5.5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, 7vw, 5.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
   line-height: 0.95;
   color: var(--navy);
   margin-bottom: 2.5rem;
