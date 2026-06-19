@@ -48,15 +48,19 @@ export const bankCompanies: PeerCompany[] = [
     reductionTarget:
       "Own-operations net zero by 2050 (interim 2030 CRREM-aligned S1+2 target). Financed-emissions net zero by 2050 across nine priority sectors (Power by 2040).",
     headcount: 41_638,
-    femaleBoardPct: 20,
+    femaleBoardPct: 20,        // 2 of 10 directors (FY2024 Annual Report CG section)
     femaleWorkforcePct: 49,
+    femaleSeniorMgmtPct: 41,   // SVP–MD level
     trainingHoursPerEmployee: 33.4,
+    employeeTurnoverPct: 6.6,  // voluntary attrition
+    employeeEngagementScore: 91, // My Voice 2024
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
     communityInvestmentNative: "SGD 1B / 10yr (DBS Foundation)",
     communityInvestmentNote:
       "DBS Foundation commitment of up to SGD 1 billion over 10 years; no annual community-investment SGD total disclosed in the SR. Employee volunteering >270,000 hours in FY2024.",
-    independentDirectorsPct: null,   // in Annual Report, not the SR
+    independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
+    esgLinkedExecComp: true,         // variable pay vs balanced scorecard incl. sustainability
     antiCorruptionTrainingPct: null, // DBS explicitly does not report this % (GRI 205-2)
     externalAssurance: true,
     externalAssuranceProvider: "PwC Singapore (limited; SSAE 3000/3410) — financed emissions NOT assured",
@@ -69,7 +73,7 @@ export const bankCompanies: PeerCompany[] = [
       "Financed-emissions progress: Power 208 kgCO₂/MWh (on track to 138 by 2030); Oil & Gas 26.4 MtCO₂e (on track); Steel and Shipping not on track. PCAF referenced.",
       "Sustainable finance: SGD 89bn commitments at Dec 2024 (from SGD 70bn); SGD 38bn sustainable bonds facilitated in FY2024.",
       "Employee engagement 91% (My Voice 2024). Voluntary attrition 6.6%. Female senior management (SVP–MD) 41%.",
-      "Independent directors % and ESG-linked exec comp are in the Annual Report, not the SR (N/D here). Anti-corruption training %: DBS explicitly does not report it.",
+      "Governance (board 20% female, 70% independent of 10, ESG-linked exec pay) is from the FY2024 Annual Report CG section. Anti-corruption training %: DBS explicitly does not report it.",
       "SF₆, system loss and industrial injury rate are N/A for a bank.",
     ],
   },
@@ -106,15 +110,18 @@ export const bankCompanies: PeerCompany[] = [
     reductionTarget:
       "Operational carbon neutrality maintained annually. Financed-emissions net zero by 2050 across six priority sectors (NZBA signatory).",
     headcount: 33_655,        // incl. Great Eastern Holdings
-    femaleBoardPct: 40,
+    femaleBoardPct: 30,        // 3 of 10 directors (FY2024 Annual Report CG section — corrects the SR chart's 40%)
     femaleWorkforcePct: 56,
+    femaleSeniorMgmtPct: 38,
     trainingHoursPerEmployee: 54.3,
+    employeeTurnoverPct: 12,
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
     communityInvestmentNative: "N/D",
     communityInvestmentNote:
       "No consolidated community-investment SGD total in the SR. 17,666 employee volunteers across 531 projects.",
-    independentDirectorsPct: null,   // 'majority' independent stated, but % only in Annual Report
+    independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
+    esgLinkedExecComp: true,         // "sustainability incl. climate incorporated in senior exec scorecards"
     antiCorruptionTrainingPct: null,
     externalAssurance: true,
     externalAssuranceProvider: "PwC Singapore (limited; SSAE 3000/3410) — financed emissions NOT assured",
@@ -127,8 +134,8 @@ export const bankCompanies: PeerCompany[] = [
       "Scope 2 shown is market-based (35,373 tCO₂e); location-based 68,391 tCO₂e. The market-based figure rose ~50% YoY due to a methodology change, not a real increase.",
       "Financed sectors (2023 data): Real Estate alignment −4.0% (on track); Steel 1.91 tCO₂/tSteel (on track to 1.68 by 2030). PCAF data-quality scoring applied.",
       "Sustainable finance: SGD 71bn committed portfolio at end-2024 (+SGD 15bn YoY); >SGD 9bn to SMEs since 2020.",
-      "Board female %: chart shows 40% (4 of ~10 directors); text notes 'more than 25% women' (CBD target met). Female senior management 38%; all-leadership 42%.",
-      "Independent directors % (exact) and community-investment SGD total are not in the SR (N/D). SF₆, system loss, injury rate N/A for a bank.",
+      "Board: 3 of 10 directors are women (30%) and 7 of 10 are independent (70%) per the FY2024 Annual Report CG section — this corrects the SR sustainability chart's '40%', which did not reconcile. Female senior management 38%; all-leadership 42%.",
+      "Community-investment SGD total is not disclosed in the SR (N/D). SF₆, system loss, injury rate N/A for a bank.",
     ],
   },
 
@@ -164,15 +171,18 @@ export const bankCompanies: PeerCompany[] = [
     reductionTarget:
       "Operational: −25% S1+2 intensity by 2030 vs 2018 (−17.9% to date). Financed-emissions net zero by 2050 across six priority sectors. Carbon-neutral operations since 2021.",
     headcount: 32_071,        // incl. Citigroup-acquired employees
-    femaleBoardPct: null,     // SR shows Management Committee (20%), not Board; Board % in Annual Report
+    femaleBoardPct: 20,        // 2 of 10 directors (FY2024 Annual Report CG section)
     femaleWorkforcePct: 62.5,
+    femaleSeniorMgmtPct: 38.4,
     trainingHoursPerEmployee: 36.6, // derived from p115 by-gender hours; report headline is "5.2 training days"
+    employeeTurnoverPct: 13.6,
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — office injury rate 0.10/100 FTE reported, not industrial LTIFR)",
     communityInvestmentNative: "SGD 16.1M",
     communityInvestmentNote:
       "SGD 16.1M monetary community contributions in FY2024 (GRI 201-1, EY-assured), incl. UOB Heartbeat Run (>SGD 3M). Avg 2.9 volunteer hours/employee.",
-    independentDirectorsPct: null,   // Board composition in Annual Report, not the SR
+    independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
+    esgLinkedExecComp: true,         // sustainability metrics embedded in Group Balanced Scorecard
     antiCorruptionTrainingPct: null, // GRI 205-2 assured; % not stated (100% info-security training reported instead)
     externalAssurance: true,
     externalAssuranceProvider: "Ernst & Young LLP Singapore (limited; ISAE 3000/3410) — financed emissions NOT assured",
@@ -185,9 +195,9 @@ export const bankCompanies: PeerCompany[] = [
       "Scope 3 (8,900 tCO₂e) is business air travel only — UOB's defined operational Scope 3 line; financed emissions tracked separately.",
       "Financed sectors (2023, all on track): Power 242 kgCO₂/MWh; Automotive 121 gCO₂/veh-km; Real estate 80 kgCO₂/m²; Construction; Steel 1.64 tCO₂/t. Methodology: PCAF + PACTA + SBTi + GFANZ.",
       "Sustainable finance: SGD 58.0bn portfolio at 31 Dec 2024 (new end-of-period basis); SGD 23.1bn extended during FY2024.",
-      "Female board %: N/D in SR (only Group Management Committee shown = 20%; Board is in the Annual Report). Female workforce 62.5%; female senior management 38.4%.",
+      "Board: 2 of 10 directors are women (20%) and 7 of 10 are independent (70%) per the FY2024 Annual Report CG section (the SR only showed the Group Management Committee). Female workforce 62.5%; female senior management 38.4%.",
       "Training: report headline is 5.2 training days/employee; ~36.6 hrs derived from the by-gender hours table. Attrition 13.6%.",
-      "Independent directors % is in the Annual Report (N/D here). SF₆, system loss, industrial LTIFR N/A for a bank.",
+      "SF₆, system loss, industrial LTIFR N/A for a bank. Anti-corruption training % not disclosed (100% information-security training reported instead).",
     ],
   },
 ];

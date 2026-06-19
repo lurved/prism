@@ -80,8 +80,14 @@ const rows: Row[] = [
     render: (c) => ({ text: fmtNum(c.femaleBoardPct, "%"), nd: c.femaleBoardPct === null }) },
   { key: "femaleWorkforce", label: "Female workforce %", view: "normalized",
     render: (c) => ({ text: fmtNum(c.femaleWorkforcePct, "%"), nd: c.femaleWorkforcePct === null }) },
+  { key: "femaleSeniorMgmt", label: "Female senior mgmt %", sublabel: "definitions vary", view: "normalized",
+    render: (c) => ({ text: fmtNum(c.femaleSeniorMgmtPct ?? null, "%"), nd: c.femaleSeniorMgmtPct == null }) },
   { key: "training", label: "Training hrs / employee", view: "normalized",
     render: (c) => ({ text: c.trainingHoursPerEmployee === null ? "N/D" : `${c.trainingHoursPerEmployee} hrs`, nd: c.trainingHoursPerEmployee === null }) },
+  { key: "turnover", label: "Employee turnover %", view: "normalized",
+    render: (c) => ({ text: fmtNum(c.employeeTurnoverPct ?? null, "%"), nd: c.employeeTurnoverPct == null }) },
+  { key: "engagement", label: "Employee engagement", view: "normalized",
+    render: (c) => ({ text: fmtNum(c.employeeEngagementScore ?? null, "%"), nd: c.employeeEngagementScore == null }) },
   { key: "injury", label: "Injury rate", sublabel: "basis differs", view: "normalized",
     render: (c) => c.naMetrics.includes("injuryMetricValue")
       ? { text: "N/A", na: true }
@@ -92,6 +98,10 @@ const rows: Row[] = [
     render: (c) => ({ text: c.communityInvestmentNative }) },
   { key: "indepDir", label: "Independent directors %", view: "normalized",
     render: (c) => ({ text: fmtNum(c.independentDirectorsPct, "%"), nd: c.independentDirectorsPct === null }) },
+  { key: "esgPay", label: "ESG-linked exec pay", view: "normalized",
+    render: (c) => c.esgLinkedExecComp == null
+      ? { text: "N/D", nd: true }
+      : { text: c.esgLinkedExecComp ? "Yes" : "No" } },
 ];
 
 interface PeerComparisonProps {

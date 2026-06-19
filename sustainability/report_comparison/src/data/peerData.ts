@@ -75,12 +75,16 @@ export interface PeerCompany {
   headcount: number | null;
   femaleBoardPct: number | null;
   femaleWorkforcePct: number | null;
+  femaleSeniorMgmtPct?: number | null;   // "senior management" definitions vary by company
   trainingHoursPerEmployee: number | null;
+  employeeTurnoverPct?: number | null;
+  employeeEngagementScore?: number | null; // % favourable
   injuryMetricValue: number | null;
   injuryMetricUnit: string;     // unit differs by company — stated explicitly
   communityInvestmentNative: string;   // native currency, as reported
   communityInvestmentNote: string;
   independentDirectorsPct: number | null;
+  esgLinkedExecComp?: boolean | null;    // exec remuneration linked to ESG/sustainability
   antiCorruptionTrainingPct: number | null;
   externalAssurance: boolean | null;
   externalAssuranceProvider: string | null;
@@ -206,6 +210,7 @@ export const peerCompanies: PeerCompany[] = [
     headcount: 8_539,            // Group (HK 5,484; Mainland 788; Australia 2,267)
     femaleBoardPct: 38,
     femaleWorkforcePct: 26.5,
+    femaleSeniorMgmtPct: 15,   // Group Executive Committee (2 of 13) — narrowest top tier; see note
     trainingHoursPerEmployee: 51.9, // Group average; HK 63.3
     injuryMetricValue: 0.04,
     injuryMetricUnit: "Lost-time injury rate per 200,000 work hours",
@@ -213,6 +218,7 @@ export const peerCompanies: PeerCompany[] = [
     communityInvestmentNote:
       "HK$240M allocated under the CLP Community Energy Saving Fund (programme allocation). A single consolidated community-investment total is not disclosed in the Annual Report.",
     independentDirectorsPct: 54,  // Independent Non-executive Directors, 13-member board
+    esgLinkedExecComp: true,   // executive scorecard weights Safety/Environmental/community
     antiCorruptionTrainingPct: null, // Ongoing fraud-risk training, but % of staff not disclosed; 0 convicted corruption cases 2021–2025
     externalAssurance: true,
     externalAssuranceProvider: "KPMG (ISAE 3000 (Revised); ISAE 3410 for GHG)",
@@ -276,13 +282,16 @@ export const peerCompanies: PeerCompany[] = [
     headcount: 33_017,         // permanent employees, 31 Mar 2026
     femaleBoardPct: 46,        // 5 of 11 directors
     femaleWorkforcePct: 25,    // 8,214 of 33,017
+    femaleSeniorMgmtPct: 44,   // 72 of 162 senior managers
     trainingHoursPerEmployee: null, // N/D in 20-F (in blocked Responsible Business databook)
+    employeeEngagementScore: 81, // Grid:Voice survey, % favourable
     injuryMetricValue: 0.11,
     injuryMetricUnit: "LTIFR per 100,000 hours worked (employees + contractors)",
     communityInvestmentNative: "£6.8M/yr",
     communityInvestmentNote:
       "Grid for Good Energy Affordability Fund: £3.5M/yr (UK) + £3.3M/yr (US) ≈ £6.8M/yr. A consolidated total community-investment figure is not disclosed in the 20-F.",
     independentDirectorsPct: 81.8, // 9 of 11 (8 independent NEDs + independent-on-appointment Chair)
+    esgLinkedExecComp: true,   // LTPP includes controllable Scope 1 reductions; APP includes LTIFR
     antiCorruptionTrainingPct: null, // mandatory e-learning confirmed; completion % not disclosed
     externalAssurance: true,
     externalAssuranceProvider: "Deloitte LLP (ISAE 3000 Revised; ISAE 3410 for GHG)",
