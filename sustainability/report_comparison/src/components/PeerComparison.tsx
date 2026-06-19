@@ -58,10 +58,16 @@ const rows: Row[] = [
       : { text: fmtT(c.sf6tCO2e), nd: c.sf6tCO2e === null } },
 
   // ── Normalized / comparable ──
-  { key: "intensity", label: "Carbon intensity", sublabel: "own denominator", view: "normalized",
+  { key: "intensity", label: "Carbon intensity", sublabel: "as reported — own unit", view: "normalized",
     render: (c) => c.intensityValue === null
       ? { text: "N/D", nd: true }
       : { text: `${c.intensityValue} ${c.intensityUnit}` } },
+  { key: "normIntensity", label: "Normalised intensity", sublabel: "kg CO₂e/kWh (S1+2) — comparable", view: "normalized",
+    render: (c) => c.naMetrics.includes("normalizedIntensityKgPerKwh")
+      ? { text: "N/A", na: true }
+      : c.normalizedIntensityKgPerKwh == null
+        ? { text: "N/D", nd: true }
+        : { text: `${c.normalizedIntensityKgPerKwh} kg CO₂e/kWh` } },
   { key: "systemLoss", label: "System / T&D loss", view: "normalized",
     render: (c) => c.naMetrics.includes("systemLossPct")
       ? { text: "N/A", na: true }
@@ -105,10 +111,12 @@ const defaultAbsoluteCaveat = (
 );
 const defaultNormalizedCaveat = (
   <>
-    <span className="font-semibold">Carbon-intensity units differ</span> — Meralco reports tCO₂e/GWh, CLP kg CO₂e/kWh,
-    and National Grid tCO₂e/£M revenue — so the intensity row is <span className="font-semibold">not cross-comparable</span>.
-    The social &amp; governance metrics below (headcount, board %, training, independent directors) <em>are</em>
-    broadly comparable.
+    <span className="font-semibold">Reported carbon-intensity units differ</span> (tCO₂e/GWh, kg CO₂e/kWh, tCO₂e/£M revenue),
+    so that row is <span className="font-semibold">not cross-comparable</span>. The <span className="font-semibold">Normalised
+    intensity</span> row converts to <span className="font-semibold">kg CO₂e/kWh (Scope 1+2)</span> where it&apos;s directly
+    disclosed or an exact conversion — comparable for Meralco (0.134) and CLP (0.58); National Grid is N/D (a T&amp;D operator
+    that doesn&apos;t disclose total electricity throughput, so a per-kWh value can&apos;t be derived without inventing the
+    denominator). Social &amp; governance metrics below <em>are</em> broadly comparable.
   </>
 );
 

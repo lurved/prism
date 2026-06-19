@@ -61,7 +61,7 @@ export const bankCompanies: PeerCompany[] = [
     externalAssurance: true,
     externalAssuranceProvider: "PwC Singapore (limited; SSAE 3000/3410) — financed emissions NOT assured",
     frameworks: ["GRI 2021", "TCFD", "SASB", "IFRS S2"],
-    naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue"],
+    naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
     dataNotes: [
       "Universal bank: operational emissions (83,784 tCO₂e incl. operational Scope 3) are tiny vs FINANCED emissions, which dominate but are NOT aggregated into one figure — DBS discloses per-sector intensity/absolute targets only.",
       "Scope 2 shown is market-based (26,322 tCO₂e); location-based is 50,889 tCO₂e (difference = RECs in HK/China/India/Indonesia).",
@@ -119,7 +119,7 @@ export const bankCompanies: PeerCompany[] = [
     externalAssurance: true,
     externalAssuranceProvider: "PwC Singapore (limited; SSAE 3000/3410) — financed emissions NOT assured",
     frameworks: ["GRI 2021", "TCFD", "SASB", "UN SDGs"],
-    naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue"],
+    naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
     dataNotes: [
       "Universal bank: operational emissions (38,980 tCO₂e market-based) are immaterial vs financed emissions, which are tracked by sector but not published as one aggregate figure.",
       "Financed-emissions progress uses 2023 measurement-year data (standard PCAF one-year lag); operational data is FY2024.",
@@ -177,7 +177,7 @@ export const bankCompanies: PeerCompany[] = [
     externalAssurance: true,
     externalAssuranceProvider: "Ernst & Young LLP Singapore (limited; ISAE 3000/3410) — financed emissions NOT assured",
     frameworks: ["GRI 2021", "TCFD", "IFRS S1", "PCAF", "SBTi", "UN SDGs"],
-    naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue"],
+    naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
     dataNotes: [
       "Universal bank: operational emissions (15,800 tCO₂e market-based; 87,700 location-based) are immaterial vs financed emissions. UOB has been operationally carbon-neutral every year since 2021.",
       "Financed-emissions progress uses 2023 data (PCAF lag); no single aggregate financed-emissions figure is disclosed.",

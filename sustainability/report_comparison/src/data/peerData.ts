@@ -55,6 +55,13 @@ export interface PeerCompany {
   intensityValue: number | null;
   intensityUnit: string;        // e.g. "tCO2e/GWh", "tCO2e/S$M revenue", "kg CO2e/kWh"
 
+  // ── Normalised intensity (kg CO2e/kWh, Scope 1+2) for cross-company comparison ──
+  // Only set where it is directly disclosed or an exact unit conversion of a
+  // disclosed figure (never derived by inventing a denominator). undefined/null = N/D;
+  // add "normalizedIntensityKgPerKwh" to naMetrics where the metric doesn't apply (e.g. banks).
+  normalizedIntensityKgPerKwh?: number | null;
+  normalizedIntensityNote?: string;
+
   // ── Grid-specific (N/A for non-grid) ──
   sf6tCO2e: number | null;
   systemLossPct: number | null;
@@ -114,6 +121,8 @@ export const peerCompanies: PeerCompany[] = [
     scope2Basis: "Location-based (energy purchased) + system loss",
     intensityValue: 134,         // combined Scope 1+2 emission intensity
     intensityUnit: "tCO2e/GWh (S1+2)",
+    normalizedIntensityKgPerKwh: 0.134, // exact conversion of 134 tCO2e/GWh (S1+2)
+    normalizedIntensityNote: "Exact unit conversion of the reported 134 tCO₂e/GWh (Scope 1+2): 134 tCO₂e/GWh = 0.134 kg CO₂e/kWh.",
     sf6tCO2e: 4_208,             // 4,207.90 tCO2e (166.98 kg SF6)
     systemLossPct: 5.99,         // 2024, below the 6.50% regulatory cap
     renewableNote:
@@ -185,6 +194,8 @@ export const peerCompanies: PeerCompany[] = [
     scope2Basis: "N/D (single Scope 2 figure; location/market basis not labelled)",
     intensityValue: 0.50,        // kg CO2e/kWh — S1+S2+S3(Cat3), equity + long-term capacity/energy-purchase basis (S1+S2-only = 0.58)
     intensityUnit: "kg CO2e/kWh (S1+2+S3 Cat3)",
+    normalizedIntensityKgPerKwh: 0.58, // reported S1+2 equity-only intensity (matches Meralco's S1+2 basis)
+    normalizedIntensityNote: "CLP's reported S1+2 equity-only intensity, used here for a like-for-like Scope 1+2 basis (its headline 0.50 includes Scope 3 Cat 3).",
     sf6tCO2e: null,              // SF6 disclosed as MASS (3 t SF6), not tCO2e — see dataNotes
     systemLossPct: null,         // N/D — CLP discloses reliability indices, not a network-loss %
     renewableNote:
