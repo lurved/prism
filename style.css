@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
   --pink: #f4a7a7;
@@ -103,9 +103,10 @@ nav ul a.active { color: var(--pink-mid); font-weight: 600; }
 }
 
 .hero h1 {
+  font-family: 'Instrument Serif', Georgia, serif;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  font-weight: 400;
+  letter-spacing: -0.02em;
   line-height: 0.95;
   color: var(--navy);
   margin-bottom: 2rem;
