@@ -16,7 +16,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
-h2 { font-family: 'Instrument Serif', Georgia, serif; }
+h2 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; letter-spacing: -0.01em; line-height: 1.1; }
 
 body {
   font-family: var(--font);
@@ -108,8 +108,8 @@ nav ul a.active { color: var(--pink-mid); font-weight: 600; }
   font-family: 'Instrument Serif', Georgia, serif;
   font-size: clamp(2.4rem, 6vw, 4.5rem);
   font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
   color: var(--navy);
   margin-bottom: 2rem;
   word-break: break-word;
