@@ -16,7 +16,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; overflow-x: hidden; }
 
-h2 { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; }
+h2 { font-family: 'Instrument Serif', Georgia, serif; }
 
 body {
   font-family: var(--font);
@@ -585,7 +585,17 @@ nav ul a.active { color: var(--pink-mid); font-weight: 600; }
 /* CONTACT — pink block */
 .section-contact {
   background: var(--pink);
-  padding: 8rem 2.5rem;
+  padding: 8rem 2.5rem 4rem;
+}
+
+.copyright {
+  text-align: center;
+  font-size: 0.8rem;
+  opacity: 0.45;
+  color: var(--navy);
+  padding-top: 3rem;
+  max-width: none !important;
+  margin: 0;
 }
 
 .contact-inner {
