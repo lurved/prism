@@ -22,9 +22,9 @@ window.TM.AXES = [
     left: { letter: "E", label: "Extrovert", desc: "Comes alive around people — energy goes up in a crowd." },
     right: { letter: "I", label: "Introvert", desc: "Recharges in smaller doses — depth over crowd." },
     splitDesc: "Reads social to some friends, private to others.",
-    prompt: "At a party, they're —",
-    a: { letter: "E", text: "working the room" },
-    b: { letter: "I", text: "deep in one conversation in the corner" },
+    prompt: "In group settings, they eventually —",
+    a: { letter: "E", text: "get louder and brighter" },
+    b: { letter: "I", text: "visibly start to fade" },
   },
   {
     key: "SN",
