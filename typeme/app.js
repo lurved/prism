@@ -384,18 +384,12 @@
       else copyLink();
     }
 
-    const card = el("div", { style: { marginTop: "16px", border: `1px solid ${C.hair}`, borderRadius: "16px", overflow: "hidden", background: C.card } },
-      el("img", { src: `/api/typeme/og?slug=${encodeURIComponent(slug)}`, alt: "Share card preview", style: { width: "100%", display: "block", background: C.paper, aspectRatio: "1200 / 630" } }),
-      el("div", { style: { padding: "12px 14px", fontSize: "12px", color: C.muted, lineHeight: "1.5" } },
-        hasResult ? "This is what spreads when people open your link." : "This is what your friends see when you send the link."));
-
     return el("div", { class: "rise" },
       el("div", { style: { fontSize: "15px", color: C.ink, fontWeight: "600", marginBottom: "4px" } }, "This is your page."),
       el("p", { style: { fontSize: "14px", color: C.muted, lineHeight: "1.5", margin: "0 0 14px", maxWidth: "380px" } },
         hasResult ? "Send the link to more friends to sharpen the read — three is the magic number." : "You can't type yourself — send this to a few friends and watch the spread fill in."),
       copyBtn,
       navigator.share ? el("button", { class: "link-quiet", style: { display: "block", margin: "14px auto 0", textDecoration: "none" }, onclick: nativeShare }, "or share…") : null,
-      card,
       hasResult ? resetControl(slug, data.raterCount) : null);
   }
 
