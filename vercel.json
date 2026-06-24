@@ -5,6 +5,10 @@
       "dest": "/about.html"
     },
     {
+      "src": "/sides",
+      "dest": "/sides/index.html"
+    },
+    {
       "src": "/typeme/u/([^/]+)/rate/?",
       "dest": "/api/typeme/hub?slug=$1&mode=rate"
     },
