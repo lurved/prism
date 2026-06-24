@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Opposites Attract — pick a side</title>
+<meta name="description" content="An icebreaker in four escalating rounds. Two choices, one question at a time — walk to your side of the room." />
+<meta name="theme-color" content="#161310" />
+<link rel="canonical" href="https://pris.la/sides" />
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Opposites Attract — pick a side" />
+<meta property="og:description" content="An icebreaker in four escalating rounds. Two choices, one question at a time — walk to your side of the room." />
+<meta property="og:url" content="https://pris.la/sides" />
+<meta property="og:site_name" content="pris.la" />
+<meta property="og:image" content="https://pris.la/sides/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Opposites Attract — pick a side" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://pris.la/sides/og.png" />
+<meta name="twitter:title" content="Opposites Attract — pick a side" />
+<meta name="twitter:description" content="Two choices, one question at a time — walk to your side of the room." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='50' height='100' fill='%23FFB44A'/%3E%3Crect x='50' width='50' height='100' fill='%2357C4C2'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161310;
+    --seam: #161310;
+    --left-bg:#FFB44A; --left-ink:#3A2306;
+    --right-bg:#57C4C2; --right-ink:#06302F;
+    --accent:#FFB44A;
+    --t: 480ms;
+    --ease: cubic-bezier(.16,.84,.34,1);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--ink);
+    color:#fff;
+    font-family:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    user-select:none;
+  }
+  .mono{ font-family:"Space Mono",ui-monospace,monospace; }
+
+  #app{ position:fixed; inset:0; }
+
+  /* ---------- top + bottom chrome ---------- */
+  .bar{
+    position:absolute; left:0; right:0; z-index:40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: clamp(14px,2.2vh,26px) clamp(18px,3vw,40px);
+    pointer-events:none;
+    transition: opacity .4s ease;
+  }
+  .bar.top{ top:0; }
+  .bar.bottom{ bottom:0; }
+  .eyebrow{
+    font-family:"Space Mono",monospace; font-weight:700;
+    font-size:clamp(10px,1.5vw,15px); letter-spacing:.18em; text-transform:uppercase;
+    color:#fff; opacity:.92;
+    display:flex; align-items:center; gap:.7em;
+  }
+  .eyebrow .dot{ width:.55em; height:.55em; border-radius:50%; background:var(--accent); box-shadow:0 0 14px var(--accent); }
+  .count{ font-family:"Space Mono",monospace; font-weight:700; font-size:clamp(11px,1.6vw,16px); letter-spacing:.1em; opacity:.92; }
+  .conf{ font-family:"Space Mono",monospace; font-size:clamp(9px,1.2vw,12px); letter-spacing:.22em; text-transform:uppercase; opacity:.4; }
+
+  /* progress segments */
+  .progress{ display:flex; gap:6px; pointer-events:auto; }
+  .seg{ display:flex; gap:4px; }
+  .seg b{
+    display:block; width:clamp(10px,1.4vw,20px); height:5px; border-radius:3px;
+    background:rgba(255,255,255,.18); transition:background .3s ease, transform .3s ease;
+  }
+  .seg b.done{ background:rgba(255,255,255,.5); }
+  .seg b.now{ background:var(--accent); transform:scaleY(1.8); box-shadow:0 0 12px var(--accent); }
+  .seg-label{ font-family:"Space Mono",monospace; font-size:10px; letter-spacing:.1em; opacity:.45; margin-right:4px; align-self:center; }
+
+  .controls{ display:flex; align-items:center; gap:10px; pointer-events:auto; }
+  .btn{
+    pointer-events:auto; cursor:pointer; border:1px solid rgba(255,255,255,.22);
+    background:rgba(255,255,255,.04); color:#fff;
+    font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.06em;
+    font-size:clamp(11px,1.4vw,14px); border-radius:999px;
+    padding:.55em 1.05em; line-height:1; transition:background .2s ease, border-color .2s ease, transform .15s ease;
+  }
+  .btn:hover{ background:rgba(255,255,255,.13); border-color:rgba(255,255,255,.5); }
+  .btn:active{ transform:translateY(1px); }
+  .btn.icon{ padding:.5em .7em; }
+
+  /* ---------- the split stage ---------- */
+  .stage{ position:absolute; inset:0; display:flex; }
+  .side{
+    position:relative; flex:1 1 50%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: clamp(70px,11vh,130px) clamp(24px,4vw,70px);
+    transition: background-color var(--t) var(--ease);
+    will-change: transform;
+  }
+  .side.left{ background:var(--left-bg); color:var(--left-ink); }
+  .side.right{ background:var(--right-bg); color:var(--right-ink); }
+  .seam{
+    width:clamp(5px,.7vw,9px); background:var(--seam); position:relative; z-index:5;
+    flex:0 0 auto;
+  }
+  .seam::after{
+    content:""; position:absolute; inset:-2px -1px; 
+    background:linear-gradient(180deg,transparent, rgba(255,255,255,.07), transparent);
+  }
+
+  .opt{
+    font-weight:800; line-height:.94; letter-spacing:-.01em;
+    font-size: clamp(2.4rem, min(8.5vw, 15vh), 8.5rem);
+    text-wrap:balance; max-width:14ch;
+  }
+  .opt .sm{ font-size:.5em; font-weight:700; }
+  .side .hint{
+    margin-top: clamp(18px,3.5vh,40px);
+    font-family:"Space Mono",monospace; font-weight:700;
+    font-size:clamp(11px,1.5vw,16px); letter-spacing:.2em; text-transform:uppercase;
+    opacity:.62; display:flex; align-items:center; gap:.5em;
+  }
+  .side .arrow{ font-size:1.3em; }
+
+  /* shared prompt banner for "would you rather" style questions */
+  .prompt{
+    position:absolute; top:0; left:0; right:0; z-index:30;
+    display:flex; justify-content:center;
+    padding: clamp(58px,9vh,96px) 16px 0;
+    pointer-events:none;
+    opacity:0; transition:opacity .4s ease .15s;
+  }
+  .prompt.show{ opacity:1; }
+  .prompt span{
+    background:var(--ink); color:#fff; border-radius:999px;
+    padding:.6em 1.4em; line-height:1.1;
+    font-weight:700; font-size:clamp(1rem,2.6vw,1.9rem); letter-spacing:-.01em;
+    box-shadow:0 8px 40px rgba(0,0,0,.45); border:1px solid rgba(255,255,255,.1);
+    text-align:center; max-width:90vw;
+  }
+
+  /* slide-in clash animation */
+  .stage.anim-left .side.left{ animation:inL var(--t) var(--ease) both; }
+  .stage.anim-left .side.right{ animation:inR var(--t) var(--ease) both; }
+  @keyframes inL{ from{ transform:translateX(-104%);} to{ transform:translateX(0);} }
+  @keyframes inR{ from{ transform:translateX(104%);} to{ transform:translateX(0);} }
+
+  /* ---------- full-screen overlays (cover / level / howto) ---------- */
+  .overlay{
+    position:absolute; inset:0; z-index:50;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: clamp(40px,7vh,90px) clamp(24px,5vw,80px);
+    background:var(--ink);
+  }
+  .overlay.hidden{ display:none; }
+
+  /* cover */
+  .cover-title{
+    display:flex; flex-direction:column; align-items:center; line-height:.86;
+    font-weight:800; letter-spacing:-.02em;
+  }
+  .cover-title .a{ color:var(--left-bg); font-size:clamp(3.2rem,15vw,12rem); }
+  .cover-title .b{ color:var(--right-bg); font-size:clamp(3.2rem,15vw,12rem); }
+  .cover-rule{ width:min(70vw,640px); height:1px; background:rgba(255,255,255,.18); margin:clamp(20px,4vh,40px) 0; }
+  .cover-sub{ font-family:"Space Mono",monospace; letter-spacing:.16em; text-transform:uppercase; font-size:clamp(11px,1.7vw,16px); opacity:.7; }
+  .cover-cta{ margin-top:clamp(26px,5vh,52px); }
+
+  /* level intro */
+  .lv-eyebrow{ font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.3em; text-transform:uppercase; font-size:clamp(12px,2vw,20px); opacity:.85; margin-bottom:.6em; color:var(--accent); }
+  .lv-num{ font-weight:800; font-size:clamp(5rem,26vw,22rem); line-height:.8; color:var(--accent); opacity:.16; position:absolute; z-index:0; }
+  .lv-title{ position:relative; z-index:1; font-weight:800; letter-spacing:-.02em; font-size:clamp(2.4rem,9vw,7rem); line-height:.95; text-wrap:balance; max-width:16ch; }
+  .lv-tag{ position:relative; z-index:1; margin-top:.7em; font-family:"Space Mono",monospace; letter-spacing:.12em; text-transform:uppercase; font-size:clamp(12px,2vw,18px); opacity:.7; }
+
+  /* how to play */
+  .howto h2{ font-weight:800; font-size:clamp(2rem,7vw,5rem); letter-spacing:-.02em; margin-bottom:clamp(24px,5vh,48px); }
+  .rules{ display:flex; flex-direction:column; gap:clamp(14px,2.4vh,26px); max-width:880px; text-align:left; }
+  .rule{ display:flex; gap:clamp(14px,2.5vw,28px); align-items:flex-start; }
+  .rule .n{ font-family:"Space Mono",monospace; font-weight:700; color:var(--accent); font-size:clamp(14px,2vw,22px); padding-top:.18em; min-width:1.6em; }
+  .rule p{ font-size:clamp(1.05rem,2.8vw,2rem); line-height:1.25; font-weight:600; }
+  .rule p em{ font-style:normal; color:var(--accent); }
+
+  /* ---------- menu overlay ---------- */
+  #menu{ position:absolute; inset:0; z-index:80; background:rgba(12,10,8,.94); backdrop-filter:blur(8px); display:none; padding:clamp(28px,5vh,60px); overflow:auto; }
+  #menu.open{ display:block; }
+  .menu-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:clamp(20px,4vh,40px); }
+  .menu-head h3{ font-weight:800; font-size:clamp(1.5rem,4vw,2.6rem); }
+  .menu-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:18px; max-width:1300px; margin:0 auto; }
+  .lvcard{ border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:18px; }
+  .lvcard h4{ font-family:"Space Mono",monospace; font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.7; margin-bottom:14px; }
+  .qitem{ display:block; width:100%; text-align:left; background:none; border:0; color:#fff; cursor:pointer; padding:9px 10px; border-radius:9px; font-weight:600; font-size:clamp(.95rem,1.5vw,1.1rem); transition:background .15s ease; }
+  .qitem:hover{ background:rgba(255,255,255,.09); }
+  .qitem .vs{ opacity:.45; font-weight:400; padding:0 .4em; }
+
+  /* control hint toast */
+  #hint{
+    position:absolute; left:50%; bottom:clamp(70px,11vh,110px); transform:translateX(-50%);
+    z-index:60; font-family:"Space Mono",monospace; font-size:clamp(10px,1.4vw,13px); letter-spacing:.08em;
+    color:#fff; background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.12);
+    padding:.5em 1em; border-radius:999px; opacity:0; transition:opacity .5s ease; pointer-events:none;
+  }
+  #hint.show{ opacity:.85; }
+  #hint b{ color:var(--accent); }
+
+  @media (max-width:760px){
+    .controls .lbl{ display:none; }
+    .conf{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stage.anim-left .side.left,
+    .stage.anim-left .side.right{ animation:fade var(--t) ease both; }
+    @keyframes fade{ from{opacity:.2;} to{opacity:1;} }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- top bar -->
+  <div class="bar top" id="topbar">
+    <div class="eyebrow"><span class="dot"></span><span id="lvlLabel">Opposites Attract</span></div>
+    <div class="count" id="countLabel"></div>
+  </div>
+
+  <!-- the split stage -->
+  <div class="stage" id="stage">
+    <div class="side left" id="sideL">
+      <div class="opt" id="optL">Cats</div>
+      <div class="hint"><span class="arrow">←</span> This side</div>
+    </div>
+    <div class="seam"></div>
+    <div class="side right" id="sideR">
+      <div class="opt" id="optR">Dogs</div>
+      <div class="hint">This side <span class="arrow">→</span></div>
+    </div>
+  </div>
+  <div class="prompt" id="prompt"><span id="promptText"></span></div>
+
+  <!-- bottom bar -->
+  <div class="bar bottom" id="bottombar">
+    <div class="progress" id="progress"></div>
+    <div class="controls">
+      <span class="conf">SP Group · SP Digital · Confidential</span>
+      <button class="btn icon" id="prevBtn" title="Previous (←)">‹</button>
+      <button class="btn icon" id="menuBtn" title="Jump to… (M)">☰</button>
+      <button class="btn" id="fsBtn" title="Fullscreen (F)"><span class="lbl">Fullscreen</span><span style="display:none">F</span></button>
+      <button class="btn" id="nextBtn" title="Next (→ / Space)">Next ›</button>
+    </div>
+  </div>
+
+  <!-- overlays -->
+  <div class="overlay" id="ovCover">
+    <div class="cover-title"><span class="a">Opposites</span><span class="b">Attract</span></div>
+    <div class="cover-rule"></div>
+    <div class="cover-sub">An icebreaker in four escalating rounds</div>
+    <div class="cover-cta"><button class="btn" id="startBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Start ›</button></div>
+  </div>
+
+  <div class="overlay hidden" id="ovHowto">
+    <div class="howto">
+      <h2>How it works</h2>
+      <div class="rules">
+        <div class="rule"><span class="n">01</span><p>Each round shows <em>two choices.</em> Pick the one you resonate with.</p></div>
+        <div class="rule"><span class="n">02</span><p>Walk to that <em>side of the room</em> — left or right.</p></div>
+        <div class="rule"><span class="n">03</span><p>Four levels, getting spicier each round. The last one <em>might start wars.</em></p></div>
+      </div>
+      <div class="cover-cta" style="margin-top:clamp(30px,6vh,56px)"><button class="btn" id="howtoBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Let's go ›</button></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="ovLevel">
+    <div class="lv-num" id="lvNum">1</div>
+    <div class="lv-eyebrow" id="lvEyebrow">Level 1</div>
+    <div class="lv-title" id="lvTitle">Warm Up</div>
+    <div class="lv-tag" id="lvTag"></div>
+  </div>
+
+  <!-- jump menu -->
+  <div id="menu">
+    <div class="menu-head">
+      <h3>Jump to a question</h3>
+      <button class="btn" id="menuClose">Close ✕</button>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+
+  <div id="hint"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- content (faithful to the deck) ----
+  const levels = [
+    { id:1, title:"Warm Up",                tag:"Easing in",                pal:{ lbg:"#FFB44A", link:"#3A2306", rbg:"#57C4C2", rink:"#06302F", acc:"#FFB44A" } },
+    { id:2, title:"Just Getting Started",    tag:"Picking up the pace",      pal:{ lbg:"#FF8A3C", link:"#381704", rbg:"#3FA7E0", rink:"#042235", acc:"#FF8A3C" } },
+    { id:3, title:"Why!? How Interesting!",  tag:"Now we're talking",        pal:{ lbg:"#FF5B57", link:"#FFFFFF", rbg:"#8A78F0", rink:"#FFFFFF", acc:"#FF7A77" } },
+    { id:4, title:"Might Start Wars",        tag:"Only for the open-minded", pal:{ lbg:"#E0282B", link:"#FFFFFF", rbg:"#574099", rink:"#FFFFFF", acc:"#FF6166" } },
+  ];
+
+  const questions = [
+    { lvl:1, l:"Cats",  r:"Dogs" },
+    { lvl:1, l:"Sweet", r:"Savoury" },
+    { lvl:1, l:"Morning person", r:"Night owl" },
+    { lvl:1, l:"Morning person", r:"Night owl" },
+    { lvl:1, l:"Coffee",r:"Tea" },
+    { lvl:1, l:"City",  r:"Nature" },
+
+    { lvl:2, l:"Eat at home",        r:"Dine out" },
+    { lvl:2, l:"I love surprises",   r:"Don't surprise me" },
+    { lvl:2, l:"Kids",               r:"Pets" },
+    { lvl:2, l:"Tattoos",            r:"Piercings" },
+
+    { lvl:3, l:"A week in the forest",          r:"A night in a haunted house" },
+    { lvl:3, l:"See 200 years into the future", r:"See 200 years back in history" },
+    { lvl:3, l:"I am cute",                     r:"I am charming" },
+    { lvl:3, l:"Talk to animals",               r:"Speak 10 languages" },
+    { lvl:3, l:"Money",                         r:"Fame" },
+    { lvl:3, l:"Golden Voice",                  r:"Silver Tongue" },
+    { lvl:3, l:"Only go out in the day",        r:"Only go out at night" },
+    { lvl:3, l:"Dumb Supermodel",               r:"Ugly Genius" },
+
+    { lvl:4, l:"All your text messages", r:"All your photos", prompt:"Would you rather let your colleagues see…" },
+    { lvl:4, l:"Pineapple on pizza",   r:"Hawaiian is a crime" },
+    { lvl:4, l:"My mum",                 r:"My spouse", prompt:"Who would you save?" },
+    { lvl:4, l:"Pepper Crab",            r:"Chili Crab" },
+  ];
+
+  const totalQ = questions.length;
+  const lvlById = id => levels.find(L=>L.id===id);
+
+  // ---- build the flat slide deck: cover, howto, [level, q, q...] ----
+  const slides = [];
+  slides.push({ type:"cover" });
+  slides.push({ type:"howto" });
+  let shownLevels = new Set();
+  questions.forEach((q, qi)=>{
+    if(!shownLevels.has(q.lvl)){ slides.push({ type:"level", lvl:q.lvl }); shownLevels.add(q.lvl); }
+    slides.push({ type:"q", qi:qi });
+  });
+
+  // ---- elements ----
+  const $ = s => document.querySelector(s);
+  const stage=$("#stage"), sideL=$("#sideL"), sideR=$("#sideR"), optL=$("#optL"), optR=$("#optR");
+  const promptEl=$("#prompt"), promptText=$("#promptText");
+  const topbar=$("#topbar"), bottombar=$("#bottombar"), lvlLabel=$("#lvlLabel"), countLabel=$("#countLabel");
+  const progress=$("#progress");
+  const ovCover=$("#ovCover"), ovHowto=$("#ovHowto"), ovLevel=$("#ovLevel");
+  const lvNum=$("#lvNum"), lvEyebrow=$("#lvEyebrow"), lvTitle=$("#lvTitle"), lvTag=$("#lvTag");
+  const hint=$("#hint");
+  const menu=$("#menu"), menuGrid=$("#menuGrid");
+
+  const root=document.documentElement.style;
+  let idx = 0;
+
+  function applyPalette(p){
+    root.setProperty("--left-bg",p.lbg); root.setProperty("--left-ink",p.link);
+    root.setProperty("--right-bg",p.rbg); root.setProperty("--right-ink",p.rink);
+    root.setProperty("--accent",p.acc); root.setProperty("--seam","#161310");
+  }
+
+  function setOverlays(active){
+    ovCover.classList.toggle("hidden", active!=="cover");
+    ovHowto.classList.toggle("hidden", active!=="howto");
+    ovLevel.classList.toggle("hidden", active!=="level");
+    const chromeHidden = (active==="cover");
+    topbar.style.opacity = chromeHidden ? "0":"1";
+  }
+
+  function questionNumber(qi){
+    return qi+1; // 1-based global
+  }
+
+  function buildProgress(currentQi){
+    progress.innerHTML="";
+    levels.forEach(L=>{
+      const idxs = questions.map((q,i)=>q.lvl===L.id?i:-1).filter(i=>i>=0);
+      const label=document.createElement("span"); label.className="seg-label mono"; label.textContent="L"+L.id;
+      const seg=document.createElement("div"); seg.className="seg";
+      idxs.forEach(i=>{
+        const b=document.createElement("b");
+        if(currentQi!=null){
+          if(i<currentQi) b.classList.add("done");
+          else if(i===currentQi) b.classList.add("now");
+        }
+        seg.appendChild(b);
+      });
+      progress.appendChild(label); progress.appendChild(seg);
+    });
+  }
+
+  function animateClash(){
+    stage.classList.remove("anim-left");
+    void stage.offsetWidth; // reflow
+    stage.classList.add("anim-left");
+  }
+
+  function render(){
+    const s = slides[idx];
+
+    if(s.type==="cover"){
+      applyPalette(lvlById(1).pal);
+      setOverlays("cover");
+      bottombar.style.opacity="1";
+      buildProgress(null);
+      countLabel.textContent="";
+      lvlLabel.textContent="Opposites Attract";
+      return;
+    }
+    if(s.type==="howto"){
+      applyPalette(lvlById(1).pal);
+      setOverlays("howto");
+      buildProgress(null);
+      countLabel.textContent="How to play";
+      lvlLabel.textContent="Opposites Attract";
+      return;
+    }
+    if(s.type==="level"){
+      const L=lvlById(s.lvl);
+      applyPalette(L.pal);
+      setOverlays("level");
+      lvNum.textContent=L.id;
+      lvEyebrow.textContent="Level "+L.id;
+      lvTitle.textContent=L.title;
+      lvTag.textContent=L.tag;
+      lvlLabel.textContent="Level "+L.id+" · "+L.title;
+      countLabel.textContent="";
+      buildProgress(null);
+      return;
+    }
+    // question
+    const q=questions[s.qi];
+    const L=lvlById(q.lvl);
+    applyPalette(L.pal);
+    setOverlays(null);
+    optL.textContent=q.l;
+    optR.textContent=q.r;
+    if(q.prompt){ promptText.textContent=q.prompt; promptEl.classList.add("show"); }
+    else { promptEl.classList.remove("show"); }
+    lvlLabel.textContent="Level "+L.id+" · "+L.title;
+    countLabel.textContent = String(questionNumber(s.qi)).padStart(2,"0")+" / "+totalQ;
+    buildProgress(s.qi);
+    animateClash();
+  }
+
+  function go(n){
+    idx = Math.max(0, Math.min(slides.length-1, n));
+    render();
+  }
+  function next(){ if(idx<slides.length-1) go(idx+1); }
+  function prev(){ if(idx>0) go(idx-1); }
+
+  // ---- jump menu ----
+  function buildMenu(){
+    menuGrid.innerHTML="";
+    levels.forEach(L=>{
+      const card=document.createElement("div"); card.className="lvcard";
+      const h=document.createElement("h4"); h.textContent="Level "+L.id+" · "+L.title; card.appendChild(h);
+      questions.forEach((q,qi)=>{
+        if(q.lvl!==L.id) return;
+        const b=document.createElement("button"); b.className="qitem";
+        b.innerHTML = (q.prompt?("<span class='vs' style='opacity:.55'>"+q.prompt+" </span><br>"):"") +
+                      escapeHtml(q.l)+"<span class='vs'>vs</span>"+escapeHtml(q.r);
+        b.addEventListener("click",()=>{
+          const slideIndex = slides.findIndex(s=>s.type==="q"&&s.qi===qi);
+          closeMenu(); go(slideIndex);
+        });
+        card.appendChild(b);
+      });
+      menuGrid.appendChild(card);
+    });
+  }
+  function escapeHtml(t){ return t.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+  function openMenu(){ buildMenu(); menu.classList.add("open"); }
+  function closeMenu(){ menu.classList.remove("open"); }
+
+  // ---- fullscreen ----
+  function toggleFs(){
+    if(!document.fullscreenElement){ document.documentElement.requestFullscreen?.(); }
+    else { document.exitFullscreen?.(); }
+  }
+
+  // ---- hint toast ----
+  let hintTimer;
+  function showHint(html){
+    hint.innerHTML=html; hint.classList.add("show");
+    clearTimeout(hintTimer); hintTimer=setTimeout(()=>hint.classList.remove("show"),3200);
+  }
+
+  // ---- events ----
+  $("#startBtn").addEventListener("click",next);
+  $("#howtoBtn").addEventListener("click",next);
+  $("#nextBtn").addEventListener("click",next);
+  $("#prevBtn").addEventListener("click",prev);
+  $("#menuBtn").addEventListener("click",openMenu);
+  $("#menuClose").addEventListener("click",closeMenu);
+  $("#fsBtn").addEventListener("click",toggleFs);
+
+  // click anywhere on the stage area to advance (not on chrome buttons / menu)
+  stage.addEventListener("click",next);
+  ovCover.addEventListener("click",e=>{ if(e.target===ovCover) next(); });
+  ovHowto.addEventListener("click",e=>{ if(e.target===ovHowto) next(); });
+  ovLevel.addEventListener("click",next);
+
+  document.addEventListener("keydown",e=>{
+    if(menu.classList.contains("open")){ if(e.key==="Escape"||e.key==="m"||e.key==="M") closeMenu(); return; }
+    switch(e.key){
+      case "ArrowRight": case " ": case "Enter": case "PageDown": e.preventDefault(); next(); break;
+      case "ArrowLeft": case "PageUp": e.preventDefault(); prev(); break;
+      case "f": case "F": toggleFs(); break;
+      case "m": case "M": openMenu(); break;
+      case "1": go(slides.findIndex(s=>s.type==="level"&&s.lvl===1)); break;
+      case "2": go(slides.findIndex(s=>s.type==="level"&&s.lvl===2)); break;
+      case "3": go(slides.findIndex(s=>s.type==="level"&&s.lvl===3)); break;
+      case "4": go(slides.findIndex(s=>s.type==="level"&&s.lvl===4)); break;
+      case "Home": go(0); break;
+    }
+  });
+
+  // first paint
+  render();
+  setTimeout(()=>showHint("<b>→</b> or <b>Space</b> next · <b>←</b> back · <b>F</b> fullscreen · <b>M</b> jump"),700);
+
+})();
+</script>
+</body>
+</html>
