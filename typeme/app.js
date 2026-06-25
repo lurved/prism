@@ -183,6 +183,7 @@
       try {
         const { slug, ownerToken } = await API.createSubject(name.trim());
         store.setOwnerToken(slug, ownerToken);
+        if (window.track) window.track("link_created");
         navigate(`/typeme/u/${slug}`);
       } catch (err) {
         busy = false; btn.disabled = false; btn.textContent = "Create my link";
@@ -216,6 +217,7 @@
     if (!data) { mount(notFoundView()); return; }
 
     const { name, raterCount, isOwner } = data;
+    if (window.track && raterCount > 0) window.track("result_viewed", { raters: raterCount, isOwner: !!isOwner });
     const ratedAlready = store.hasRated(slug, data.round);
     const showReveal = justRated;
     justRated = false;
@@ -376,11 +378,11 @@
     const copyBtn = el("button", { class: "btn-accent", style: { fontSize: "15px", padding: "15px" }, onclick: copyLink }, "Copy your link");
 
     async function copyLink() {
-      try { await navigator.clipboard.writeText(link); toast("Link copied — send “type me 👀”"); }
+      try { await navigator.clipboard.writeText(link); toast("Link copied — send “type me 👀”"); if (window.track) window.track("link_copied"); }
       catch { toast(link); }
     }
     function nativeShare() {
-      if (navigator.share) navigator.share({ title: "Type Me", text: "type me 👀", url: link }).catch(() => {});
+      if (navigator.share) { navigator.share({ title: "Type Me", text: "type me 👀", url: link }).catch(() => {}); if (window.track) window.track("link_shared"); }
       else copyLink();
     }
 
@@ -441,6 +443,7 @@
     // already rated this round → straight to the reveal
     if (store.hasRated(slug, data.round)) { navigate(`/typeme/u/${slug}`); return; }
 
+    if (window.track) window.track("rate_started");
     let step = 0;
     const answers = {};
     let locked = false;
@@ -460,6 +463,7 @@
       try {
         await API.addRating(slug, answers);
         store.markRated(slug, data.round);
+        if (window.track) window.track("friend_rated");
         navigate(`/typeme/u/${slug}`, { justRated: true });
       } catch (err) {
         toast(err.message || "Couldn't submit.");
