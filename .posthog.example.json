@@ -1,0 +1,6 @@
+{
+  "_comment": "Copy to .posthog.json (gitignored) and fill in. The personalApiKey is a READ key (phx_...) created in PostHog → Settings → Personal API keys, with the 'query:read' scope. projectId can be the literal string '@current' (resolves to the key's own project — needs no extra scope) or the numeric id from Settings → Project.",
+  "personalApiKey": "phx_REPLACE_ME",
+  "projectId": "@current",
+  "host": "https://us.posthog.com"
+}
