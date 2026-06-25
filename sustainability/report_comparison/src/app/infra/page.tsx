@@ -2,10 +2,9 @@ import { PeerComparison } from "@/components/PeerComparison";
 import { PeerSnapshot } from "@/components/PeerSnapshot";
 import { PeerEmissionsChart } from "@/components/PeerEmissionsChart";
 import { PeerCompanyCard } from "@/components/PeerCompanyCard";
-import { SectionHeading } from "@/components/ui/section";
-import { RequestCta } from "@/components/RequestCta";
+import { SectionHead } from "@/components/SectionHead";
+import { RequestFooter } from "@/components/RequestCta";
 import { peerCompanies } from "@/data/peerData";
-import { ExternalLink, FileText, AlertCircle, CheckCircle2 } from "lucide-react";
 
 export const metadata = {
   title: "Electricity Utility — ESG Comparison",
@@ -14,108 +13,68 @@ export const metadata = {
 
 export default function InfraPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      {/* 1 — Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-xs text-slate-400 uppercase tracking-wider mb-2">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-          Electricity Utilities · ESG Intelligence
+    <div>
+      {/* Hero */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 sm:pt-[74px] pb-13">
+        <div className="font-mono font-medium text-[11px] tracking-[0.18em] uppercase text-sm mb-6">Electricity Utilities · June 2026</div>
+        <h1 className="font-serif font-semibold text-ink m-0 mb-2 tracking-[-0.02em] max-w-[16ch] leading-[1.0] text-[clamp(40px,6.4vw,72px)]">
+          Wires &amp; watts, side&nbsp;by&nbsp;side.
+        </h1>
+        <div className="font-serif italic text-[22px] leading-[1.3] text-[#8A8478] mb-[38px]">Meralco · CLP · National Grid — three grids, one lens.</div>
+        <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
+          <p className="font-sans text-[18px] leading-[1.65] text-ink2 m-0 max-w-[62ch] [text-wrap:pretty]">
+            Environmental, social, and governance data for electricity utilities — <strong className="font-semibold">Meralco</strong> (FY2024),{" "}
+            <strong className="font-semibold">CLP</strong> (FY2025) and <strong className="font-semibold">National Grid</strong> (FY2025/26).
+            Every figure is taken only from each company&apos;s latest official report.{" "}
+            <span className="font-mono text-[14px] text-muted2">N/D = not disclosed · N/A = not applicable.</span>
+          </p>
+          <aside className="border-l-2 border-sm pl-[18px] py-1 font-sans text-[13px] leading-[1.6] text-muted [text-wrap:pretty]">
+            <span className="block font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-sm mb-[9px]">Read with care</span>
+            These differ sharply in business model and scale — Meralco (PH distribution + MGen generation), CLP (Asia-equity group)
+            and National Grid (a ~10× larger UK + US T&amp;D group). Absolute emissions are not directly comparable.
+          </aside>
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">Electricity Utility</h1>
-        <p className="text-slate-500 text-sm max-w-2xl">
-          Environmental, social, and governance data for electricity utilities — Meralco (FY2024), CLP (FY2025) and
-          National Grid (FY2025/26). All figures are taken only from each company&apos;s latest official report.
-          <span className="font-medium text-slate-700"> N/D = not disclosed; N/A = not applicable.</span>
-        </p>
-      </div>
+      </section>
 
-      {/* Accuracy notice */}
-      <div className="mb-8 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
-        <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-        <div className="text-xs text-amber-800">
-          <span className="font-semibold">Data source note:</span> these utilities differ sharply in business model, scope
-          and scale — Meralco (Philippines distribution + MGen generation), CLP (Asia-centric vertically integrated group,
-          equity basis) and National Grid (a ~10× larger UK + US transmission &amp; distribution group). Absolute emissions
-          are <span className="font-semibold">not directly comparable</span>, and carbon-intensity denominators differ
-          (per-GWh, per-kWh, per-£M revenue). Compare social/governance metrics and each company&apos;s own trajectory rather
-          than ranking absolute totals.
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-6 pb-2">
+        <SectionHead index="01" title="Snapshot" descriptor="Portfolio totals & averages" />
+        <PeerSnapshot companies={peerCompanies} groupNoun="Utilities" />
+        <p className="font-sans text-[11px] text-muted2 mt-2">Combined Scope 1+2 spans different reporting boundaries — shown for context only, never as a like-for-like total.</p>
+      </section>
+
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="02" title="Emissions" descriptor="Operational GHG, as reported" />
+        <PeerEmissionsChart companies={peerCompanies} />
+      </section>
+
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="03" title="Comparison Matrix" descriptor="Two views: as-reported & normalised" />
+        <PeerComparison companies={peerCompanies} groupLabel="electricity utilities" />
+      </section>
+
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="04" title="Company Profiles" descriptor="Business model & headline figures" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {peerCompanies.map((c) => <PeerCompanyCard key={c.id} company={c} />)}
         </div>
-      </div>
-
-      {/* 2 — Snapshot */}
-      <section className="mb-8">
-        <SectionHeading>Snapshot</SectionHeading>
-        <PeerSnapshot />
-        <p className="text-[10px] text-slate-400 mt-2">
-          Combined Scope 1+2 spans different reporting boundaries (Philippines / Asia-equity / UK-US group) — shown for
-          context only, never as a like-for-like total. Female-board range covers CLP (38%) and National Grid (46%);
-          Meralco does not disclose a board-gender %.
-        </p>
       </section>
 
-      {/* 3 — Emissions Visualisation */}
-      <section className="mb-8">
-        <SectionHeading>Emissions Visualisation</SectionHeading>
-        <PeerEmissionsChart />
-      </section>
-
-      {/* 4 — Comparison Matrix */}
-      <section className="mb-8">
-        <SectionHeading>Comparison Matrix</SectionHeading>
-        <PeerComparison />
-      </section>
-
-      {/* 5 — Company Profiles */}
-      <section className="mb-8">
-        <SectionHeading>Company Profiles</SectionHeading>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="05" title="Sources & Caveats" descriptor="Where every figure comes from" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {peerCompanies.map((c) => (
-            <PeerCompanyCard key={c.id} company={c} />
+            <a key={c.id} href={c.dataSource.url} target="_blank" rel="noopener noreferrer"
+              className="block border border-hairline rounded-[12px] bg-card p-5 hover:bg-[#F4F0E6] transition-colors">
+              <div className="font-serif font-semibold text-[16px] text-ink">{c.name}</div>
+              <div className="font-mono font-medium text-[10px] text-muted2 mt-1.5 tracking-[0.04em] uppercase">{c.dataSource.reportingPeriod}</div>
+              <div className="font-mono text-[11px] mt-4" style={{ color: c.accentColor }}>View report →</div>
+            </a>
           ))}
         </div>
+        <p className="font-sans text-[12px] text-muted2 mt-4">All figures from official company reports only — no estimated or third-party data. Per-company notes &amp; caveats are in the Company Profiles section above.</p>
       </section>
 
-      {/* 6 — Sources & Caveats */}
-      <section>
-        <SectionHeading>Sources &amp; Caveats</SectionHeading>
-        <div className="divide-y divide-slate-100 rounded-xl border border-slate-200 overflow-hidden mb-3">
-          {peerCompanies.map((c) => (
-            <div key={c.id} className="flex gap-4 p-4 bg-white">
-              <div className="w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center text-white font-bold text-xs"
-                style={{ backgroundColor: c.accentColor }}>{c.logoInitials}</div>
-              <div className="min-w-0 flex-1">
-                <div className="flex items-start justify-between gap-3 flex-wrap">
-                  <div>
-                    <p className="text-sm font-semibold text-slate-800">{c.name}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{c.dataSource.reportTitle}</p>
-                  </div>
-                  <a href={c.dataSource.url} target="_blank" rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 text-xs font-medium text-emerald-700 hover:text-emerald-800 flex-shrink-0">
-                    View report <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-                <p className="text-[11px] text-slate-400 mt-1">
-                  Period: <span className="font-medium text-slate-600">{c.dataSource.reportingPeriod}</span> · Accessed{" "}
-                  <span className="font-medium text-slate-600">{c.dataSource.accessDate}</span>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex items-start gap-2 text-[11px] text-slate-400">
-          <FileText className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
-          <span>All figures from official company reports only — no estimated or third-party data. Per-company data
-          notes &amp; caveats are in the Company Profiles section above. Verify against source documents before use.</span>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <RequestCta />
-
-      <footer className="mt-8 pt-6 border-t border-slate-200 text-xs text-slate-400 flex flex-wrap gap-4 justify-between">
-        <span>Output generated with AI assistance — independently verify all figures before use in decision-making, reporting, or publication.</span>
-        <span>Built for pris.la · ESG Tracker</span>
-      </footer>
+      <RequestFooter />
     </div>
   );
 }

@@ -3,8 +3,6 @@
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
-import { AlertTriangle } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { peerCompanies, type PeerCompany } from "@/data/peerData";
 
 function fmtT(v: number): string {
@@ -40,21 +38,21 @@ export function PeerEmissionsChart({
   ];
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Emissions &amp; ESG Visualisation</CardTitle>
-        <p className="text-xs text-slate-400 mt-1">{subtitle}</p>
-      </CardHeader>
-      <CardContent>
+    <div className="border border-hairline rounded-[14px] bg-card overflow-hidden">
+      <div className="px-6 pt-5">
+        <div className="font-mono font-semibold text-xs tracking-[0.1em] uppercase text-ink">Emissions Visualisation</div>
+        <p className="font-sans text-xs text-muted2 mt-1">{subtitle}</p>
+      </div>
+      <div className="px-6 pt-4 pb-5">
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 4, right: 16, bottom: 4, left: 24 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="metric" tick={{ fontSize: 12, fill: "#64748b" }} />
-              <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} tickFormatter={(v) => fmtT(v as number)} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E7E1D3" />
+              <XAxis dataKey="metric" tick={{ fontSize: 12, fill: "#6B665C" }} />
+              <YAxis tick={{ fontSize: 11, fill: "#9A9489" }} tickFormatter={(v) => fmtT(v as number)} />
               <Tooltip
                 formatter={(value: number, name: string) => [fmtT(value), name]}
-                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #e2e8f0" }}
+                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #E4DECF", background: "#FCFAF5" }}
               />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               {companies.map((c) => (
@@ -63,11 +61,10 @@ export function PeerEmissionsChart({
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="mt-3 p-2.5 bg-red-50 border border-red-200 rounded-lg flex gap-2">
-          <AlertTriangle className="w-3.5 h-3.5 text-red-600 flex-shrink-0 mt-0.5" />
-          <p className="text-[11px] text-red-800">{caveat}</p>
+        <div className="mt-3 border-l-2 border-sm pl-4 py-0.5">
+          <p className="font-sans text-[11px] leading-[1.55] text-muted m-0">{caveat}</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

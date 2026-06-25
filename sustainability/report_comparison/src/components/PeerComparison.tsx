@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, XCircle, HelpCircle, AlertTriangle, Ban } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { peerCompanies, type PeerCompany } from "@/data/peerData";
 
 type View = "absolute" | "normalized";
@@ -139,130 +137,96 @@ export function PeerComparison({
   const [view, setView] = useState<View>("absolute");
   const visibleRows = rows.filter((r) => r.view === view || r.view === "both");
 
+  const caveat = view === "absolute" ? absoluteCaveat : normalizedCaveat;
+  const caveatBorder = view === "absolute" ? "border-sm" : "border-sc";
+
   return (
     <div>
       {/* View toggle */}
       <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
-        <div className="flex gap-1 bg-slate-100 rounded-lg p-1">
-          <button
-            onClick={() => setView("absolute")}
-            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              view === "absolute" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            As-Reported (Absolute)
-          </button>
-          <button
-            onClick={() => setView("normalized")}
-            className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${
-              view === "normalized" ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
-            }`}
-          >
-            Normalized &amp; Comparable
-          </button>
+        <div className="flex border border-hairline rounded-full overflow-hidden">
+          {([["absolute", "As-Reported"], ["normalized", "Normalised"]] as const).map(([v, label]) => (
+            <button key={v} onClick={() => setView(v)}
+              className={`font-mono font-medium text-[11px] tracking-[0.06em] uppercase px-[14px] py-[7px] transition-colors ${
+                view === v ? "bg-ink text-paper" : "text-muted hover:bg-chip"
+              }`}>
+              {label}
+            </button>
+          ))}
         </div>
-        <span className="text-[11px] text-slate-400">{companies.length} {groupLabel}</span>
+        <span className="font-mono text-[11px] text-muted2">{companies.length} {groupLabel}</span>
       </div>
 
       {/* View-specific caveat */}
-      {view === "absolute" ? (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex gap-2.5">
-          <AlertTriangle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
-          <div className="text-xs text-red-800">{absoluteCaveat}</div>
-        </div>
-      ) : (
-        <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
-          <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div className="text-xs text-amber-800">{normalizedCaveat}</div>
-        </div>
-      )}
+      <div className={`mb-5 border-l-2 ${caveatBorder} pl-4 py-0.5`}>
+        <p className="font-sans text-[12px] leading-[1.55] text-muted m-0">{caveat}</p>
+      </div>
 
       {/* Table */}
-      <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto border border-hairline rounded-[14px] bg-card">
+        <table className="w-full min-w-[740px] border-collapse">
           <thead>
-            <tr className="border-b border-slate-200 bg-slate-50">
-              <th className="py-3 px-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-48">Metric</th>
+            <tr className="bg-ink">
+              <th className="text-left py-4 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 w-48">Metric</th>
               {companies.map((c) => (
-                <th key={c.id} className="py-3 px-4 text-center min-w-[200px]">
-                  <div className="flex flex-col items-center gap-1">
-                    <div className="w-7 h-7 rounded-md flex items-center justify-center text-white font-bold text-xs"
-                      style={{ backgroundColor: c.accentColor }}>{c.logoInitials}</div>
-                    <span className="text-xs font-semibold text-slate-700">{c.shortName}</span>
-                    <span className="text-[10px] text-slate-400">{c.country}</span>
-                  </div>
+                <th key={c.id} className="text-right py-[14px] px-4 min-w-[180px]">
+                  <div className="font-sans font-semibold text-[14px] text-paper leading-[1.1]">{c.shortName}</div>
+                  <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.06em] uppercase">{c.country} · {c.reportingPeriod}</div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {visibleRows.map((row) => (
-              <tr key={row.key} className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-                <td className="py-2.5 px-4">
-                  <p className="text-slate-700 font-medium text-xs">{row.label}</p>
-                  {row.sublabel && <p className="text-slate-400 text-[10px]">{row.sublabel}</p>}
+              <tr key={row.key} className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+                <td className="py-[13px] px-5 align-top">
+                  <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{row.label}</div>
+                  {row.sublabel && <div className="font-sans text-[11px] text-muted3 mt-[3px]">{row.sublabel}</div>}
                 </td>
                 {companies.map((c) => {
                   const { text, na, nd } = row.render(c);
                   return (
-                    <td key={c.id} className="py-2.5 px-4 text-center">
-                      {na ? (
-                        <span className="inline-flex items-center gap-1 text-slate-400 text-xs" title="Not applicable to this business model">
-                          <Ban className="w-3 h-3" /> N/A
-                        </span>
-                      ) : nd ? (
-                        <span className="inline-flex items-center gap-1 text-slate-300 text-xs" title="Not disclosed in official report">
-                          <HelpCircle className="w-3 h-3" /> N/D
-                        </span>
-                      ) : (
-                        <span className="text-slate-700 text-xs font-medium">{text}</span>
-                      )}
+                    <td key={c.id} className="py-[13px] px-4 text-right align-top">
+                      <span className={`font-mono text-[13px] ${na || nd ? "text-nd" : "text-ink2"}`}>{na ? "N/A" : nd ? "N/D" : text}</span>
                     </td>
                   );
                 })}
               </tr>
             ))}
 
-            {/* External assurance + frameworks (always shown) */}
-            <tr className="bg-slate-50/80 border-t border-slate-200">
-              <td colSpan={companies.length + 1} className="py-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-                Reporting &amp; Assurance
-              </td>
-            </tr>
-            <tr className="border-t border-slate-100">
-              <td className="py-2.5 px-4 text-slate-700 font-medium text-xs">External assurance</td>
+            <tr><td colSpan={companies.length + 1} className="pt-5 pb-[7px] px-5 font-mono font-semibold text-[10px] tracking-[0.18em] uppercase text-sm">Reporting &amp; Assurance</td></tr>
+
+            <tr className="border-t border-hairline2">
+              <td className="py-[13px] px-5 font-sans font-medium text-[14px] text-ink align-top">External assurance</td>
               {companies.map((c) => (
-                <td key={c.id} className="py-2.5 px-4 text-center">
-                  <div className="flex flex-col items-center gap-0.5">
-                    {c.externalAssurance === null
-                      ? <span className="text-slate-300 text-xs">N/D</span>
-                      : c.externalAssurance
-                        ? <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                        : <XCircle className="w-4 h-4 text-slate-300" />}
-                    {c.externalAssuranceProvider && (
-                      <span className="text-[9px] text-slate-400 leading-tight max-w-[170px]">{c.externalAssuranceProvider}</span>
-                    )}
-                  </div>
+                <td key={c.id} className="py-[13px] px-4 text-right align-top">
+                  {c.externalAssurance === null
+                    ? <span className="font-mono text-[13px] text-nd">N/D</span>
+                    : c.externalAssurance
+                      ? <span className="font-mono text-[12px] text-ink2">{c.externalAssuranceProvider?.split("(")[0].split("—")[0].trim() || "Yes"}<span className="inline-block ml-[7px] w-[6px] h-[6px] rounded-full bg-good align-middle" /></span>
+                      : <span className="font-mono text-[13px] text-nd">None</span>}
                 </td>
               ))}
             </tr>
-            <tr className="border-t border-slate-100">
-              <td className="py-2.5 px-4 text-slate-700 font-medium text-xs">Reporting frameworks</td>
+
+            <tr className="border-t border-hairline2">
+              <td className="py-[13px] px-5 font-sans font-medium text-[14px] text-ink align-top">Reporting frameworks</td>
               {companies.map((c) => (
-                <td key={c.id} className="py-2.5 px-4">
-                  <div className="flex flex-wrap justify-center gap-1">
-                    {c.frameworks.map((f) => <Badge key={f} variant="outline">{f}</Badge>)}
-                  </div>
+                <td key={c.id} className="py-[13px] px-4 text-right align-top">
+                  <span className="inline-flex flex-wrap gap-[5px] justify-end">
+                    {c.frameworks.map((f) => (
+                      <span key={f} className="font-mono font-medium text-[10px] text-muted bg-chip rounded-[5px] px-2 py-[3px]">{f}</span>
+                    ))}
+                  </span>
                 </td>
               ))}
             </tr>
           </tbody>
         </table>
 
-        {/* Legend */}
-        <div className="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">
-          <span className="flex items-center gap-1.5"><HelpCircle className="w-3 h-3" /> N/D = not disclosed in official report</span>
-          <span className="flex items-center gap-1.5"><Ban className="w-3 h-3" /> N/A = not applicable to this business model</span>
+        <div className="px-5 py-3 border-t border-hairline2 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] text-muted2">
+          <span>N/D = not disclosed</span>
+          <span>N/A = not applicable to this business model</span>
           <span>Emissions in tCO₂e, as reported.</span>
         </div>
       </div>

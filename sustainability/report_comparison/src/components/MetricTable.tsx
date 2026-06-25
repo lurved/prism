@@ -1,7 +1,3 @@
-"use client";
-
-import { CheckCircle2, XCircle, HelpCircle } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { formatNumber, getBestValue } from "@/lib/utils";
 import type { Company } from "@/data/types";
 
@@ -177,28 +173,38 @@ const rows: RowConfig[] = [
   },
 ];
 
+const HEADER_TINT: Record<string, string> = { sembcorp: "#D69A60", smrt: "#D98276", singtel: "#6FAFC6" };
+
+function QualRow({ companies, label, sub, render }: {
+  companies: Company[]; label: string; sub: string; render: (c: Company) => React.ReactNode;
+}) {
+  return (
+    <tr className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+      <td className="py-[13px] px-5 align-top">
+        <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{label}</div>
+        <div className="font-sans text-[11px] text-muted3 mt-[3px]">{sub}</div>
+      </td>
+      {companies.map((c) => (
+        <td key={c.id} className="py-[13px] px-4 text-right align-top font-mono text-[13px]">{render(c)}</td>
+      ))}
+    </tr>
+  );
+}
+
 export function MetricTable({ companies }: MetricTableProps) {
   const categories = ["Environmental", "Social", "Governance"];
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto border border-hairline rounded-[14px] bg-card">
+      <table className="w-full min-w-[740px] border-collapse">
         <thead>
-          <tr className="border-b border-slate-200 bg-slate-50">
-            <th className="py-3 px-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider w-52">
-              Metric
-            </th>
+          <tr className="bg-ink">
+            <th className="text-left py-4 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2">Metric</th>
             {companies.map((c) => (
-              <th key={c.id} className="py-3 px-4 text-center min-w-[148px]">
-                <div className="flex flex-col items-center gap-1">
-                  <div
-                    className="w-7 h-7 rounded-md flex items-center justify-center text-white font-bold text-xs"
-                    style={{ backgroundColor: c.accentColor }}
-                  >
-                    {c.logoInitials}
-                  </div>
-                  <span className="text-xs font-semibold text-slate-700">{c.shortName}</span>
-                  <span className="text-[10px] text-slate-400">{c.reportingPeriod}</span>
+              <th key={c.id} className="text-right py-[14px] px-4">
+                <div className="font-sans font-semibold text-[14px] text-paper leading-[1.1]">{c.shortName}</div>
+                <div className="font-mono font-medium text-[10px] mt-1 tracking-[0.06em] uppercase" style={{ color: HEADER_TINT[c.id] ?? c.accentColor }}>
+                  {c.sector} · {c.reportingPeriod}
                 </div>
               </th>
             ))}
@@ -208,45 +214,27 @@ export function MetricTable({ companies }: MetricTableProps) {
           {categories.map((cat) => {
             const catRows = rows.filter((r) => r.category === cat);
             return [
-              <tr key={`cat-${cat}`} className="bg-slate-50/80 border-t border-slate-200">
-                <td
-                  colSpan={companies.length + 1}
-                  className="py-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest"
-                >
-                  {cat}
-                </td>
+              <tr key={`cat-${cat}`}>
+                <td colSpan={companies.length + 1} className="pt-5 pb-[7px] px-5 font-mono font-semibold text-[10px] tracking-[0.18em] uppercase text-sm">{cat}</td>
               </tr>,
               ...catRows.map((row) => {
                 const values = companies.map((c) => row.getValue(c));
                 const best = getBestValue(values, row.lowerIsBetter);
-
                 return (
-                  <tr key={row.label} className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-                    <td className="py-2.5 px-4">
-                      <p className="text-slate-700 font-medium text-xs">{row.label}</p>
-                      {row.sublabel && <p className="text-slate-400 text-[10px]">{row.sublabel}</p>}
+                  <tr key={row.label} className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+                    <td className="py-[13px] px-5 align-top">
+                      <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{row.label}</div>
+                      {row.sublabel && <div className="font-sans text-[11px] text-muted3 mt-[3px]">{row.sublabel}</div>}
                     </td>
                     {companies.map((c, i) => {
                       const val = values[i];
-                      const isBest = !row.noBest && val !== null && val === best && values.filter(v => v === best).length < values.length;
+                      const isBest = !row.noBest && val !== null && val === best && values.filter((v) => v === best).length < values.length;
                       return (
-                        <td key={c.id} className="py-2.5 px-4 text-center">
-                          {val === null ? (
-                            <span className="inline-flex items-center gap-1 text-slate-300 text-xs">
-                              <HelpCircle className="w-3 h-3" /> N/D
-                            </span>
-                          ) : (
-                            <span
-                              className={`inline-flex items-center gap-1 font-medium text-xs ${
-                                isBest ? "text-emerald-700" : "text-slate-700"
-                              }`}
-                            >
-                              {isBest && (
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
-                              )}
-                              {row.format(val, c)}
-                            </span>
-                          )}
+                        <td key={c.id} className="py-[13px] px-4 text-right align-top">
+                          <span className={`font-mono text-[13px] tracking-[-0.01em] ${val === null ? "text-nd" : isBest ? "text-ink font-semibold" : "text-ink2"}`}>
+                            {val === null ? "N/D" : row.format(val, c)}
+                          </span>
+                          {isBest && <span className="inline-block ml-[7px] w-[6px] h-[6px] rounded-full bg-good align-middle" />}
                         </td>
                       );
                     })}
@@ -256,100 +244,38 @@ export function MetricTable({ companies }: MetricTableProps) {
             ];
           })}
 
-          {/* Boolean / qualitative rows */}
-          <tr className="bg-slate-50/80 border-t border-slate-200">
-            <td colSpan={companies.length + 1} className="py-2 px-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
-              Governance — Qualitative
-            </td>
-          </tr>
+          <tr><td colSpan={companies.length + 1} className="pt-5 pb-[7px] px-5 font-mono font-semibold text-[10px] tracking-[0.18em] uppercase text-sm">Governance — Qualitative</td></tr>
 
-          {/* External assurance */}
-          <tr className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-            <td className="py-2.5 px-4">
-              <p className="text-slate-700 font-medium text-xs">External Assurance</p>
-              <p className="text-slate-400 text-[10px]">Third-party verified</p>
-            </td>
-            {companies.map((c) => (
-              <td key={c.id} className="py-2.5 px-4 text-center">
-                <div className="flex flex-col items-center gap-0.5">
-                  {c.governance.externalAssurance
-                    ? <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
-                    : <XCircle className="w-4 h-4 text-slate-300 mx-auto" />}
-                  {c.governance.externalAssuranceProvider && (
-                    <span className="text-[9px] text-slate-400 leading-tight text-center max-w-[100px]">
-                      {c.governance.externalAssuranceProvider.split("(")[0].trim()}
-                    </span>
-                  )}
-                </div>
-              </td>
-            ))}
-          </tr>
+          <QualRow companies={companies} label="External Assurance" sub="Third-party verified"
+            render={(c) => c.governance.externalAssurance
+              ? <span className="text-ink font-semibold">{c.governance.externalAssuranceProvider?.split("(")[0].trim().replace(/—.*/, "").trim() || "Yes"}<span className="inline-block ml-[7px] w-[6px] h-[6px] rounded-full bg-good align-middle" /></span>
+              : <span className="text-nd">None</span>} />
 
-          {/* ESG-linked exec comp */}
-          <tr className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-            <td className="py-2.5 px-4">
-              <p className="text-slate-700 font-medium text-xs">ESG-Linked Exec. Pay</p>
-              <p className="text-slate-400 text-[10px]">Compensation tied to ESG</p>
-            </td>
-            {companies.map((c) => (
-              <td key={c.id} className="py-2.5 px-4 text-center">
-                {c.governance.esgLinkedExecutiveComp === null ? (
-                  <span className="inline-flex items-center gap-1 text-slate-300 text-xs">
-                    <HelpCircle className="w-3 h-3" /> N/D
-                  </span>
-                ) : c.governance.esgLinkedExecutiveComp ? (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
-                ) : (
-                  <XCircle className="w-4 h-4 text-slate-300 mx-auto" />
-                )}
-              </td>
-            ))}
-          </tr>
+          <QualRow companies={companies} label="ESG-Linked Exec. Pay" sub="Compensation tied to ESG"
+            render={(c) => c.governance.esgLinkedExecutiveComp == null
+              ? <span className="text-nd">N/D</span>
+              : <span className="text-ink2">{c.governance.esgLinkedExecutiveComp ? "Yes" : "No"}</span>} />
 
-          {/* Reporting frameworks */}
-          <tr className="border-t border-slate-100 hover:bg-slate-50/50 transition-colors">
-            <td className="py-2.5 px-4">
-              <p className="text-slate-700 font-medium text-xs">Reporting Frameworks</p>
-              <p className="text-slate-400 text-[10px]">Standards adopted</p>
-            </td>
-            {companies.map((c) => (
-              <td key={c.id} className="py-2.5 px-4">
-                <div className="flex flex-wrap justify-center gap-1">
-                  {c.governance.reportingFrameworks.map((f) => (
-                    <Badge key={f} variant="outline">{f}</Badge>
-                  ))}
-                </div>
-              </td>
-            ))}
-          </tr>
+          <QualRow companies={companies} label="Reporting Frameworks" sub="Standards adopted"
+            render={(c) => (
+              <span className="inline-flex flex-wrap gap-[5px] justify-end">
+                {c.governance.reportingFrameworks.map((f) => (
+                  <span key={f} className="font-mono font-medium text-[10px] text-muted bg-chip rounded-[5px] px-2 py-[3px]">{f}</span>
+                ))}
+              </span>
+            )} />
         </tbody>
       </table>
 
-      {/* GHG intensity unit disclosure */}
-      <div className="px-4 py-3 border-t border-slate-100 bg-slate-50/50">
-        <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wider mb-1">GHG Intensity units differ by sector</p>
-        <div className="flex flex-wrap gap-3">
+      <div className="px-5 py-3 border-t border-hairline2">
+        <p className="font-mono font-medium text-[10px] tracking-[0.08em] uppercase text-muted2 mb-1">GHG intensity units differ by sector — not comparable</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
           {companies.map((c) => (
-            <span key={c.id} className="text-[10px] text-slate-500">
-              <span className="font-medium">{c.shortName}:</span> {c.environmental.ghgIntensityValue} {c.environmental.ghgIntensityUnit}
+            <span key={c.id} className="font-sans text-[11px] text-muted">
+              <span className="font-semibold text-muted">{c.shortName}:</span> {c.environmental.ghgIntensityValue} {c.environmental.ghgIntensityUnit}
             </span>
           ))}
         </div>
-      </div>
-
-      {/* Legend */}
-      <div className="px-4 py-3 border-t border-slate-100 flex flex-wrap items-center gap-4 text-[10px] text-slate-400">
-        <span className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
-          Best performer for that metric
-        </span>
-        <span className="flex items-center gap-1.5">
-          <HelpCircle className="w-3 h-3" />
-          N/D = not disclosed in published report
-        </span>
-        <span className="flex items-center gap-1.5">
-          Emissions in thousands of tCO₂e (ktCO₂e)
-        </span>
       </div>
     </div>
   );

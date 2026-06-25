@@ -10,22 +10,48 @@ const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
 
 type Status = "idle" | "sending" | "sent" | "error";
 
+/** Editorial site footer with the "request a company/category" CTA. */
+export function RequestFooter() {
+  const [open, setOpen] = useState(false);
+  return (
+    <footer className="max-w-page mx-auto px-5 sm:px-8 mt-14 pt-9 pb-16 border-t border-ink">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+        <div className="max-w-[60ch]">
+          <div className="font-serif font-semibold text-base text-ink mb-2">ESG Tracker</div>
+          <p className="font-sans text-[13px] leading-[1.6] text-muted m-0">
+            Data extracted from official public documents and verified against source. For investment or compliance
+            decisions, refer directly to the original reports. Built for pris.la · Temasek ESG Tracker.
+          </p>
+        </div>
+        <div className="flex-shrink-0">
+          <div className="font-sans text-[13px] text-muted mb-2">Want another company or category?</div>
+          <button onClick={() => setOpen(true)}
+            className="inline-flex items-center gap-1.5 font-sans font-semibold text-[13px] px-4 py-2.5 rounded-full bg-ink text-paper hover:opacity-90 transition-opacity">
+            Send a request →
+          </button>
+        </div>
+      </div>
+      {open && <RequestModal onClose={() => setOpen(false)} />}
+    </footer>
+  );
+}
+
 export function RequestCta() {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       {/* CTA card */}
-      <div className="rounded-xl border border-brand-200 bg-brand-50 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="rounded-[12px] border border-hairline bg-card p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h3 className="text-sm font-semibold text-brand-900">Want another company or category?</h3>
-          <p className="text-xs text-brand-700/80 mt-0.5">
+          <h3 className="font-serif font-semibold text-[16px] text-ink">Want another company or category?</h3>
+          <p className="font-sans text-[13px] text-muted mt-1">
             Suggest a company to add or a new comparison category — requests go privately to the site owner.
           </p>
         </div>
         <button
           onClick={() => setOpen(true)}
-          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium transition-colors flex-shrink-0"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-ink text-paper text-[13px] font-sans font-semibold hover:opacity-90 transition-opacity flex-shrink-0"
         >
           <Plus className="w-4 h-4" /> Send a request
         </button>

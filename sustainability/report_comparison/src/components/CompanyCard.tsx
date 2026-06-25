@@ -1,149 +1,80 @@
-"use client";
-
-import { CheckCircle2, Leaf, Users, ShieldCheck, AlertCircle } from "lucide-react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import type { Company } from "@/data/types";
 
-function fmtEmissions(ktCO2e: number): string {
-  if (ktCO2e >= 1_000) return `${(ktCO2e / 1_000).toFixed(1)}M tCO₂e`;
-  if (ktCO2e >= 1) return `${ktCO2e.toFixed(1)}k tCO₂e`;
-  return `${(ktCO2e * 1000).toFixed(0)} tCO₂e`;
+function fmtEm(ktCO2e: number): string {
+  if (ktCO2e >= 1_000) return `${(ktCO2e / 1_000).toFixed(1)}M`;
+  if (ktCO2e >= 1) return `${ktCO2e.toFixed(1)}k`;
+  return `${(ktCO2e * 1000).toFixed(0)}`;
+}
+function fmtHead(n: number): string {
+  return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
 }
 
-interface CompanyCardProps {
-  company: Company;
-}
+export function CompanyCard({ company: c }: { company: Company }) {
+  const { environmental: env, social, governance } = c;
+  const reduction = env.scope1and2ReductionPct;
 
-export function CompanyCard({ company }: CompanyCardProps) {
-  const { environmental: env, social, governance } = company;
+  const stats: [string, string][] = [
+    ["Scope 1", fmtEm(env.scope1Emissions)],
+    ["Scope 2", fmtEm(env.scope2Emissions)],
+    ["Net-Zero", String(env.netZeroTargetYear)],
+    ["Fem. Board", social.femaleBoardPct === null ? "N/D" : `${social.femaleBoardPct}%`],
+    ["Headcount", fmtHead(social.totalHeadcount)],
+    ["Train/yr", `${social.trainingHoursPerEmployee}h`],
+  ];
 
   return (
-    <Card className="hover:shadow-md transition-shadow duration-200">
-      <CardHeader>
-        <div className="flex items-center gap-3 mb-2">
-          <div
-            className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-            style={{ backgroundColor: company.accentColor }}
-          >
-            {company.logoInitials}
-          </div>
+    <article className="border border-hairline rounded-[14px] bg-card overflow-hidden flex flex-col">
+      <div className="h-1" style={{ background: c.accentColor }} />
+      <div className="p-6 flex flex-col flex-1">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="w-[38px] h-[38px] rounded-[9px] text-white font-mono font-semibold text-[13px] text-center leading-[38px]"
+            style={{ background: c.accentColor }}>{c.logoInitials}</span>
           <div>
-            <h2 className="font-semibold text-slate-900 text-base leading-tight">{company.name}</h2>
-            <div className="flex items-center gap-2 mt-0.5">
-              <Badge variant="muted">{company.sector}</Badge>
-              <span className="text-xs text-slate-400">{company.reportingPeriod}</span>
-            </div>
+            <div className="font-serif font-semibold text-[17px] text-ink leading-[1.1]">{c.name}</div>
+            <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.06em] uppercase">{c.sector} · {c.reportingPeriod}</div>
           </div>
         </div>
-        <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{company.strategy}</p>
-      </CardHeader>
 
-      <CardContent>
-        {/* Emissions row */}
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          <MetricCell
-            icon={<Leaf className="w-3 h-3" />}
-            sublabel="Scope 1"
-            value={fmtEmissions(env.scope1Emissions)}
-            color="text-slate-700"
-          />
-          <MetricCell
-            icon={<Leaf className="w-3 h-3" />}
-            sublabel="Scope 2"
-            value={fmtEmissions(env.scope2Emissions)}
-            color="text-slate-600"
-          />
-          <MetricCell
-            icon={<Leaf className="w-3 h-3" />}
-            sublabel="Net-Zero"
-            value={String(env.netZeroTargetYear)}
-            color="text-emerald-700"
-          />
-        </div>
+        <p className="font-sans text-[13px] leading-[1.6] text-body m-0 mb-[18px] [text-wrap:pretty] line-clamp-3">{c.strategy}</p>
 
-        {/* Social / governance row */}
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          <MetricCell
-            icon={<Users className="w-3 h-3" />}
-            sublabel="Female Board"
-            value={`${social.femaleBoardPct}%`}
-            color="text-violet-700"
-          />
-          <MetricCell
-            icon={<Users className="w-3 h-3" />}
-            sublabel="Headcount"
-            value={social.totalHeadcount >= 1000
-              ? `${(social.totalHeadcount / 1000).toFixed(1)}k`
-              : String(social.totalHeadcount)
-            }
-            color="text-blue-700"
-          />
-          <MetricCell
-            icon={<ShieldCheck className="w-3 h-3" />}
-            sublabel="Training/yr"
-            value={`${social.trainingHoursPerEmployee}h`}
-            color="text-amber-700"
-          />
-        </div>
-
-        {/* Frameworks + assurance */}
-        <div className="border-t border-slate-100 pt-3 flex flex-wrap gap-1.5 mb-3">
-          {governance.reportingFrameworks.map((f) => (
-            <Badge key={f} variant="outline">{f}</Badge>
+        <div className="grid grid-cols-3 gap-x-3 gap-y-[14px] mb-[18px]">
+          {stats.map(([label, value]) => (
+            <div key={label}>
+              <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase">{label}</div>
+              <div className="font-serif font-medium text-[17px] text-ink leading-[1.1] mt-[5px]">{value}</div>
+            </div>
           ))}
-          {governance.externalAssurance && (
-            <span className="inline-flex items-center gap-1 text-xs text-emerald-700">
-              <CheckCircle2 className="w-3 h-3" />
-              Assured
+        </div>
+
+        {/* Reduction bar */}
+        <div className="mb-[18px]">
+          <div className="flex justify-between font-mono font-medium text-[11px] text-muted mb-[7px]">
+            <span>S1+S2 reduction vs {c.baselineYear}</span>
+            <span className={reduction === null ? "text-muted3" : "text-good"}>{reduction === null ? "Not disclosed" : `${reduction.toFixed(1)}%`}</span>
+          </div>
+          <div className="h-[6px] rounded-full overflow-hidden bg-track">
+            {reduction === null ? (
+              <div className="h-full w-full" style={{ backgroundImage: "repeating-linear-gradient(45deg,#D8D0BF 0 5px,transparent 5px 10px)" }} />
+            ) : (
+              <div className="h-full bg-good" style={{ width: `${Math.min(reduction, 100)}%` }} />
+            )}
+          </div>
+        </div>
+
+        {/* Frameworks + assurance chips */}
+        <div className="flex flex-wrap gap-1.5 mt-auto">
+          {governance.reportingFrameworks.map((f) => (
+            <span key={f} className="font-mono font-medium text-[10px] text-muted bg-chip rounded-[5px] px-2 py-[5px]">{f}</span>
+          ))}
+          {governance.externalAssurance ? (
+            <span className="font-mono font-medium text-[10px] text-good rounded-[5px] px-2 py-[5px]" style={{ background: "rgba(63,122,82,0.1)" }}>
+              Assured{governance.externalAssuranceProvider ? ` · ${governance.externalAssuranceProvider.split("(")[0].trim().replace(/—.*/, "").trim()}` : ""}
             </span>
+          ) : (
+            <span className="font-mono font-medium text-[10px] text-sm rounded-[5px] px-2 py-[5px]" style={{ background: "rgba(176,71,61,0.1)" }}>No external assurance</span>
           )}
         </div>
-
-        {/* Reduction progress bar */}
-        {env.scope1and2ReductionPct !== null ? (
-          <div>
-            <div className="flex justify-between text-[10px] text-slate-500 mb-1">
-              <span>S1+S2 reduction vs baseline ({company.baselineYear})</span>
-              <span className="font-semibold text-emerald-700">{env.scope1and2ReductionPct.toFixed(1)}%</span>
-            </div>
-            <div className="w-full bg-slate-100 rounded-full h-1.5">
-              <div
-                className="h-1.5 rounded-full bg-emerald-500 transition-all"
-                style={{ width: `${Math.min(env.scope1and2ReductionPct, 100)}%` }}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center gap-1 text-[10px] text-slate-400">
-            <AlertCircle className="w-3 h-3" />
-            Reduction vs baseline: Not disclosed
-          </div>
-        )}
-
-        {/* Data source note */}
-        <p className="text-[9px] text-slate-300 mt-2 leading-tight">
-          Source: {company.dataSource.reportTitle}
-        </p>
-      </CardContent>
-    </Card>
-  );
-}
-
-function MetricCell({
-  sublabel,
-  value,
-  color,
-}: {
-  icon: React.ReactNode;
-  sublabel: string;
-  value: string;
-  color: string;
-}) {
-  return (
-    <div className="bg-slate-50 rounded-lg p-2">
-      <p className="text-[10px] text-slate-400 mb-0.5 truncate">{sublabel}</p>
-      <p className={`text-xs font-semibold ${color} leading-tight`}>{value}</p>
-    </div>
+      </div>
+    </article>
   );
 }

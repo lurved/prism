@@ -1,109 +1,118 @@
 import { companies, aggregateTotals } from "@/data/esgData";
 import { CompanyCard } from "@/components/CompanyCard";
-import { EsgChart } from "@/components/EsgChart";
+import { EmissionsPanel } from "@/components/EmissionsPanel";
 import { MetricTable } from "@/components/MetricTable";
 import { SourcesFooter } from "@/components/SourcesFooter";
-import { RequestCta } from "@/components/RequestCta";
-import { SectionHeading } from "@/components/ui/section";
-import { formatNumber } from "@/lib/utils";
-import { Leaf, Users, Shield, TrendingDown, CheckCircle2, Gauge, Info } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { SectionHead } from "@/components/SectionHead";
+import { RequestFooter } from "@/components/RequestCta";
 
-function fmtKt(ktCO2e: number): string {
-  if (ktCO2e >= 1_000) return `${(ktCO2e / 1_000).toFixed(1)}M tCO₂e`;
-  return `${ktCO2e.toFixed(0)}k tCO₂e`;
+function fmtM(ktCO2e: number): string {
+  if (ktCO2e >= 1000) return `${(ktCO2e / 1000).toFixed(1)}M`;
+  return `${Math.round(ktCO2e)}k`;
 }
 
 export default function TemasekPage() {
-  const { totalScope1ktCO2e, totalScope2ktCO2e, totalHeadcount, avgFemaleBoard, earliestNetZero } =
-    aggregateTotals;
+  const { totalScope1ktCO2e, totalScope2ktCO2e, totalHeadcount, avgFemaleBoard, earliestNetZero } = aggregateTotals;
 
-  const summaryStats = [
-    { label: "Combined Scope 1", value: fmtKt(totalScope1ktCO2e), sublabel: "3 companies (ktCO₂e)", icon: Leaf, color: "text-slate-700", bg: "bg-slate-100" },
-    { label: "Combined Scope 2", value: fmtKt(totalScope2ktCO2e), sublabel: "Market-based", icon: TrendingDown, color: "text-blue-700", bg: "bg-blue-50" },
-    { label: "Combined Workforce", value: formatNumber(totalHeadcount), sublabel: "Total employees", icon: Users, color: "text-violet-700", bg: "bg-violet-50" },
-    { label: "Avg Female Board", value: `${avgFemaleBoard}%`, sublabel: "Portfolio average", icon: Users, color: "text-pink-700", bg: "bg-pink-50" },
-    { label: "Earliest Net-Zero", value: String(earliestNetZero), sublabel: "Singtel — all scopes", icon: Gauge, color: "text-emerald-700", bg: "bg-emerald-50" },
-    { label: "External Assurance", value: "2 of 3", sublabel: "Sembcorp & Singtel", icon: Shield, color: "text-amber-700", bg: "bg-amber-50" },
+  const snapshot = [
+    { value: fmtM(totalScope1ktCO2e), unit: "tCO₂e", label: "Combined Scope 1", sub: "3 companies" },
+    { value: fmtM(totalScope2ktCO2e), unit: "tCO₂e", label: "Combined Scope 2", sub: "Market-based" },
+    { value: totalHeadcount.toLocaleString(), unit: "", label: "Combined Workforce", sub: "Total employees" },
+    { value: `${avgFemaleBoard}%`, unit: "", label: "Avg Female Board", sub: "Portfolio average" },
+    { value: String(earliestNetZero), unit: "", label: "Earliest Net-Zero", sub: "Singtel — all scopes" },
+    { value: "2 / 3", unit: "", label: "External Assurance", sub: "Sembcorp & Singtel" },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-      {/* 1 — Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-2 text-xs text-slate-400 uppercase tracking-wider mb-2">
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-          Temasek Portfolio · ESG Intelligence
+    <div>
+      {/* Hero */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 sm:pt-[74px] pb-13">
+        <div className="font-mono font-medium text-[11px] tracking-[0.18em] uppercase text-sm mb-6">ESG Intelligence · June 2026</div>
+        <h1 className="font-serif font-semibold text-ink m-0 mb-2 tracking-[-0.02em] max-w-[15ch] leading-[1.0] text-[clamp(40px,6.4vw,72px)]">
+          Temasek Portfolio, side&nbsp;by&nbsp;side.
+        </h1>
+        <div className="font-serif italic text-[22px] leading-[1.3] text-[#8A8478] mb-[38px]">
+          Sembcorp · SMRT · Singtel — three sectors, one lens.
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-1">Temasek Portfolio</h1>
-        <p className="text-slate-500 text-sm max-w-2xl">
-          Environmental, social, and governance data sourced directly from the latest published reports of
-          Sembcorp Industries (FY2025), SMRT Corporation (FY2024/25), and Singtel Group (FY2025).
-          All figures are verified. <span className="font-medium text-slate-700">N/D = not disclosed in official report.</span>
-        </p>
-      </div>
-
-      {/* Accuracy notice */}
-      <div className="mb-8 p-3 bg-amber-50 border border-amber-200 rounded-lg flex gap-2.5">
-        <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-        <div className="text-xs text-amber-800">
-          <span className="font-semibold">Data source note:</span> these companies span different sectors (energy, transport, telecom) and fiscal years (Sembcorp Jan–Dec; SMRT &amp; Singtel Apr–Mar).
-          Emissions metrics are <span className="font-semibold">not directly comparable across sectors</span> — Sembcorp operates at energy-utility scale, while SMRT is a mass-transit operator whose emissions are dominated by Scope 2 traction electricity.
+        <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
+          <p className="font-sans text-[18px] leading-[1.65] text-ink2 m-0 max-w-[62ch] [text-wrap:pretty]">
+            Environmental, social, and governance data sourced directly from the latest published reports of{" "}
+            <strong className="font-semibold">Sembcorp Industries</strong> (FY2025),{" "}
+            <strong className="font-semibold">SMRT Corporation</strong> (FY2024/25), and{" "}
+            <strong className="font-semibold">Singtel Group</strong> (FY2025). Every figure is verified against source.{" "}
+            <span className="font-mono text-[14px] text-muted2">N/D = not disclosed in official report.</span>
+          </p>
+          <aside className="border-l-2 border-sm pl-[18px] py-1 font-sans text-[13px] leading-[1.6] text-muted [text-wrap:pretty]">
+            <span className="block font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-sm mb-[9px]">Read with care</span>
+            These companies span different sectors and fiscal years. Emissions metrics are <em>not</em> directly comparable
+            across sectors — Sembcorp operates at energy-utility scale, while SMRT&apos;s footprint is dominated by Scope 2
+            traction electricity.
+          </aside>
         </div>
-      </div>
-
-      {/* 2 — Snapshot */}
-      <section className="mb-8">
-        <SectionHeading>Snapshot</SectionHeading>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          {summaryStats.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <Card key={stat.label} className="text-center p-0">
-                <div className="p-4">
-                  <div className={`w-8 h-8 rounded-lg ${stat.bg} flex items-center justify-center mx-auto mb-2`}>
-                    <Icon className={`w-4 h-4 ${stat.color}`} />
-                  </div>
-                  <p className={`text-base font-bold ${stat.color} leading-tight`}>{stat.value}</p>
-                  <p className="text-[10px] text-slate-400 leading-tight mt-0.5">{stat.label}</p>
-                  <p className="text-[9px] text-slate-300 leading-tight">{stat.sublabel}</p>
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* 3 — Emissions Visualisation */}
-      <section className="mb-8">
-        <SectionHeading>Emissions Visualisation</SectionHeading>
-        <EsgChart companies={companies} />
-      </section>
-
-      {/* 4 — Comparison Matrix */}
-      <section className="mb-8">
-        <SectionHeading>Comparison Matrix</SectionHeading>
-        <MetricTable companies={companies} />
-      </section>
-
-      {/* 5 — Company Profiles */}
-      <section className="mb-8">
-        <SectionHeading>Company Profiles</SectionHeading>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {companies.map((company) => (
-            <CompanyCard key={company.id} company={company} />
+        {/* Company chips */}
+        <div className="flex flex-wrap gap-[13px] mt-[46px]">
+          {companies.map((c) => (
+            <div key={c.id} className="flex items-center gap-[13px] border border-hairline bg-card rounded-[12px] px-[17px] py-[13px]">
+              <span className="w-[34px] h-[34px] rounded-[8px] text-white font-mono font-semibold text-xs text-center leading-[34px] tracking-[0.02em]"
+                style={{ background: c.accentColor }}>{c.logoInitials}</span>
+              <div>
+                <div className="font-sans font-semibold text-[14px] text-ink leading-[1.1]">{c.name}</div>
+                <div className="font-mono font-medium text-[11px] text-muted2 mt-1 tracking-[0.04em] uppercase">{c.sector} · {c.reportingPeriod}</div>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* 6 — Sources & Caveats */}
-      <section className="mb-8">
-        <SectionHeading>Sources &amp; Caveats</SectionHeading>
+      {/* 01 Snapshot */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-6 pb-2">
+        <SectionHead index="01" title="Snapshot" descriptor="Portfolio totals & averages" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-px bg-hairline border border-hairline rounded-[12px] overflow-hidden">
+          {snapshot.map((s) => (
+            <div key={s.label} className="bg-card px-5 py-[22px]">
+              <div className="font-serif font-medium text-[40px] leading-[1] text-ink tracking-[-0.01em]">
+                {s.value}{s.unit && <span className="font-mono font-medium text-[14px] text-muted2 ml-[5px]">{s.unit}</span>}
+              </div>
+              <div className="font-sans font-semibold text-[12px] leading-[1.3] text-ink2 mt-[13px]">{s.label}</div>
+              <div className="font-sans text-[11px] leading-[1.3] text-muted2 mt-[3px]">{s.sub}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 02 Emissions & ESG */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="02" title="Emissions & ESG" descriptor="All emissions in ktCO₂e (thousands of tonnes)" />
+        <EmissionsPanel />
+      </section>
+
+      {/* 03 Comparison Matrix */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="03" title="Comparison Matrix" descriptor="Metric by metric, across the three reports" />
+        <div className="flex items-center gap-[18px] mb-[18px] flex-wrap">
+          <span className="inline-flex items-center gap-2 font-sans font-medium text-[12px] text-muted">
+            <span className="w-[7px] h-[7px] rounded-full bg-good" />Best performer for that metric
+          </span>
+          <span className="font-mono font-medium text-[12px] text-muted3">N/D = not disclosed</span>
+        </div>
+        <MetricTable companies={companies} />
+      </section>
+
+      {/* 04 Company Profiles */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="04" title="Company Profiles" descriptor="Strategy & headline figures" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {companies.map((c) => <CompanyCard key={c.id} company={c} />)}
+        </div>
+      </section>
+
+      {/* 05 Sources & Caveats */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="05" title="Sources & Caveats" descriptor="Where every figure comes from" />
         <SourcesFooter />
       </section>
 
-      {/* CTA */}
-      <RequestCta />
+      <RequestFooter />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { Sidebar, MobileNav } from "@/components/Sidebar";
+import { Header } from "@/components/Header";
 import { Analytics } from "@vercel/analytics/react";
 
 // First-party analytics — same PostHog project + `site` convention as the rest
@@ -20,14 +20,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-slate-50 text-slate-900 min-h-screen">
-        <div className="flex min-h-screen">
-          <Sidebar />
-          <main className="flex-1 min-w-0 pb-20 md:pb-0">
-            {children}
-          </main>
-        </div>
-        <MobileNav />
+      <body className="bg-paper text-ink min-h-screen">
+        <Header />
+        <main>{children}</main>
         <Analytics />
         <Script id="posthog" strategy="afterInteractive">
           {POSTHOG_SNIPPET}

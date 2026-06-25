@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,25 +9,39 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50:  "#f0faf4",
-          100: "#d8f3e3",
-          200: "#b3e6ca",
-          300: "#7dd0a8",
-          400: "#45b282",
-          500: "#259466",
-          600: "#187550",
-          700: "#145e41",
-          800: "#124b35",
-          900: "#103e2d",
-          950: "#082318",
-        },
-        slate: {
-          850: "#1a2332",
-        },
+        // ── Editorial paper theme (design handoff) ──
+        paper: "#F6F3EC",
+        card: "#FCFAF5",
+        ink: "#232019",
+        ink2: "#3C382F",
+        ink3: "#4A463E",
+        body: "#5A554B",
+        muted: "#6B665C",
+        muted2: "#9A9489",
+        muted3: "#A8A294",
+        nd: "#BBB5A8",
+        hairline: "#E4DECF",
+        hairline2: "#EFEADD",
+        hairline3: "#E7E1D3",
+        chip: "#EFEADD",
+        track: "#EAE4D6",
+        good: "#3F7A52",
+        // Company accents
+        sc: "#B4722E",   // Sembcorp — ochre
+        sm: "#B0473D",   // SMRT — clay red (also section kicker red)
+        st: "#2D6E87",   // Singtel — teal
+        // Light header tints (on ink)
+        "sc-tint": "#D69A60",
+        "sm-tint": "#D98276",
+        "st-tint": "#6FAFC6",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["Spectral", "Georgia", "serif"],
+        sans: ["Archivo", "system-ui", "sans-serif"],
+        mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
+      },
+      maxWidth: {
+        page: "1180px",
       },
     },
   },
