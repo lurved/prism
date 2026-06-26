@@ -303,11 +303,6 @@ body {
   border: 1px solid var(--line);
   border-radius: 6px;
   padding: clamp(24px, 2.6vw, 34px);
-  transition: transform 0.18s ease, border-color 0.18s ease;
-}
-.project-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent);
 }
 .project-card-top {
   display: flex;
