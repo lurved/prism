@@ -3,7 +3,7 @@ module.exports = function (eleventyConfig) {
   const passthrough = [
     "index.html", "about.html", "home.css", "style.css",
     "chat-widget.js", "blog.css", "logo.svg", "logo.png", "favicon.png",
-    "sides", "typeme", "agent",
+    "sides", "typeme", "agent", "notes/images",
     // sustainability: only static subfolders (report_comparison is a separate Vercel app)
     "sustainability/index.html", "sustainability/sr2026",
   ];
