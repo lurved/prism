@@ -14,25 +14,14 @@ permalink: /blog/
 
   <div class="post-feed">
     {%- for post in collections.notes %}
-      {% if post.data.inline %}
-        <div class="post-item inline">
-          <div class="post-item-meta">
-            {% if post.data.tag %}<span class="tag">{{ post.data.tag }}</span>{% endif %}
-            <span class="post-date">{{ post.date | readableDate }}</span>
-          </div>
-          <p class="post-body">{{ post.templateContent | safe }}</p>
+      <div class="post-item">
+        <div class="post-item-meta">
+          {% if post.data.tag %}<span class="tag">{{ post.data.tag }}</span>{% endif %}
+          <span class="post-date">{{ post.date | readableDate }}</span>
         </div>
-      {% else %}
-        <a href="{{ post.url }}" class="post-item">
-          <div class="post-item-meta">
-            {% if post.data.tag %}<span class="tag">{{ post.data.tag }}</span>{% endif %}
-            <span class="post-date">{{ post.date | readableDate }}</span>
-          </div>
-          <h2>{{ post.data.title }}</h2>
-          {% if post.data.description %}<p>{{ post.data.description }}</p>{% endif %}
-          <span class="post-read-more">Read →</span>
-        </a>
-      {% endif %}
+        {% if post.data.title %}<h2>{{ post.data.title }}</h2>{% endif %}
+        <div class="post-body">{{ post.templateContent | safe }}</div>
+      </div>
     {%- endfor %}
   </div>
 
