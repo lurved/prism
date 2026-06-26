@@ -1,35 +1,16 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "_site",
-  "routes": [
+  "rewrites": [
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/sides", "destination": "/sides/index.html" },
+    { "source": "/typeme/u/:slug/rate", "destination": "/api/typeme/hub?slug=:slug&mode=rate" },
+    { "source": "/typeme/u/:slug", "destination": "/api/typeme/hub?slug=:slug" },
+    { "source": "/typeme", "destination": "/typeme/index.html" },
+    { "source": "/sustainability/sr2026", "destination": "/sustainability/sr2026/index.html" },
     {
-      "src": "/about",
-      "dest": "/about.html"
-    },
-    {
-      "src": "/sides",
-      "dest": "/sides/index.html"
-    },
-    {
-      "src": "/typeme/u/([^/]+)/rate/?",
-      "dest": "/api/typeme/hub?slug=$1&mode=rate"
-    },
-    {
-      "src": "/typeme/u/([^/]+)/?",
-      "dest": "/api/typeme/hub?slug=$1"
-    },
-    {
-      "src": "/typeme/?",
-      "dest": "/typeme/index.html"
-    },
-    {
-      "src": "/sustainability/sr2026",
-      "dest": "/sustainability/sr2026/index.html"
-    },
-    {
-      "src": "/sustainability/report_comparison(.*)",
-      "dest": "https://temasek-esg-tracker.vercel.app/sustainability/report_comparison$1",
-      "check": true
+      "source": "/sustainability/report_comparison/:path*",
+      "destination": "https://temasek-esg-tracker.vercel.app/sustainability/report_comparison/:path*"
     }
   ]
 }
