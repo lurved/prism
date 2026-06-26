@@ -1,9 +1,9 @@
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
-::selection { background: #F4A7C1; color: #25244C; }
+::selection { background: #F4A7C1; color: #262a4f; }
 
 body {
-  background: #25244C;
+  background: #262a4f;
   color: #D6D3E4;
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   font-size: 18.5px;
@@ -16,7 +16,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(37,36,76,0.82);
+  background: rgba(38,42,79,0.82);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(255,255,255,0.10);
 }
@@ -141,7 +141,7 @@ article.note:first-child {
 }
 article.note:first-child .tag {
   background: #F4A7C1;
-  color: #25244C;
+  color: #262a4f;
 }
 .note-date {
   display: block;
