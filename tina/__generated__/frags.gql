@@ -1,9 +1,0 @@
-fragment NotesParts on Notes {
-  __typename
-  title
-  description
-  date
-  tag
-  inline
-  body
-}

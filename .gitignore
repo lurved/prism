@@ -7,3 +7,4 @@ blog/
 .DS_Store
 **/.DS_Store
 .posthog.json
+tina/__generated__/
