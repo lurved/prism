@@ -1,0 +1,39 @@
+---
+layout: base.njk
+title: Notes
+description: Short notes on what I'm thinking — observations, half-formed ideas, and things worth writing down.
+permalink: /blog/
+---
+<div class="container">
+
+  <header class="page-header">
+    <div class="eyebrow"><span class="eyebrow-dot"></span> pris.la / notes</div>
+    <h1>Short notes on<br /><em>what I'm thinking.</em></h1>
+    <p>Observations, half-formed ideas, and things worth writing down.</p>
+  </header>
+
+  <div class="post-feed">
+    {%- for post in collections.notes %}
+      {% if post.data.inline %}
+        <div class="post-item inline">
+          <div class="post-item-meta">
+            {% if post.data.tag %}<span class="tag">{{ post.data.tag }}</span>{% endif %}
+            <span class="post-date">{{ post.date | readableDate }}</span>
+          </div>
+          <p class="post-body">{{ post.templateContent | safe }}</p>
+        </div>
+      {% else %}
+        <a href="{{ post.url }}" class="post-item">
+          <div class="post-item-meta">
+            {% if post.data.tag %}<span class="tag">{{ post.data.tag }}</span>{% endif %}
+            <span class="post-date">{{ post.date | readableDate }}</span>
+          </div>
+          <h2>{{ post.data.title }}</h2>
+          {% if post.data.description %}<p>{{ post.data.description }}</p>{% endif %}
+          <span class="post-read-more">Read →</span>
+        </a>
+      {% endif %}
+    {%- endfor %}
+  </div>
+
+</div>

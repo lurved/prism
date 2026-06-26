@@ -1,0 +1,8 @@
+node_modules
+_site
+.git
+.claude
+sustainability
+weekly-digest-*.md
+ANALYTICS.md
+README.md

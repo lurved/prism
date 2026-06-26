@@ -6,5 +6,8 @@
     "@upstash/redis": "^1.38.0",
     "@vercel/og": "^0.6.4",
     "ioredis": "^5.4.1"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6"
   }
 }

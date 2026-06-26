@@ -1,0 +1,32 @@
+---
+layout: base.njk
+---
+<div class="container">
+
+  <div class="back-row">
+    <a href="/blog" class="back-link">← Notes</a>
+  </div>
+
+  <header class="post-header">
+    <div class="post-meta">
+      {% if tag %}<span class="tag">{{ tag }}</span>{% endif %}
+      <span class="post-date">{{ date | readableDate }}</span>
+    </div>
+    <h1>{{ title }}</h1>
+  </header>
+
+  <div class="post-body">
+    {{ content | safe }}
+  </div>
+
+  <div class="post-footer">
+    <div class="author-row">
+      <div class="author-avatar">P</div>
+      <div>
+        <div class="author-name">Priscilla</div>
+        <div class="author-handle">pris.la</div>
+      </div>
+    </div>
+  </div>
+
+</div>
