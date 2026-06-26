@@ -1,6 +1,7 @@
 node_modules
 _site
 public
+blog
 .git
 .claude
 sustainability

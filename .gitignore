@@ -1,6 +1,7 @@
 node_modules/
 _site/
 public/
+blog/
 .tina/__generated__/
 .vercel
 .DS_Store
