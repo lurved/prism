@@ -7,21 +7,27 @@ permalink: /blog/
 <div class="container">
 
   <header class="page-header">
-    <div class="eyebrow"><span class="eyebrow-dot"></span> pris.la / notes</div>
-    <h1>Short notes on<br /><em>what I'm thinking.</em></h1>
+    <div class="eyebrow">
+      <span class="eyebrow-dot"></span>
+      <span class="eyebrow-label">Notes</span>
+      <span class="eyebrow-rule"></span>
+    </div>
+    <h1>Short notes on <em>what I'm thinking.</em></h1>
     <p>Observations, half-formed ideas, and things worth writing down.</p>
   </header>
 
   <div class="post-feed">
     {%- for post in collections.notes %}
-      <div class="post-item">
-        <div class="post-item-meta">
+      <article class="note">
+        <aside class="note-meta">
           {% if post.data.tag %}<span class="tag">{{ post.data.tag }}</span>{% endif %}
-          <span class="post-date">{{ post.date | readableDate }}</span>
+          <span class="note-date">{{ post.date | readableDate }}</span>
+        </aside>
+        <div class="note-body">
+          {% if post.data.title %}<h2>{{ post.data.title }}</h2>{% endif %}
+          {{ post.templateContent | safe }}
         </div>
-        {% if post.data.title %}<h2>{{ post.data.title }}</h2>{% endif %}
-        <div class="post-body">{{ post.templateContent | safe }}</div>
-      </div>
+      </article>
     {%- endfor %}
   </div>
 
