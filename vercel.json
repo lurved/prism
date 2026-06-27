@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npm run build && cd sustainability/report_comparison && npm ci && npm run build",
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
@@ -8,9 +8,7 @@
     { "source": "/typeme/u/:slug", "destination": "/api/typeme/hub?slug=:slug" },
     { "source": "/typeme", "destination": "/typeme/index.html" },
     { "source": "/sustainability/sr2026", "destination": "/sustainability/sr2026/index.html" },
-    {
-      "source": "/sustainability/report_comparison/:path*",
-      "destination": "https://temasek-esg-tracker.vercel.app/sustainability/report_comparison/:path*"
-    }
+    { "source": "/sustainability/report_comparison/_next/:path*", "destination": "/sustainability/esg-export/_next/:path*" },
+    { "source": "/sustainability/report_comparison/:path*", "destination": "/sustainability/esg-export/:path*" }
   ]
 }
