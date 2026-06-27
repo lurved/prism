@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build && cd sustainability/report_comparison && npm ci && npm run build",
+  "buildCommand": "npm run build && cd sustainability/report_comparison && npm ci && npm run build && cp -r ../esg-export/. .",
   "outputDirectory": ".",
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
@@ -8,12 +8,6 @@
     { "source": "/typeme/u/:slug", "destination": "/api/typeme/hub?slug=:slug" },
     { "source": "/typeme", "destination": "/typeme/index.html" },
     { "source": "/sustainability/sr2026", "destination": "/sustainability/sr2026/index.html" },
-    { "source": "/sustainability/report_comparison/_next/:path*", "destination": "/sustainability/esg-export/_next/:path*" },
-    { "source": "/sustainability/report_comparison/banks", "destination": "/sustainability/esg-export/banks/index.html" },
-    { "source": "/sustainability/report_comparison/banks/", "destination": "/sustainability/esg-export/banks/index.html" },
-    { "source": "/sustainability/report_comparison/infra", "destination": "/sustainability/esg-export/infra/index.html" },
-    { "source": "/sustainability/report_comparison/infra/", "destination": "/sustainability/esg-export/infra/index.html" },
-    { "source": "/sustainability/report_comparison", "destination": "/sustainability/esg-export/index.html" },
-    { "source": "/sustainability/report_comparison/", "destination": "/sustainability/esg-export/index.html" }
+    { "source": "/sustainability/report_comparison", "destination": "/sustainability/report_comparison/index.html" }
   ]
 }
