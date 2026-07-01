@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Talk — deep question cards</title>
+<meta name="description" content="30 question cards across 3 levels. Start light, go deeper — a card game for conversations that actually go somewhere." />
+<meta name="theme-color" content="#161310" />
+<link rel="canonical" href="https://pris.la/talk" />
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Talk — deep question cards" />
+<meta property="og:description" content="30 question cards across 3 levels. Start light, go deeper." />
+<meta property="og:url" content="https://pris.la/talk" />
+<meta property="og:site_name" content="pris.la" />
+<meta property="og:image" content="https://pris.la/talk/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Talk — deep question cards" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://pris.la/talk/og.png" />
+<meta name="twitter:title" content="Talk — deep question cards" />
+<meta name="twitter:description" content="30 question cards across 3 levels. Start light, go deeper." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23161310'/%3E%3Crect x='22' y='14' width='56' height='72' rx='8' fill='%23E0282B'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="/analytics.js"></script>
+<style>
+  :root{
+    --bg:#161310;
+    --card-bg:#FBFAF7; --card-ink:#1C1B18;
+    --acc:#FFB44A;
+    --t: 420ms;
+    --ease: cubic-bezier(.16,.84,.34,1);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html,body{ height:100%; }
+  body{
+    background:var(--bg);
+    color:#fff;
+    font-family:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    user-select:none;
+  }
+  .mono{ font-family:"Space Mono",ui-monospace,monospace; }
+  #app{ position:fixed; inset:0; }
+
+  /* ---------- chrome ---------- */
+  .bar{
+    position:absolute; left:0; right:0; z-index:40;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: clamp(14px,2.2vh,26px) clamp(18px,3vw,40px);
+    pointer-events:none;
+    transition: opacity .4s ease;
+  }
+  .bar.top{ top:0; }
+  .bar.bottom{ bottom:0; }
+  .eyebrow{
+    font-family:"Space Mono",monospace; font-weight:700;
+    font-size:clamp(10px,1.5vw,15px); letter-spacing:.18em; text-transform:uppercase;
+    color:#fff; opacity:.92;
+    display:flex; align-items:center; gap:.7em;
+  }
+  .eyebrow .dot{ width:.55em; height:.55em; border-radius:50%; background:var(--acc); box-shadow:0 0 14px var(--acc); }
+  .count{ font-family:"Space Mono",monospace; font-weight:700; font-size:clamp(11px,1.6vw,16px); letter-spacing:.1em; opacity:.92; }
+
+  .progress{ display:flex; gap:6px; pointer-events:auto; }
+  .seg{ display:flex; gap:4px; }
+  .seg b{
+    display:block; width:clamp(10px,1.4vw,20px); height:5px; border-radius:3px;
+    background:rgba(255,255,255,.18); transition:background .3s ease, transform .3s ease;
+  }
+  .seg b.done{ background:rgba(255,255,255,.5); }
+  .seg b.now{ background:var(--acc); transform:scaleY(1.8); box-shadow:0 0 12px var(--acc); }
+  .seg-label{ font-family:"Space Mono",monospace; font-size:10px; letter-spacing:.1em; opacity:.45; margin-right:4px; align-self:center; }
+
+  .controls{ display:flex; align-items:center; gap:10px; pointer-events:auto; }
+  .btn{
+    pointer-events:auto; cursor:pointer; border:1px solid rgba(255,255,255,.22);
+    background:rgba(255,255,255,.04); color:#fff;
+    font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.06em;
+    font-size:clamp(11px,1.4vw,14px); border-radius:999px;
+    padding:.55em 1.05em; line-height:1; transition:background .2s ease, border-color .2s ease, transform .15s ease;
+  }
+  .btn:hover{ background:rgba(255,255,255,.13); border-color:rgba(255,255,255,.5); }
+  .btn:active{ transform:translateY(1px); }
+  .btn.icon{ padding:.5em .7em; }
+  .btn.active{ background:var(--acc); color:#1C1B18; border-color:var(--acc); }
+
+  /* ---------- card stage ---------- */
+  .stage{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding: clamp(90px,14vh,140px) clamp(20px,5vw,60px); }
+  .card{
+    position:relative; width:min(640px,92vw); max-width:92vw;
+    min-height: clamp(320px,52vh,520px);
+    background:var(--card-bg); color:var(--card-ink);
+    border-radius:28px; box-shadow:0 24px 70px rgba(0,0,0,.4), 0 2px 0 rgba(0,0,0,.06) inset;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:clamp(32px,6vh,64px) clamp(28px,6vw,64px);
+    cursor:pointer;
+    will-change: transform;
+  }
+  .card-eyebrow{
+    position:absolute; top:clamp(20px,3.5vh,32px); left:0; right:0;
+    font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+    font-size:clamp(11px,1.5vw,14px); color:var(--acc); opacity:.85;
+  }
+  .card-glyph{
+    font-size:clamp(1.6rem,3.5vw,2.4rem); margin-bottom:clamp(14px,2.4vh,22px); opacity:.8; color:var(--acc);
+  }
+  .card-q{
+    font-weight:800; letter-spacing:-.01em; line-height:1.14;
+    font-size: clamp(1.5rem, min(4.6vw, 6vh), 2.7rem);
+    text-wrap:balance; max-width:22ch;
+  }
+  .card-hint{
+    margin-top: clamp(22px,4vh,40px);
+    font-family:"Space Mono",monospace; font-weight:700;
+    font-size:clamp(10px,1.3vw,13px); letter-spacing:.18em; text-transform:uppercase;
+    opacity:.4;
+  }
+  .card-num{
+    position:absolute; bottom:clamp(18px,3vh,28px); right:clamp(22px,4vw,32px);
+    font-family:"Space Mono",monospace; font-weight:700; font-size:clamp(11px,1.4vw,14px); opacity:.35;
+  }
+
+  /* card transition animation */
+  .stage.anim-in .card{ animation:cardIn var(--t) var(--ease) both; }
+  @keyframes cardIn{
+    from{ transform:translateY(24px) scale(.96) rotate(-1.2deg); opacity:0; }
+    to{ transform:translateY(0) scale(1) rotate(0); opacity:1; }
+  }
+
+  /* ---------- overlays ---------- */
+  .overlay{
+    position:absolute; inset:0; z-index:50;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: clamp(40px,7vh,90px) clamp(24px,5vw,80px);
+    background:var(--bg);
+  }
+  .overlay.hidden{ display:none; }
+
+  /* cover */
+  .cover-title{
+    font-weight:800; letter-spacing:-.03em; line-height:.86;
+    font-size:clamp(4.5rem,20vw,14rem); color:var(--acc);
+  }
+  .cover-rule{ width:min(70vw,640px); height:1px; background:rgba(255,255,255,.18); margin:clamp(20px,4vh,40px) 0; }
+  .cover-sub{ font-family:"Space Mono",monospace; letter-spacing:.16em; text-transform:uppercase; font-size:clamp(11px,1.7vw,16px); opacity:.7; max-width:32ch; }
+  .cover-cta{ margin-top:clamp(26px,5vh,52px); }
+
+  /* level intro */
+  .lv-num{ font-weight:800; font-size:clamp(6rem,30vw,24rem); line-height:.8; color:var(--acc); opacity:.16; position:absolute; z-index:0; }
+  .lv-eyebrow{ font-family:"Space Mono",monospace; font-weight:700; letter-spacing:.3em; text-transform:uppercase; font-size:clamp(12px,2vw,20px); opacity:.85; margin-bottom:.6em; color:var(--acc); position:relative; z-index:1; }
+  .lv-title{ position:relative; z-index:1; font-weight:800; letter-spacing:-.02em; font-size:clamp(2.6rem,10vw,7.5rem); line-height:.95; }
+  .lv-tag{ position:relative; z-index:1; margin-top:.7em; font-family:"Space Mono",monospace; letter-spacing:.12em; text-transform:uppercase; font-size:clamp(12px,2vw,18px); opacity:.7; max-width:34ch; }
+
+  /* how to play */
+  .howto h2{ font-weight:800; font-size:clamp(2rem,7vw,5rem); letter-spacing:-.02em; margin-bottom:clamp(24px,5vh,48px); }
+  .rules{ display:flex; flex-direction:column; gap:clamp(14px,2.4vh,26px); max-width:880px; text-align:left; }
+  .rule{ display:flex; gap:clamp(14px,2.5vw,28px); align-items:flex-start; }
+  .rule .n{ font-family:"Space Mono",monospace; font-weight:700; color:var(--acc); font-size:clamp(14px,2vw,22px); padding-top:.18em; min-width:1.6em; }
+  .rule p{ font-size:clamp(1.05rem,2.8vw,2rem); line-height:1.25; font-weight:600; }
+  .rule p em{ font-style:normal; color:var(--acc); }
+
+  /* end screen */
+  .end-title{ font-weight:800; letter-spacing:-.02em; font-size:clamp(2.4rem,9vw,6rem); margin-bottom:.4em; }
+  .end-sub{ font-family:"Space Mono",monospace; letter-spacing:.1em; opacity:.65; font-size:clamp(12px,2vw,16px); max-width:34ch; margin-bottom:clamp(24px,4vh,44px); }
+
+  /* ---------- menu overlay ---------- */
+  #menu{ position:absolute; inset:0; z-index:80; background:rgba(12,10,8,.94); backdrop-filter:blur(8px); display:none; padding:clamp(28px,5vh,60px); overflow:auto; }
+  #menu.open{ display:block; }
+  .menu-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:clamp(20px,4vh,40px); }
+  .menu-head h3{ font-weight:800; font-size:clamp(1.5rem,4vw,2.6rem); }
+  .menu-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:18px; max-width:1300px; margin:0 auto; }
+  .lvcard{ border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:18px; }
+  .lvcard h4{ font-family:"Space Mono",monospace; font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.7; margin-bottom:14px; }
+  .qitem{ display:block; width:100%; text-align:left; background:none; border:0; color:#fff; cursor:pointer; padding:9px 10px; border-radius:9px; font-weight:600; font-size:clamp(.9rem,1.4vw,1rem); transition:background .15s ease; line-height:1.3; }
+  .qitem:hover{ background:rgba(255,255,255,.09); }
+
+  /* control hint toast */
+  #hint{
+    position:absolute; left:50%; bottom:clamp(70px,11vh,110px); transform:translateX(-50%);
+    z-index:60; font-family:"Space Mono",monospace; font-size:clamp(10px,1.4vw,13px); letter-spacing:.08em;
+    color:#fff; background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.12);
+    padding:.5em 1em; border-radius:999px; opacity:0; transition:opacity .5s ease; pointer-events:none;
+    text-align:center; max-width:90vw;
+  }
+  #hint.show{ opacity:.85; }
+  #hint b{ color:var(--acc); }
+
+  @media (max-width:760px){
+    .controls .lbl{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stage.anim-in .card{ animation:fade var(--t) ease both; }
+    @keyframes fade{ from{opacity:.2;} to{opacity:1;} }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- top bar -->
+  <div class="bar top" id="topbar">
+    <div class="eyebrow"><span class="dot"></span><span id="lvlLabel">Talk</span></div>
+    <div class="count" id="countLabel"></div>
+  </div>
+
+  <!-- card stage -->
+  <div class="stage" id="stage">
+    <div class="card" id="card">
+      <div class="card-eyebrow" id="cardEyebrow">Level 1</div>
+      <div class="card-glyph">❝</div>
+      <div class="card-q" id="cardQ">Question goes here</div>
+      <div class="card-hint">Tap or → for next</div>
+      <div class="card-num" id="cardNum"></div>
+    </div>
+  </div>
+
+  <!-- bottom bar -->
+  <div class="bar bottom" id="bottombar">
+    <div class="progress" id="progress"></div>
+    <div class="controls">
+      <button class="btn icon" id="shuffleBtn" title="Shuffle this level (S)">⤨</button>
+      <button class="btn icon" id="prevBtn" title="Previous (←)">‹</button>
+      <button class="btn icon" id="menuBtn" title="Jump to… (M)">☰</button>
+      <button class="btn" id="fsBtn" title="Fullscreen (F)"><span class="lbl">Fullscreen</span><span style="display:none">F</span></button>
+      <button class="btn" id="nextBtn" title="Next (→ / Space)">Next ›</button>
+    </div>
+  </div>
+
+  <!-- overlays -->
+  <div class="overlay" id="ovCover">
+    <div class="cover-title">Talk</div>
+    <div class="cover-rule"></div>
+    <div class="cover-sub">30 question cards, 3 levels — start light, go deeper</div>
+    <div class="cover-cta"><button class="btn" id="startBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Start ›</button></div>
+  </div>
+
+  <div class="overlay hidden" id="ovHowto">
+    <div class="howto">
+      <h2>How it works</h2>
+      <div class="rules">
+        <div class="rule"><span class="n">01</span><p>Each card has <em>one question.</em> Read it out loud, then answer it.</p></div>
+        <div class="rule"><span class="n">02</span><p>Go around the group — everyone answers before the <em>next card.</em></p></div>
+        <div class="rule"><span class="n">03</span><p>Three levels, getting deeper each round. Only go as far as feels right.</p></div>
+      </div>
+      <div class="cover-cta" style="margin-top:clamp(30px,6vh,56px)"><button class="btn" id="howtoBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Let's go ›</button></div>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="ovLevel">
+    <div class="lv-num" id="lvNum">1</div>
+    <div class="lv-eyebrow" id="lvEyebrow">Level 1</div>
+    <div class="lv-title" id="lvTitle">Level 1</div>
+    <div class="lv-tag" id="lvTag"></div>
+  </div>
+
+  <div class="overlay hidden" id="ovEnd">
+    <div class="end-title">That's all 30.</div>
+    <div class="end-sub">Restart, or jump back to a level you want to sit with a little longer.</div>
+    <div class="cover-cta" style="display:flex; gap:14px; margin-top:0;">
+      <button class="btn" id="restartBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Restart</button>
+      <button class="btn" id="endMenuBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Jump to a card</button>
+    </div>
+  </div>
+
+  <!-- jump menu -->
+  <div id="menu">
+    <div class="menu-head">
+      <h3>Jump to a question</h3>
+      <button class="btn" id="menuClose">Close ✕</button>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </div>
+
+  <div id="hint"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---- levels ----
+  const levels = [
+    { id:1, title:"Level 1", tag:"Easy to answer, easy to laugh about", pal:{ acc:"#FFB44A" } },
+    { id:2, title:"Level 2", tag:"Slower answers, more listening",      pal:{ acc:"#3FA7E0" } },
+    { id:3, title:"Level 3", tag:"Only go as deep as feels right",      pal:{ acc:"#E0282B" } },
+  ];
+
+  // ---- 30 questions, 10 per level ----
+  const questions = [
+    // Level 1
+    { lvl:1, q:"What's a small thing that made you smile this week?" },
+    { lvl:1, q:"If you could instantly master one skill, what would it be?" },
+    { lvl:1, q:"What's your go-to comfort food?" },
+    { lvl:1, q:"What's a place you've never been but really want to visit?" },
+    { lvl:1, q:"What's the last thing you got genuinely excited about?" },
+    { lvl:1, q:"If you had a free day with zero obligations, how would you spend it?" },
+    { lvl:1, q:"What's a song that instantly puts you in a good mood?" },
+    { lvl:1, q:"What's something you're better at than most people you know?" },
+    { lvl:1, q:"What's a small habit that's made your life better?" },
+    { lvl:1, q:"What's the best piece of advice you've ever ignored?" },
+
+    // Level 2
+    { lvl:2, q:"What's something you believed as a kid that you no longer believe?" },
+    { lvl:2, q:"What's a compliment you received that you still think about?" },
+    { lvl:2, q:"What does “home” mean to you right now?" },
+    { lvl:2, q:"What's a decision you made that changed the direction of your life?" },
+    { lvl:2, q:"Who is someone who shaped who you are — and how?" },
+    { lvl:2, q:"What's something you're proud of that most people don't know about?" },
+    { lvl:2, q:"What's a fear you've quietly gotten better at managing?" },
+    { lvl:2, q:"When do you feel most like yourself?" },
+    { lvl:2, q:"What's something you needed to hear when you were younger?" },
+    { lvl:2, q:"What's a relationship in your life you'd like to understand better?" },
+
+    // Level 3
+    { lvl:3, q:"What's something you've never told anyone in this room?" },
+    { lvl:3, q:"What's a moment you felt truly alone, and how did you get through it?" },
+    { lvl:3, q:"What do you wish someone had told you before you lost them?" },
+    { lvl:3, q:"What's something you're still forgiving yourself for?" },
+    { lvl:3, q:"What's the loneliest kind of love you've experienced?" },
+    { lvl:3, q:"What would you want people to say about you if you weren't there to hear it?" },
+    { lvl:3, q:"What's a truth about yourself you're still learning to accept?" },
+    { lvl:3, q:"What's something you're scared to want?" },
+    { lvl:3, q:"If this were the last conversation you had with someone here, what would you want them to know?" },
+    { lvl:3, q:"What's a wound that shaped you more than you'd like to admit?" },
+  ];
+
+  const totalQ = questions.length;
+  const lvlById = id => levels.find(L=>L.id===id);
+
+  // per-level shuffled order (indices into `questions`, kept in original order until shuffled)
+  let order = {};
+  levels.forEach(L=>{ order[L.id] = questions.map((q,i)=>i).filter(i=>questions[i].lvl===L.id); });
+
+  function shuffleLevel(lvl){
+    const arr = order[lvl];
+    for(let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
+    }
+  }
+
+  // ---- build the flat slide deck: cover, howto, [level, q x10] x3, end ----
+  function buildSlides(){
+    const slides = [];
+    slides.push({ type:"cover" });
+    slides.push({ type:"howto" });
+    levels.forEach(L=>{
+      slides.push({ type:"level", lvl:L.id });
+      order[L.id].forEach(qi=> slides.push({ type:"q", qi }) );
+    });
+    slides.push({ type:"end" });
+    return slides;
+  }
+  let slides = buildSlides();
+
+  // ---- elements ----
+  const $ = s => document.querySelector(s);
+  const stage=$("#stage"), card=$("#card"), cardEyebrow=$("#cardEyebrow"), cardQ=$("#cardQ"), cardNum=$("#cardNum");
+  const topbar=$("#topbar"), bottombar=$("#bottombar"), lvlLabel=$("#lvlLabel"), countLabel=$("#countLabel");
+  const progress=$("#progress");
+  const ovCover=$("#ovCover"), ovHowto=$("#ovHowto"), ovLevel=$("#ovLevel"), ovEnd=$("#ovEnd");
+  const lvNum=$("#lvNum"), lvEyebrow=$("#lvEyebrow"), lvTitle=$("#lvTitle"), lvTag=$("#lvTag");
+  const hint=$("#hint"), shuffleBtn=$("#shuffleBtn");
+  const menu=$("#menu"), menuGrid=$("#menuGrid");
+
+  const root=document.documentElement.style;
+  let idx = 0;
+
+  function applyPalette(p){ root.setProperty("--acc",p.acc); }
+
+  function setOverlays(active){
+    ovCover.classList.toggle("hidden", active!=="cover");
+    ovHowto.classList.toggle("hidden", active!=="howto");
+    ovLevel.classList.toggle("hidden", active!=="level");
+    ovEnd.classList.toggle("hidden", active!=="end");
+    const chromeHidden = (active==="cover");
+    topbar.style.opacity = chromeHidden ? "0":"1";
+    bottombar.style.opacity = (active==="end") ? "0" : "1";
+  }
+
+  function buildProgress(currentQi){
+    progress.innerHTML="";
+    levels.forEach(L=>{
+      const label=document.createElement("span"); label.className="seg-label mono"; label.textContent="L"+L.id;
+      const seg=document.createElement("div"); seg.className="seg";
+      order[L.id].forEach((qi,pos)=>{
+        const b=document.createElement("b");
+        if(currentQi!=null){
+          const globalPos = slides.findIndex(s=>s.type==="q"&&s.qi===qi);
+          if(globalPos<currentQi) b.classList.add("done");
+          else if(globalPos===currentQi) b.classList.add("now");
+        }
+        seg.appendChild(b);
+      });
+      progress.appendChild(label); progress.appendChild(seg);
+    });
+  }
+
+  function animateCard(){
+    stage.classList.remove("anim-in");
+    void stage.offsetWidth; // reflow
+    stage.classList.add("anim-in");
+  }
+
+  function render(){
+    const s = slides[idx];
+
+    if(s.type==="cover"){
+      applyPalette(lvlById(1).pal);
+      setOverlays("cover");
+      buildProgress(null);
+      countLabel.textContent="";
+      lvlLabel.textContent="Talk";
+      return;
+    }
+    if(s.type==="howto"){
+      applyPalette(lvlById(1).pal);
+      setOverlays("howto");
+      buildProgress(null);
+      countLabel.textContent="How to play";
+      lvlLabel.textContent="Talk";
+      return;
+    }
+    if(s.type==="level"){
+      const L=lvlById(s.lvl);
+      applyPalette(L.pal);
+      setOverlays("level");
+      lvNum.textContent=L.id;
+      lvEyebrow.textContent="Level "+L.id;
+      lvTitle.textContent=L.title;
+      lvTag.textContent=L.tag;
+      lvlLabel.textContent=L.title;
+      countLabel.textContent="";
+      buildProgress(null);
+      return;
+    }
+    if(s.type==="end"){
+      applyPalette(lvlById(3).pal);
+      setOverlays("end");
+      lvlLabel.textContent="Talk";
+      countLabel.textContent="Done";
+      buildProgress(null);
+      return;
+    }
+    // question
+    const q=questions[s.qi];
+    const L=lvlById(q.lvl);
+    applyPalette(L.pal);
+    setOverlays(null);
+    cardEyebrow.textContent="Level "+L.id;
+    cardQ.textContent=q.q;
+    const posInLevel = order[L.id].indexOf(s.qi)+1;
+    cardNum.textContent = posInLevel+" / "+order[L.id].length;
+    lvlLabel.textContent=L.title;
+    countLabel.textContent = String(globalQuestionNumber(idx)).padStart(2,"0")+" / "+totalQ;
+    buildProgress(idx);
+    animateCard();
+  }
+
+  function globalQuestionNumber(slideIdx){
+    let n=0;
+    for(let i=0;i<=slideIdx;i++){ if(slides[i].type==="q") n++; }
+    return n;
+  }
+
+  function go(n){
+    idx = Math.max(0, Math.min(slides.length-1, n));
+    render();
+  }
+  function next(){ if(idx<slides.length-1) go(idx+1); }
+  function prev(){ if(idx>0) go(idx-1); }
+
+  function restart(){ idx=0; render(); }
+
+  // ---- shuffle ----
+  function currentLevelId(){
+    const s = slides[idx];
+    if(s.type==="q") return questions[s.qi].lvl;
+    if(s.type==="level") return s.lvl;
+    return null;
+  }
+  function doShuffle(){
+    const lvl = currentLevelId();
+    if(!lvl) return;
+    shuffleLevel(lvl);
+    slides = buildSlides();
+    idx = slides.findIndex(s=>s.type==="level"&&s.lvl===lvl);
+    render();
+    showHint("Level "+lvl+" <b>shuffled</b>");
+  }
+
+  // ---- jump menu ----
+  function buildMenu(){
+    menuGrid.innerHTML="";
+    levels.forEach(L=>{
+      const cardEl=document.createElement("div"); cardEl.className="lvcard";
+      const h=document.createElement("h4"); h.textContent=L.title; cardEl.appendChild(h);
+      order[L.id].forEach((qi)=>{
+        const b=document.createElement("button"); b.className="qitem";
+        b.textContent = questions[qi].q;
+        b.addEventListener("click",()=>{
+          const slideIndex = slides.findIndex(s=>s.type==="q"&&s.qi===qi);
+          closeMenu(); go(slideIndex);
+        });
+        cardEl.appendChild(b);
+      });
+      menuGrid.appendChild(cardEl);
+    });
+  }
+  function openMenu(){ buildMenu(); menu.classList.add("open"); }
+  function closeMenu(){ menu.classList.remove("open"); }
+
+  // ---- fullscreen ----
+  function toggleFs(){
+    if(!document.fullscreenElement){ document.documentElement.requestFullscreen?.(); }
+    else { document.exitFullscreen?.(); }
+  }
+
+  // ---- hint toast ----
+  let hintTimer;
+  function showHint(html){
+    hint.innerHTML=html; hint.classList.add("show");
+    clearTimeout(hintTimer); hintTimer=setTimeout(()=>hint.classList.remove("show"),3200);
+  }
+
+  // ---- events ----
+  $("#startBtn").addEventListener("click",next);
+  $("#howtoBtn").addEventListener("click",next);
+  $("#nextBtn").addEventListener("click",next);
+  $("#prevBtn").addEventListener("click",prev);
+  $("#menuBtn").addEventListener("click",openMenu);
+  $("#endMenuBtn").addEventListener("click",openMenu);
+  $("#menuClose").addEventListener("click",closeMenu);
+  $("#fsBtn").addEventListener("click",toggleFs);
+  $("#shuffleBtn").addEventListener("click",doShuffle);
+  $("#restartBtn").addEventListener("click",restart);
+
+  card.addEventListener("click",next);
+  ovCover.addEventListener("click",e=>{ if(e.target===ovCover) next(); });
+  ovHowto.addEventListener("click",e=>{ if(e.target===ovHowto) next(); });
+  ovLevel.addEventListener("click",next);
+
+  document.addEventListener("keydown",e=>{
+    if(menu.classList.contains("open")){ if(e.key==="Escape"||e.key==="m"||e.key==="M") closeMenu(); return; }
+    switch(e.key){
+      case "ArrowRight": case " ": case "Enter": case "PageDown": e.preventDefault(); next(); break;
+      case "ArrowLeft": case "PageUp": e.preventDefault(); prev(); break;
+      case "f": case "F": toggleFs(); break;
+      case "m": case "M": openMenu(); break;
+      case "s": case "S": doShuffle(); break;
+      case "1": go(slides.findIndex(s=>s.type==="level"&&s.lvl===1)); break;
+      case "2": go(slides.findIndex(s=>s.type==="level"&&s.lvl===2)); break;
+      case "3": go(slides.findIndex(s=>s.type==="level"&&s.lvl===3)); break;
+      case "Home": go(0); break;
+    }
+  });
+
+  // simple swipe support (mobile)
+  let touchX=null;
+  stage.addEventListener("touchstart", e=>{ touchX = e.changedTouches[0].clientX; }, {passive:true});
+  stage.addEventListener("touchend", e=>{
+    if(touchX==null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 60){ dx<0 ? next() : prev(); }
+    touchX=null;
+  }, {passive:true});
+
+  // first paint
+  render();
+  setTimeout(()=>showHint("<b>→</b> or <b>Space</b> next · <b>←</b> back · <b>S</b> shuffle · <b>M</b> jump"),700);
+
+})();
+</script>
+</body>
+</html>
