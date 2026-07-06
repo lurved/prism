@@ -1,10 +1,5 @@
 import { companies } from "@/data/esgData";
-
-const REPORT_URLS: Record<string, string> = {
-  sembcorp: "https://media.sembcorp.com/data/cms/ar/ar2025/index.html",
-  smrt:     "https://www.smrt.com.sg/getmedia/8cd6126b-4f4f-49d4-819e-f7ae4aae0117/SMRT-Sustainability-Report-2024_25.pdf",
-  singtel:  "https://www.singtel.com/about-us/sustainability/sustainability-reports/2025",
-};
+import { formatReportDate, latestDate } from "@/lib/formatDate";
 
 const NOTES = [
   "These companies span different sectors (energy, transport, telecom) and fiscal years (Sembcorp Jan–Dec; SMRT & Singtel Apr–Mar) — figures are not from the same calendar period.",
@@ -18,16 +13,32 @@ const NOTES = [
 ];
 
 export function SourcesFooter() {
+  const lastVerified = latestDate(companies.map((c) => c.dataSource.extractedDateISO));
+
   return (
     <div>
+      {/* Page-level verification stamp (§5) */}
+      <div className="flex items-center gap-2 mb-5">
+        <span className="w-[7px] h-[7px] rounded-full bg-good" />
+        <span className="font-mono font-medium text-[11px] tracking-[0.04em] text-muted">
+          Data last verified: {formatReportDate(lastVerified)}
+        </span>
+      </div>
+
       {/* Source cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-9">
         {companies.map((c) => (
-          <a key={c.id} href={REPORT_URLS[c.id]} target="_blank" rel="noopener noreferrer"
+          <a key={c.id} href={c.dataSource.url} target="_blank" rel="noopener noreferrer"
             className="block border border-hairline rounded-[12px] bg-card p-5 hover:bg-[#F4F0E6] transition-colors">
             <div className="font-serif font-semibold text-[16px] text-ink">{c.name}</div>
             <div className="font-mono font-medium text-[10px] text-muted2 mt-1.5 tracking-[0.04em] uppercase">
               {c.dataSource.reportingPeriod} · {c.sector}
+            </div>
+            <div className="font-sans text-[12px] leading-[1.5] text-muted mt-3 [text-wrap:pretty]">
+              Source: {c.dataSource.reportTitle}
+            </div>
+            <div className="font-mono text-[10px] text-muted2 mt-2 leading-[1.6]">
+              Published {formatReportDate(c.dataSource.publishedDate)} · Extracted {formatReportDate(c.dataSource.extractedDateISO)}
             </div>
             <div className="font-mono text-[11px] mt-4" style={{ color: c.accentColor }}>View report →</div>
           </a>
