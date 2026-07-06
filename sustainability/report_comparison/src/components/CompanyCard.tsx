@@ -1,4 +1,8 @@
 import type { Company } from "@/data/types";
+import { METRIC_DEFS, buildMetricValue } from "@/lib/metrics";
+import { CitedValue } from "./CitedValue";
+
+const defById = (id: string) => METRIC_DEFS.find((d) => d.metricId === id)!;
 
 function fmtEm(ktCO2e: number): string {
   if (ktCO2e >= 1_000) return `${(ktCO2e / 1_000).toFixed(1)}M`;
@@ -10,16 +14,17 @@ function fmtHead(n: number): string {
 }
 
 export function CompanyCard({ company: c }: { company: Company }) {
-  const { environmental: env, social, governance } = c;
-  const reduction = env.scope1and2ReductionPct;
+  const { governance } = c;
+  const reductionMv = buildMetricValue(c, defById("s1s2Reduction"));
 
-  const stats: [string, string][] = [
-    ["Scope 1", fmtEm(env.scope1Emissions)],
-    ["Scope 2", fmtEm(env.scope2Emissions)],
-    ["Net-Zero", String(env.netZeroTargetYear)],
-    ["Fem. Board", social.femaleBoardPct === null ? "N/D" : `${social.femaleBoardPct}%`],
-    ["Headcount", fmtHead(social.totalHeadcount)],
-    ["Train/yr", `${social.trainingHoursPerEmployee}h`],
+  // Headline stats — each routed through <CitedValue> so no figure is uncited.
+  const stats: { label: string; metricId: string; display: (v: number) => string }[] = [
+    { label: "Scope 1", metricId: "scope1", display: fmtEm },
+    { label: "Scope 2", metricId: "scope2", display: fmtEm },
+    { label: "Net-Zero", metricId: "netZeroTarget", display: (v) => String(v) },
+    { label: "Fem. Board", metricId: "femaleBoard", display: (v) => `${v}%` },
+    { label: "Headcount", metricId: "headcount", display: fmtHead },
+    { label: "Train/yr", metricId: "trainingHours", display: (v) => `${v}h` },
   ];
 
   return (
@@ -38,25 +43,41 @@ export function CompanyCard({ company: c }: { company: Company }) {
         <p className="font-sans text-[13px] leading-[1.6] text-body m-0 mb-[18px] [text-wrap:pretty] line-clamp-3">{c.strategy}</p>
 
         <div className="grid grid-cols-3 gap-x-3 gap-y-[14px] mb-[18px]">
-          {stats.map(([label, value]) => (
-            <div key={label}>
-              <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase">{label}</div>
-              <div className="font-serif font-medium text-[17px] text-ink leading-[1.1] mt-[5px]">{value}</div>
-            </div>
-          ))}
+          {stats.map(({ label, metricId, display }) => {
+            const mv = buildMetricValue(c, defById(metricId));
+            return (
+              <div key={label}>
+                <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase">{label}</div>
+                <div className="font-serif font-medium text-[17px] text-ink leading-[1.1] mt-[5px]">
+                  <CitedValue
+                    mv={mv}
+                    plain
+                    display={mv.value !== null ? display(mv.value) : undefined}
+                    className="font-serif text-[17px] text-ink"
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Reduction bar */}
         <div className="mb-[18px]">
           <div className="flex justify-between font-mono font-medium text-[11px] text-muted mb-[7px]">
             <span>S1+S2 reduction vs {c.baselineYear}</span>
-            <span className={reduction === null ? "text-muted3" : "text-good"}>{reduction === null ? "Not disclosed" : `${reduction.toFixed(1)}%`}</span>
+            <CitedValue
+              mv={reductionMv}
+              plain
+              display={reductionMv.value !== null ? `${reductionMv.value.toFixed(1)}%` : undefined}
+              ndLabel="Not disclosed"
+              className={`font-mono text-[11px] ${reductionMv.value === null ? "text-muted3" : "text-good"}`}
+            />
           </div>
           <div className="h-[6px] rounded-full overflow-hidden bg-track">
-            {reduction === null ? (
+            {reductionMv.value === null ? (
               <div className="h-full w-full" style={{ backgroundImage: "repeating-linear-gradient(45deg,#D8D0BF 0 5px,transparent 5px 10px)" }} />
             ) : (
-              <div className="h-full bg-good" style={{ width: `${Math.min(reduction, 100)}%` }} />
+              <div className="h-full bg-good" style={{ width: `${Math.min(reductionMv.value, 100)}%` }} />
             )}
           </div>
         </div>

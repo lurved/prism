@@ -38,12 +38,15 @@ export const companies: Company[] = [
       reportingPeriod: "FY2025 (1 Jan – 31 Dec 2025)",
       url: "https://media.sembcorp.com/data/cms/ar/ar2025/index.html",
       accessDate: "June 2026",
+      extractedDateISO: "2026-06",
+      publishedDate: null, // exact publication date not stated in extracted source — not guessed
     },
     environmental: {
       // All emissions figures from GRI 305-1, 305-2, 305-3 disclosures in ESG appendix
       scope1Emissions: 7_425.4,   // ktCO2e — subsidiaries: 4,345.4; JVs & associates: 3,080.0
       scope2Emissions: 282.9,     // ktCO2e — location-based; market-based disclosure not separately stated in extracted text
       scope3Emissions: 15_340.2,  // ktCO2e — Cat 3 (fuel/energy): 2,876.1; Cat 11 (sold products): 2,596.3; Cat 15 (investments): 9,867.8
+      scope3Cat15Emissions: 9_867.8, // ktCO2e — Category 15 (investments), separately disclosed in ESG appendix
       ghgIntensityValue: 0.21,
       ghgIntensityUnit: "tCO2e/MWh",
       renewableEnergyPct: null,   // Not reported as % of own consumption; 67% of gross capacity is renewable
@@ -86,7 +89,12 @@ export const companies: Company[] = [
       "Female board % (20%) is consistent across FY2023–2025 per GRI 405-1 table.",
       "Learning hours (26.5 hrs) = average learning hours per employee per GRI 404-1.",
       "Water consumption figure exists in GRI 303-5 table (page 76 of source PDF) but was not extractable from binary-encoded PDF.",
+      "Scope 3 Category 15 (investments) = 9,867.8 ktCO₂e is disclosed separately, enabling an excl.-Cat-15 view.",
     ],
+    citationPages: {
+      // Only pages actually recorded during extraction — never guessed.
+      waterConsumption: 76, // GRI 303-5 table location noted in source PDF
+    },
   },
 
   /* ═══════════════════════════════════════════════════════════════
@@ -113,12 +121,15 @@ export const companies: Company[] = [
       reportingPeriod: "FY2024/25 (1 Apr 2024 – 31 Mar 2025)",
       url: "https://www.smrt.com.sg/getmedia/8cd6126b-4f4f-49d4-819e-f7ae4aae0117/SMRT-Sustainability-Report-2024_25.pdf",
       accessDate: "June 2026",
+      extractedDateISO: "2026-06",
+      publishedDate: null, // exact publication date not stated in extracted source — not guessed
     },
     environmental: {
       // Source: SMRT Group GHG table, Sustainability Snapshot (p.7) & Performance (p.35)
       scope1Emissions: 129.195,   // ktCO2e — SMRT Group FY24/25
       scope2Emissions: 372.164,   // ktCO2e — largest source (traction electricity); basis (location/market) not specified
       scope3Emissions: 209.757,   // ktCO2e — Group FY24/25
+      scope3Cat15Emissions: null, // SMRT does not break out a Category 15 (investments) figure
       ghgIntensityValue: 295,
       ghgIntensityUnit: "tCO2e/S$M revenue (Rail, S1+2)",
       renewableEnergyPct: null,   // Onsite renewable 4,864,298 kWh of 893,001,643 kWh total (~0.5%); not reported as a % — see dataNotes
@@ -189,6 +200,8 @@ export const companies: Company[] = [
       reportingPeriod: "FY2025 (1 Apr 2024 – 31 Mar 2025)",
       url: "https://www.singtel.com/about-us/sustainability/sustainability-reports/2025",
       accessDate: "June 2026",
+      extractedDateISO: "2026-06",
+      publishedDate: null, // exact publication date not stated in extracted source — not guessed
     },
     environmental: {
       // Source: SR2025 text + Environmental Performance Indicators Excel (SR2024 confirmed)
@@ -196,6 +209,7 @@ export const companies: Company[] = [
       scope1Emissions: 13.228,    // ktCO2e — Group FY2025 (expanded scope: Singtel + Optus + NCS + Digital InfraCo)
       scope2Emissions: 342.540,   // ktCO2e — market-based; location-based: 467.7 ktCO2e (FY2024 from Excel, FY2025 not extracted)
       scope3Emissions: 2_309.368, // ktCO2e — all 15 categories; SBTi-covered categories (1,2,11,13,15): 2,220.3 ktCO2e
+      scope3Cat15Emissions: null, // Cat 15 not separately broken out (only the 5-category SBTi aggregate is cited)
       ghgIntensityValue: 0.0186,
       ghgIntensityUnit: "tCO2e/TB",  // GHG intensity per terabyte of data traffic carried — standard telecom metric
       renewableEnergyPct: 9.33,   // % of electricity backed by renewable sources (FY2024 confirmed; FY2025 "up from 9.3%" but exact not extracted)
