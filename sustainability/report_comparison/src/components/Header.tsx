@@ -8,12 +8,14 @@ const navItems = [
   { label: "Temasek", href: "/" },
   { label: "Utility", href: "/infra" },
   { label: "Banks", href: "/banks" },
+  { label: "Healthcare", href: "/healthcare" },
 ];
 
 const SUBTITLES: Record<string, string> = {
   "/": "Temasek Portfolio",
   "/infra": "Electricity Utility",
   "/banks": "Singapore Banks",
+  "/healthcare": "Healthcare",
 };
 
 function isActive(pathname: string | null, href: string): boolean {

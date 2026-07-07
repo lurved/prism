@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "3456"],
       "port": 3456
+    },
+    {
+      "name": "esg-tracker",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "sustainability/report_comparison", "run", "dev"],
+      "port": 3001
     }
   ]
 }
