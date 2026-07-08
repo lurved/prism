@@ -8,3 +8,6 @@ blog/
 **/.DS_Store
 .posthog.json
 tina/__generated__/
+
+# ESG tracker static-export output (build artifact)
+sustainability/esg-export/
