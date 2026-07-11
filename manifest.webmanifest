@@ -1,0 +1,14 @@
+{
+  "name": "pris.la — New note",
+  "short_name": "New note",
+  "description": "Voice-to-text quick publish for the pris.la blog.",
+  "start_url": "/post",
+  "scope": "/post",
+  "display": "standalone",
+  "background_color": "#262a4f",
+  "theme_color": "#262a4f",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

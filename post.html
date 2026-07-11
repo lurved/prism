@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>New note — pris.la</title>
+  <meta name="description" content="Voice-to-text quick publish for the pris.la blog." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#262a4f" />
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #262a4f;
+      --panel: #2f3459;
+      --text: #D6D3E4;
+      --muted: #8f8cb5;
+      --line: rgba(255,255,255,0.12);
+      --pink: #F4A7C1;
+      --pink-ink: #262a4f;
+    }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Hanken Grotesk', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: max(18px, env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+    }
+    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+    }
+    .brand b { color: var(--pink); font-weight: 500; }
+    .gear {
+      background: none; border: 1px solid var(--line); color: var(--muted);
+      width: 34px; height: 34px; border-radius: 9px; font-size: 15px; cursor: pointer;
+    }
+    h1 { font-size: 24px; font-weight: 700; margin: 4px 0 2px; letter-spacing: -0.01em; }
+    .sub { color: var(--muted); font-size: 14.5px; margin: 0 0 18px; }
+
+    textarea {
+      width: 100%; flex: 1 1 auto; min-height: 34vh; resize: vertical;
+      background: var(--panel); color: var(--text);
+      border: 1px solid var(--line); border-radius: 14px;
+      padding: 16px; font: inherit; line-height: 1.65;
+    }
+    textarea:focus { outline: none; border-color: var(--pink); }
+    textarea::placeholder { color: var(--muted); }
+
+    .row { display: flex; gap: 10px; align-items: center; margin-top: 14px; flex-wrap: wrap; }
+    select, .toggle {
+      background: var(--panel); color: var(--text);
+      border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font: inherit; font-size: 14px;
+    }
+    .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+    .toggle input { accent-color: var(--pink); width: 16px; height: 16px; }
+
+    .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    button.big {
+      border: none; border-radius: 13px; padding: 16px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer;
+    }
+    #mic { background: var(--panel); color: var(--text); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; gap: 9px; }
+    #mic.live { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
+    #mic .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
+    #mic.live .dot { background: var(--pink-ink); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
+    #publish { background: var(--pink); color: var(--pink-ink); }
+    #publish:disabled { opacity: 0.5; cursor: default; }
+
+    .status { margin-top: 16px; font-size: 14.5px; min-height: 22px; }
+    .status a { color: var(--pink); }
+    .status.err { color: #ff9db3; }
+    .status.ok { color: #9be7c0; }
+
+    dialog {
+      background: var(--panel); color: var(--text); border: 1px solid var(--line);
+      border-radius: 16px; padding: 22px; max-width: 380px; width: calc(100% - 32px);
+    }
+    dialog::backdrop { background: rgba(10,12,28,0.6); }
+    dialog h2 { margin: 0 0 4px; font-size: 18px; }
+    dialog p { color: var(--muted); font-size: 14px; margin: 0 0 14px; }
+    dialog input {
+      width: 100%; background: var(--bg); color: var(--text); border: 1px solid var(--line);
+      border-radius: 10px; padding: 12px; font: inherit; margin-bottom: 14px;
+    }
+    dialog .drow { display: flex; gap: 10px; justify-content: flex-end; }
+    dialog button { border: none; border-radius: 10px; padding: 10px 16px; font: inherit; font-weight: 600; cursor: pointer; }
+    dialog .cancel { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+    dialog .save { background: var(--pink); color: var(--pink-ink); }
+    .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="brand"><b>pris.la</b> / blog / new</span>
+      <button class="gear" id="gear" title="Settings" aria-label="Settings">⚙</button>
+    </header>
+
+    <h1>New note</h1>
+    <p class="sub">Hold the mic and talk, or type. Then publish — it goes straight to the blog.</p>
+
+    <textarea id="text" placeholder="Speak or type your note…"></textarea>
+
+    <div class="row">
+      <select id="tag" aria-label="Tag">
+        <option value="">Tag: auto</option>
+        <option>AI</option><option>Design</option><option>Product</option><option>Data</option><option>Tools</option>
+      </select>
+      <label class="toggle"><input type="checkbox" id="cleanup" checked /> Claude cleanup</label>
+    </div>
+
+    <div class="actions">
+      <button class="big" id="mic"><span class="dot"></span><span id="micLabel">Hold to talk</span></button>
+      <button class="big" id="publish">Publish</button>
+    </div>
+
+    <div class="status" id="status"></div>
+    <p class="hint" id="micHint"></p>
+  </div>
+
+  <dialog id="settings">
+    <h2>Publish key</h2>
+    <p>Paste the secret you set in Vercel (<code>BLOG_POST_SECRET</code>). Stored only on this device.</p>
+    <input type="password" id="secretInput" placeholder="Secret key" autocomplete="off" />
+    <div class="drow">
+      <button class="cancel" id="cancelSettings">Cancel</button>
+      <button class="save" id="saveSettings">Save</button>
+    </div>
+  </dialog>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const ta = $("text"), statusEl = $("status");
+    const KEY = "blogPostSecret";
+
+    // ── Settings / secret ──
+    const dlg = $("settings");
+    $("gear").onclick = () => { $("secretInput").value = localStorage.getItem(KEY) || ""; dlg.showModal(); };
+    $("cancelSettings").onclick = () => dlg.close();
+    $("saveSettings").onclick = () => {
+      const v = $("secretInput").value.trim();
+      if (v) localStorage.setItem(KEY, v); else localStorage.removeItem(KEY);
+      dlg.close();
+      setStatus(v ? "Key saved on this device." : "Key cleared.", "");
+    };
+    function getSecret() { return localStorage.getItem(KEY) || ""; }
+
+    function setStatus(msg, kind) { statusEl.className = "status " + (kind || ""); statusEl.innerHTML = msg; }
+
+    // ── Voice dictation (Web Speech API) ──
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const mic = $("mic"), micLabel = $("micLabel");
+    let recognition = null, listening = false, baseText = "";
+
+    if (!SR) {
+      mic.disabled = true;
+      $("micHint").textContent = "Live dictation isn't supported in this browser — tap the mic on your keyboard instead.";
+    }
+
+    function startListening() {
+      if (!SR || listening) return;
+      baseText = ta.value ? ta.value.replace(/\s+$/, "") + "\n\n" : "";
+      recognition = new SR();
+      recognition.lang = "en-US";
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      let finalChunk = "";
+      recognition.onresult = (e) => {
+        let interim = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const t = e.results[i][0].transcript;
+          if (e.results[i].isFinal) finalChunk += t; else interim += t;
+        }
+        ta.value = baseText + finalChunk + interim;
+      };
+      recognition.onerror = (e) => {
+        if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+          setStatus("Microphone permission denied.", "err");
+          stopListening();
+        }
+      };
+      recognition.onend = () => { if (listening) { try { recognition.start(); } catch (_) {} } };
+      listening = true;
+      mic.classList.add("live");
+      micLabel.textContent = "Listening… tap to stop";
+      try { recognition.start(); } catch (_) {}
+    }
+
+    function stopListening() {
+      listening = false;
+      mic.classList.remove("live");
+      micLabel.textContent = "Hold to talk";
+      if (recognition) { try { recognition.stop(); } catch (_) {} }
+    }
+
+    mic.addEventListener("click", () => { listening ? stopListening() : startListening(); });
+
+    // ── Publish ──
+    $("publish").addEventListener("click", async () => {
+      const text = ta.value.trim();
+      if (!text) { setStatus("Nothing to publish yet.", "err"); return; }
+      const secret = getSecret();
+      if (!secret) { setStatus("Set your publish key first (⚙).", "err"); dlg.showModal(); return; }
+
+      stopListening();
+      const btn = $("publish");
+      btn.disabled = true;
+      setStatus("Publishing…", "");
+      try {
+        const res = await fetch("/api/post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-blog-secret": secret },
+          body: JSON.stringify({
+            text,
+            cleanup: $("cleanup").checked,
+            tag: $("tag").value || undefined,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        ta.value = "";
+        const label = data.title ? `“${data.title}”` : "Inline note";
+        const link = data.commit ? ` — <a href="${data.commit}" target="_blank" rel="noopener">view commit</a>` : "";
+        setStatus(`Published ${label}. Live in ~30s${link}.`, "ok");
+      } catch (err) {
+        setStatus("Failed: " + err.message, "err");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

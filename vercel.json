@@ -5,6 +5,7 @@
     { "source": "/about", "destination": "/about.html" },
     { "source": "/sides", "destination": "/sides/index.html" },
     { "source": "/talk", "destination": "/talk/index.html" },
+    { "source": "/post", "destination": "/post.html" },
     { "source": "/typeme/u/:slug/rate", "destination": "/api/typeme/hub?slug=:slug&mode=rate" },
     { "source": "/typeme/u/:slug", "destination": "/api/typeme/hub?slug=:slug" },
     { "source": "/typeme", "destination": "/typeme/index.html" },
