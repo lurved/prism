@@ -116,7 +116,7 @@
     </header>
 
     <h1>New note</h1>
-    <p class="sub">Hold the mic and talk, or type. Then publish — it goes straight to the blog.</p>
+    <p class="sub">Tap Record and talk, or type. Then publish — it goes straight to the blog.</p>
 
     <textarea id="text" placeholder="Speak or type your note…"></textarea>
 
@@ -129,7 +129,7 @@
     </div>
 
     <div class="actions">
-      <button class="big" id="mic"><span class="dot"></span><span id="micLabel">Hold to talk</span></button>
+      <button class="big" id="mic"><span class="dot"></span><span id="micLabel">Record</span></button>
       <button class="big" id="publish">Publish</button>
     </div>
 
@@ -166,53 +166,74 @@
 
     function setStatus(msg, kind) { statusEl.className = "status " + (kind || ""); statusEl.innerHTML = msg; }
 
-    // ── Voice dictation (Web Speech API) ──
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    // ── Voice capture: record audio, transcribe server-side with Whisper ──
     const mic = $("mic"), micLabel = $("micLabel");
-    let recognition = null, listening = false, baseText = "";
+    let mediaRecorder = null, chunks = [], stream = null, recording = false;
 
-    if (!SR) {
+    const canRecord = !!(navigator.mediaDevices && window.MediaRecorder);
+    if (!canRecord) {
       mic.disabled = true;
-      $("micHint").textContent = "Live dictation isn't supported in this browser — tap the mic on your keyboard instead.";
+      $("micHint").textContent = "Recording isn't supported in this browser — tap the mic on your keyboard to dictate instead.";
     }
 
-    function startListening() {
-      if (!SR || listening) return;
-      baseText = ta.value ? ta.value.replace(/\s+$/, "") + "\n\n" : "";
-      recognition = new SR();
-      recognition.lang = "en-US";
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      let finalChunk = "";
-      recognition.onresult = (e) => {
-        let interim = "";
-        for (let i = e.resultIndex; i < e.results.length; i++) {
-          const t = e.results[i][0].transcript;
-          if (e.results[i].isFinal) finalChunk += t; else interim += t;
-        }
-        ta.value = baseText + finalChunk + interim;
-      };
-      recognition.onerror = (e) => {
-        if (e.error === "not-allowed" || e.error === "service-not-allowed") {
-          setStatus("Microphone permission denied.", "err");
-          stopListening();
-        }
-      };
-      recognition.onend = () => { if (listening) { try { recognition.start(); } catch (_) {} } };
-      listening = true;
+    function pickMime() {
+      const types = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"];
+      return types.find((t) => window.MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || "";
+    }
+
+    async function startRecording() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      } catch (_) {
+        setStatus("Microphone permission denied.", "err");
+        return;
+      }
+      const mimeType = pickMime();
+      chunks = [];
+      mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : undefined);
+      mediaRecorder.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+      mediaRecorder.onstop = () => transcribe(new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" }));
+      mediaRecorder.start();
+      recording = true;
       mic.classList.add("live");
-      micLabel.textContent = "Listening… tap to stop";
-      try { recognition.start(); } catch (_) {}
+      micLabel.textContent = "Stop";
+      setStatus("Recording… tap Stop when done.", "");
     }
 
-    function stopListening() {
-      listening = false;
+    function stopRecording() {
+      recording = false;
       mic.classList.remove("live");
-      micLabel.textContent = "Hold to talk";
-      if (recognition) { try { recognition.stop(); } catch (_) {} }
+      micLabel.textContent = "Record";
+      if (mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+      if (stream) stream.getTracks().forEach((t) => t.stop());
     }
 
-    mic.addEventListener("click", () => { listening ? stopListening() : startListening(); });
+    async function transcribe(blob) {
+      const secret = getSecret();
+      if (!secret) { setStatus("Set your publish key first (⚙).", "err"); dlg.showModal(); return; }
+      mic.disabled = true;
+      setStatus("Transcribing…", "");
+      try {
+        const res = await fetch("/api/transcribe", {
+          method: "POST",
+          headers: { "Content-Type": blob.type || "audio/webm", "x-blog-secret": secret },
+          body: blob,
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        const text = (data.text || "").trim();
+        if (!text) { setStatus("Didn't catch anything — try again.", "err"); return; }
+        ta.value = ta.value.trim() ? ta.value.replace(/\s+$/, "") + "\n\n" + text : text;
+        setStatus("Transcribed. Review, then Publish.", "ok");
+      } catch (err) {
+        setStatus("Transcription failed: " + err.message, "err");
+      } finally {
+        mic.disabled = false;
+      }
+    }
+
+    mic.addEventListener("click", () => { recording ? stopRecording() : startRecording(); });
+    function stopListening() { if (recording) stopRecording(); } // used by Publish
 
     // ── Publish ──
     $("publish").addEventListener("click", async () => {
