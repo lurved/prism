@@ -265,8 +265,8 @@
         if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
         ta.value = "";
         const label = data.title ? `“${data.title}”` : "Inline note";
-        const link = data.commit ? ` — <a href="${data.commit}" target="_blank" rel="noopener">view commit</a>` : "";
-        setStatus(`Published ${label}. Live in ~30s${link}.`, "ok");
+        const link = data.commit ? ` <a href="${data.commit}" target="_blank" rel="noopener">View commit ↗</a>` : "";
+        setStatus(`Published ${label} ✓ — committed. Building now; live on the blog in a few minutes.${link}`, "ok");
       } catch (err) {
         setStatus("Failed: " + err.message, "err");
       } finally {
