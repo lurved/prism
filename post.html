@@ -125,7 +125,12 @@
         <option value="">Tag: auto</option>
         <option>AI</option><option>Design</option><option>Product</option><option>Data</option><option>Tools</option>
       </select>
-      <label class="toggle"><input type="checkbox" id="cleanup" checked /> Claude cleanup</label>
+      <select id="edit" aria-label="Editing level">
+        <option value="off">Edit: off (raw)</option>
+        <option value="format">Format only</option>
+        <option value="correct" selected>Fix grammar &amp; typos</option>
+        <option value="polish">Polish to better English</option>
+      </select>
     </div>
 
     <div class="actions">
@@ -252,7 +257,7 @@
           headers: { "Content-Type": "application/json", "x-blog-secret": secret },
           body: JSON.stringify({
             text,
-            cleanup: $("cleanup").checked,
+            edit: $("edit").value,
             tag: $("tag").value || undefined,
           }),
         });

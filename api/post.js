@@ -37,16 +37,29 @@ function slugify(str) {
 
 // Clean up a raw dictation transcript with Claude and infer metadata.
 // Returns { title, description, tag, inline, body }. Falls back gracefully.
-async function polish(rawText) {
+// How hard Claude edits the body. Formatting + metadata are always applied;
+// only the editing instruction changes.
+const EDIT_INSTRUCTIONS = {
+  format:
+    'Fix punctuation, capitalisation and paragraph breaks only. Do NOT rewrite, correct grammar, or change any wording, tone or meaning. Keep it raw and personal, exactly as spoken.',
+  correct:
+    "Fix punctuation, capitalisation, paragraph breaks, spelling, typos, and clear grammatical mistakes, and lightly smooth awkward sentence structure. Keep the author's own wording, phrasing, tone and meaning — do NOT rewrite for style or swap in fancier words. Minimal, corrective edits only.",
+  polish:
+    "Rewrite into clear, natural, well-structured English: fix all grammar, spelling and punctuation, improve flow, word choice and sentence structure. Preserve the author's meaning, every point they make, and their casual personal voice — do NOT add new ideas, facts, or opinions, and do NOT make it formal or corporate.",
+};
+
+async function polish(rawText, level) {
   if (!anthropic) {
     return { title: "", description: "", tag: "", inline: true, body: rawText };
   }
 
-  const system = `You tidy up voice-dictated blog notes for a personal blog written in a candid, unfiltered, stream-of-consciousness voice.
+  const editRule = EDIT_INSTRUCTIONS[level] || EDIT_INSTRUCTIONS.format;
+
+  const system = `You prepare voice-dictated blog notes for a personal blog written in a candid, stream-of-consciousness voice. The text you receive is a raw speech-to-text transcript.
 
 Rules:
-- Fix punctuation, capitalisation and paragraph breaks. Interpret spoken cues like "new paragraph", "full stop", "comma" as formatting, not literal words.
-- Do NOT rewrite, summarise, expand, or change the author's wording, tone or meaning. Only correct obvious transcription errors and formatting. Keep it raw and personal.
+- Interpret spoken cues like "new paragraph", "full stop", "comma" as formatting, not literal words.
+- ${editRule}
 - Decide if this is a short "inline" note (a quick thought, a sentence or two — no title needed) or a longer post that deserves a title.
 - Pick exactly one tag from this list: ${TAGS.join(", ")}.
 - Write a one-sentence description only for longer (non-inline) posts; leave it empty for inline notes.
@@ -140,10 +153,15 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: "text is required" });
     }
 
-    const useCleanup = body.cleanup !== false;
-    const meta = useCleanup
-      ? await polish(rawText)
-      : { title: body.title || "", description: "", tag: body.tag || "", inline: body.inline !== false, body: rawText };
+    // Editing level: off | format | correct | polish.
+    // Back-compat: old clients sent `cleanup` (true => format, false => off).
+    let level = body.edit;
+    if (!level) level = body.cleanup === false ? "off" : "format";
+    if (!["off", "format", "correct", "polish"].includes(level)) level = "format";
+
+    const meta = level === "off"
+      ? { title: body.title || "", description: "", tag: body.tag || "", inline: body.inline !== false, body: rawText }
+      : await polish(rawText, level);
 
     // Explicit overrides from the client win over inferred values.
     if (typeof body.title === "string" && body.title.trim()) {
@@ -166,6 +184,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       path: `notes/${filename}`,
+      edit: level,
       title: meta.title,
       tag: meta.tag,
       inline: meta.inline,
