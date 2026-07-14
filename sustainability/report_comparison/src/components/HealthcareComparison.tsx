@@ -92,6 +92,8 @@ const ROWS: Row[] = [
     render: (e) => ({ kind: "text", text: e.countries.join(" · ") }) },
   { key: "denominator", label: "Intensity denominator", group: "Entity",
     render: (e) => ({ kind: "text", text: e.intensityDenominator === "patient_bed_day" ? "patient-bed-day" : e.intensityDenominator ?? "—", muted: !e.intensityDenominator }) },
+  { key: "frameworks", label: "Reporting frameworks", group: "Entity",
+    render: (e) => ({ kind: "text", text: e.frameworks?.length ? e.frameworks.join(" · ") : "—", muted: !e.frameworks?.length }) },
 
   { key: "intensity_2022", label: "Scope 1+2 intensity", sublabel: "2022 · kg CO₂e/bed-day", group: "Carbon intensity (published)", render: metricCell("intensity_2022") },
   { key: "intensity_2025", label: "Scope 1+2 intensity", sublabel: "2025 · kg CO₂e/bed-day", group: "Carbon intensity (published)", rankable: true, render: metricCell("intensity_2025") },
