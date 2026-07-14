@@ -236,7 +236,10 @@
     <div class="cover-title">Talk</div>
     <div class="cover-rule"></div>
     <div class="cover-sub">30 question cards, 3 levels — start light, go deeper</div>
-    <div class="cover-cta"><button class="btn" id="startBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Start ›</button></div>
+    <div class="cover-cta" style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+      <button class="btn" id="startBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">Start ›</button>
+      <button class="btn" id="coverMenuBtn" style="font-size:clamp(13px,1.8vw,18px); padding:.8em 1.6em;">See all questions</button>
+    </div>
   </div>
 
   <div class="overlay hidden" id="ovHowto">
@@ -535,6 +538,7 @@
   $("#prevBtn").addEventListener("click",prev);
   $("#menuBtn").addEventListener("click",openMenu);
   $("#endMenuBtn").addEventListener("click",openMenu);
+  $("#coverMenuBtn").addEventListener("click",openMenu);
   $("#menuClose").addEventListener("click",closeMenu);
   $("#fsBtn").addEventListener("click",toggleFs);
   $("#shuffleBtn").addEventListener("click",doShuffle);
