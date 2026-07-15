@@ -99,6 +99,7 @@ const ROWS: Row[] = [
   { key: "intensity_2025", label: "Scope 1+2 intensity", sublabel: "2025 · kg CO₂e/bed-day", group: "Carbon intensity (published)", rankable: true, render: metricCell("intensity_2025") },
   { key: "scope2_method", label: "Scope 2 method", group: "Carbon intensity (published)", render: metricCell("scope2_method") },
 
+  { key: "scope1and2_abs", label: "Scope 1+2 absolute", sublabel: "tCO₂e · combined", group: "Absolute emissions", render: metricCell("scope1and2_abs") },
   { key: "scope1_abs", label: "Scope 1 absolute", sublabel: "tCO₂e", group: "Absolute emissions", render: metricCell("scope1_abs") },
   { key: "scope2_abs", label: "Scope 2 absolute", sublabel: "tCO₂e", group: "Absolute emissions", render: metricCell("scope2_abs") },
   { key: "scope3_abs", label: "Scope 3 absolute", sublabel: "tCO₂e", group: "Absolute emissions", render: metricCell("scope3_abs") },

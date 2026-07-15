@@ -192,11 +192,21 @@ const ihh: HealthcareEntity = {
     },
     scope3_coverage: {
       value: null,
-      display: "Business travel, employee commute (from 2023); + Cat 3 fuel/energy (2024)",
+      display: "Categories 3, 5, 6, 7 (FY2025); Cat 1, 2, 15 identified material but not yet reported",
       unit: "",
-      year: "2023–24",
+      year: "2025",
       flag: "confirmed",
-      citation: { ...IHH_SR2024, reportTitle: "IHH Sustainability Report 2023 / 2024" },
+      citation: { ...IHH_SR2025, pageNote: "SR 2025 — Scope 3 coverage note (page not specified in extract)." },
+    },
+    // Combined Scope 1+2 (market-based) — the report gives the COMBINED total only,
+    // not a Scope 1 / Scope 2 split, so it is stored as a combined metric (never split).
+    scope1and2_abs: {
+      value: 271_888,
+      unit: "tCO₂e",
+      year: "2025",
+      flag: "confirmed",
+      citation: { ...IHH_SR2025, pageNote: "SR 2025 — 'Scope 1 and 2 emissions (market-based) were 271,888 tCO2e in FY2025'." },
+      note: "Combined Scope 1+2, MARKET-BASED. FY2025 271,888 tCO₂e vs 2022 baseline 277,628 tCO₂e. The report does not break out Scope 1 and Scope 2 separately; note the intensity figures are location-based.",
     },
     target_2030: {
       value: -42,
@@ -207,14 +217,15 @@ const ihh: HealthcareEntity = {
       citation: { ...IHH_SR2025, reportTitle: "IHH SR 2025 / AGM (announced Apr 2026)" },
       note: "Announced Apr 2026.",
     },
-    // Absolute figures: ❌ blank until extracted from SR tables (Job H3).
+    // Separate Scope 1 / Scope 2 absolutes: the SR discloses only the COMBINED
+    // market-based total (see scope1and2_abs); it does not split them → blank.
     scope1_abs: {
       value: null,
       unit: "tCO₂e",
       year: null,
       flag: "unverified",
       citation: null,
-      note: "Not yet extracted from SR tables (Job H3 pending).",
+      note: "Report discloses only the combined Scope 1+2 market-based total (see Scope 1+2 absolute); no separate Scope 1 figure.",
     },
     scope2_abs: {
       value: null,
@@ -222,7 +233,7 @@ const ihh: HealthcareEntity = {
       year: null,
       flag: "unverified",
       citation: null,
-      note: "Not yet extracted from SR tables (Job H3 pending).",
+      note: "Report discloses only the combined Scope 1+2 market-based total (see Scope 1+2 absolute); no separate Scope 2 figure.",
     },
     scope3_abs: {
       value: null,
@@ -230,16 +241,17 @@ const ihh: HealthcareEntity = {
       year: null,
       flag: "unverified",
       citation: null,
-      note: "Not yet extracted from SR tables (Job H3 pending).",
+      note: "Scope 3 reported by category coverage only (Cats 3, 5, 6, 7); no consolidated absolute tCO₂e disclosed.",
     },
   },
   dataNotes: [
     "Scope 1+2 GHG intensity 151.5 (2022) → 146.0 (2025) kg CO₂e/patient-bed-day, per SR 2025.",
     "Scope 2 is LOCATION-BASED. Multi-country grid mix (esp. Singapore's low grid carbon intensity) flatters location-based Scope 2 — same class of flag as utilities normalization.",
-    "Scope 3 coverage: business travel + employee commute from 2023; Cat 3 (fuel/energy) added 2024. No Cat 15 (investments) — renders blank under the Cat 15 toggle, which is correct (no special-casing).",
-    "2030 target: −42% Scope 1+2 vs a 2025 baseline, announced Apr 2026.",
+    "Combined Scope 1+2 (market-based) = 271,888 tCO₂e in FY2025, below the 2022 baseline of 277,628 tCO₂e (SR 2025). The report gives the combined total only — Scope 1 and Scope 2 are NOT split, so they are left blank rather than derived.",
+    "Scope 3 coverage (FY2025): Categories 3, 5, 6, 7. Categories 1, 2 and 15 are identified as material but not yet reported — Cat 15 blank under the toggle is correct (no special-casing). No consolidated absolute Scope 3 tCO₂e is disclosed.",
+    "2030 target: −42% Scope 1+2 vs a 2025 baseline (SBTi-referenced), announced Apr 2026.",
     "Assurance: Scope 1+2 limited assurance SG + MY only (2022–23). SR 2025 is NOT externally assured; external assurance targeted FY2027. 2024–25 rows are internal_only.",
-    "Absolute Scope 1/2/3 tCO₂e left blank pending extraction from SR tables (Job H3). No figure is shown without a page.",
+    "Job H3: combined Scope 1+2 backfilled from SR 2025 narrative; separate Scope 1/2 and absolute Scope 3 remain undisclosed in the report.",
   ],
 };
 
@@ -276,8 +288,10 @@ const tmg: HealthcareEntity = {
   rationaleCode: null,
   assuranceStatus: "unknown",
   scope2Method: null,
-  intensityDenominator: "patient_bed_day",
-  frameworks: null,
+  // TMG reports Scope 1+2 intensity PER REVENUE (three currencies), NOT per
+  // patient-bed-day — so it is not on the comparable bed-day denominator (null).
+  intensityDenominator: null,
+  frameworks: ["GRI", "TCFD"],
   primarySource: {
     reportTitle: "TMG FY2025 Annual Report (SR section pp. 54–100)",
     reportingPeriod: "FY2025 (ended 30 Jun 2025)",
@@ -313,17 +327,19 @@ const tmg: HealthcareEntity = {
       year: null,
       flag: "unverified",
       citation: null,
-      note: "Awaiting Job H1 (TMG FY2025 SR verification).",
+      note: "TMG does not report a per-patient-bed-day intensity. It reports Scope 1+2 intensity PER REVENUE, by entity (AR2025 p.57): TMPL 0.0126 tCO₂e/S$'000, TMCLS 0.0415 tCO₂e/RM'000, FEMVN 0.0416 tCO₂e/VND 10M — not comparable on the bed-day basis.",
     },
-    scope1_abs: { value: null, unit: "tCO₂e", year: null, flag: "unverified", citation: null, note: "Awaiting Job H1." },
-    scope2_abs: { value: null, unit: "tCO₂e", year: null, flag: "unverified", citation: null, note: "Awaiting Job H1." },
-    scope3_abs: { value: null, unit: "tCO₂e", year: null, flag: "unverified", citation: null, note: "Awaiting Job H1." },
+    scope1_abs: { value: null, unit: "tCO₂e", year: null, flag: "unverified", citation: null, note: "No consolidated absolute Scope 1 tCO₂e disclosed in AR2025 (only per-revenue intensity is reported)." },
+    scope2_abs: { value: null, unit: "tCO₂e", year: null, flag: "unverified", citation: null, note: "No consolidated absolute Scope 2 tCO₂e disclosed in AR2025; Scope 2 method not stated." },
+    scope3_abs: { value: null, unit: "tCO₂e", year: null, flag: "unverified", citation: null, note: "No Scope 3 disclosed in AR2025." },
   },
   dataNotes: [
     "Licensed beds confirmed from AR body: Singapore 187, Malaysia 403, Vietnam 230 (as at 30 Jun 2025).",
-    "All emissions/energy/intensity metrics are BLANK pending Job H1 (verify SR section pp. 54–100). Aggregator claims 'no Scope disclosure' — treated as untested, not seeded either way.",
+    "Job H1 done (AR2025, SR section): TMG reports Scope 1+2 emissions intensity PER REVENUE, in three separate currencies per entity (p.57) — TMPL 0.0126 tCO₂e/S$'000, TMCLS 0.0415 tCO₂e/RM'000, FEMVN 0.0416 tCO₂e/VND 10M. This is NOT a patient-bed-day intensity, so it is not comparable with IHH; intensityDenominator set to null.",
+    "No consolidated absolute Scope 1/2/3 tCO₂e is disclosed in AR2025 (only the per-revenue intensity). GHG measurement has begun under a TCFD framing (p.73); Scope 2 method not stated. Absolutes therefore remain blank, not zero.",
+    "Commitment to Net Zero emissions by 2050 stated in the SR narrative (no interim quantified target disclosed).",
+    "Frameworks: GRI (305/403/416 referenced) and TCFD (climate-risk assessment begun).",
     "Nested listed subsidiary TMC Life Sciences Berhad (~70%, Bursa-listed): boundary/double-report check required before TMG appears in any ranking.",
-    "If Job H1 finds no Scope 1/2 tables → EXCLUDED_NO_ENTITY_INVENTORY candidate; escalate BDMS/Bumrungrad/Ramsay from backlog.",
   ],
 };
 
