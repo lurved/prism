@@ -38,9 +38,9 @@ export default function HealthcarePage() {
         <div className="font-serif italic text-[22px] leading-[1.3] text-[#8A8478] mb-[38px]">IHH · Thomson Medical · Raffles Medical — one lens, no guesses.</div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
           <p className="font-sans text-[18px] leading-[1.65] text-ink2 m-0 max-w-[62ch] [text-wrap:pretty]">
-            Entity-level GHG for listed healthcare groups — <strong className="font-semibold">IHH Healthcare</strong> (populated),{" "}
-            <strong className="font-semibold">Thomson Medical</strong> (beds confirmed, emissions pending) and{" "}
-            <strong className="font-semibold">Raffles Medical</strong> (pending verification). The boundary is the listed group
+            Entity-level GHG for listed healthcare groups — <strong className="font-semibold">IHH Healthcare</strong> (Scope 1+2 &amp; intensity),{" "}
+            <strong className="font-semibold">Raffles Medical</strong> (Scope 1 &amp; 2, no Scope 3) and{" "}
+            <strong className="font-semibold">Thomson Medical</strong> (beds + revenue-basis intensity; absolutes pending). The boundary is the listed group
             reporting entity, not individual hospital campuses. Every figure carries a source flag.{" "}
             <span className="font-mono text-[14px] text-muted2">✅ Confirmed · ⚠️ Estimated · ❌ Unverified.</span>
           </p>

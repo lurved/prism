@@ -92,11 +92,14 @@ const ROWS: Row[] = [
     render: (e) => ({ kind: "text", text: e.countries.join(" · ") }) },
   { key: "denominator", label: "Intensity denominator", group: "Entity",
     render: (e) => ({ kind: "text", text: e.intensityDenominator === "patient_bed_day" ? "patient-bed-day" : e.intensityDenominator ?? "—", muted: !e.intensityDenominator }) },
+  { key: "frameworks", label: "Reporting frameworks", group: "Entity",
+    render: (e) => ({ kind: "text", text: e.frameworks?.length ? e.frameworks.join(" · ") : "—", muted: !e.frameworks?.length }) },
 
   { key: "intensity_2022", label: "Scope 1+2 intensity", sublabel: "2022 · kg CO₂e/bed-day", group: "Carbon intensity (published)", render: metricCell("intensity_2022") },
   { key: "intensity_2025", label: "Scope 1+2 intensity", sublabel: "2025 · kg CO₂e/bed-day", group: "Carbon intensity (published)", rankable: true, render: metricCell("intensity_2025") },
   { key: "scope2_method", label: "Scope 2 method", group: "Carbon intensity (published)", render: metricCell("scope2_method") },
 
+  { key: "scope1and2_abs", label: "Scope 1+2 absolute", sublabel: "tCO₂e · combined", group: "Absolute emissions", render: metricCell("scope1and2_abs") },
   { key: "scope1_abs", label: "Scope 1 absolute", sublabel: "tCO₂e", group: "Absolute emissions", render: metricCell("scope1_abs") },
   { key: "scope2_abs", label: "Scope 2 absolute", sublabel: "tCO₂e", group: "Absolute emissions", render: metricCell("scope2_abs") },
   { key: "scope3_abs", label: "Scope 3 absolute", sublabel: "tCO₂e", group: "Absolute emissions", render: metricCell("scope3_abs") },
@@ -155,8 +158,9 @@ export function HealthcareComparison({ entities = healthcareEntities }: { entiti
           <span className="font-semibold">Comparability audit.</span> A “best performer” badge requires ≥2 entities each
           publishing a <span className="font-semibold">confirmed</span> value on the <span className="font-semibold">same
           intensity denominator</span> (patient-bed-day) and <span className="font-semibold">same Scope 2 method</span>.
-          Multi-country groups (IHH, TMG) get a grid-intensity caveat vs SG-only entities. With current data only IHH is
-          fully populated, so <span className="font-semibold">no best-performer badge renders</span> (n = 1 is not a comparison).
+          IHH and RMG report confirmed absolute emissions, but only IHH publishes the patient-bed-day intensity used for
+          ranking (RMG and TMG report on different denominators), so <span className="font-semibold">no best-performer badge
+          renders</span> (n = 1 on the comparable denominator is not a comparison).
           {rankNotes.length > 0 && <span className="block mt-1 text-muted2">{rankNotes.join(" · ")}</span>}
         </p>
       </div>

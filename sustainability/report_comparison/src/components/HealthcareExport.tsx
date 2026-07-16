@@ -62,9 +62,9 @@ function toJSON(includeExcluded: boolean): string {
 }
 
 const CSV_COLS = [
-  "entity_id", "entity_name", "sector", "status", "listing",
+  "entity_id", "entity_name", "sector", "status", "listing", "frameworks",
   "intensity_denominator", "scope2_method", "assurance_status", "rationale_code",
-  "metric_key", "value", "unit", "year", "source_flag", "page", "source_url", "boundary_note",
+  "metric_key", "value", "display", "unit", "year", "source_flag", "page", "source_url", "boundary_note",
 ];
 
 function csvCell(v: unknown): string {
@@ -76,17 +76,19 @@ function csvCell(v: unknown): string {
 function toCSV(includeExcluded: boolean): string {
   const lines = [CSV_COLS.join(",")];
   for (const e of entitySet(includeExcluded)) {
-    const base = [e.id, e.name, e.sector, e.status, e.listing, e.intensityDenominator, e.scope2Method, e.assuranceStatus, e.rationaleCode];
+    const base = [e.id, e.name, e.sector, e.status, e.listing, e.frameworks?.join("; ") ?? "", e.intensityDenominator, e.scope2Method, e.assuranceStatus, e.rationaleCode];
     const keys = Object.keys(e.metrics);
     if (keys.length === 0) {
       // Entity with no metrics (pending/excluded) still exports one row so its
       // status + rationale_code round-trip.
-      lines.push([...base, "", "", "", "", "", "", "", e.boundaryNote].map(csvCell).join(","));
+      lines.push([...base, "", "", "", "", "", "", "", "", e.boundaryNote].map(csvCell).join(","));
       continue;
     }
     for (const k of keys) {
       const mv = e.metrics[k];
-      lines.push([...base, k, mv.value, mv.unit, mv.year, effectiveFlag(mv), mv.citation?.page ?? "", mv.citation?.url ?? "", e.boundaryNote].map(csvCell).join(","));
+      // `display` preserves text metrics (Scope 2 method, target wording, Scope 3
+      // coverage) whose numeric `value` is null — otherwise they export blank.
+      lines.push([...base, k, mv.value, mv.display ?? "", mv.unit, mv.year, effectiveFlag(mv), mv.citation?.page ?? "", mv.citation?.url ?? "", e.boundaryNote].map(csvCell).join(","));
     }
   }
   return lines.join("\n");
