@@ -158,8 +158,9 @@ export function HealthcareComparison({ entities = healthcareEntities }: { entiti
           <span className="font-semibold">Comparability audit.</span> A “best performer” badge requires ≥2 entities each
           publishing a <span className="font-semibold">confirmed</span> value on the <span className="font-semibold">same
           intensity denominator</span> (patient-bed-day) and <span className="font-semibold">same Scope 2 method</span>.
-          Multi-country groups (IHH, TMG) get a grid-intensity caveat vs SG-only entities. With current data only IHH is
-          fully populated, so <span className="font-semibold">no best-performer badge renders</span> (n = 1 is not a comparison).
+          IHH and RMG report confirmed absolute emissions, but only IHH publishes the patient-bed-day intensity used for
+          ranking (RMG and TMG report on different denominators), so <span className="font-semibold">no best-performer badge
+          renders</span> (n = 1 on the comparable denominator is not a comparison).
           {rankNotes.length > 0 && <span className="block mt-1 text-muted2">{rankNotes.join(" · ")}</span>}
         </p>
       </div>

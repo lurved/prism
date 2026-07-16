@@ -344,10 +344,22 @@ const tmg: HealthcareEntity = {
 };
 
 /* ════════════════════════════════════════════════════════════════════════
-   RAFFLES MEDICAL GROUP — ❌ pending verification (nothing seeded)
-   SGX-mandated SR must exist; Scope figures unverified this cycle.
-   Zero values entered until fetched via SGX filings (Job H2).
+   RAFFLES MEDICAL GROUP — ✅ populated (Job H2 done)
+   Source: Raffles Medical Group Annual Report 2025 (Sustainability Report
+   section). Reports Scope 1 & 2 only (no Scope 3). External assurance NOT
+   commissioned for FY2025. GHG intensity is not published on a bed-day basis.
    ════════════════════════════════════════════════════════════════════════ */
+const RMG_AR2025: Citation = {
+  reportTitle: "Raffles Medical Group Annual Report 2025 (Sustainability Report section)",
+  fy: "FY2025",
+  page: 59,
+  pageNote: "GHG figures in the SR section; GRI 305-1/305-2 index references p.59.",
+  url: null,
+  reportDateStamp: null,
+  assuranceStatus: "none", // external assurance not commissioned for FY2025
+  scope2Method: "unknown", // location/market basis not stated in the report
+};
+
 const rmg: HealthcareEntity = {
   id: "rmg",
   name: "Raffles Medical Group",
@@ -356,24 +368,69 @@ const rmg: HealthcareEntity = {
   logoInitials: "RM",
   accentColor: "#6B665C",
   sector: "healthcare",
-  status: "pending_verification",
-  countries: ["SG"],
-  boundaryNote: null,
+  status: "populated",
+  countries: ["SG", "CN", "VN"],
+  boundaryNote:
+    "Group boundary (Singapore + regional network incl. China and Vietnam); disclosed Scope 1/2 are group figures. Reports Scope 1 & 2 only — no Scope 3. GHG intensity is not published on a patient-bed-day basis (energy/water intensity is revenue-based), so it is not intensity-comparable with IHH.",
   rationaleCode: null,
-  assuranceStatus: "unknown",
-  scope2Method: null,
+  assuranceStatus: "none",
+  scope2Method: "unknown",
   intensityDenominator: null,
-  frameworks: null,
+  frameworks: ["GRI", "TCFD", "IFRS S2"],
   primarySource: {
-    reportTitle: "Latest RMG Sustainability Report (via SGX filings — URL TBD by Job H2)",
-    reportingPeriod: "TBD",
+    reportTitle: "Raffles Medical Group Annual Report 2025",
+    reportingPeriod: "FY2025 (ended 31 Dec 2025)",
     url: null,
     accessDate: "July 2026",
   },
-  metrics: {},
+  metrics: {
+    scope1_abs: {
+      value: 1_592,
+      unit: "tCO₂e",
+      year: "2025",
+      flag: "confirmed",
+      citation: RMG_AR2025,
+      note: "Scope 1 GHG emissions FY2025 (2024: 1,198 tCO₂e).",
+    },
+    scope2_abs: {
+      value: 16_975,
+      unit: "tCO₂e",
+      year: "2025",
+      flag: "confirmed",
+      citation: RMG_AR2025,
+      note: "Scope 2 GHG emissions FY2025 (2024: 17,000 tCO₂e). Location/market basis not stated.",
+    },
+    scope3_abs: {
+      value: null,
+      unit: "tCO₂e",
+      year: null,
+      flag: "unverified",
+      citation: null,
+      note: "Scope 3 not reported by RMG.",
+    },
+    scope2_method: {
+      value: null,
+      display: "Not stated",
+      unit: "",
+      year: null,
+      flag: "confirmed",
+      citation: { ...RMG_AR2025, pageNote: "Report does not label Scope 2 as location- or market-based." },
+    },
+    intensity_2025: {
+      value: null,
+      unit: "kg CO₂e/patient-bed-day",
+      year: null,
+      flag: "unverified",
+      citation: null,
+      note: "RMG does not publish a per-patient-bed-day GHG intensity; energy/water intensity is reported per revenue ($'000).",
+    },
+  },
   dataNotes: [
-    "Nothing seeded. SGX-mandated SR presumed to exist but Scope figures unverified this cycle — DO NOT seed any numbers.",
-    "Job H2: locate latest SR via SGX company announcements (do not trust third-party mirrors); record framework, Scope 2 method, assurance, intensity denominator.",
+    "Job H2 done (AR2025): Scope 1 = 1,592 tCO₂e and Scope 2 = 16,975 tCO₂e (FY2025; 2024: 1,198 / 17,000 tCO₂e). No Scope 3 disclosed.",
+    "External assurance was NOT commissioned for FY2025. Reported per GRI Standards 2021 (applied since 2017), aligned to TCFD and IFRS S1/S2.",
+    "Scope 2 location/market basis is not stated. GHG intensity is not published on a patient-bed-day basis (energy/water intensity is revenue-based) — intensityDenominator null; not intensity-comparable with IHH.",
+    "Targets span three horizons (short-term to 2030, medium 2031–2040, long-term); medium-term includes reducing Scope 1+2 emissions. Baseline not quantified in the extract, so no numeric target is seeded.",
+    "Group boundary spans Singapore plus regional operations (China, Vietnam and others); disclosed Scope 1/2 are group figures.",
   ],
 };
 
