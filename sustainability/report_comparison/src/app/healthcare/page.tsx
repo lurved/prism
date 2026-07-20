@@ -69,7 +69,7 @@ export default function HealthcarePage() {
 
       {/* Comparison matrix */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="01" title="Comparison Matrix" descriptor="Entity-level GHG, every figure flagged & cited" />
+        <SectionHead index="01" title="Comparison Matrix" descriptor="Entity-level GHG plus social & governance — every figure flagged & cited" />
         <HealthcareComparison entities={healthcareEntities} />
       </section>
 
