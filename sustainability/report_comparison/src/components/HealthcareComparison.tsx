@@ -112,6 +112,15 @@ const ROWS: Row[] = [
   { key: "beds_sg", label: "Licensed beds — SG", group: "Capacity", render: metricCell("beds_sg") },
   { key: "beds_my", label: "Licensed beds — MY", group: "Capacity", render: metricCell("beds_my") },
   { key: "beds_vn", label: "Licensed beds — VN", group: "Capacity", render: metricCell("beds_vn") },
+
+  { key: "women_workforce_pct", label: "Female workforce", sublabel: "%", group: "Social", render: metricCell("women_workforce_pct") },
+  { key: "women_leadership_pct", label: "Women in leadership / mgmt", sublabel: "% · definitions vary", group: "Social", render: metricCell("women_leadership_pct") },
+  { key: "turnover_pct", label: "Employee turnover", sublabel: "%", group: "Social", render: metricCell("turnover_pct") },
+  { key: "fatalities", label: "Workplace fatalities", group: "Social", render: metricCell("fatalities") },
+  { key: "community_donations", label: "Community donations", group: "Social", render: metricCell("community_donations") },
+
+  { key: "women_board_pct", label: "Women on board", sublabel: "%", group: "Governance", render: metricCell("women_board_pct") },
+  { key: "corruption_ops_pct", label: "Corruption-risk ops assessed", sublabel: "%", group: "Governance", render: metricCell("corruption_ops_pct") },
 ];
 
 /**
