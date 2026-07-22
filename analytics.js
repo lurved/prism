@@ -66,9 +66,16 @@
   // Which pris.la site is this page part of? Derived from the URL path so the
   // one shared file works everywhere without per-page config.
   var path = location.pathname;
+  // Check most-specific prefixes first: the ESG Tracker lives *under*
+  // /sustainability/report_comparison, so it must be matched before the more
+  // general /sustainability (the SP Group report). Getting this order wrong
+  // tags every ESG page as "sustainability" (or, if the page fails to
+  // re-register, leaks a stale "home" from a prior visit).
   var site =
     path.indexOf("/typeme") === 0
       ? "typeme"
+      : path.indexOf("/sustainability/report_comparison") === 0
+      ? "esg"
       : path.indexOf("/sustainability") === 0
       ? "sustainability"
       : "home";
