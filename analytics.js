@@ -65,13 +65,27 @@
 
   // Which pris.la site is this page part of? Derived from the URL path so the
   // one shared file works everywhere without per-page config.
-  var path = location.pathname;
-  var site =
-    path.indexOf("/typeme") === 0
+  //
+  // Computed fresh on every call — never cached and never persisted. `site`
+  // used to be a super-property via posthog.register(), which is written to
+  // localStorage+cookie; any page that loaded PostHog but failed to
+  // re-register would then inherit a stale `site` from a previous visit to a
+  // different pris.la site, silently mis-attributing its events. Deriving at
+  // send time makes that class of leak impossible, and additionally keeps SPA
+  // route changes (Type Me) correct.
+  function siteFromPath() {
+    // Most-specific prefixes first: the ESG Tracker lives *under*
+    // /sustainability/report_comparison, so it must be matched before the
+    // more general /sustainability (the SP Group report).
+    var p = location.pathname;
+    return p.indexOf("/typeme") === 0
       ? "typeme"
-      : path.indexOf("/sustainability") === 0
+      : p.indexOf("/sustainability/report_comparison") === 0
+      ? "esg"
+      : p.indexOf("/sustainability") === 0
       ? "sustainability"
       : "home";
+  }
 
   window.posthog.init("phc_wF3AaVMjv2FpfSGQDzQpA8PFyyMZxGWygkSBJFuXbWnz", {
     api_host: "https://us.i.posthog.com",
@@ -80,16 +94,27 @@
     defaults: "2025-05-24",
     autocapture: true,
     persistence: "localStorage+cookie",
+    // Stamp `site` onto EVERY outgoing event — including ones we never call
+    // capture() for ourselves ($pageview, $autocapture, $pageleave).
+    before_send: function (payload) {
+      if (payload) {
+        payload.properties = payload.properties || {};
+        payload.properties.site = siteFromPath();
+      }
+      return payload;
+    },
   });
 
-  // Tag every event (autocaptured or custom) with its site.
-  window.posthog.register({ site: site });
+  // Clear any `site` persisted by earlier versions of this script, so a value
+  // stored in localStorage/cookie on a previous visit can't survive and leak.
+  window.posthog.unregister("site");
 
   // Helper for explicit funnel/product events. Safe even if PostHog is slow to
-  // load — the stub queues calls until array.js arrives.
+  // load — the stub queues calls until array.js arrives. `site` is added by
+  // before_send above, so it is never passed (or trusted) from here.
   window.track = function (event, props) {
     try {
-      window.posthog.capture(event, Object.assign({ site: site }, props || {}));
+      window.posthog.capture(event, props || {});
     } catch (e) {}
   };
 })();
