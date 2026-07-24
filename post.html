@@ -106,6 +106,9 @@
     dialog .cancel { background: transparent; color: var(--muted); border: 1px solid var(--line); }
     dialog .save { background: var(--pink); color: var(--pink-ink); }
     .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
+    .keycheck { font-size: 13px; margin: -6px 0 12px; min-height: 18px; }
+    .keycheck.ok { color: #9be7c0; }
+    .keycheck.err { color: #ff9db3; }
 
     /* Media picker */
     .addmedia {
@@ -177,9 +180,14 @@
   <dialog id="settings">
     <h2>Publish key</h2>
     <p>Paste the secret you set in Vercel (<code>BLOG_POST_SECRET</code>). Stored only on this device.</p>
-    <input type="password" id="secretInput" placeholder="Secret key" autocomplete="off" />
+    <!-- text (not password) + new-password autocomplete: stops mobile password
+         managers autofilling a saved site password over the key. -->
+    <input type="text" id="secretInput" placeholder="Secret key" autocomplete="new-password"
+           name="blog-publish-key" autocapitalize="off" autocorrect="off" spellcheck="false" />
+    <p class="keycheck" id="keyCheck"></p>
     <div class="drow">
       <button class="cancel" id="cancelSettings">Cancel</button>
+      <button class="cancel" id="checkSettings">Check</button>
       <button class="save" id="saveSettings">Save</button>
     </div>
   </dialog>
@@ -191,7 +199,16 @@
 
     // ── Settings / secret ──
     const dlg = $("settings");
-    $("gear").onclick = () => { $("secretInput").value = localStorage.getItem(KEY) || ""; dlg.showModal(); };
+    function setKeyCheck(msg, kind) {
+      const el = $("keyCheck");
+      el.className = "keycheck " + (kind || "");
+      el.textContent = msg || "";
+    }
+    $("gear").onclick = () => {
+      $("secretInput").value = localStorage.getItem(KEY) || "";
+      setKeyCheck("");
+      dlg.showModal();
+    };
     $("cancelSettings").onclick = () => dlg.close();
     $("saveSettings").onclick = () => {
       const v = $("secretInput").value.trim();
@@ -199,7 +216,36 @@
       dlg.close();
       setStatus(v ? "Key saved on this device." : "Key cleared.", "");
     };
+
+    // Verify a key against the server without publishing anything: an empty
+    // body passes auth then fails validation, so 400 = good key, 401 = bad key.
+    $("checkSettings").onclick = async () => {
+      const v = $("secretInput").value.trim();
+      if (!v) { setKeyCheck("Enter a key first.", "err"); return; }
+      setKeyCheck("Checking…", "");
+      try {
+        const res = await fetch("/api/post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "x-blog-secret": v },
+          body: JSON.stringify({}),
+        });
+        if (res.status === 401) setKeyCheck("✕ Wrong key — the server rejected it.", "err");
+        else if (res.status === 400) setKeyCheck("✓ Key works. Tap Save.", "ok");
+        else setKeyCheck("Unexpected response (" + res.status + ").", "err");
+      } catch (err) {
+        setKeyCheck("Couldn't reach the server: " + err.message, "err");
+      }
+    };
+
     function getSecret() { return localStorage.getItem(KEY) || ""; }
+
+    // A 401 means the stored key is wrong — send them straight to fixing it.
+    function handleUnauthorized(what) {
+      setStatus(what + " failed: wrong publish key. Re-enter it below.", "err");
+      $("secretInput").value = localStorage.getItem(KEY) || "";
+      setKeyCheck("The server rejected this key.", "err");
+      dlg.showModal();
+    }
 
     function setStatus(msg, kind) { statusEl.className = "status " + (kind || ""); statusEl.innerHTML = msg; }
 
@@ -262,6 +308,7 @@
         item.status = "done";
         renderThumb(item, file);
       } catch (err) {
+        if (/unauthor/i.test(err.message || "")) handleUnauthorized("Upload");
         item.status = "failed";
         item.el.classList.remove("uploading");
         item.el.classList.add("failed");
@@ -354,6 +401,7 @@
           headers: { "Content-Type": blob.type || "audio/webm", "x-blog-secret": secret },
           body: blob,
         });
+        if (res.status === 401) { handleUnauthorized("Transcription"); return; }
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
         const text = (data.text || "").trim();
@@ -394,6 +442,7 @@
             media: ready,
           }),
         });
+        if (res.status === 401) { handleUnauthorized("Publish"); return; }
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
         ta.value = "";
