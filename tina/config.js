@@ -58,6 +58,20 @@ export default defineConfig({
             description: "Short thought shown in full on the feed — no title or separate page",
           },
           {
+            name: "media",
+            label: "Media",
+            type: "object",
+            list: true,
+            description: "Photos/videos attached from the /post uploader",
+            fields: [
+              { name: "url", label: "URL", type: "string" },
+              { name: "type", label: "Type", type: "string", options: ["image", "video"] },
+            ],
+            ui: {
+              itemProps: (item) => ({ label: item?.url || "media" }),
+            },
+          },
+          {
             name: "body",
             label: "Body",
             type: "rich-text",

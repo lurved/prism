@@ -180,6 +180,31 @@ article.note:first-child .note-body p:first-of-type {
   margin-top: 24px;
 }
 
+/* ─── Post media ─── */
+.note-media {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  max-width: 680px;
+}
+.note-media:has(.note-media-item:only-child) {
+  grid-template-columns: 1fr;
+}
+.note-media-item {
+  width: 100%;
+  height: auto;
+  max-height: 620px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: #1e2142;
+  display: block;
+}
+video.note-media-item {
+  object-fit: contain;
+}
+
 /* ─── Footer ─── */
 .site-footer {
   border-top: 1px solid rgba(255,255,255,0.10);

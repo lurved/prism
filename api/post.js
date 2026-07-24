@@ -96,18 +96,34 @@ function yaml(value) {
   return JSON.stringify(value == null ? "" : String(value));
 }
 
-function buildMarkdown({ title, description, tag, date, inline, body }) {
+function buildMarkdown({ title, description, tag, date, inline, body, media }) {
   const lines = ["---"];
   lines.push(`title: ${yaml(title)}`);
   lines.push(`description: ${yaml(description)}`);
   lines.push(`date: ${date}`);
   if (tag) lines.push(`tag: ${yaml(tag)}`);
   if (inline) lines.push("inline: true");
+  if (Array.isArray(media) && media.length) {
+    lines.push("media:");
+    for (const m of media) {
+      lines.push(`  - url: ${yaml(m.url)}`);
+      lines.push(`    type: ${yaml(m.type)}`);
+    }
+  }
   lines.push("---");
   lines.push("");
   lines.push(body.trim());
   lines.push("");
   return lines.join("\n");
+}
+
+// Keep only well-formed { url, type } entries with http(s) URLs.
+function sanitizeMedia(media) {
+  if (!Array.isArray(media)) return [];
+  return media
+    .filter((m) => m && typeof m.url === "string" && /^https:\/\//.test(m.url))
+    .map((m) => ({ url: m.url, type: m.type === "video" ? "video" : "image" }))
+    .slice(0, 20);
 }
 
 async function commitToGitHub(filename, contents, message) {
@@ -149,8 +165,9 @@ module.exports = async function handler(req, res) {
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
     const rawText = (body.text || "").trim();
-    if (!rawText) {
-      return res.status(400).json({ error: "text is required" });
+    const media = sanitizeMedia(body.media);
+    if (!rawText && media.length === 0) {
+      return res.status(400).json({ error: "text or media is required" });
     }
 
     // Editing level: off | format | correct | polish.
@@ -159,9 +176,15 @@ module.exports = async function handler(req, res) {
     if (!level) level = body.cleanup === false ? "off" : "format";
     if (!["off", "format", "correct", "polish"].includes(level)) level = "format";
 
-    const meta = level === "off"
-      ? { title: body.title || "", description: "", tag: body.tag || "", inline: body.inline !== false, body: rawText }
-      : await polish(rawText, level);
+    let meta;
+    if (!rawText) {
+      // Media-only post — nothing to clean, keep it an inline note.
+      meta = { title: "", description: "", tag: body.tag || "", inline: true, body: "" };
+    } else if (level === "off") {
+      meta = { title: body.title || "", description: "", tag: body.tag || "", inline: body.inline !== false, body: rawText };
+    } else {
+      meta = await polish(rawText, level);
+    }
 
     // Explicit overrides from the client win over inferred values.
     if (typeof body.title === "string" && body.title.trim()) {
@@ -176,8 +199,8 @@ module.exports = async function handler(req, res) {
     const slug = meta.title ? slugify(meta.title) : "";
     const filename = `${stamp}${slug ? "-" + slug : "-" + Date.now().toString(36)}.md`;
 
-    const markdown = buildMarkdown({ ...meta, date });
-    const commitMsg = `blog: ${meta.title || rawText.slice(0, 50)}`.trim();
+    const markdown = buildMarkdown({ ...meta, date, media });
+    const commitMsg = `blog: ${meta.title || rawText.slice(0, 50) || (media.length + " media")}`.trim();
 
     const result = await commitToGitHub(filename, markdown, commitMsg);
 
@@ -188,6 +211,7 @@ module.exports = async function handler(req, res) {
       title: meta.title,
       tag: meta.tag,
       inline: meta.inline,
+      media: media.length,
       preview: markdown,
       commit: result.commit && result.commit.html_url,
     });

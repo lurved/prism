@@ -26,6 +26,17 @@ permalink: /blog/
         <div class="note-body">
           {% if post.data.title %}<h2>{{ post.data.title }}</h2>{% endif %}
           {{ post.templateContent | safe }}
+          {%- if post.data.media %}
+          <div class="note-media">
+            {%- for m in post.data.media %}
+              {%- if m.type == "video" %}
+                <video class="note-media-item" controls preload="metadata" playsinline src="{{ m.url }}"></video>
+              {%- else %}
+                <img class="note-media-item" loading="lazy" src="{{ m.url }}" alt="{{ m.alt or '' }}" />
+              {%- endif %}
+            {%- endfor %}
+          </div>
+          {%- endif %}
         </div>
       </article>
     {%- endfor %}
