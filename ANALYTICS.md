@@ -59,6 +59,33 @@ becomes a query. Add `--json` to pipe raw results.
 > The PostHog UI (Web Analytics, Funnels, Session Replay) is also there for
 > visual self-serve.
 
+## Querying from automation (`/api/analytics`)
+
+The script above needs `.posthog.json`, which is gitignored and therefore
+**absent from scheduled runs, cloud agents, fresh checkouts, and other
+machines** — the usual reason a digest routine fails.
+
+`api/analytics.js` solves that: the PostHog personal key stays server-side in
+Vercel env, and callers present one low-privilege bearer token instead.
+
+```bash
+curl -s -H "Authorization: Bearer $ANALYTICS_TOKEN" \
+  "https://www.pris.la/api/analytics?days=30"
+
+curl -s -H "Authorization: Bearer $ANALYTICS_TOKEN" \
+  "https://www.pris.la/api/analytics?funnel=1&days=7"
+
+curl -s -G -H "Authorization: Bearer $ANALYTICS_TOKEN" \
+  --data-urlencode "sql=SELECT properties.site, count() FROM events GROUP BY 1" \
+  "https://www.pris.la/api/analytics"
+```
+
+Returns `{ days, columns, results }`. The token is sent as a **header**, never
+a query string (tokens in URLs leak into access logs). Server env vars:
+`ANALYTICS_TOKEN`, `POSTHOG_PERSONAL_API_KEY`, optional `POSTHOG_HOST`.
+
+Rotate by updating `ANALYTICS_TOKEN` in Vercel and redeploying.
+
 ## Notes
 - **Cookieless option:** currently uses `localStorage+cookie` for full features
   (retention, session replay). To drop the cookie-consent obligation, change
