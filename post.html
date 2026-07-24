@@ -209,10 +209,12 @@
     let mediaSeq = 0;
     const mediaItems = []; // { id, type, url, status, el }
 
+    // uploadPresigned pairs with handleUploadPresigned on the server — the flow
+    // that works with OIDC-based Blob stores (no BLOB_READ_WRITE_TOKEN needed).
     async function getUpload() {
       if (!uploadClient) {
         const mod = await import("https://esm.sh/@vercel/blob@2.6.1/client");
-        uploadClient = mod.upload;
+        uploadClient = mod.uploadPresigned;
       }
       return uploadClient;
     }
@@ -249,7 +251,8 @@
     async function uploadFile(file, item) {
       try {
         const upload = await getUpload();
-        const blob = await upload(file.name, file, {
+        const safeName = (file.name || "upload").replace(/[/\\]+/g, "-").slice(-80);
+        const blob = await upload(`blog/${safeName}`, file, {
           access: "public",
           handleUploadUrl: "/api/blob-upload",
           contentType: file.type,

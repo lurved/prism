@@ -2,20 +2,31 @@
  * Vercel Serverless Function — /api/blob-upload
  *
  * Authorises direct browser-to-storage uploads of photos/videos to Vercel
- * Blob. The browser (via @vercel/blob/client `upload`) hits this route only to
- * mint a short-lived upload token — the file bytes go straight to Blob storage,
- * bypassing the ~4.5MB serverless body limit so large videos work.
+ * Blob. The browser (via @vercel/blob/client `uploadPresigned`) hits this route
+ * only to obtain a short-lived presigned URL — the file bytes go straight to
+ * Blob storage, bypassing the ~4.5MB serverless body limit so large phone
+ * videos work.
  *
- * Auth: the client passes the shared secret in `clientPayload`; it must match
- * BLOG_POST_SECRET.
+ * Auth (ours): the client passes the shared secret in `clientPayload`; it must
+ * match BLOG_POST_SECRET.
  *
- * Required env var: BLOB_READ_WRITE_TOKEN — added automatically when you create
- * a Blob store in the Vercel dashboard (Storage → Create → Blob).
+ * Auth (Blob): `issueSignedToken` resolves credentials automatically — it works
+ * with OIDC (VERCEL_OIDC_TOKEN + BLOB_STORE_ID, what the current Vercel Blob
+ * integration provisions) *or* with a classic BLOB_READ_WRITE_TOKEN. We use the
+ * presigned flow rather than `handleUpload` because `handleUpload` mints client
+ * tokens by signing with BLOB_READ_WRITE_TOKEN specifically, which OIDC-based
+ * stores don't have.
+ *
+ * Env: BLOB_STORE_ID + BLOB_WEBHOOK_PUBLIC_KEY (set by the Blob integration),
+ * or BLOB_READ_WRITE_TOKEN.
  */
 
-const { handleUpload } = require("@vercel/blob/client");
+const { handleUploadPresigned } = require("@vercel/blob/client");
+const { issueSignedToken } = require("@vercel/blob");
 
 const MAX_BYTES = 500 * 1024 * 1024; // 500 MB per file
+const ALLOWED_CONTENT_TYPES = ["image/*", "video/*"];
+const UPLOAD_WINDOW_MS = 10 * 60 * 1000; // presigned URL lifetime
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") {
@@ -23,25 +34,41 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const jsonResponse = await handleUpload({
+    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+
+    const jsonResponse = await handleUploadPresigned({
+      body,
       request: req,
-      body: typeof req.body === "string" ? JSON.parse(req.body) : req.body,
-      onBeforeGenerateToken: async (pathname, clientPayload) => {
+      getSignedToken: async (pathname, clientPayload) => {
         let payload = {};
         try { payload = JSON.parse(clientPayload || "{}"); } catch (_) {}
         if (!process.env.BLOG_POST_SECRET || payload.secret !== process.env.BLOG_POST_SECRET) {
           throw new Error("Unauthorized");
         }
-        return {
-          allowedContentTypes: ["image/*", "video/*"],
-          addRandomSuffix: true,
+
+        const validUntil = Date.now() + UPLOAD_WINDOW_MS;
+        const token = await issueSignedToken({
+          pathname,
+          operations: ["put"],
+          validUntil,
+          allowedContentTypes: ALLOWED_CONTENT_TYPES,
           maximumSizeInBytes: MAX_BYTES,
+        });
+
+        return {
+          token,
+          urlOptions: {
+            validUntil,
+            allowedContentTypes: ALLOWED_CONTENT_TYPES,
+            maximumSizeInBytes: MAX_BYTES,
+            addRandomSuffix: true, // avoid collisions between same-named photos
+          },
         };
       },
-      // Fires server-side once the upload finishes (production only). Nothing to
-      // persist here — the client already has the URL to include in the post.
-      onUploadCompleted: async () => {},
+      // No onUploadCompleted: the client already has the URL it needs, and
+      // skipping it avoids depending on a webhook round-trip.
     });
+
     return res.status(200).json(jsonResponse);
   } catch (err) {
     console.error(err);
