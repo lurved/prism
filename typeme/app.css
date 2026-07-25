@@ -1,14 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap');
+/* ============================================================
+   Type Me — navy design system.
+   Imports the shared tokens; local aliases keep the existing
+   class names working while colour/type/spacing come from
+   tokens/*.css (single source of truth).
+   ============================================================ */
+
+@import "../tokens/fonts.css";
+@import "../tokens/colors.css";
+@import "../tokens/typography.css";
+@import "../tokens/spacing.css";
 
 :root {
-  --paper: #F2F1ED;
-  --card: #FBFAF7;
-  --ink: #1C1B18;
-  --muted: #918C7E;
-  --hair: #DAD7CD;
-  --accent: #2F6F62;        /* ink-teal — split / tension only */
-  --accent-soft: rgba(47,111,98,0.10);
-  --serif: 'Instrument Serif', Georgia, serif;
+  /* Local aliases mapped onto the shared tokens. */
+  --paper: var(--bg);
+  --card: var(--surface-card);
+  --muted: var(--soft);
+  --hair: var(--line);
+  --accent-soft: rgba(240, 168, 184, 0.12);
+  --serif: var(--font-display);
+  /* --ink and --accent are provided directly by tokens/colors.css */
 }
 
 * { box-sizing: border-box; }
@@ -16,9 +26,9 @@ html, body { margin: 0; padding: 0; }
 
 body {
   min-height: 100vh;
-  background: var(--paper);
+  background: var(--bg);
   color: var(--ink);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: var(--font-body);
   display: flex;
   justify-content: center;
   padding: 32px 20px 56px;
@@ -32,7 +42,7 @@ button { font-family: inherit; cursor: pointer; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .rise { animation: rise .5s cubic-bezier(.2,.7,.2,1) both; }
 
-.opt:hover { border-color: var(--ink) !important; }
+.opt:hover { border-color: var(--accent) !important; }
 .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -41,42 +51,49 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* ── reusable atoms ─────────────────────────────────────────── */
-.wordmark { font-family: var(--serif); letter-spacing: -0.01em; }
+.wordmark { font-family: var(--font-display); letter-spacing: -0.01em; }
 .wordmark em { font-style: italic; color: var(--accent); }
 
 .eyebrow {
-  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: var(--text-label); letter-spacing: var(--tracking-eyebrow); text-transform: uppercase;
+  color: var(--soft); font-weight: 400;
 }
 
 .tm-input {
-  width: 100%; background: var(--card); border: 1px solid var(--hair);
-  border-radius: 14px; padding: 16px 18px; font-size: 17px;
+  width: 100%; background: var(--surface-card); border: 1px solid var(--line);
+  border-radius: var(--radius-panel); padding: 16px 18px; font-size: 17px;
   color: var(--ink); font-family: inherit; outline: none;
 }
-.tm-input:focus { border-color: var(--ink); }
+.tm-input::placeholder { color: var(--soft); }
+.tm-input:focus { border-color: var(--accent); }
 
 .btn-primary {
-  border: none; border-radius: 999px; padding: 15px 28px;
-  font-size: 15px; font-weight: 500; background: var(--ink); color: var(--card);
-  transition: background .2s ease;
+  border: none; border-radius: var(--radius-pill); padding: 15px 28px;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+  letter-spacing: var(--tracking-button); text-transform: uppercase;
+  background: var(--accent); color: var(--on-accent);
+  transition: opacity .2s ease;
 }
-.btn-primary:disabled { background: var(--hair); color: var(--muted); cursor: not-allowed; }
+.btn-primary:hover { opacity: .9; }
+.btn-primary:disabled { background: var(--line); color: var(--soft); cursor: not-allowed; }
 
 .btn-accent {
-  width: 100%; background: var(--accent); color: #fff; border: none;
-  border-radius: 999px; padding: 13px; font-size: 14px; font-weight: 500;
+  width: 100%; background: var(--accent); color: var(--on-accent); border: none;
+  border-radius: var(--radius-pill); padding: 13px;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  letter-spacing: var(--tracking-button); text-transform: uppercase;
 }
 .btn-accent:disabled { opacity: .6; cursor: default; }
 
 .link-quiet {
-  background: none; border: none; color: var(--muted); font-size: 13px;
+  background: none; border: none; color: var(--soft); font-size: 13px;
   text-decoration: underline; text-underline-offset: 3px;
 }
 
 .opt {
-  display: block; width: 100%; text-align: left; background: var(--card);
-  border: 1px solid var(--hair); border-radius: 16px; padding: 20px 22px;
+  display: block; width: 100%; text-align: left; background: var(--surface-card);
+  border: 1px solid var(--line); border-radius: var(--radius-panel); padding: 20px 22px;
   font-size: 17px; line-height: 1.35; color: var(--ink); margin-bottom: 12px;
   transition: border-color .15s ease;
 }
@@ -88,8 +105,9 @@ button { font-family: inherit; cursor: pointer; }
 
 .toast {
   position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(8px);
-  background: var(--ink); color: var(--card); font-size: 13px; font-weight: 500;
-  padding: 10px 16px; border-radius: 999px; opacity: 0; pointer-events: none;
+  background: var(--surface-card); color: var(--ink); border: 1px solid var(--line);
+  font-size: 13px; font-weight: 500;
+  padding: 10px 16px; border-radius: var(--radius-pill); opacity: 0; pointer-events: none;
   transition: opacity .2s ease, transform .2s ease; z-index: 50;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }

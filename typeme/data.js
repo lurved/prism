@@ -3,14 +3,16 @@
 window.TM = window.TM || {};
 
 // ── Design tokens ────────────────────────────────────────────────
+// Navy design-system tokens (kept in sync with tokens/colors.css).
 window.TM.C = {
-  paper: "#F2F1ED",
-  card: "#FBFAF7",
-  ink: "#1C1B18",
-  muted: "#918C7E",
-  hair: "#DAD7CD",
-  accent: "#2F6F62", // ink-teal — reserved for the split / tension only
-  accentSoft: "rgba(47,111,98,0.10)",
+  paper: "#262a4f",   // --bg
+  card: "#2e3360",    // --surface-card
+  ink: "#ecebf3",     // --ink
+  muted: "#9897b7",   // --soft
+  hair: "#393d63",    // --line
+  accent: "#f0a8b8",  // --accent (the single pink accent)
+  accentSoft: "rgba(240,168,184,0.12)",
+  onAccent: "#262a4f", // --on-accent — text/icons on an accent fill (never white)
 };
 
 window.TM.TARGET_RATERS = 3;

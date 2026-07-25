@@ -194,7 +194,7 @@
     const view = el("div", { class: "rise", style: { paddingTop: "24px" } },
       wordmark(23, 30),
       eyebrow("Find out how you come across"),
-      el("h1", { style: { fontFamily: C ? "'Instrument Serif', Georgia, serif" : "", fontWeight: "400", fontSize: "46px", lineHeight: "1.04", letterSpacing: "-0.01em", margin: "14px 0 0" } },
+      el("h1", { style: { fontFamily: C ? "'Newsreader', Georgia, serif" : "", fontWeight: "400", fontSize: "46px", lineHeight: "1.04", letterSpacing: "-0.01em", margin: "14px 0 0" } },
         "Your friends", el("br"), "type ", el("span", { style: { fontStyle: "italic" } }, "you.")),
       el("p", { style: { color: C.muted, fontSize: "16px", lineHeight: "1.5", margin: "18px 0 0", maxWidth: "360px" } },
         "Set up your link, send it to a few friends, and see how they actually read you — four traits, and where they can't agree."),
@@ -269,7 +269,7 @@
 
   function emptyState(name) {
     return el("div", { class: "rise", style: { marginTop: "16px" } },
-      el("h1", { style: { fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: "400", fontSize: "40px", lineHeight: "1.06", letterSpacing: "-0.01em", margin: "14px 0 0" } },
+      el("h1", { style: { fontFamily: "'Newsreader', Georgia, serif", fontWeight: "400", fontSize: "40px", lineHeight: "1.06", letterSpacing: "-0.01em", margin: "14px 0 0" } },
         "Be the first to", el("br"), "rate ", el("span", { style: { fontStyle: "italic" } }, name + ".")),
       el("p", { style: { color: C.muted, fontSize: "16px", lineHeight: "1.5", margin: "16px 0 0", maxWidth: "360px" } },
         `Four quick taps on how ${name} comes across. Your answer joins the spread — the fun part is seeing where everyone disagrees.`));
@@ -281,22 +281,22 @@
     const wrap = el("div", { style: { marginTop: "14px" } });
 
     // 1. Code with split letters faded teal
-    const codeRow = el("div", { class: "rise", style: { fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "64px", letterSpacing: "0.06em", margin: "8px 0 6px", display: "flex", gap: "4px" } });
+    const codeRow = el("div", { class: "rise", style: { fontFamily: "'Newsreader', Georgia, serif", fontSize: "64px", letterSpacing: "0.06em", margin: "8px 0 6px", display: "flex", gap: "4px" } });
     tallies.forEach((t) => codeRow.appendChild(codeLetter(t)));
     wrap.appendChild(codeRow);
 
     // 2. Hero: portrait, or the tie message (don't force a type)
     if (portrait) {
       wrap.appendChild(el("div", { class: "rise" },
-        el("p", { style: { fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "27px", margin: "0", lineHeight: "1.1" } }, portrait.name),
-        el("p", { style: { fontSize: "15px", lineHeight: "1.6", color: "#5C584E", margin: "10px 0 0", maxWidth: "400px" } }, portrait.line)));
+        el("p", { style: { fontFamily: "'Newsreader', Georgia, serif", fontSize: "27px", margin: "0", lineHeight: "1.1" } }, portrait.name),
+        el("p", { style: { fontSize: "15px", lineHeight: "1.6", color: C.muted, margin: "10px 0 0", maxWidth: "400px" } }, portrait.line)));
     } else if (hasTie) {
       const tk = data.tiedAxes[0];
       const ax = AXIS[tk];
       wrap.appendChild(el("div", { class: "rise" },
-        el("p", { style: { fontFamily: "'Instrument Serif', Georgia, serif", fontSize: "27px", margin: "0", lineHeight: "1.1" } },
+        el("p", { style: { fontFamily: "'Newsreader', Georgia, serif", fontSize: "27px", margin: "0", lineHeight: "1.1" } },
           "Still split on ", el("span", { style: { fontStyle: "italic", color: C.accent } }, ax.left.label + " / " + ax.right.label)),
-        el("p", { style: { fontSize: "15px", lineHeight: "1.6", color: "#5C584E", margin: "10px 0 0", maxWidth: "400px" } },
+        el("p", { style: { fontSize: "15px", lineHeight: "1.6", color: C.muted, margin: "10px 0 0", maxWidth: "400px" } },
           `${name}'s friends are dead even on this one. ${ax.splitDesc} One more friend settles it.`)));
     }
 
@@ -495,7 +495,7 @@
   function notFoundView() {
     return el("div", { class: "rise", style: { paddingTop: "24px" } },
       wordmark(23, 24),
-      el("h1", { style: { fontFamily: "'Instrument Serif', Georgia, serif", fontWeight: "400", fontSize: "36px", margin: "0 0 12px" } }, "This link's gone cold."),
+      el("h1", { style: { fontFamily: "'Newsreader', Georgia, serif", fontWeight: "400", fontSize: "36px", margin: "0 0 12px" } }, "This link's gone cold."),
       el("p", { style: { color: C.muted, fontSize: "16px", lineHeight: "1.5", maxWidth: "360px" } }, "We couldn't find that page. Want to make your own?"),
       el("div", { style: { marginTop: "18px" } }, el("button", { class: "btn-primary", onclick: () => navigate("/typeme") }, "Create my link")));
   }
