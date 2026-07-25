@@ -75,7 +75,7 @@ export function CompanyCard({ company: c }: { company: Company }) {
           </div>
           <div className="h-[6px] rounded-full overflow-hidden bg-track">
             {reductionMv.value === null ? (
-              <div className="h-full w-full" style={{ backgroundImage: "repeating-linear-gradient(45deg,#D8D0BF 0 5px,transparent 5px 10px)" }} />
+              <div className="h-full w-full" style={{ backgroundImage: "repeating-linear-gradient(45deg,#454a78 0 5px,transparent 5px 10px)" }} />
             ) : (
               <div className="h-full bg-good" style={{ width: `${Math.min(reductionMv.value, 100)}%` }} />
             )}

@@ -33,7 +33,7 @@ function QualRow({
   render: (c: Company, comparable: boolean) => React.ReactNode;
 }) {
   return (
-    <tr className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+    <tr className="border-t border-hairline2 hover:bg-[#2e3360] transition-colors">
       <td className="py-[13px] px-5 align-top">
         <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{label}</div>
         <div className="font-sans text-[11px] text-muted3 mt-[3px]">{sub}</div>
@@ -81,7 +81,7 @@ export function MetricTable({ companies }: MetricTableProps) {
                 const isExpanded = scope && expanded === scope;
 
                 const mainRow = (
-                  <tr key={def.metricId} className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+                  <tr key={def.metricId} className="border-t border-hairline2 hover:bg-[#2e3360] transition-colors">
                     <td className="py-[13px] px-5 align-top">
                       <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{def.label}</div>
                       {def.sublabel && <div className="font-sans text-[11px] text-muted3 mt-[3px]">{def.sublabel}</div>}
@@ -121,7 +121,7 @@ export function MetricTable({ companies }: MetricTableProps) {
                   return [
                     mainRow,
                     <tr key={`${def.metricId}-trend`}>
-                      <td colSpan={companies.length + 1} className="px-5 pb-4 bg-[#FBF8F1]">
+                      <td colSpan={companies.length + 1} className="px-5 pb-4 bg-[#2e3360]">
                         <TrendChart companies={companies} scope={scope!} />
                       </td>
                     </tr>,

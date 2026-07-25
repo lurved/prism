@@ -35,7 +35,7 @@ export default function HealthcarePage() {
         <h1 className="font-serif font-semibold text-ink m-0 mb-2 tracking-[-0.02em] max-w-[16ch] leading-[1.0] text-[clamp(40px,6.4vw,72px)]">
           Listed care groups, side&nbsp;by&nbsp;side.
         </h1>
-        <div className="font-serif italic text-[22px] leading-[1.3] text-[#8A8478] mb-[38px]">IHH · Thomson Medical · Raffles Medical — one lens, no guesses.</div>
+        <div className="font-serif italic text-[22px] leading-[1.3] text-[#807f9f] mb-[38px]">IHH · Thomson Medical · Raffles Medical — one lens, no guesses.</div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
           <p className="font-sans text-[18px] leading-[1.65] text-ink2 m-0 max-w-[62ch] [text-wrap:pretty]">
             Entity-level GHG for listed healthcare groups — <strong className="font-semibold">IHH Healthcare</strong> (Scope 1+2 &amp; intensity),{" "}
@@ -54,7 +54,7 @@ export default function HealthcarePage() {
 
       {/* Context banner — MOH study estimate (never a comparison row) */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-2 pb-2">
-        <div className="border border-hairline rounded-[14px] bg-[#FBF6EA] p-5 flex flex-col sm:flex-row gap-4 sm:items-center">
+        <div className="border border-hairline rounded-[14px] bg-[#2e3360] p-5 flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="shrink-0">
             <div className="font-serif font-medium text-[34px] leading-[1] text-ink tracking-[-0.01em]">{mohContextBanner.value}</div>
             <span className="inline-block mt-2 font-mono text-[10px] tracking-[0.04em] rounded-full px-2 py-[3px] text-sc bg-[rgba(180,114,46,0.12)]">⚠️ {mohContextBanner.flagLabel}</span>

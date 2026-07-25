@@ -30,7 +30,7 @@ export function Header() {
   const subtitle = SUBTITLES[path] ?? "ESG Comparison";
 
   return (
-    <header className="sticky top-0 z-30 border-b border-hairline bg-paper/[0.86] backdrop-blur-md backdrop-saturate-150">
+    <header className="sticky top-0 z-30 border-b border-hairline bg-paper">
       <div className="max-w-page mx-auto px-5 sm:px-8 py-[13px] flex items-center justify-between gap-6">
         <div className="flex items-baseline gap-[13px]">
           <span className="font-serif font-semibold text-base text-ink tracking-[0.005em]">ESG Tracker</span>
@@ -47,7 +47,7 @@ export function Header() {
                 href={href}
                 className={
                   active
-                    ? "font-sans font-semibold text-xs tracking-[0.02em] px-[13px] py-[7px] rounded-full bg-ink text-paper"
+                    ? "font-sans font-semibold text-xs tracking-[0.02em] px-[13px] py-[7px] rounded-full bg-accent text-onaccent"
                     : "font-sans font-semibold text-xs tracking-[0.02em] px-[13px] py-[7px] rounded-full text-muted border border-hairline hover:bg-chip hover:text-ink transition-colors"
                 }
               >

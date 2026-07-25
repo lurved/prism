@@ -82,7 +82,7 @@ export function ExportButtons({ companies }: { companies: Company[] }) {
   };
 
   const btn =
-    "inline-flex items-center gap-2 font-mono font-semibold text-[11px] tracking-[0.06em] uppercase px-[14px] py-[9px] rounded-full border border-hairline bg-card text-ink2 hover:bg-[#F4F0E6] transition-colors";
+    "inline-flex items-center gap-2 font-mono font-semibold text-[11px] tracking-[0.06em] uppercase px-[14px] py-[9px] rounded-full border border-hairline bg-card text-ink2 hover:bg-[#2e3360] transition-colors";
 
   return (
     <div className="flex flex-wrap items-center gap-2.5">

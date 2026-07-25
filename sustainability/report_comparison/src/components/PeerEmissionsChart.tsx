@@ -47,12 +47,12 @@ export function PeerEmissionsChart({
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 4, right: 16, bottom: 4, left: 24 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E7E1D3" />
-              <XAxis dataKey="metric" tick={{ fontSize: 12, fill: "#6B665C" }} />
-              <YAxis tick={{ fontSize: 11, fill: "#9A9489" }} tickFormatter={(v) => fmtT(v as number)} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#393d63" />
+              <XAxis dataKey="metric" tick={{ fontSize: 12, fill: "#9897b7" }} />
+              <YAxis tick={{ fontSize: 11, fill: "#807f9f" }} tickFormatter={(v) => fmtT(v as number)} />
               <Tooltip
                 formatter={(value: number, name: string) => [fmtT(value), name]}
-                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #E4DECF", background: "#FCFAF5" }}
+                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #393d63", background: "#2e3360" }}
               />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               {companies.map((c) => (

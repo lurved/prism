@@ -47,7 +47,7 @@ export function TrendChart({ companies, scope }: { companies: Company[]; scope: 
   const tickLabels = ["3rd latest", "2nd latest", "Latest"].slice(-maxLen);
 
   return (
-    <div className="bg-[#FBF8F1] border border-hairline2 rounded-[10px] p-4 mt-2">
+    <div className="bg-[#2e3360] border border-hairline2 rounded-[10px] p-4 mt-2">
       <div className="flex items-baseline justify-between gap-3 mb-1">
         <div className="font-sans font-semibold text-[13px] text-ink">{SCOPE_LABEL[scope]} — multi-year trend</div>
         <div className="font-mono text-[10px] text-muted2">ktCO₂e · gaps = not disclosed</div>
@@ -55,25 +55,25 @@ export function TrendChart({ companies, scope }: { companies: Company[]; scope: 
       <div style={{ width: "100%", height: 240 }}>
         <ResponsiveContainer>
           <LineChart data={rows} margin={{ top: 10, right: 16, bottom: 4, left: 4 }}>
-            <CartesianGrid stroke="#E7E1D3" strokeDasharray="2 3" vertical={false} />
+            <CartesianGrid stroke="#393d63" strokeDasharray="2 3" vertical={false} />
             <XAxis
               dataKey="idx"
               tickFormatter={(i: number) => tickLabels[i] ?? ""}
-              tick={{ fontSize: 10, fill: "#9A9489", fontFamily: "IBM Plex Mono" }}
-              axisLine={{ stroke: "#D8D0BF" }}
+              tick={{ fontSize: 10, fill: "#807f9f", fontFamily: "IBM Plex Mono" }}
+              axisLine={{ stroke: "#454a78" }}
               tickLine={false}
             />
             <YAxis
               tickFormatter={(v: number) => fmtK(v)}
-              tick={{ fontSize: 10, fill: "#A8A294", fontFamily: "IBM Plex Mono" }}
+              tick={{ fontSize: 10, fill: "#6f6e8f", fontFamily: "IBM Plex Mono" }}
               axisLine={false}
               tickLine={false}
               width={44}
             />
             <Tooltip
               contentStyle={{
-                background: "#232019", border: "none", borderRadius: 8,
-                fontFamily: "Archivo", fontSize: 12, color: "#F6F3EC",
+                background: "#ecebf3", border: "none", borderRadius: 8,
+                fontFamily: "Archivo", fontSize: 12, color: "#262a4f",
               }}
               labelFormatter={(i) => tickLabels[i as number] ?? ""}
               formatter={(value, name) => [value === null ? "N/D" : `${fmtK(value as number)} tCO₂e`, name as string]}

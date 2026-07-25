@@ -91,7 +91,7 @@ export function CitedValue({ mv, display, className = "", emphasis = false, ndLa
   // Dotted-underline affordance signals "there's a citation here".
   const underline = plain
     ? ""
-    : "underline decoration-dotted decoration-from-font underline-offset-[3px] decoration-[#C9C2B2]";
+    : "underline decoration-dotted decoration-from-font underline-offset-[3px] decoration-[#5b5a7a]";
   const baseType = plain ? "" : "font-mono text-[13px] tracking-[-0.01em]";
 
   return (
@@ -114,7 +114,7 @@ export function CitedValue({ mv, display, className = "", emphasis = false, ndLa
         className={`${baseType} ${valueColor} ${underline} bg-transparent border-0 p-0 cursor-help ${className}`}
       >
         {text}
-        {hasCitation && <sup className="text-[#B0A99A] ml-[1px] text-[10px] font-normal select-none">°</sup>}
+        {hasCitation && <sup className="text-[#6f6e8f] ml-[1px] text-[10px] font-normal select-none">°</sup>}
       </button>
 
       {open && coords && typeof document !== "undefined" &&
@@ -159,11 +159,11 @@ function CitationBody({ mv }: { mv: MetricValue }) {
         <div className="flex items-center gap-1.5 font-sans font-semibold text-[12px] text-[#E8A79D] mb-1.5">
           <span aria-hidden>❌</span> Unverified — citation pending
         </div>
-        <p className="font-sans text-[11px] leading-[1.5] text-[#CFC8B8] m-0">
+        <p className="font-sans text-[11px] leading-[1.5] text-[#454a78] m-0">
           This metric is not disclosed in the source report, or was not confirmed during extraction.
           It is shown as <span className="font-mono">N/D</span> and never substituted with a figure.
         </p>
-        {mv.notes && <p className="font-sans text-[11px] leading-[1.5] text-[#CFC8B8] mt-2 mb-0">{mv.notes}</p>}
+        {mv.notes && <p className="font-sans text-[11px] leading-[1.5] text-[#454a78] mt-2 mb-0">{mv.notes}</p>}
         <div className="mt-2 pt-2 border-t border-white/15">
           <Row label="Fiscal year">{mv.fiscalYear}</Row>
         </div>
@@ -186,7 +186,7 @@ function CitationBody({ mv }: { mv: MetricValue }) {
         </span>
       </Row>
       {mv.notes && (
-        <p className="font-sans text-[11px] leading-[1.5] text-[#CFC8B8] mt-2 mb-0 [text-wrap:pretty]">{mv.notes}</p>
+        <p className="font-sans text-[11px] leading-[1.5] text-[#454a78] mt-2 mb-0 [text-wrap:pretty]">{mv.notes}</p>
       )}
       {c.reportUrl && (
         <a
