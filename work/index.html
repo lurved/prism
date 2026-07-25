@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Priscilla Liu — Selected Work</title>
+<meta name="description" content="Fifteen projects from eighteen years of product, experience and transformation leadership across energy, proptech and financial services — and, lately, AI products built end to end.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   pris.la Design System — tokens (colors.css / typography.css / spacing.css)
+   Navy is the canonical theme. Served from pris.la, the Google Fonts import
+   above resolves — Newsreader / Space Mono / Hanken Grotesk load for real.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --navy-900:#16161c; --navy-700:#262a4f; --navy-600:#2e3360; --navy-500:#393d63;
+  --pink-300:#f0a8b8; --lavender-300:#9897b7; --paper-100:#ecebf3; --green-500:#2faa5c;
+
+  --bg:var(--navy-700);
+  --surface-card:var(--navy-600);
+  --line:var(--navy-500);
+  --ink:var(--paper-100);
+  --text-body:var(--paper-100);
+  --soft:var(--lavender-300);
+  --accent:var(--pink-300);
+  --on-accent:var(--navy-700);
+  --ok:var(--green-500);
+
+  --font-display:'Newsreader', Georgia, serif;
+  --font-mono:'Space Mono', ui-monospace, monospace;
+  --font-body:'Hanken Grotesk', system-ui, sans-serif;
+
+  --text-hero:clamp(38px,6.4vw,72px);
+  --text-h2:clamp(26px,3.6vw,42px);
+  --text-card-title:clamp(19px,1.9vw,23px);
+  --text-lede:clamp(16px,1.5vw,19px);
+  --text-body-sm:14.5px;
+  --text-label:12px;
+  --text-button:13px;
+  --tracking-eyebrow:0.16em;
+  --tracking-button:0.04em;
+  --tracking-display:-0.02em;
+
+  --container-max:1180px;
+  --gutter:clamp(20px,5vw,56px);
+  --section-pad:clamp(56px,8vw,110px);
+  --gap-card:18px;
+  --gap-inner:14px;
+  --radius-card:6px;
+  --radius-pill:100px;
+  --shadow-card-hover:0 14px 40px -22px rgba(10,8,20,.55);
+  --ease-lift:.18s ease;
+}
+/* Explicit light toggle maps to the system's sanctioned warm theme. */
+:root[data-theme="light"]{
+  --bg:#f4f1ea; --surface-card:#fbf9f3; --line:#ddd6c8;
+  --ink:#1c1a16; --text-body:#1c1a16; --soft:#6b655a;
+  --accent:#d8431e; --on-accent:#ffffff;
+  --shadow-card-hover:0 14px 40px -22px rgba(40,30,20,.4);
+}
+:root[data-theme="dark"]{
+  --bg:var(--navy-700); --surface-card:var(--navy-600); --line:var(--navy-500);
+  --ink:var(--paper-100); --text-body:var(--paper-100); --soft:var(--lavender-300);
+  --accent:var(--pink-300); --on-accent:var(--navy-700);
+}
+html,body{margin:0;padding:0;min-height:100%;background:var(--bg);}
+::selection{background:var(--accent);color:var(--on-accent);}
+
+*{box-sizing:border-box;}
+.page{
+  background:var(--bg); color:var(--text-body);
+  font-family:var(--font-body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; min-height:100%;
+}
+.wrap{max-width:var(--container-max);margin:0 auto;padding:0 var(--gutter);}
+
+.eyebrow{
+  font-family:var(--font-mono); font-size:var(--text-label);
+  text-transform:uppercase; letter-spacing:var(--tracking-eyebrow);
+  color:var(--accent); margin:0;
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:400;letter-spacing:var(--tracking-display);text-wrap:balance;margin:0;}
+h1{font-size:var(--text-hero);line-height:1.02;}
+h2{font-size:var(--text-h2);line-height:1.05;}
+h1 em{font-style:italic;color:var(--accent);}
+
+/* ── Masthead ───────────────────────────────────────────── */
+.masthead{padding:clamp(48px,7vw,88px) 0 clamp(28px,4vw,44px);display:flex;flex-direction:column;gap:20px;}
+.lede{font-size:var(--text-lede);color:var(--soft);max-width:62ch;margin:0;}
+.statbar{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:var(--gap-card);border-top:1px solid var(--line);padding-top:24px;margin-top:8px;
+}
+.stat-n{font-family:var(--font-mono);font-weight:700;font-size:clamp(28px,3.4vw,42px);line-height:1;color:var(--ink);font-variant-numeric:tabular-nums;}
+.stat-n.is-accent{color:var(--accent);}
+.stat-l{font-family:var(--font-mono);font-size:var(--text-label);text-transform:uppercase;letter-spacing:var(--tracking-eyebrow);color:var(--soft);margin-top:8px;display:block;}
+
+/* ── Sections ───────────────────────────────────────────── */
+.section{padding:clamp(44px,6vw,80px) 0;border-top:1px solid var(--line);}
+.section-head{display:flex;flex-direction:column;gap:10px;margin-bottom:32px;}
+.section-note{font-size:var(--text-body-sm);color:var(--soft);max-width:60ch;margin:0;}
+
+/* ── Tenure chart ───────────────────────────────────────── */
+.chart-scroll{overflow-x:auto;padding-bottom:8px;}
+.chart{min-width:640px;}
+.axis{display:grid;grid-template-columns:200px 1fr;align-items:end;gap:16px;margin-bottom:10px;}
+.axis-ticks{position:relative;height:18px;}
+.tick{position:absolute;top:0;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;color:var(--soft);font-variant-numeric:tabular-nums;}
+.row{display:grid;grid-template-columns:200px 1fr;align-items:center;gap:16px;padding:5px 0;}
+.row-label{text-align:right;min-width:0;}
+.row-org{font-family:var(--font-body);font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.25;}
+.row-role{font-family:var(--font-mono);font-size:10.5px;color:var(--soft);text-transform:uppercase;letter-spacing:.05em;line-height:1.4;margin-top:3px;}
+.track{position:relative;height:30px;border-left:1px solid var(--line);}
+.grid-line{position:absolute;top:0;bottom:0;width:1px;background:var(--line);opacity:.5;}
+.bar{
+  position:absolute;top:6px;height:18px;border-radius:var(--radius-pill);
+  background:var(--lavender-300);opacity:.42;
+}
+.bar.is-sp{background:var(--accent);opacity:1;}
+.bar.is-indep{background:transparent;border:1.5px dashed var(--accent);opacity:.85;}
+.bracket{display:grid;grid-template-columns:200px 1fr;gap:16px;margin-top:6px;}
+.bracket-inner{position:relative;height:34px;}
+.bracket-bar{position:absolute;top:0;height:7px;border:1px solid var(--accent);border-bottom:none;opacity:.55;}
+.bracket-text{
+  position:absolute;top:11px;font-family:var(--font-mono);font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--accent);
+}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
+.legend-item{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--soft);text-transform:uppercase;letter-spacing:.06em;}
+.swatch{width:20px;height:9px;border-radius:var(--radius-pill);background:var(--lavender-300);opacity:.42;flex:none;}
+.swatch.is-sp{background:var(--accent);opacity:1;}
+.swatch.is-indep{background:transparent;border:1.5px dashed var(--accent);opacity:.85;}
+
+/* ── Filters ────────────────────────────────────────────── */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chip{
+  font-family:var(--font-mono);font-size:var(--text-button);text-transform:uppercase;
+  letter-spacing:var(--tracking-button);color:var(--soft);
+  background:transparent;border:1px solid var(--line);border-radius:var(--radius-pill);
+  padding:7px 14px;cursor:pointer;transition:color var(--ease-lift),border-color var(--ease-lift),background var(--ease-lift);
+}
+.chip:hover{color:var(--ink);border-color:var(--soft);}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+.filter-bar{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+.count{font-family:var(--font-mono);font-size:var(--text-label);color:var(--soft);font-variant-numeric:tabular-nums;letter-spacing:.06em;text-transform:uppercase;}
+
+/* ── Story cards ────────────────────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--gap-card);}
+.card{
+  background:var(--surface-card);border:1px solid var(--line);border-radius:var(--radius-card);
+  padding:22px;display:flex;flex-direction:column;gap:var(--gap-inner);
+  transition:transform var(--ease-lift),border-color var(--ease-lift),box-shadow var(--ease-lift);
+}
+.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:var(--shadow-card-hover);}
+.card-top{display:flex;align-items:baseline;gap:11px;}
+.glyph{font-size:19px;color:var(--accent);line-height:1;flex:none;}
+.card-meta{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--soft);font-variant-numeric:tabular-nums;}
+.card-title{font-family:var(--font-display);font-weight:500;font-size:var(--text-card-title);line-height:1.18;color:var(--ink);margin:0;}
+.card-body{font-size:var(--text-body-sm);color:var(--soft);margin:0;flex:1;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:4px;}
+.tag{
+  font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--soft);border:1px solid var(--line);border-radius:var(--radius-pill);padding:3px 8px;
+}
+.tag.is-on{color:var(--accent);border-color:var(--accent);}
+.empty{color:var(--soft);font-size:var(--text-body-sm);padding:36px 0;text-align:center;}
+.is-hidden{display:none;}
+
+.footer{padding:36px 0 60px;border-top:1px solid var(--line);}
+.footer p{font-size:12.5px;color:var(--soft);margin:0 0 8px;max-width:70ch;}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}.card:hover{transform:none;}}
+@media (max-width:620px){
+  .axis,.row,.bracket{grid-template-columns:132px 1fr;gap:10px;}
+  .card{padding:18px;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Selected work · 2008 — 2026</p>
+    <h1>Fifteen stories from eighteen years of <em>building</em>.</h1>
+    <p class="lede">Product, experience and transformation leadership across energy, proptech and financial services — and, lately, AI products designed, coded and deployed end to end. Filter by capability below, or read the arc first.</p>
+    <div class="statbar">
+      <div><div class="stat-n is-accent">15</div><span class="stat-l">Stories</span></div>
+      <div><div class="stat-n">7</div><span class="stat-l">Organisations</span></div>
+      <div><div class="stat-n">4</div><span class="stat-l">Markets</span></div>
+      <div><div class="stat-n">10</div><span class="stat-l">Capabilities</span></div>
+      <div><div class="stat-n">18</div><span class="stat-l">Years</span></div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow">2008 — 2026</p>
+      <h2>The arc</h2>
+      <p class="section-note">Seven organisations, four markets. The shape a résumé hides: nine continuous years at SP Group across three distinct mandates — a stable company with a rotating frontier.</p>
+    </div>
+
+    <div class="chart-scroll">
+      <div class="chart" id="chart">
+        <div class="axis">
+          <div></div>
+          <div class="axis-ticks" id="ticks"></div>
+        </div>
+        <div id="rows"></div>
+        <div class="bracket">
+          <div></div>
+          <div class="bracket-inner">
+            <div class="bracket-bar" style="left:47.4%;right:0;"></div>
+            <div class="bracket-text" style="left:47.4%;">9 years · 3 mandates · 1 employer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span class="legend-item"><span class="swatch"></span>Prior roles</span>
+      <span class="legend-item"><span class="swatch is-sp"></span>SP Group era</span>
+      <span class="legend-item"><span class="swatch is-indep"></span>Independent building</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <p class="eyebrow">Capability map</p>
+      <h2>The work, by capability</h2>
+      <p class="section-note">Ten capabilities across fifteen projects. Select any combination to see where they overlap — energy and sustainability sit alongside consumer growth, AI delivery and platform work.</p>
+    </div>
+
+    <div class="filters" id="filters"></div>
+    <div class="filter-bar">
+      <span class="count" id="count"></span>
+    </div>
+
+    <div class="grid" id="grid"></div>
+    <p class="empty is-hidden" id="empty">No stories match that combination.</p>
+  </section>
+
+  <footer class="footer">
+    <p>Figures are stated as reported and traced to source. Where a number could not be substantiated, it is not shown.</p>
+    <p>pris.la design system · Navy canonical theme</p>
+  </footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var SPAN_START = 2008, SPAN_END = 2027, SPAN = SPAN_END - SPAN_START;
+  function pct(y){ return ((y - SPAN_START) / SPAN) * 100; }
+
+  var tenures = [
+    {org:"MINDEF",              role:"Web Manager",                   s:2008,   e:2009,   kind:""},
+    {org:"Media Dev. Authority",role:"Management Executive",          s:2009,   e:2010,   kind:""},
+    {org:"First Advantage",     role:"Product & Ops Platform Lead",   s:2011,   e:2013,   kind:""},
+    {org:"Commonwealth Bank",   role:"Assoc. Director, Product",      s:2013,   e:2015,   kind:""},
+    {org:"PropertyGuru",        role:"Head of Product & UX",          s:2015,   e:2017,   kind:""},
+    {org:"SP Digital",          role:"Director",                      s:2017,   e:2022,   kind:"is-sp"},
+    {org:"SP Group",            role:"Director, Product & Experience",s:2022,   e:2025.7, kind:"is-sp"},
+    {org:"SP Group",            role:"Sustainability",                s:2025.7, e:2027,   kind:"is-sp"},
+    {org:"Independent",         role:"AI product building",           s:2026,   e:2027,   kind:"is-indep"}
+  ];
+
+  var ticks = [2008,2011,2014,2017,2020,2023,2026];
+  var tickHost = document.getElementById("ticks");
+  ticks.forEach(function(y){
+    var t = document.createElement("span");
+    t.className = "tick"; t.textContent = y;
+    t.style.left = pct(y) + "%";
+    tickHost.appendChild(t);
+  });
+
+  var rowHost = document.getElementById("rows");
+  tenures.forEach(function(t){
+    var row = document.createElement("div"); row.className = "row";
+    var lab = document.createElement("div"); lab.className = "row-label";
+    lab.innerHTML = '<div class="row-org"></div><div class="row-role"></div>';
+    lab.querySelector(".row-org").textContent = t.org;
+    lab.querySelector(".row-role").textContent = t.role;
+    var track = document.createElement("div"); track.className = "track";
+    ticks.forEach(function(y){
+      if (y === SPAN_START) return;
+      var g = document.createElement("span"); g.className = "grid-line";
+      g.style.left = pct(y) + "%"; track.appendChild(g);
+    });
+    var bar = document.createElement("span");
+    bar.className = "bar " + t.kind;
+    bar.style.left = pct(t.s) + "%";
+    bar.style.width = (pct(t.e) - pct(t.s)) + "%";
+    track.appendChild(bar);
+    row.appendChild(lab); row.appendChild(track);
+    rowHost.appendChild(row);
+  });
+
+  var TAGS = ["0to1","ai-agents","data-platform","growth","revenue","transformation","exec-stakeholder","team-building","design-systems","sustainability"];
+
+  var stories = [
+    {g:"⚡", t:"Agile Product Lab", org:"SP Group", p:"2024",
+     d:"Set up and led a resourced agile product capability adapted from Lean Startup and Design Thinking — 13 products shipped in 2024, six-figure annual savings, 20–50% time-to-task reductions, and 3-month time-to-value against a 12–24-month norm.",
+     tags:["transformation","team-building","0to1"]},
+    {g:"◈", t:"Business-unit GenAI products", org:"SP Group", p:"2024",
+     d:"Drove business units to ship GenAI in 3–6 month cycles — customer-query support, meter/AMI fieldwork, installation training. ~50% improvement in information-processing accuracy; 80% of users reported reduced effort.",
+     tags:["ai-agents","0to1","transformation"]},
+    {g:"◇", t:"pris.la ESG comparison platform", org:"Independent", p:"2026",
+     d:"Solo-built an ESG disclosure comparison platform: per-figure verbatim citations, comparability flags, and a strict no-interpolation rule. Live across four categories, with active users.",
+     tags:["sustainability","data-platform","0to1"]},
+    {g:"↗", t:"PropertyGuru agent platform", org:"PropertyGuru", p:"2015–2017",
+     d:"Led product and UX for the agent platform — the company's primary revenue line — across four SEA markets. 25% CAGR on agent subscriptions, +20% conversion in six months, listing approval cut from 3 days to 1.",
+     tags:["growth","revenue"]},
+    {g:"❖", t:"FY25/26 Sustainability Report", org:"SP Group", p:"2025–2026",
+     d:"Led the narrative, structure and information design of the group's 7th sustainability report — reorganised around material topics, covering Singapore, China, Vietnam and Thailand.",
+     tags:["sustainability","exec-stakeholder"]},
+    {g:"◆", t:"Agent Boost", org:"PropertyGuru", p:"2017",
+     d:"A 0-to-1 paid-visibility product built on the insight that agents were already spending heavily on lower-impact channels and would pay a premium to stand out.",
+     tags:["0to1","revenue","growth"]},
+    {g:"◑", t:"Emerging-market financial products", org:"Commonwealth Bank", p:"2013–2015",
+     d:"Mobile-first savings and loan products for businesses in Indonesia and Vietnam — CashFlow, BizLoan, WorkFlow — localised across five languages. Top-ranking iOS finance app.",
+     tags:["0to1","revenue"]},
+    {g:"▲", t:"SP app growth, 80K → 800K MAU", org:"SP Digital", p:"2017–2022",
+     d:"Led UX and grew the consumer app tenfold, lifting its rating from 2.4 to 4.6 — helping customers see the impact of their energy habits.",
+     tags:["growth","design-systems"]},
+    {g:"⟐", t:"Citation-grounded extraction pipeline", org:"Independent", p:"2026",
+     d:"Every extracted figure must carry a verbatim source quote, verified programmatically — exact, fuzzy, or rejected — before it is accepted.",
+     tags:["ai-agents","data-platform"]},
+    {g:"◍", t:"Carbon emissions conversion tool", org:"Independent", p:"2026",
+     d:"Multi-country carbon-equivalence tool where every conversion factor carries a source, a vintage and a confidence flag.",
+     tags:["sustainability","data-platform"]},
+    {g:"⊘", t:"Balancing sponsor and user needs", org:"SP Group", p:"",
+     d:"An internal tool where sponsor priorities and user expectations pulled in different directions. The resolved design held the usability line — clearing a user-effort score above 4 of 5.",
+     tags:["exec-stakeholder","transformation"]},
+    {g:"▦", t:"Lumi design system", org:"SP Group · Head of Design", p:"",
+     d:"Established the group's design system — colour, typography, layout grids, elevation and component standards unified across mobile, web and kiosk surfaces.",
+     tags:["design-systems"]},
+    {g:"◈", t:"GET® EnergyTech suite", org:"SP Digital · Head of Research & Design", p:"",
+     d:"Led research and design for a B2B smart-utilities suite helping industrial and commercial buildings reach super-low-energy performance — insights dashboards, tenant utilities, microclimate control and EV network management.",
+     tags:["sustainability","data-platform"]},
+    {g:"⬡", t:"Global screening platform", org:"First Advantage", p:"2011–2013",
+     d:"Product lead for background-screening platforms across EMEA and APAC, owning an end-to-end operations platform with Manila-based delivery.",
+     tags:["data-platform","team-building"]},
+    {g:"✦", t:"Type Me", org:"Independent", p:"2026",
+     d:"Friends rate you; deterministic scoring produces an MBTI-style portrait. Self-contained React prototype with a full build spec.",
+     tags:["0to1"]}
+  ];
+
+  var active = [];      // selected tags
+
+  var filterHost = document.getElementById("filters");
+  TAGS.forEach(function(tag){
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.textContent = tag; b.setAttribute("aria-pressed","false");
+    b.addEventListener("click", function(){
+      var i = active.indexOf(tag);
+      if (i > -1) active.splice(i,1); else active.push(tag);
+      b.setAttribute("aria-pressed", i > -1 ? "false" : "true");
+      render();
+    });
+    filterHost.appendChild(b);
+  });
+
+  var grid = document.getElementById("grid");
+  var empty = document.getElementById("empty");
+  var count = document.getElementById("count");
+
+  function card(st){
+    var el = document.createElement("article");
+    el.className = "card";
+
+    var top = document.createElement("div"); top.className = "card-top";
+    var gl = document.createElement("span"); gl.className = "glyph"; gl.textContent = st.g;
+    var meta = document.createElement("div"); meta.className = "card-meta";
+    meta.textContent = st.org + (st.p ? " · " + st.p : "");
+    top.appendChild(gl); top.appendChild(meta);
+
+    var h = document.createElement("h3"); h.className = "card-title"; h.textContent = st.t;
+    var p = document.createElement("p"); p.className = "card-body"; p.textContent = st.d;
+
+    var tg = document.createElement("div"); tg.className = "tags";
+    st.tags.forEach(function(t){
+      var s = document.createElement("span");
+      s.className = "tag" + (active.indexOf(t) > -1 ? " is-on" : "");
+      s.textContent = t; tg.appendChild(s);
+    });
+
+    el.appendChild(top); el.appendChild(h); el.appendChild(p); el.appendChild(tg);
+    return el;
+  }
+
+  function render(){
+    var list = stories.filter(function(st){
+      if (!active.length) return true;
+      return active.every(function(t){ return st.tags.indexOf(t) > -1; });
+    });
+    grid.innerHTML = "";
+    list.forEach(function(st){ grid.appendChild(card(st)); });
+    empty.className = list.length ? "empty is-hidden" : "empty";
+    count.textContent = active.length
+      ? "Showing " + list.length + " of " + stories.length
+      : stories.length + " projects";
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
