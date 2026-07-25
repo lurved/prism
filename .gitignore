@@ -11,3 +11,4 @@ tina/__generated__/
 
 # ESG tracker static-export output (build artifact)
 sustainability/esg-export/
+.env*
