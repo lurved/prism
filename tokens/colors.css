@@ -1,0 +1,47 @@
+/* pris.la color system — "Navy" is the default and canonical theme. */
+:root {
+  /* Base palette (Navy) */
+  --navy-900: #16161c;
+  --navy-700: #262a4f;
+  --navy-600: #2e3360;
+  --navy-500: #393d63;
+  --pink-300: #f0a8b8;
+  --lavender-300: #9897b7;
+  --paper-100: #ecebf3;
+  --green-500: #2faa5c;
+
+  /* Semantic aliases — use these in components */
+  --bg: var(--navy-700);            /* page background */
+  --surface-card: var(--navy-600);  /* cards, raised surfaces, chat header */
+  --line: var(--navy-500);          /* borders, dividers, hairline grids */
+  --ink: var(--paper-100);          /* primary text, headlines */
+  --text-body: var(--paper-100);
+  --soft: var(--lavender-300);      /* secondary / muted text */
+  --accent: var(--pink-300);        /* the single accent: buttons, links, emphasis, glyphs */
+  --on-accent: var(--navy-700);     /* text/icons ON an accent fill — NEVER white on pink */
+  --ok: var(--green-500);           /* online/positive dot */
+}
+
+/* Alternate themes — scope on a container to switch. */
+.theme-warm {
+  --bg: #f4f1ea;
+  --surface-card: #fbf9f3;
+  --line: #ddd6c8;
+  --ink: #1c1a16;
+  --text-body: #1c1a16;
+  --soft: #6b655a;
+  --accent: #d8431e;
+  --on-accent: #ffffff;
+}
+.theme-ink {
+  --bg: #16161c;
+  --surface-card: #1e1e26;
+  --line: #2c2c36;
+  --ink: #ecebf0;
+  --text-body: #ecebf0;
+  --soft: #8b8a96;
+  --accent: #f0a8b8;
+  --on-accent: #16161c;
+}
+
+::selection { background: var(--accent); color: var(--on-accent); }
