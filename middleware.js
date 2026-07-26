@@ -2,9 +2,48 @@ export const config = {
   matcher: ['/sustainability/sr2026', '/sustainability/sr2026/(.*)'],
 };
 
-const CORRECT_PASSWORD = 'susi2026';
 const COOKIE_NAME = 'sr2026_auth';
-const COOKIE_VALUE = 'granted';
+// Password lives in the project environment, never in source. No default:
+// the gate fails closed (503) if it is unset rather than shipping a secret.
+const PASSWORD = process.env.SR2026_PASSWORD;
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24h
+
+const encoder = new TextEncoder();
+
+// HMAC-SHA256 over Web Crypto (available in the Vercel Edge runtime).
+async function hmacHex(key, message) {
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', encoder.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'],
+  );
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message));
+  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Constant-time compare of two equal-length hex strings.
+function timingSafeEqualHex(a, b) {
+  if (a.length !== b.length) return false;
+  let mismatch = 0;
+  for (let i = 0; i < a.length; i++) mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return mismatch === 0;
+}
+
+// Session token = "<expiryMs>.<hmac(password, expiryMs)>" — self-expiring and
+// unforgeable without the password. Replaces the old static "granted" cookie
+// that any visitor could set by hand to bypass the gate.
+async function issueToken() {
+  const exp = String(Date.now() + SESSION_TTL_MS);
+  return `${exp}.${await hmacHex(PASSWORD, exp)}`;
+}
+
+async function isValidToken(token) {
+  if (!token) return false;
+  const dot = token.indexOf('.');
+  if (dot < 1) return false;
+  const exp = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  if (!/^\d+$/.test(exp) || Number(exp) < Date.now()) return false;
+  return timingSafeEqualHex(sig, await hmacHex(PASSWORD, exp));
+}
 
 const LOGIN_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -101,14 +140,24 @@ export default async function middleware(request) {
     return undefined;
   }
 
-  // Check auth cookie
-  const cookies = request.headers.get('cookie') || '';
-  const isAuthed = cookies.split(';').some(c => {
-    const [k, v] = c.trim().split('=');
-    return k === COOKIE_NAME && v === COOKIE_VALUE;
-  });
+  // Fail closed if the gate is not configured — never fall back to a
+  // source-embedded password.
+  if (!PASSWORD) {
+    return new Response(
+      'Access is not configured. Set SR2026_PASSWORD in the project environment.',
+      { status: 503, headers: { 'Content-Type': 'text/plain' } },
+    );
+  }
 
-  if (isAuthed) return undefined; // pass through
+  // Check signed auth cookie
+  const cookies = request.headers.get('cookie') || '';
+  const token = cookies
+    .split(';')
+    .map((c) => c.trim())
+    .find((c) => c.startsWith(`${COOKIE_NAME}=`))
+    ?.slice(COOKIE_NAME.length + 1);
+
+  if (await isValidToken(token)) return undefined; // pass through
 
   // Handle POST (form submission)
   if (request.method === 'POST') {
@@ -116,13 +165,13 @@ export default async function middleware(request) {
     const params = new URLSearchParams(body);
     const submitted = params.get('password');
 
-    if (submitted === CORRECT_PASSWORD) {
-      // Set cookie and redirect back to the protected page
+    if (submitted != null && submitted.length > 0 && submitted === PASSWORD) {
+      // Set signed session cookie and redirect back to the protected page
       return new Response(null, {
         status: 302,
         headers: {
           Location: pathname,
-          'Set-Cookie': `${COOKIE_NAME}=${COOKIE_VALUE}; Path=/sustainability/sr2026; HttpOnly; SameSite=Lax; Max-Age=86400`,
+          'Set-Cookie': `${COOKIE_NAME}=${await issueToken()}; Path=/sustainability/sr2026; HttpOnly; SameSite=Lax; Secure; Max-Age=${SESSION_TTL_MS / 1000}`,
         },
       });
     }

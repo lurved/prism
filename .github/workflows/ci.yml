@@ -1,0 +1,37 @@
+name: CI
+
+# Merge gate for the ESG tracker (the typed, data-critical part of the site).
+# Moves typecheck / lint / build from deploy-time (Vercel) to PR-time so a
+# broken data shape can't reach a preview or production unnoticed.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  esg-tracker:
+    name: esg-tracker (typecheck · lint · build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sustainability/report_comparison
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: sustainability/report_comparison/package-lock.json
+
+      - name: Install (clean, from lockfile)
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build

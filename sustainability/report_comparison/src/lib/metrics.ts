@@ -8,7 +8,9 @@
  *
  * Guiding principle: no value is interpolated, estimated, or inferred.
  *   value === null  →  "N/D", status "unverified", citation null.
- *   value !== null  →  status "confirmed", citation derived from the report.
+ *   value !== null, page recorded  →  status "confirmed" (page-verified).
+ *   value !== null, no page         →  status "reported" (sourced, not page-verified).
+ * "confirmed" is earned, not assumed — a typed number is never confirmed on its own.
  */
 import type { Company, Citation, MetricValue, MetricSeries } from "@/data/types";
 import { formatNumber } from "./utils";
@@ -285,11 +287,16 @@ export function buildMetricValue(c: Company, def: MetricDef): MetricValue {
     // Nothing to cite — never a substituted number, never a guessed citation.
     return { value: null, unit, fiscalYear: c.reportingPeriod, status: "unverified", citation: null, notes };
   }
+  // "confirmed" is earned only when a page-level location was recorded for THIS
+  // figure during extraction. A value taken from the report without a recorded
+  // page is "reported" — sourced, but not page-verified. Typed ≠ verified, so
+  // status is derived here and can never be hand-set to "confirmed" in the data.
+  const pageRecorded = typeof c.citationPages?.[def.metricId] === "number";
   return {
     value,
     unit,
     fiscalYear: c.reportingPeriod,
-    status: "confirmed",
+    status: pageRecorded ? "confirmed" : "reported",
     citation: reportCitation(c, def.metricId),
     notes,
   };
