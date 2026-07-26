@@ -55,7 +55,7 @@ export default function TemasekPage() {
         <div className="flex flex-wrap gap-[13px] mt-[46px]">
           {companies.map((c) => (
             <div key={c.id} className="flex items-center gap-[13px] border border-hairline bg-card rounded-[12px] px-[17px] py-[13px]">
-              <span className="w-[34px] h-[34px] rounded-[8px] text-white font-mono font-semibold text-xs text-center leading-[34px] tracking-[0.02em]"
+              <span className="w-[34px] h-[34px] rounded-[8px] text-onaccent font-mono font-semibold text-xs text-center leading-[34px] tracking-[0.02em]"
                 style={{ background: c.accentColor }}>{c.logoInitials}</span>
               <div>
                 <div className="font-sans font-semibold text-[14px] text-ink leading-[1.1]">{c.name}</div>

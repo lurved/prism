@@ -166,11 +166,11 @@ export function PeerComparison({
       <div className="overflow-x-auto border border-hairline rounded-[14px] bg-card">
         <table className="w-full min-w-[740px] border-collapse">
           <thead>
-            <tr className="bg-ink">
+            <tr className="bg-card">
               <th className="text-left py-4 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 w-48">Metric</th>
               {companies.map((c) => (
                 <th key={c.id} className="text-right py-[14px] px-4 min-w-[180px]">
-                  <div className="font-sans font-semibold text-[14px] text-paper leading-[1.1]">{c.shortName}</div>
+                  <div className="font-sans font-semibold text-[14px] text-ink leading-[1.1]">{c.shortName}</div>
                   <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.06em] uppercase">{c.country} · {c.reportingPeriod}</div>
                 </th>
               ))}

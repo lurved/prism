@@ -57,7 +57,7 @@ export default function HealthcarePage() {
         <div className="border border-hairline rounded-[14px] bg-[#2e3360] p-5 flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="shrink-0">
             <div className="font-serif font-medium text-[34px] leading-[1] text-ink tracking-[-0.01em]">{mohContextBanner.value}</div>
-            <span className="inline-block mt-2 font-mono text-[10px] tracking-[0.04em] rounded-full px-2 py-[3px] text-sc bg-[rgba(180,114,46,0.12)]">⚠️ {mohContextBanner.flagLabel}</span>
+            <span className="inline-block mt-2 font-mono text-[10px] tracking-[0.04em] rounded-full px-2 py-[3px] text-sc bg-[rgba(227,154,77,0.12)]">⚠️ {mohContextBanner.flagLabel}</span>
           </div>
           <div className="sm:border-l sm:border-hairline sm:pl-5">
             <div className="font-sans font-semibold text-[13px] text-ink2">{mohContextBanner.title}</div>
@@ -82,7 +82,7 @@ export default function HealthcarePage() {
               <div className="h-1" style={{ background: e.accentColor }} />
               <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="w-[38px] h-[38px] rounded-[9px] text-white font-mono font-semibold text-[13px] text-center leading-[38px]" style={{ background: e.accentColor }}>{e.logoInitials}</span>
+                  <span className="w-[38px] h-[38px] rounded-[9px] text-onaccent font-mono font-semibold text-[13px] text-center leading-[38px]" style={{ background: e.accentColor }}>{e.logoInitials}</span>
                   <div>
                     <div className="font-serif font-semibold text-[16px] text-ink leading-[1.1]">{e.name}</div>
                     <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.04em] uppercase">{e.listing} · {e.countries.join(" ")}</div>
@@ -132,7 +132,7 @@ export default function HealthcarePage() {
         <div className="border border-hairline rounded-[14px] bg-card overflow-hidden">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-ink">
+              <tr className="bg-card">
                 <th className="text-left py-3 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2">Entity</th>
                 <th className="text-left py-3 px-4 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2">Rationale code</th>
                 <th className="text-left py-3 px-4 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 hidden sm:table-cell">Why</th>

@@ -150,7 +150,7 @@ function bestPerformer(row: Row, entities: HealthcareEntity[]): { winnerId: stri
 
 const STATUS_PILL: Record<HealthcareEntity["status"], { label: string; cls: string }> = {
   populated: { label: "Populated", cls: "text-good bg-[rgba(63,122,82,0.10)]" },
-  pending_extraction: { label: "Beds ✓ · emissions pending", cls: "text-sc bg-[rgba(180,114,46,0.10)]" },
+  pending_extraction: { label: "Beds ✓ · emissions pending", cls: "text-sc bg-[rgba(227,154,77,0.12)]" },
   pending_verification: { label: "Pending verification", cls: "text-muted bg-chip" },
   excluded: { label: "Excluded", cls: "text-nd bg-chip" },
 };
@@ -177,11 +177,11 @@ export function HealthcareComparison({ entities = healthcareEntities }: { entiti
       <div className="overflow-x-auto border border-hairline rounded-[14px] bg-card">
         <table className="w-full min-w-[760px] border-collapse">
           <thead>
-            <tr className="bg-ink">
+            <tr className="bg-card">
               <th className="text-left py-4 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 w-56">Metric</th>
               {entities.map((e) => (
                 <th key={e.id} className="text-right py-[14px] px-4 min-w-[180px]">
-                  <div className="font-sans font-semibold text-[14px] text-paper leading-[1.1]">{e.shortName}</div>
+                  <div className="font-sans font-semibold text-[14px] text-ink leading-[1.1]">{e.shortName}</div>
                   <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.06em] uppercase">{e.listing}</div>
                   <span className={`inline-block mt-[6px] font-mono text-[9px] tracking-[0.04em] rounded-full px-2 py-[2px] ${STATUS_PILL[e.status].cls}`}>{STATUS_PILL[e.status].label}</span>
                 </th>

@@ -20,6 +20,23 @@
   --accent: var(--pink-300);        /* the single accent: buttons, links, emphasis, glyphs */
   --on-accent: var(--navy-700);     /* text/icons ON an accent fill — NEVER white on pink */
   --ok: var(--green-500);           /* online/positive dot */
+
+  /* ── Categorical data-viz palette ──────────────────────────────
+     A qualitative set for charts/series where a single accent isn't
+     enough (multi-company comparisons, multi-line trends). Every hue
+     is tuned to clear ≥4.5:1 against --bg (navy), so marks read as
+     graphical objects AND navy text sits legibly on top of a fill
+     (e.g. initials on a coloured chip). Assign in listed order; the
+     set is distinguishable by hue, not just lightness. On the light
+     .theme-warm canvas, prefer each brand's own darker source colour. */
+  --viz-amber:  #E39A4D;
+  --viz-red:    #EA7267;
+  --viz-teal:   #52A8C4;
+  --viz-blue:   #6E9BE8;
+  --viz-green:  #4FC17E;
+  --viz-purple: #A78BE0;
+  --viz-brown:  #C89B6A;
+  --viz-grey:   #9EA0C0;
 }
 
 /* Alternate themes — scope on a container to switch. */

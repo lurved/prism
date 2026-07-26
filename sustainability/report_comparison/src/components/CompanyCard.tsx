@@ -32,7 +32,7 @@ export function CompanyCard({ company: c }: { company: Company }) {
       <div className="h-1" style={{ background: c.accentColor }} />
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-[38px] h-[38px] rounded-[9px] text-white font-mono font-semibold text-[13px] text-center leading-[38px]"
+          <span className="w-[38px] h-[38px] rounded-[9px] text-onaccent font-mono font-semibold text-[13px] text-center leading-[38px]"
             style={{ background: c.accentColor }}>{c.logoInitials}</span>
           <div>
             <div className="font-serif font-semibold text-[17px] text-ink leading-[1.1]">{c.name}</div>

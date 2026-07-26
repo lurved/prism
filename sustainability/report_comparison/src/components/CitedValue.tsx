@@ -131,7 +131,7 @@ export function CitedValue({ mv, display, className = "", emphasis = false, ndLa
               transform: coords.below ? "translate(-50%, 0)" : "translate(-50%, -100%)",
               zIndex: 200,
             }}
-            className="w-[268px] max-w-[calc(100vw-24px)] text-left bg-ink text-paper rounded-[10px] shadow-[0_8px_28px_rgba(35,32,25,0.28)] p-[14px] pointer-events-auto"
+            className="w-[268px] max-w-[calc(100vw-24px)] text-left bg-card text-ink rounded-[10px] shadow-[0_8px_28px_rgba(35,32,25,0.28)] p-[14px] pointer-events-auto"
           >
             <CitationBody mv={mv} />
           </div>,
@@ -145,7 +145,7 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
   return (
     <div className="flex justify-between gap-3 py-[3px]">
       <span className="font-mono text-[10px] tracking-[0.06em] uppercase text-muted3">{label}</span>
-      <span className="font-sans text-[12px] text-paper text-right leading-[1.4]">{children}</span>
+      <span className="font-sans text-[12px] text-ink text-right leading-[1.4]">{children}</span>
     </div>
   );
 }
@@ -159,12 +159,12 @@ function CitationBody({ mv }: { mv: MetricValue }) {
         <div className="flex items-center gap-1.5 font-sans font-semibold text-[12px] text-[#E8A79D] mb-1.5">
           <span aria-hidden>❌</span> Unverified — citation pending
         </div>
-        <p className="font-sans text-[11px] leading-[1.5] text-[#454a78] m-0">
+        <p className="font-sans text-[11px] leading-[1.5] text-muted m-0">
           This metric is not disclosed in the source report, or was not confirmed during extraction.
           It is shown as <span className="font-mono">N/D</span> and never substituted with a figure.
         </p>
-        {mv.notes && <p className="font-sans text-[11px] leading-[1.5] text-[#454a78] mt-2 mb-0">{mv.notes}</p>}
-        <div className="mt-2 pt-2 border-t border-white/15">
+        {mv.notes && <p className="font-sans text-[11px] leading-[1.5] text-muted mt-2 mb-0">{mv.notes}</p>}
+        <div className="mt-2 pt-2 border-t border-hairline">
           <Row label="Fiscal year">{mv.fiscalYear}</Row>
         </div>
       </div>
@@ -173,7 +173,7 @@ function CitationBody({ mv }: { mv: MetricValue }) {
 
   return (
     <div>
-      <div className="font-sans font-semibold text-[12px] leading-[1.35] text-paper mb-2 [text-wrap:pretty]">
+      <div className="font-sans font-semibold text-[12px] leading-[1.35] text-ink mb-2 [text-wrap:pretty]">
         {c.reportName}
       </div>
       <Row label="Fiscal year">{mv.fiscalYear}</Row>
@@ -186,14 +186,14 @@ function CitationBody({ mv }: { mv: MetricValue }) {
         </span>
       </Row>
       {mv.notes && (
-        <p className="font-sans text-[11px] leading-[1.5] text-[#454a78] mt-2 mb-0 [text-wrap:pretty]">{mv.notes}</p>
+        <p className="font-sans text-[11px] leading-[1.5] text-muted mt-2 mb-0 [text-wrap:pretty]">{mv.notes}</p>
       )}
       {c.reportUrl && (
         <a
           href={c.reportUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block mt-2.5 font-mono text-[11px] text-[#8FB9C9] hover:text-paper transition-colors"
+          className="inline-block mt-2.5 font-mono text-[11px] text-[#8FB9C9] hover:text-ink transition-colors"
         >
           View report →
         </a>
