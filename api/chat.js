@@ -49,6 +49,11 @@ function buildSystemPrompt() {
           .join("\n\n")
       : "None listed yet.";
 
+  const independentWork =
+    profile.independentWork && profile.independentWork.length
+      ? profile.independentWork.map((w) => `- **${w.title}:** ${w.detail}`).join("\n")
+      : "";
+
   const education = profile.education ? profile.education.join("\n") : "";
   const awards = profile.awards ? profile.awards.join("\n") : "";
   const media = profile.mediaAndPress ? profile.mediaAndPress.join("\n") : "";
@@ -87,6 +92,12 @@ ${highlights}
 ## Experience
 
 ${exp}
+
+---
+
+## Independent AI Product Work
+
+${independentWork}
 
 ---
 

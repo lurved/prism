@@ -7,138 +7,172 @@
 
 const profile = {
   name: "Priscilla Liu",
-  title: "Agile and Product Lab Head & Head of Experience and Research",
+  title: "Director, Sustainability — SP Group | Product & Experience Leader | AI Product Builder",
   location: "Singapore",
   email: "prisms@outlook.com",
   linkedin: "https://www.linkedin.com/in/prisc/",
 
   summary: `
-Priscilla Liu is an executive digital leader with 15+ years transforming enterprises, scaling
-platforms, and building profitable digital ecosystems across energy, banking, and PropTech.
-She has scaled platforms to 24M+ users, delivered NPAT-positive growth, and is a trusted
-advisor to boards and C-level teams — building future-ready digital ecosystems across
-regulated and high-growth markets. Her work spans enterprise platforms, consumer apps,
-AI agents, GenAI integration, and design culture change.
+Priscilla Liu is a product and experience leader with 15+ years shipping across energy, proptech,
+and financial services — now leading sustainability at SP Group and building AI products hands-on,
+end to end. She led the narrative, structure and design of SP Group's 2026 sustainability report
+and helps build its sustainability data platform; previously led enterprise transformation for
+3,000+ staff and launched business-unit AI agents in production. She independently designs,
+codes, and deploys AI products using Claude Code, agentic workflows, and modern web tooling.
+Rare combination of board-level product leadership, sustainability domain depth, and current
+builder capability.
   `,
 
   keyStrengths: [
-    "Digital & Enterprise Transformation",
-    "P&L Ownership",
+    "AI & Agentic Development (Claude Code, agentic workflow design, prompt-pipeline engineering, LLM product evaluation, React, Vercel)",
+    "0→1 Product Creation & Product Strategy",
+    "Subscription & Revenue Products",
+    "UI/UX, Design Systems & Service Design",
     "C-Level & Board Stakeholder Engagement",
-    "Scalable Product Strategy",
-    "GenAI Integration",
+    "OKR Frameworks & Transformation Delivery",
+    "Cross-functional Team Building & Coaching",
+    "Data & Technology (PowerBI, enterprise platforms, SaaS, mobile, AI/IoT)",
+    "Sustainability Domain & ESG Disclosure",
     "Agile Portfolio Management",
-    "CX & UI/UX Strategy",
-    "Data-Driven Product Development",
-    "Design Systems & Research Ops",
-    "AI/IoT & Enterprise Systems",
   ],
 
   highlights: [
     {
-      title: "Digital Transformation Lab",
+      title: "AI Agents in Production at SP Group",
       detail:
-        "Established SP Group's Digital Transformation Lab — delivered 14 MVPs in under 3 months (vs. projected 12–24 months), 75% reduction in time-to-market, 40% productivity gain.",
+        "Shipped AI agents within 3–6 months — Customer Service, HR, Meter Installation training, and Meter Fieldwork agents via an agile framework — improving information-processing accuracy by ~50%, with 80% of users reporting reduced effort.",
     },
     {
-      title: "40% YOY Revenue Growth",
+      title: "Independent AI Products",
       detail:
-        "At PropertyGuru, drove 40% year-over-year revenue growth from new product initiatives and launched agent subscription products delivering 25% CAGR, contributing to Series D valuation increase.",
+        "Independently designed, built, and deployed: an ESG disclosure comparison platform with a citation-grounded, no-interpolation data model (pris.la), and a consumer social app prototype (Type Me) — using Claude Code, React, and Vercel.",
     },
     {
-      title: "Platform Scale: 24M MAUs",
+      title: "PropertyGuru Commercial Wins",
       detail:
-        "Scaled PropertyGuru platform to 2.7M listings and 45K active agents; MAUs grew 50% to 24M across Singapore, Vietnam, Malaysia, and Thailand.",
+        "Led product and UX for PropertyGuru's agent platform — its primary revenue line. Agent subscription products delivered 25% CAGR and contributed to the Series D valuation increase, with +20% conversion in 6 months from core-journey optimisation.",
     },
     {
-      title: "App Rating 2.4 → 4.6",
+      title: "Transformation at Scale — SP Group",
       detail:
-        "Grew SP Digital's monthly active users from 80K to 800K out of 1.4M households while transforming the app experience and rating.",
+        "Set up and led an agile delivery capability at SP Group — 13 products shipped in 2024, six-figure annual cost savings, 20–50% time-to-task reductions per product, and 3-month time-to-value versus a 12–24-month norm.",
     },
     {
-      title: "25% OPEX Reduction",
+      title: "Consumer Growth — SP App",
       detail:
-        "Directed enterprise SaaS platform development for national grid operations, integrating IoT and AI — cut operational costs by 25%, delivering 5-year payback.",
+        "Grew SP app monthly active users from 80K to 800K (of 1.4M households); app rating from 2.4 to 4.6.",
     },
     {
       title: "Market Expansion — Commonwealth Bank",
       detail:
-        "Launched 4 financial products for businesses in emerging Asian markets (Indonesia, Vietnam) — iOS top-ranked finance app, 10% conversion rate outperforming legacy loan products.",
+        "Launched 4 financial products for businesses in Indonesia and Vietnam — iOS top-ranked finance app, up to 10% conversion rate outperforming legacy loan products.",
+    },
+  ],
+
+  independentWork: [
+    {
+      title: "ESG Report Comparison Platform (pris.la/sustainability)",
+      detail:
+        "Multi-company sustainability disclosure tracker across utilities, healthcare, and Temasek portfolio companies; per-figure citations, comparability flags, and a strict no-interpolation data-quality model.",
+    },
+    {
+      title: "Citation-Grounded Extraction Pipeline",
+      detail:
+        "PDF-to-text splitting, keyword filtering, headless Claude Code extraction with verbatim source-quote requirements, and automated verification (exact / fuzzy / reject).",
+    },
+    {
+      title: "Type Me",
+      detail:
+        "Perception-based consumer app prototype — friends rate you on your MBTI type. Deterministic scoring, share-card mechanics, self-contained React build with full engineering spec.",
     },
   ],
 
   experience: [
     {
       company: "SP Group",
-      period: "May 2022–Present",
-      role: "Agile and Product Lab Head & Head of Experience and Research",
+      period: "Sep 2025 – Present",
+      role: "Director, Sustainability",
       highlights: [
-        "Set up agile and product practice in SP Group — delivered 14 MVPs in under 3 months (vs. projected 12–24 months); $600,000 annualised savings in first year.",
-        "Managed chapter leads AI, Data Governance, Infra and UX. Acting Product Chapter Lead.",
-        "Spearheaded GenAI adoption in operations and training, achieving 20% improvement in workforce efficiency.",
-        "Lead end-to-end product, user experience, and insights strategy across B2E, B2B, and B2C platforms for a top-tier utilities and energy company in Asia Pacific.",
-        "Directed enterprise SaaS platform development for national grid operations, integrating IoT and AI — cut operational costs by 25%, delivering 5-year payback.",
-        "Oversaw digital platform growth for EV charging, smart buildings, and energy storage.",
-        "Maintained 4.6 App Store rating and strong MAU growth on B2C SP mobile platform.",
+        "Led the narrative, structure and visualisation of SP Group's 2026 sustainability report.",
+        "Helps set sustainability targets and metrics and collects disclosure data.",
+        "Leads sustainability communications across the group.",
+        "Driving SP Group's sustainability data platform — disclosure and reporting data infrastructure.",
       ],
     },
     {
-      company: "Space Ltd",
-      period: "May 2017–May 2022",
-      role: "Director, SP Digital",
+      company: "SP Group",
+      period: "2022 – Sep 2025",
+      role: "Director, Product and Experience",
       highlights: [
-        "Spearheaded enterprise-wide digital transformation across B2B, B2C, and B2E platforms.",
+        "Led enterprise transformation across customer service, IT, and field operations — integrated digital platforms and redesigned workflows for 3,000+ frontline and back-office staff.",
+        "Guided business units in shipping production GenAI products (customer-query support, meter/AMI fieldwork, installation training; HR chatbot in rollout) — delivered within 3–6 months, improving information-processing accuracy by ~50% with 80% of users reporting reduced effort.",
+        "Cut process redundancies 40% through shared-services alignment across HR, Finance, and Ops.",
+        "Secured C-level and board buy-in for a 3-year transformation roadmap through OKR-driven reporting.",
+        "Rebuilt data and CX capability post-restructure — in-house teams, redefined role matrices, coached senior leaders on digital ways of working.",
+      ],
+    },
+    {
+      company: "SP Digital (SPACE Pte Ltd)",
+      period: "2017 – 2022",
+      role: "Director",
+      highlights: [
+        "Part of the executive leadership team — accountable for user experience, customer insights, and digital strategy across B2B, B2C, and B2E.",
         "Grew monthly active users from 80K to 800K out of 1.4M households; app rating improved from 2.4 to 4.6.",
-        "Delivered new digital revenue streams through sustainable energy and enterprise design thinking consulting — achieved NPAT positive within 4 years.",
-        "Part of executive leadership team, accountable for user experience, customer insights, and digital strategy across consumer and enterprise touchpoints.",
+        "Delivered new digital revenue streams in sustainable energy and enterprise design-thinking consulting — NPAT positive within 4 years.",
+        "Championed agile, experimental delivery and design-thinking ways of working — the foundation later formalised as SP Group's Area49 delivery capability.",
       ],
     },
     {
-      company: "PropertyGuru",
-      period: "May 2015–May 2017",
-      role: "Head of Product and User Experience",
+      company: "PropertyGuru (formerly NYSE: PGRU)",
+      period: "2015 – 2017",
+      role: "Head of Product and UX",
       highlights: [
-        "Led product and UX for PropertyGuru (NYSE: PGRU), a leading PropTech company across Singapore, Vietnam, Malaysia, and Thailand.",
-        "Drove regional product strategy and subscription revenue — launched agent subscription products delivering 25% CAGR, contributing to Series D valuation increase.",
-        "Achieved 40% YOY revenue growth from new product initiatives.",
-        "Scaled platform to 2.7M listings and 45K active agents; MAUs grew 50% to 24M.",
-        "Reduced listing approval time from 3 days to 1 day through automation.",
+        "Regional product and UX leadership across Singapore, Vietnam, Malaysia, and Thailand for SEA's leading PropTech platform.",
+        "Launched 'Agent Boost' (2017), a 0-to-1 paid-visibility product for agents; led product and UX for the agent platform — PropertyGuru's primary revenue line — where agent subscription products delivered 25% CAGR and contributed to the Series D valuation increase.",
+        "+20% conversion rate within 6 months from core user-journey optimisation; 40% YoY revenue growth from new product initiatives.",
+        "Scaled platform to 2.7M listings and 45K active agents; MAUs grew 50% to 24M; listing approval time cut from 3 days to 1 through automation.",
       ],
     },
     {
       company: "Commonwealth Bank of Australia",
-      period: "Dec 2013–May 2015",
-      role: "Associate Director, Product and UX",
+      period: "2013 – 2015",
+      role: "Associate Director, Product",
       highlights: [
-        "Designed and launched top-ranking financial products across emerging Asian markets (Indonesia, Vietnam).",
-        "Led product and design teams to build a series of financial products for businesses — iOS top-ranked finance app.",
-        "Launched 4 financial products with up to 10% conversion rates, outperforming legacy loan products.",
-        "Opened new revenue streams across Asia and embedded user-centered design practices into the product lifecycle.",
+        "Built mobile-first savings and loan products for businesses in Indonesia and Vietnam — top-ranking iOS finance app; opened new direct-to-loan revenue streams in Asia.",
+        "Launched 4 financial products with up to 10% conversion, outperforming legacy loan baselines.",
+        "Embedded user-centred design into the product lifecycle with risk, compliance, and data partners.",
       ],
     },
     {
-      company: "First Advantage",
-      period: "Dec 2011–Dec 2013",
+      company: "First Advantage (Nasdaq: FA)",
+      period: "2011 – 2013",
       role: "Product and Operations Platform Lead",
       highlights: [
-        "Owned product and operations platform for First Advantage (Nasdaq: FA) — background check solutions across 200+ countries, 29 offices, 6,400+ staff.",
-        "Led global product strategy for background screening across EMEA and APAC.",
-        "Owned end-to-end operations platform with operations based in Manila.",
+        "Global product lead for background-screening platforms across EMEA and APAC (incl. Japan, China).",
+        "Owned end-to-end operations platform with Manila-based delivery.",
+      ],
+    },
+    {
+      company: "Media Development Authority",
+      period: "2009 – 2010",
+      role: "Management Executive",
+      highlights: [
+        "Supported creation of the Interactive Digital Media Programme Office — $265.6M in grants awarded, 1,300+ jobs created.",
       ],
     },
     {
       company: "MINDEF",
-      period: "2008",
+      period: "2008 – 2009",
       role: "Web Manager",
       highlights: [
-        "Managed 60 websites and 160 webmasters, overseeing content operations for MINDEF.gov.sg.",
+        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg.",
       ],
     },
   ],
 
   education: [
-    "M.Sc. — Nanyang Technological University",
-    "B.A. — National University of Singapore",
+    "M.Sc. — Nanyang Technological University (2007–2008)",
+    "B.A. — National University of Singapore (2001–2004)",
     "Certified Professional Scrum Master & Product Owner — Scrum.org",
     "Finance & Quantitative Modeling for Analysts — University of Pennsylvania",
   ],
@@ -147,6 +181,7 @@ AI agents, GenAI integration, and design culture change.
     "Omni-Experience Innovator of the Year — 2018",
     "United Nations UNLEASH — 2018",
     "Mob-Ex Awards — 2016",
+    "Community Cares Award, MSF Singapore — 2023",
   ],
 
   speakingAndThoughtLeadership: [
@@ -155,6 +190,7 @@ AI agents, GenAI integration, and design culture change.
     "Mind the Product — Stakeholder Management Interview Series",
     "DesignUP — Future of UX Panel",
     "UXSEA — Research & Insights Facilitator",
+    "Featured in The Straits Times",
   ],
 
   mediaAndPress: [
@@ -164,7 +200,8 @@ AI agents, GenAI integration, and design culture change.
   ],
 
   volunteering: [
-    "Chairperson, SP Heart Workers — 2021 to 2023",
+    "Chairperson, SP Heartworkers — 2022 to 2023; volunteer since 2017",
+    "Yayasan Mendaki — 2011 to 2017",
   ],
 
   /**
@@ -224,14 +261,13 @@ From balancing futuristic ideas with legacy constraints, to building MVPs where 
     // },
   ],
 
-  // Add anything else here — certifications, awards, education, publications, etc.
   additionalContext: `
 Priscilla is open to a wide range of conversations — whether that's a collaboration, advisory role,
 speaking opportunity, consulting engagement, or simply an interesting project where design and
-product thinking can make a difference. She's not narrowly focused on one type of opportunity;
-she's interested in connecting with people working on meaningful problems across energy,
-sustainability, proptech, fintech, and enterprise technology. Based in Singapore, open to
-regional Southeast Asia and global remote collaborations.
+product thinking can make a difference. She's currently leading sustainability at SP Group while
+also building AI products independently. She's interested in connecting with people working on
+meaningful problems across sustainability, energy, proptech, fintech, and enterprise technology.
+Based in Singapore, open to regional Southeast Asia and global remote collaborations.
   `,
 };
 
