@@ -1,0 +1,23 @@
+/* pris.la typography — serif display / mono labels / sans body. */
+:root {
+  --font-display: 'Newsreader', Georgia, serif;      /* headlines, emphasis (italic + accent) */
+  --font-mono: 'Space Mono', ui-monospace, monospace; /* eyebrows, buttons, nav, metrics */
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+
+  /* Fluid scale */
+  --text-hero: clamp(40px, 7.2vw, 86px);        /* Newsreader 400, lh 1.02, ls -0.025em */
+  --text-h2: clamp(30px, 4.6vw, 54px);          /* Newsreader 400, lh 1.05, ls -0.02em */
+  --text-h2-contact: clamp(36px, 6.5vw, 80px);
+  --text-card-title: clamp(20px, 2vw, 24px);    /* Newsreader 500, lh 1.18 */
+  --text-card-title-lg: clamp(21px, 2.2vw, 27px);
+  --text-lede: clamp(16px, 1.6vw, 19px);        /* body, lh 1.6, color --soft */
+  --text-body-sm: 14.5px;
+  --text-metric: clamp(38px, 5.5vw, 66px);      /* Space Mono 700, lh 1, ls -0.02em */
+  --text-label: 12px;                            /* Space Mono uppercase */
+  --text-button: 13px;                           /* Space Mono uppercase, ls 0.04em */
+
+  --tracking-eyebrow: 0.16em;
+  --tracking-nav: 0.06em;
+  --tracking-button: 0.04em;
+  --tracking-display: -0.02em;
+}

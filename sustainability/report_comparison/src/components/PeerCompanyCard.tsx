@@ -22,7 +22,7 @@ export function PeerCompanyCard({ company: c }: { company: PeerCompany }) {
       <div className="h-1" style={{ background: c.accentColor }} />
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-[38px] h-[38px] rounded-[9px] text-white font-mono font-semibold text-[13px] text-center leading-[38px]" style={{ background: c.accentColor }}>{c.logoInitials}</span>
+          <span className="w-[38px] h-[38px] rounded-[9px] text-onaccent font-mono font-semibold text-[13px] text-center leading-[38px]" style={{ background: c.accentColor }}>{c.logoInitials}</span>
           <div>
             <div className="font-serif font-semibold text-[16px] text-ink leading-[1.1]">{c.name}</div>
             <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.04em] uppercase">{c.city} · {c.reportingPeriod}</div>

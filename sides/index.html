@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Opposites Attract — pick a side</title>
 <meta name="description" content="An icebreaker in four escalating rounds. Two choices, one question at a time — walk to your side of the room." />
-<meta name="theme-color" content="#161310" />
+<meta name="theme-color" content="#262a4f" />
 <link rel="canonical" href="https://pris.la/sides" />
 <!-- Open Graph / social preview -->
 <meta property="og:type" content="website" />
@@ -21,17 +21,17 @@
 <meta name="twitter:image" content="https://pris.la/sides/og.png" />
 <meta name="twitter:title" content="Opposites Attract — pick a side" />
 <meta name="twitter:description" content="Two choices, one question at a time — walk to your side of the room." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='50' height='100' fill='%23FFB44A'/%3E%3Crect x='50' width='50' height='100' fill='%2357C4C2'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='50' height='100' fill='%23E39A4D'/%3E%3Crect x='50' width='50' height='100' fill='%2352A8C4'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#161310;
-    --seam: #161310;
-    --left-bg:#FFB44A; --left-ink:#3A2306;
-    --right-bg:#57C4C2; --right-ink:#06302F;
-    --accent:#FFB44A;
+    --ink:#262a4f;
+    --seam: #262a4f;
+    --left-bg:#E39A4D; --left-ink:#262a4f;
+    --right-bg:#52A8C4; --right-ink:#262a4f;
+    --accent:#E39A4D;
     --t: 480ms;
     --ease: cubic-bezier(.16,.84,.34,1);
   }
@@ -40,7 +40,7 @@
   body{
     background:var(--ink);
     color:#fff;
-    font-family:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+    font-family:"Hanken Grotesk",system-ui,sans-serif;
     overflow:hidden;
     -webkit-font-smoothing:antialiased;
     user-select:none;
@@ -296,10 +296,10 @@
 
   // ---- content (faithful to the deck) ----
   const levels = [
-    { id:1, title:"Warm Up",                tag:"Easing in",                pal:{ lbg:"#FFB44A", link:"#3A2306", rbg:"#57C4C2", rink:"#06302F", acc:"#FFB44A" } },
-    { id:2, title:"Just Getting Started",    tag:"Picking up the pace",      pal:{ lbg:"#FF8A3C", link:"#381704", rbg:"#3FA7E0", rink:"#042235", acc:"#FF8A3C" } },
-    { id:3, title:"Why!? How Interesting!",  tag:"Now we're talking",        pal:{ lbg:"#FF5B57", link:"#FFFFFF", rbg:"#8A78F0", rink:"#FFFFFF", acc:"#FF7A77" } },
-    { id:4, title:"Might Start Wars",        tag:"Only for the open-minded", pal:{ lbg:"#E0282B", link:"#FFFFFF", rbg:"#574099", rink:"#FFFFFF", acc:"#FF6166" } },
+    { id:1, title:"Warm Up",                tag:"Easing in",                pal:{ lbg:"#E39A4D", link:"#262a4f", rbg:"#52A8C4", rink:"#262a4f", acc:"#E39A4D" } },
+    { id:2, title:"Just Getting Started",    tag:"Picking up the pace",      pal:{ lbg:"#E39A4D", link:"#262a4f", rbg:"#6E9BE8", rink:"#262a4f", acc:"#E39A4D" } },
+    { id:3, title:"Why!? How Interesting!",  tag:"Now we're talking",        pal:{ lbg:"#EA7267", link:"#262a4f", rbg:"#6E9BE8", rink:"#262a4f", acc:"#EA7267" } },
+    { id:4, title:"Might Start Wars",        tag:"Only for the open-minded", pal:{ lbg:"#EA7267", link:"#262a4f", rbg:"#A78BE0", rink:"#262a4f", acc:"#EA7267" } },
   ];
 
   const questions = [
@@ -360,7 +360,7 @@
   function applyPalette(p){
     root.setProperty("--left-bg",p.lbg); root.setProperty("--left-ink",p.link);
     root.setProperty("--right-bg",p.rbg); root.setProperty("--right-ink",p.rink);
-    root.setProperty("--accent",p.acc); root.setProperty("--seam","#161310");
+    root.setProperty("--accent",p.acc); root.setProperty("--seam","#262a4f");
   }
 
   function setOverlays(active){

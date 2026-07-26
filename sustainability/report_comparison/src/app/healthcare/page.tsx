@@ -35,7 +35,7 @@ export default function HealthcarePage() {
         <h1 className="font-serif font-semibold text-ink m-0 mb-2 tracking-[-0.02em] max-w-[16ch] leading-[1.0] text-[clamp(40px,6.4vw,72px)]">
           Listed care groups, side&nbsp;by&nbsp;side.
         </h1>
-        <div className="font-serif italic text-[22px] leading-[1.3] text-[#8A8478] mb-[38px]">IHH · Thomson Medical · Raffles Medical — one lens, no guesses.</div>
+        <div className="font-serif italic text-[22px] leading-[1.3] text-muted2 mb-[38px]">IHH · Thomson Medical · Raffles Medical — one lens, no guesses.</div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
           <p className="font-sans text-[18px] leading-[1.65] text-ink2 m-0 max-w-[62ch] [text-wrap:pretty]">
             Entity-level GHG for listed healthcare groups — <strong className="font-semibold">IHH Healthcare</strong> (Scope 1+2 &amp; intensity),{" "}
@@ -54,10 +54,10 @@ export default function HealthcarePage() {
 
       {/* Context banner — MOH study estimate (never a comparison row) */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-2 pb-2">
-        <div className="border border-hairline rounded-[14px] bg-[#FBF6EA] p-5 flex flex-col sm:flex-row gap-4 sm:items-center">
+        <div className="border border-hairline rounded-[14px] bg-card p-5 flex flex-col sm:flex-row gap-4 sm:items-center">
           <div className="shrink-0">
             <div className="font-serif font-medium text-[34px] leading-[1] text-ink tracking-[-0.01em]">{mohContextBanner.value}</div>
-            <span className="inline-block mt-2 font-mono text-[10px] tracking-[0.04em] rounded-full px-2 py-[3px] text-sc bg-[rgba(180,114,46,0.12)]">⚠️ {mohContextBanner.flagLabel}</span>
+            <span className="inline-block mt-2 font-mono text-[10px] tracking-[0.04em] rounded-full px-2 py-[3px] text-sc bg-[rgba(227,154,77,0.12)]">⚠️ {mohContextBanner.flagLabel}</span>
           </div>
           <div className="sm:border-l sm:border-hairline sm:pl-5">
             <div className="font-sans font-semibold text-[13px] text-ink2">{mohContextBanner.title}</div>
@@ -82,7 +82,7 @@ export default function HealthcarePage() {
               <div className="h-1" style={{ background: e.accentColor }} />
               <div className="p-6 flex flex-col flex-1">
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="w-[38px] h-[38px] rounded-[9px] text-white font-mono font-semibold text-[13px] text-center leading-[38px]" style={{ background: e.accentColor }}>{e.logoInitials}</span>
+                  <span className="w-[38px] h-[38px] rounded-[9px] text-onaccent font-mono font-semibold text-[13px] text-center leading-[38px]" style={{ background: e.accentColor }}>{e.logoInitials}</span>
                   <div>
                     <div className="font-serif font-semibold text-[16px] text-ink leading-[1.1]">{e.name}</div>
                     <div className="font-mono font-medium text-[10px] text-muted2 mt-1 tracking-[0.04em] uppercase">{e.listing} · {e.countries.join(" ")}</div>
@@ -132,7 +132,7 @@ export default function HealthcarePage() {
         <div className="border border-hairline rounded-[14px] bg-card overflow-hidden">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-ink">
+              <tr className="bg-card">
                 <th className="text-left py-3 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2">Entity</th>
                 <th className="text-left py-3 px-4 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2">Rationale code</th>
                 <th className="text-left py-3 px-4 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 hidden sm:table-cell">Why</th>

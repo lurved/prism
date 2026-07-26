@@ -1,8 +1,50 @@
-@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ============================================================
+   Design tokens — the single source of colour for this app.
+   Mirrors the pris.la design system (repo tokens/colors.css);
+   tailwind.config.ts references these vars rather than hardcoding
+   hex, so re-theming happens here in one place. The stepped
+   ink/muted/hairline shades and the --co-* company/viz colours
+   extend the base system for this data-dense tool.
+   ============================================================ */
+:root {
+  /* Base semantic tokens (from the navy design system) */
+  --bg: #262a4f;
+  --surface-card: #2e3360;
+  --line: #393d63;
+  --ink: #ecebf3;
+  --soft: #9897b7;
+  --accent: #f0a8b8;
+  --on-accent: #262a4f;
+  --ok: #2faa5c;
+
+  /* App-specific stepped neutrals (editorial hierarchy on navy) */
+  --ink-2: #dcdbe8;
+  --ink-3: #cbcadd;
+  --body: #b9b8cd;
+  --muted-2: #807f9f;
+  --muted-3: #6f6e8f;
+  --nd: #5b5a7a;
+  --line-2: #313457;
+  --line-3: #444876;
+  --chip: #2e3360;
+  --track: #393d63;
+
+  /* Categorical data-viz palette (from the design system, ≥4.5:1 on navy) */
+  --viz-amber: #E39A4D;
+  --viz-red: #EA7267;
+  --viz-teal: #52A8C4;
+  --viz-blue: #6E9BE8;
+  --viz-green: #4FC17E;
+  --viz-purple: #A78BE0;
+  --viz-brown: #C89B6A;
+  --viz-grey: #9EA0C0;
+}
 
 * {
   box-sizing: border-box;
@@ -14,15 +56,15 @@ html, body {
 }
 
 body {
-  background: #F6F3EC;
-  color: #232019;
-  font-family: Archivo, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: #232019;
-  color: #F6F3EC;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 a { text-decoration: none; }
@@ -32,10 +74,10 @@ a { text-decoration: none; }
   display: flex;
   align-items: baseline;
   gap: 18px;
-  border-bottom: 1px solid #232019;
+  border-bottom: 1px solid var(--line);
   padding-bottom: 13px;
 }
 
 ::-webkit-scrollbar { width: 7px; height: 7px; }
-::-webkit-scrollbar-track { background: #EFEADD; }
-::-webkit-scrollbar-thumb { background: #CFC8B8; border-radius: 4px; }
+::-webkit-scrollbar-track { background: var(--surface-card); }
+::-webkit-scrollbar-thumb { background: var(--line-3); border-radius: 4px; }

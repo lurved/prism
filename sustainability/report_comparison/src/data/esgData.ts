@@ -26,7 +26,7 @@ export const companies: Company[] = [
     shortName: "Sembcorp",
     sector: "Energy",
     logoInitials: "SC",
-    accentColor: "#B4722E",
+    accentColor: "#E39A4D",
     reportingPeriod: "FY2025",
     baselineYear: "2010",
     baselineScope1and2ktCO2e: null, // absolute baseline not stated; intensity baseline = 0.40 tCO2e/MWh
@@ -109,7 +109,7 @@ export const companies: Company[] = [
     shortName: "SMRT",
     sector: "Transport",
     logoInitials: "SM",
-    accentColor: "#B0473D",
+    accentColor: "#EA7267",
     reportingPeriod: "FY2024/25",
     baselineYear: "2022",
     baselineScope1and2ktCO2e: null, // 2010 baseline ~570 ktCO2e (total GHG); no clean S1+2 baseline figure stated
@@ -188,7 +188,7 @@ export const companies: Company[] = [
     shortName: "Singtel",
     sector: "Telecom",
     logoInitials: "ST",
-    accentColor: "#2D6E87",
+    accentColor: "#52A8C4",
     reportingPeriod: "FY2025",
     baselineYear: "FY2023",
     baselineScope1and2ktCO2e: 440.6, // FY2023 SBTi-validated baseline: 440,600 tCO2e = 440.6 ktCO2e

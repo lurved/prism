@@ -12,23 +12,23 @@
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/design-system.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; }
+    /* Local aliases mapped onto the shared design tokens. */
     :root {
-      --bg: #262a4f;
-      --panel: #2f3459;
-      --text: #D6D3E4;
-      --muted: #8f8cb5;
-      --line: rgba(255,255,255,0.12);
-      --pink: #F4A7C1;
-      --pink-ink: #262a4f;
+      --panel: var(--surface-card);
+      --text: var(--text-body);
+      --muted: var(--soft);
+      --pink: var(--accent);
+      --pink-ink: var(--on-accent);
     }
     html, body { margin: 0; padding: 0; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Hanken Grotesk', system-ui, sans-serif;
+      font-family: var(--font-body);
       font-size: 17px;
       line-height: 1.6;
       min-height: 100vh;
@@ -45,13 +45,13 @@
     }
     header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .brand {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
     }
-    .brand b { color: var(--pink); font-weight: 500; }
+    .brand b { color: var(--pink); font-weight: 700; }
     .gear {
       background: none; border: 1px solid var(--line); color: var(--muted);
-      width: 34px; height: 34px; border-radius: 9px; font-size: 15px; cursor: pointer;
+      width: 34px; height: 34px; border-radius: var(--radius-input); font-size: 15px; cursor: pointer;
     }
     h1 { font-size: 24px; font-weight: 700; margin: 4px 0 2px; letter-spacing: -0.01em; }
     .sub { color: var(--muted); font-size: 14.5px; margin: 0 0 18px; }
@@ -59,7 +59,7 @@
     textarea {
       width: 100%; flex: 1 1 auto; min-height: 34vh; resize: vertical;
       background: var(--panel); color: var(--text);
-      border: 1px solid var(--line); border-radius: 14px;
+      border: 1px solid var(--line); border-radius: var(--radius-panel);
       padding: 16px; font: inherit; line-height: 1.65;
     }
     textarea:focus { outline: none; border-color: var(--pink); }
@@ -75,7 +75,7 @@
 
     .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
     button.big {
-      border: none; border-radius: 13px; padding: 16px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer;
+      border: none; border-radius: var(--radius-bubble); padding: 16px; font: inherit; font-weight: 600; font-size: 16px; cursor: pointer;
     }
     #mic { background: var(--panel); color: var(--text); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; gap: 9px; }
     #mic.live { background: var(--pink); color: var(--pink-ink); border-color: var(--pink); }
@@ -88,7 +88,7 @@
     .status { margin-top: 16px; font-size: 14.5px; min-height: 22px; }
     .status a { color: var(--pink); }
     .status.err { color: #ff9db3; }
-    .status.ok { color: #9be7c0; }
+    .status.ok { color: var(--ok); }
 
     dialog {
       background: var(--panel); color: var(--text); border: 1px solid var(--line);

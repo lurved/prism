@@ -12,7 +12,7 @@ interface MetricTableProps {
   companies: Company[];
 }
 
-const HEADER_TINT: Record<string, string> = { sembcorp: "#D69A60", smrt: "#D98276", singtel: "#6FAFC6" };
+const HEADER_TINT: Record<string, string> = { sembcorp: "#E39A4D", smrt: "#EA7267", singtel: "#52A8C4" };
 
 /** Emissions metrics that have a multi-year historical series → sparkline + expandable trend. */
 const TREND_SCOPE: Record<string, "scope1" | "scope2" | "scope3"> = {
@@ -33,7 +33,7 @@ function QualRow({
   render: (c: Company, comparable: boolean) => React.ReactNode;
 }) {
   return (
-    <tr className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+    <tr className="border-t border-hairline2 hover:bg-card transition-colors">
       <td className="py-[13px] px-5 align-top">
         <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{label}</div>
         <div className="font-sans text-[11px] text-muted3 mt-[3px]">{sub}</div>
@@ -53,11 +53,11 @@ export function MetricTable({ companies }: MetricTableProps) {
     <div className="overflow-x-auto border border-hairline rounded-[14px] bg-card">
       <table className="w-full min-w-[740px] border-collapse">
         <thead>
-          <tr className="bg-ink">
+          <tr className="bg-card">
             <th className="text-left py-4 px-5 font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2">Metric</th>
             {companies.map((c) => (
               <th key={c.id} className="text-right py-[14px] px-4">
-                <div className="font-sans font-semibold text-[14px] text-paper leading-[1.1]">{c.shortName}</div>
+                <div className="font-sans font-semibold text-[14px] text-ink leading-[1.1]">{c.shortName}</div>
                 <div className="font-mono font-medium text-[10px] mt-1 tracking-[0.06em] uppercase" style={{ color: HEADER_TINT[c.id] ?? c.accentColor }}>
                   {c.sector} · {c.reportingPeriod}
                 </div>
@@ -81,7 +81,7 @@ export function MetricTable({ companies }: MetricTableProps) {
                 const isExpanded = scope && expanded === scope;
 
                 const mainRow = (
-                  <tr key={def.metricId} className="border-t border-hairline2 hover:bg-[#F4F0E6] transition-colors">
+                  <tr key={def.metricId} className="border-t border-hairline2 hover:bg-card transition-colors">
                     <td className="py-[13px] px-5 align-top">
                       <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{def.label}</div>
                       {def.sublabel && <div className="font-sans text-[11px] text-muted3 mt-[3px]">{def.sublabel}</div>}
@@ -121,7 +121,7 @@ export function MetricTable({ companies }: MetricTableProps) {
                   return [
                     mainRow,
                     <tr key={`${def.metricId}-trend`}>
-                      <td colSpan={companies.length + 1} className="px-5 pb-4 bg-[#FBF8F1]">
+                      <td colSpan={companies.length + 1} className="px-5 pb-4 bg-card">
                         <TrendChart companies={companies} scope={scope!} />
                       </td>
                     </tr>,

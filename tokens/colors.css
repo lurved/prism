@@ -1,0 +1,64 @@
+/* pris.la color system — "Navy" is the default and canonical theme. */
+:root {
+  /* Base palette (Navy) */
+  --navy-900: #16161c;
+  --navy-700: #262a4f;
+  --navy-600: #2e3360;
+  --navy-500: #393d63;
+  --pink-300: #f0a8b8;
+  --lavender-300: #9897b7;
+  --paper-100: #ecebf3;
+  --green-500: #2faa5c;
+
+  /* Semantic aliases — use these in components */
+  --bg: var(--navy-700);            /* page background */
+  --surface-card: var(--navy-600);  /* cards, raised surfaces, chat header */
+  --line: var(--navy-500);          /* borders, dividers, hairline grids */
+  --ink: var(--paper-100);          /* primary text, headlines */
+  --text-body: var(--paper-100);
+  --soft: var(--lavender-300);      /* secondary / muted text */
+  --accent: var(--pink-300);        /* the single accent: buttons, links, emphasis, glyphs */
+  --on-accent: var(--navy-700);     /* text/icons ON an accent fill — NEVER white on pink */
+  --ok: var(--green-500);           /* online/positive dot */
+
+  /* ── Categorical data-viz palette ──────────────────────────────
+     A qualitative set for charts/series where a single accent isn't
+     enough (multi-company comparisons, multi-line trends). Every hue
+     is tuned to clear ≥4.5:1 against --bg (navy), so marks read as
+     graphical objects AND navy text sits legibly on top of a fill
+     (e.g. initials on a coloured chip). Assign in listed order; the
+     set is distinguishable by hue, not just lightness. On the light
+     .theme-warm canvas, prefer each brand's own darker source colour. */
+  --viz-amber:  #E39A4D;
+  --viz-red:    #EA7267;
+  --viz-teal:   #52A8C4;
+  --viz-blue:   #6E9BE8;
+  --viz-green:  #4FC17E;
+  --viz-purple: #A78BE0;
+  --viz-brown:  #C89B6A;
+  --viz-grey:   #9EA0C0;
+}
+
+/* Alternate themes — scope on a container to switch. */
+.theme-warm {
+  --bg: #f4f1ea;
+  --surface-card: #fbf9f3;
+  --line: #ddd6c8;
+  --ink: #1c1a16;
+  --text-body: #1c1a16;
+  --soft: #6b655a;
+  --accent: #d8431e;
+  --on-accent: #ffffff;
+}
+.theme-ink {
+  --bg: #16161c;
+  --surface-card: #1e1e26;
+  --line: #2c2c36;
+  --ink: #ecebf0;
+  --text-body: #ecebf0;
+  --soft: #8b8a96;
+  --accent: #f0a8b8;
+  --on-accent: #16161c;
+}
+
+::selection { background: var(--accent); color: var(--on-accent); }

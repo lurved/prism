@@ -3,15 +3,30 @@
 window.TM = window.TM || {};
 
 // ── Design tokens ────────────────────────────────────────────────
-window.TM.C = {
-  paper: "#F2F1ED",
-  card: "#FBFAF7",
-  ink: "#1C1B18",
-  muted: "#918C7E",
-  hair: "#DAD7CD",
-  accent: "#2F6F62", // ink-teal — reserved for the split / tension only
-  accentSoft: "rgba(47,111,98,0.10)",
-};
+// Read straight from the pris.la design system (tokens/colors.css, loaded
+// via app.css) so this palette is not a second source of truth — change a
+// token and Type Me follows. The hex fallbacks only apply if the stylesheet
+// hasn't resolved yet, and mirror the navy defaults.
+(function () {
+  var root = typeof document !== "undefined" ? document.documentElement : null;
+  var cs = root && typeof getComputedStyle !== "undefined" ? getComputedStyle(root) : null;
+  function tok(name, fallback) {
+    if (!cs) return fallback;
+    var v = cs.getPropertyValue(name);
+    return v && v.trim() ? v.trim() : fallback;
+  }
+  window.TM.C = {
+    paper: tok("--bg", "#262a4f"),
+    card: tok("--surface-card", "#2e3360"),
+    ink: tok("--ink", "#ecebf3"),
+    muted: tok("--soft", "#9897b7"),
+    hair: tok("--line", "#393d63"),
+    accent: tok("--accent", "#f0a8b8"),
+    // --accent at 12% for soft accent fills; derived so it tracks the token.
+    accentSoft: "color-mix(in srgb, " + tok("--accent", "#f0a8b8") + " 12%, transparent)",
+    onAccent: tok("--on-accent", "#262a4f"), // text/icons on an accent fill (never white)
+  };
+})();
 
 window.TM.TARGET_RATERS = 3;
 

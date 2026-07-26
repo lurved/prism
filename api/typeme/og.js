@@ -8,7 +8,8 @@ import { ImageResponse } from "@vercel/og";
 
 export const config = { runtime: "edge" };
 
-const C = { paper: "#F2F1ED", card: "#FBFAF7", ink: "#1C1B18", muted: "#918C7E", hair: "#DAD7CD", accent: "#2F6F62" };
+// Navy design-system tokens (kept in sync with tokens/colors.css).
+const C = { paper: "#262a4f", card: "#2e3360", ink: "#ecebf3", muted: "#9897b7", hair: "#393d63", accent: "#f0a8b8" };
 
 const AXMAP = {
   EI: { left: "E", right: "I", ll: "Extrovert", rl: "Introvert" },
@@ -33,7 +34,7 @@ function inviteCard() {
     h("div", { style: { display: "flex", flexDirection: "column" } },
       h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontSize: 132, letterSpacing: "-0.02em", lineHeight: 1 } },
         "Type ", h("span", { style: { fontStyle: "italic", color: C.accent, marginLeft: 18 } }, "Me")),
-      h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 38, color: "#5C584E", marginTop: 28, maxWidth: 900, lineHeight: 1.3 } },
+      h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 38, color: C.muted, marginTop: 28, maxWidth: 900, lineHeight: 1.3 } },
         "Get typed by the people who know you. Four taps, one verdict.")),
     h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-end" } },
       h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 30, color: C.muted } }, "The interesting part is where they disagree."),

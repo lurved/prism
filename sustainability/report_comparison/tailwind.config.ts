@@ -8,37 +8,40 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Colours reference the CSS custom properties declared once in
+      // globals.css (:root), which mirror the pris.la design system.
+      // No hex lives here — re-theme in globals.css and every utility follows.
       colors: {
-        // ── Editorial paper theme (design handoff) ──
-        paper: "#F6F3EC",
-        card: "#FCFAF5",
-        ink: "#232019",
-        ink2: "#3C382F",
-        ink3: "#4A463E",
-        body: "#5A554B",
-        muted: "#6B665C",
-        muted2: "#9A9489",
-        muted3: "#A8A294",
-        nd: "#BBB5A8",
-        hairline: "#E4DECF",
-        hairline2: "#EFEADD",
-        hairline3: "#E7E1D3",
-        chip: "#EFEADD",
-        track: "#EAE4D6",
-        good: "#3F7A52",
-        // Company accents
-        sc: "#B4722E",   // Sembcorp — ochre
-        sm: "#B0473D",   // SMRT — clay red (also section kicker red)
-        st: "#2D6E87",   // Singtel — teal
-        // Light header tints (on ink)
-        "sc-tint": "#D69A60",
-        "sm-tint": "#D98276",
-        "st-tint": "#6FAFC6",
+        paper: "var(--bg)",
+        card: "var(--surface-card)",
+        ink: "var(--ink)",
+        ink2: "var(--ink-2)",
+        ink3: "var(--ink-3)",
+        body: "var(--body)",
+        muted: "var(--soft)",
+        muted2: "var(--muted-2)",
+        muted3: "var(--muted-3)",
+        nd: "var(--nd)",
+        hairline: "var(--line)",
+        hairline2: "var(--line-2)",
+        hairline3: "var(--line-3)",
+        chip: "var(--chip)",
+        track: "var(--track)",
+        good: "var(--ok)",
+        accent: "var(--accent)",
+        onaccent: "var(--on-accent)",
+        // Company accents — the design system's categorical viz palette.
+        sc: "var(--viz-amber)",   // Sembcorp
+        sm: "var(--viz-red)",     // SMRT (also section kicker)
+        st: "var(--viz-teal)",    // Singtel
+        "sc-tint": "var(--viz-amber)",
+        "sm-tint": "var(--viz-red)",
+        "st-tint": "var(--viz-teal)",
       },
       fontFamily: {
-        serif: ["Spectral", "Georgia", "serif"],
-        sans: ["Archivo", "system-ui", "sans-serif"],
-        mono: ["'IBM Plex Mono'", "ui-monospace", "monospace"],
+        serif: ["Newsreader", "Georgia", "serif"],
+        sans: ["'Hanken Grotesk'", "system-ui", "sans-serif"],
+        mono: ["'Space Mono'", "ui-monospace", "monospace"],
       },
       maxWidth: {
         page: "1180px",

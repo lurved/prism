@@ -32,7 +32,7 @@ export function CompanyCard({ company: c }: { company: Company }) {
       <div className="h-1" style={{ background: c.accentColor }} />
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-4">
-          <span className="w-[38px] h-[38px] rounded-[9px] text-white font-mono font-semibold text-[13px] text-center leading-[38px]"
+          <span className="w-[38px] h-[38px] rounded-[9px] text-onaccent font-mono font-semibold text-[13px] text-center leading-[38px]"
             style={{ background: c.accentColor }}>{c.logoInitials}</span>
           <div>
             <div className="font-serif font-semibold text-[17px] text-ink leading-[1.1]">{c.name}</div>
@@ -75,7 +75,7 @@ export function CompanyCard({ company: c }: { company: Company }) {
           </div>
           <div className="h-[6px] rounded-full overflow-hidden bg-track">
             {reductionMv.value === null ? (
-              <div className="h-full w-full" style={{ backgroundImage: "repeating-linear-gradient(45deg,#D8D0BF 0 5px,transparent 5px 10px)" }} />
+              <div className="h-full w-full" style={{ backgroundImage: "repeating-linear-gradient(45deg,#454a78 0 5px,transparent 5px 10px)" }} />
             ) : (
               <div className="h-full bg-good" style={{ width: `${Math.min(reductionMv.value, 100)}%` }} />
             )}

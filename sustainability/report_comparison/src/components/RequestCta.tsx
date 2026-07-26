@@ -131,25 +131,25 @@ function RequestModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#16161c]/70 backdrop-blur-sm"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="req-modal-title"
     >
       <div
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-md bg-card rounded-2xl shadow-xl max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-5 border-b border-slate-100">
+        <div className="flex items-start justify-between p-5 border-b border-hairline">
           <div>
-            <h2 id="req-modal-title" className="text-base font-semibold text-slate-900">Request a company or category</h2>
-            <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1">
+            <h2 id="req-modal-title" className="text-base font-semibold text-ink">Request a company or category</h2>
+            <p className="text-xs text-muted2 mt-0.5 flex items-center gap-1">
               <Lock className="w-3 h-3" /> Sent privately to the site owner
             </p>
           </div>
-          <button onClick={onClose} aria-label="Close" className="text-slate-400 hover:text-slate-600 p-1 -m-1">
+          <button onClick={onClose} aria-label="Close" className="text-muted2 hover:text-muted p-1 -m-1">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -159,11 +159,11 @@ function RequestModal({ onClose }: { onClose: () => void }) {
             <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-3">
               <CheckCircle2 className="w-6 h-6 text-emerald-600" />
             </div>
-            <p className="text-sm font-medium text-slate-800">Thank you — your request was sent.</p>
-            <p className="text-xs text-slate-400 mt-1">We&apos;ll review suggestions for new companies and categories.</p>
+            <p className="text-sm font-medium text-ink">Thank you — your request was sent.</p>
+            <p className="text-xs text-muted2 mt-1">We&apos;ll review suggestions for new companies and categories.</p>
             <button
               onClick={onClose}
-              className="mt-5 px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm font-medium text-slate-700"
+              className="mt-5 px-4 py-2 rounded-lg bg-chip hover:bg-hairline3 text-sm font-medium text-body"
             >
               Close
             </button>
@@ -187,7 +187,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 name="requestType"
                 required
                 defaultValue=""
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="w-full rounded-lg border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               >
                 <option value="" disabled>Select…</option>
                 <option value="Add a company">Add a company</option>
@@ -202,7 +202,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 name="target"
                 type="text"
                 placeholder="e.g. Keppel, or 'Water utilities'"
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="w-full rounded-lg border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
               />
             </Field>
 
@@ -214,9 +214,9 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 maxLength={MAX_MSG}
                 onChange={(e) => setMsgLen(e.target.value.length)}
                 placeholder="What would you like added, and why? Add a report link if you have one."
-                className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 resize-none"
+                className="w-full rounded-lg border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent resize-none"
               />
-              <span className="block text-right text-[10px] text-slate-300 mt-0.5">{msgLen}/{MAX_MSG}</span>
+              <span className="block text-right text-[10px] text-muted3 mt-0.5">{msgLen}/{MAX_MSG}</span>
             </Field>
 
             <Field label="Are you open to pay for tokens?" required>
@@ -224,9 +224,9 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 {["Yes", "No", "What is this?"].map((opt) => (
                   <label
                     key={opt}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-sm text-slate-700 cursor-pointer hover:border-brand-400 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-800"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-hairline text-sm text-body cursor-pointer hover:border-accent has-[:checked]:border-accent has-[:checked]:bg-chip has-[:checked]:text-ink"
                   >
-                    <input type="radio" name="payTokens" value={opt} required className="accent-brand-600" />
+                    <input type="radio" name="payTokens" value={opt} required className="accent-accent" />
                     {opt}
                   </label>
                 ))}
@@ -238,7 +238,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                 <input
                   name="name"
                   type="text"
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  className="w-full rounded-lg border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 />
               </Field>
               <Field label="Your email">
@@ -246,7 +246,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
                   name="email"
                   type="email"
                   placeholder="for a reply (optional)"
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  className="w-full rounded-lg border border-hairline px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-accent"
                 />
               </Field>
             </div>
@@ -260,11 +260,11 @@ function RequestModal({ onClose }: { onClose: () => void }) {
             <button
               type="submit"
               disabled={status === "sending"}
-              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-700 disabled:opacity-60 text-white text-sm font-medium transition-colors"
+              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-lg bg-accent hover:brightness-95 disabled:opacity-60 text-onaccent text-sm font-medium transition-colors"
             >
               {status === "sending" ? "Sending…" : <><Send className="w-4 h-4" /> Send request</>}
             </button>
-            <p className="text-[10px] text-slate-400 text-center">
+            <p className="text-[10px] text-muted2 text-center">
               Your email is used only to reply. The recipient address is never shown on this site.
             </p>
           </form>
@@ -277,7 +277,7 @@ function RequestModal({ onClose }: { onClose: () => void }) {
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="block text-xs font-medium text-slate-600 mb-1">
+      <span className="block text-xs font-medium text-muted mb-1">
         {label}{required && <span className="text-red-500"> *</span>}
       </span>
       {children}
