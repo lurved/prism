@@ -23,9 +23,13 @@
  * absolute backfill) will attach exact pages when the extraction pipeline runs.
  */
 
-export type Sector = "utilities" | "healthcare";
+import { TIER_META } from "./provenance";
+import type { SourceFlag } from "./provenance";
+export type { SourceFlag };
 
-export type SourceFlag = "confirmed" | "estimated" | "unverified";
+/** Comparison vertical. Renamed from the former `Sector` to avoid clashing with
+ *  the company-industry `Sector` in types.ts — same word, different concept. */
+export type Vertical = "utilities" | "healthcare";
 
 export type AssuranceStatus =
   | "external_limited"
@@ -83,7 +87,7 @@ export interface HealthcareEntity {
   listing: string;
   logoInitials: string;
   accentColor: string;
-  sector: Sector;
+  sector: Vertical;
   status: EntityStatus;
   countries: string[];
   boundaryNote: string | null;
@@ -560,9 +564,9 @@ export const mohContextBanner: ContextBanner = {
 
 /* ── Flag presentation helpers ── */
 export const FLAG_META: Record<SourceFlag, { icon: string; label: string }> = {
-  confirmed: { icon: "✅", label: "Confirmed" },
-  estimated: { icon: "⚠️", label: "Estimated" },
-  unverified: { icon: "❌", label: "Unverified" },
+  confirmed: TIER_META.confirmed,
+  estimated: TIER_META.estimated,
+  unverified: TIER_META.unverified,
 };
 
 /**
