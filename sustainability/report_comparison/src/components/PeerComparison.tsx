@@ -178,7 +178,7 @@ export function PeerComparison({
           </thead>
           <tbody>
             {visibleRows.map((row) => (
-              <tr key={row.key} className="border-t border-hairline2 hover:bg-[#2e3360] transition-colors">
+              <tr key={row.key} className="border-t border-hairline2 hover:bg-card transition-colors">
                 <td className="py-[13px] px-5 align-top">
                   <div className="font-sans font-medium text-[14px] text-ink leading-[1.25]">{row.label}</div>
                   {row.sublabel && <div className="font-sans text-[11px] text-muted3 mt-[3px]">{row.sublabel}</div>}

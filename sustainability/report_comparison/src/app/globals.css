@@ -4,6 +4,48 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Design tokens — the single source of colour for this app.
+   Mirrors the pris.la design system (repo tokens/colors.css);
+   tailwind.config.ts references these vars rather than hardcoding
+   hex, so re-theming happens here in one place. The stepped
+   ink/muted/hairline shades and the --co-* company/viz colours
+   extend the base system for this data-dense tool.
+   ============================================================ */
+:root {
+  /* Base semantic tokens (from the navy design system) */
+  --bg: #262a4f;
+  --surface-card: #2e3360;
+  --line: #393d63;
+  --ink: #ecebf3;
+  --soft: #9897b7;
+  --accent: #f0a8b8;
+  --on-accent: #262a4f;
+  --ok: #2faa5c;
+
+  /* App-specific stepped neutrals (editorial hierarchy on navy) */
+  --ink-2: #dcdbe8;
+  --ink-3: #cbcadd;
+  --body: #b9b8cd;
+  --muted-2: #807f9f;
+  --muted-3: #6f6e8f;
+  --nd: #5b5a7a;
+  --line-2: #313457;
+  --line-3: #444876;
+  --chip: #2e3360;
+  --track: #393d63;
+
+  /* Categorical data-viz palette (from the design system, ≥4.5:1 on navy) */
+  --viz-amber: #E39A4D;
+  --viz-red: #EA7267;
+  --viz-teal: #52A8C4;
+  --viz-blue: #6E9BE8;
+  --viz-green: #4FC17E;
+  --viz-purple: #A78BE0;
+  --viz-brown: #C89B6A;
+  --viz-grey: #9EA0C0;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -14,15 +56,15 @@ html, body {
 }
 
 body {
-  background: #262a4f;
-  color: #ecebf3;
+  background: var(--bg);
+  color: var(--ink);
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: #f0a8b8;
-  color: #262a4f;
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 a { text-decoration: none; }
@@ -32,10 +74,10 @@ a { text-decoration: none; }
   display: flex;
   align-items: baseline;
   gap: 18px;
-  border-bottom: 1px solid #393d63;
+  border-bottom: 1px solid var(--line);
   padding-bottom: 13px;
 }
 
 ::-webkit-scrollbar { width: 7px; height: 7px; }
-::-webkit-scrollbar-track { background: #2e3360; }
-::-webkit-scrollbar-thumb { background: #444876; border-radius: 4px; }
+::-webkit-scrollbar-track { background: var(--surface-card); }
+::-webkit-scrollbar-thumb { background: var(--line-3); border-radius: 4px; }

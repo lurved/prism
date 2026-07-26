@@ -14,6 +14,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
 import type { Company } from "@/data/types";
+import { T, FONT } from "@/lib/theme";
 
 type Scope = "scope1" | "scope2" | "scope3";
 
@@ -47,7 +48,7 @@ export function TrendChart({ companies, scope }: { companies: Company[]; scope: 
   const tickLabels = ["3rd latest", "2nd latest", "Latest"].slice(-maxLen);
 
   return (
-    <div className="bg-[#2e3360] border border-hairline2 rounded-[10px] p-4 mt-2">
+    <div className="bg-card border border-hairline2 rounded-[10px] p-4 mt-2">
       <div className="flex items-baseline justify-between gap-3 mb-1">
         <div className="font-sans font-semibold text-[13px] text-ink">{SCOPE_LABEL[scope]} — multi-year trend</div>
         <div className="font-mono text-[10px] text-muted2">ktCO₂e · gaps = not disclosed</div>
@@ -55,30 +56,30 @@ export function TrendChart({ companies, scope }: { companies: Company[]; scope: 
       <div style={{ width: "100%", height: 240 }}>
         <ResponsiveContainer>
           <LineChart data={rows} margin={{ top: 10, right: 16, bottom: 4, left: 4 }}>
-            <CartesianGrid stroke="#393d63" strokeDasharray="2 3" vertical={false} />
+            <CartesianGrid stroke={T.line} strokeDasharray="2 3" vertical={false} />
             <XAxis
               dataKey="idx"
               tickFormatter={(i: number) => tickLabels[i] ?? ""}
-              tick={{ fontSize: 10, fill: "#807f9f", fontFamily: "IBM Plex Mono" }}
-              axisLine={{ stroke: "#454a78" }}
+              tick={{ fontSize: 10, fill: T.muted2, fontFamily: FONT.mono }}
+              axisLine={{ stroke: T.line3 }}
               tickLine={false}
             />
             <YAxis
               tickFormatter={(v: number) => fmtK(v)}
-              tick={{ fontSize: 10, fill: "#6f6e8f", fontFamily: "IBM Plex Mono" }}
+              tick={{ fontSize: 10, fill: T.muted3, fontFamily: FONT.mono }}
               axisLine={false}
               tickLine={false}
               width={44}
             />
             <Tooltip
               contentStyle={{
-                background: "#ecebf3", border: "none", borderRadius: 8,
-                fontFamily: "Archivo", fontSize: 12, color: "#262a4f",
+                background: T.card, border: `1px solid ${T.line}`, borderRadius: 8,
+                fontFamily: FONT.sans, fontSize: 12, color: T.ink,
               }}
               labelFormatter={(i) => tickLabels[i as number] ?? ""}
               formatter={(value, name) => [value === null ? "N/D" : `${fmtK(value as number)} tCO₂e`, name as string]}
             />
-            <Legend wrapperStyle={{ fontFamily: "Archivo", fontSize: 12 }} />
+            <Legend wrapperStyle={{ fontFamily: FONT.sans, fontSize: 12 }} />
             {companies.map((c) => (
               <Line
                 key={c.id}

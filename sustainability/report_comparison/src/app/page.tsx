@@ -33,7 +33,7 @@ export default function TemasekPage() {
         <h1 className="font-serif font-semibold text-ink m-0 mb-2 tracking-[-0.02em] max-w-[15ch] leading-[1.0] text-[clamp(40px,6.4vw,72px)]">
           Temasek Portfolio, side&nbsp;by&nbsp;side.
         </h1>
-        <div className="font-serif italic text-[22px] leading-[1.3] text-[#807f9f] mb-[38px]">
+        <div className="font-serif italic text-[22px] leading-[1.3] text-muted2 mb-[38px]">
           Sembcorp · SMRT · Singtel — three sectors, one lens.
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
@@ -147,7 +147,7 @@ export default function TemasekPage() {
 
       {/* Context only — demoted cross-sector aggregates (§7) */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-10 pb-2">
-        <div className="border border-hairline rounded-[12px] bg-[#2e3360] p-5">
+        <div className="border border-hairline rounded-[12px] bg-card p-5">
           <div className="font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 mb-1">Context only</div>
           <p className="font-sans text-[12px] leading-[1.55] text-muted2 m-0 mb-4 max-w-[80ch] [text-wrap:pretty]">
             Cross-sector aggregation — <strong className="font-semibold text-muted">not a comparable figure</strong>.

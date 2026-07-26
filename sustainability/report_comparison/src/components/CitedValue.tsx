@@ -114,7 +114,7 @@ export function CitedValue({ mv, display, className = "", emphasis = false, ndLa
         className={`${baseType} ${valueColor} ${underline} bg-transparent border-0 p-0 cursor-help ${className}`}
       >
         {text}
-        {hasCitation && <sup className="text-[#6f6e8f] ml-[1px] text-[10px] font-normal select-none">°</sup>}
+        {hasCitation && <sup className="text-muted3 ml-[1px] text-[10px] font-normal select-none">°</sup>}
       </button>
 
       {open && coords && typeof document !== "undefined" &&

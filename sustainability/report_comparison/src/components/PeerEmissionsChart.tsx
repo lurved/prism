@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/lib/theme";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
 } from "recharts";
@@ -47,12 +48,12 @@ export function PeerEmissionsChart({
         <div className="h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ top: 4, right: 16, bottom: 4, left: 24 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#393d63" />
-              <XAxis dataKey="metric" tick={{ fontSize: 12, fill: "#9897b7" }} />
-              <YAxis tick={{ fontSize: 11, fill: "#807f9f" }} tickFormatter={(v) => fmtT(v as number)} />
+              <CartesianGrid strokeDasharray="3 3" stroke={T.line} />
+              <XAxis dataKey="metric" tick={{ fontSize: 12, fill: T.soft }} />
+              <YAxis tick={{ fontSize: 11, fill: T.muted2 }} tickFormatter={(v) => fmtT(v as number)} />
               <Tooltip
                 formatter={(value: number, name: string) => [fmtT(value), name]}
-                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid #393d63", background: "#2e3360" }}
+                contentStyle={{ fontSize: 12, borderRadius: 8, border: `1px solid ${T.line}`, background: T.card }}
               />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               {companies.map((c) => (

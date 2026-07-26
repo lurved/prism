@@ -1,5 +1,6 @@
 "use client";
 
+import { T } from "@/lib/theme";
 import { useEffect, useState } from "react";
 import { companies } from "@/data/esgData";
 
@@ -183,7 +184,7 @@ function BarView({
         className={`inline-flex items-center gap-2 font-mono font-medium text-[11px] tracking-[0.04em] px-[11px] py-[6px] rounded-full border transition-colors ${
           on ? "bg-ink text-paper border-ink" : "bg-transparent text-muted border-hairline"
         }`}
-        style={on ? { color: "#262a4f" } : { color }}
+        style={on ? { color: T.onAccent } : { color }}
       >
         <span className="w-[9px] h-[9px] rounded-[2px]" style={{ background: "currentColor", opacity: 0.85 }} />
         {label}
@@ -195,9 +196,9 @@ function BarView({
     <div>
       <div className="flex items-center justify-between gap-4 flex-wrap mb-[14px]">
         <div className="flex gap-2 flex-wrap">
-          {togglePill("s1", "Scope 1", "#b9b8cd")}
-          {togglePill("s2", "Scope 2", "#b9b8cd")}
-          {togglePill("s3", "Scope 3", "#b9b8cd")}
+          {togglePill("s1", "Scope 1", T.body)}
+          {togglePill("s2", "Scope 2", T.body)}
+          {togglePill("s3", "Scope 3", T.body)}
         </div>
         <div className="flex items-center gap-[14px] flex-wrap">
           {/* §3 Scope 3 view toggle */}
@@ -240,15 +241,15 @@ function BarView({
       <svg viewBox="0 0 820 380" preserveAspectRatio="xMidYMid meet" className="w-full h-auto block">
         {grid.map((g) => (
           <g key={g.v}>
-            <line x1={LEFT} y1={g.y} x2={RIGHT} y2={g.y} stroke="#393d63" strokeWidth={1} />
-            <text x={56} y={g.ty} textAnchor="end" className="font-mono" style={{ fontSize: 10, fontWeight: 500, fill: "#6f6e8f" }}>{g.label}</text>
+            <line x1={LEFT} y1={g.y} x2={RIGHT} y2={g.y} stroke={T.line} strokeWidth={1} />
+            <text x={56} y={g.ty} textAnchor="end" className="font-mono" style={{ fontSize: 10, fontWeight: 500, fill: T.muted3 }}>{g.label}</text>
           </g>
         ))}
-        <line x1={LEFT} y1={BASE} x2={RIGHT} y2={BASE} stroke="#ecebf3" strokeWidth={1.2} />
+        <line x1={LEFT} y1={BASE} x2={RIGHT} y2={BASE} stroke={T.ink} strokeWidth={1.2} />
         {bars.map((b, i) => (
           <g key={i}>
             <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={2} style={{ fill: b.fill, opacity: b.op }} />
-            <text x={b.tx} y={b.vy} textAnchor="middle" className="font-mono" style={{ fontSize: 10, fontWeight: 500, fill: "#b9b8cd" }}>{b.vlabel}</text>
+            <text x={b.tx} y={b.vy} textAnchor="middle" className="font-mono" style={{ fontSize: 10, fontWeight: 500, fill: T.body }}>{b.vlabel}</text>
           </g>
         ))}
         {axis.map((a, i) => (
@@ -328,8 +329,8 @@ function RadarView() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-[1fr_220px] gap-6 items-center">
       <svg viewBox="0 0 560 380" preserveAspectRatio="xMidYMid meet" className="w-full h-auto block">
-        {rings.map((p, i) => <polygon key={i} points={p} style={{ fill: "none", stroke: "#3a3e64", strokeWidth: 1 }} />)}
-        {spokes.map((s, i) => <line key={i} x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke="#3a3e64" strokeWidth={1} />)}
+        {rings.map((p, i) => <polygon key={i} points={p} style={{ fill: "none", stroke: T.line2, strokeWidth: 1 }} />)}
+        {spokes.map((s, i) => <line key={i} x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke={T.line2} strokeWidth={1} />)}
         {shapes.map((s, i) =>
           s.allPresent ? (
             <polygon key={i} points={s.verts.join(" ")} style={{ fill: s.color, fillOpacity: 0.1, stroke: s.color, strokeWidth: 2, strokeLinejoin: "round" }} />
@@ -341,7 +342,7 @@ function RadarView() {
           )
         )}
         {labels.map((l, i) => (
-          <text key={i} x={l.x} y={l.y} textAnchor={l.anchor} className="font-sans" style={{ fontSize: 11, fontWeight: 600, fill: "#9897b7" }}>{l.label}</text>
+          <text key={i} x={l.x} y={l.y} textAnchor={l.anchor} className="font-sans" style={{ fontSize: 11, fontWeight: 600, fill: T.soft }}>{l.label}</text>
         ))}
       </svg>
       <div>
@@ -409,18 +410,18 @@ function TrendView() {
       <svg viewBox="0 0 840 340" preserveAspectRatio="xMidYMid meet" className="w-full h-auto block">
         {yticks.map((y, i) => (
           <g key={i}>
-            <line x1={52} y1={y.y} x2={792} y2={y.y} stroke="#393d63" strokeWidth={1} />
-            <text x={46} y={y.ty} textAnchor="end" className="font-mono" style={{ fontSize: 10, fontWeight: 500, fill: "#6f6e8f" }}>{y.label}</text>
+            <line x1={52} y1={y.y} x2={792} y2={y.y} stroke={T.line} strokeWidth={1} />
+            <text x={46} y={y.ty} textAnchor="end" className="font-mono" style={{ fontSize: 10, fontWeight: 500, fill: T.muted3 }}>{y.label}</text>
           </g>
         ))}
         {xticks.map((x, i) => (
-          <text key={i} x={x.x} y={x.y} textAnchor="middle" className="font-mono" style={{ fontSize: 11, fontWeight: 500, fill: "#807f9f" }}>{x.label}</text>
+          <text key={i} x={x.x} y={x.y} textAnchor="middle" className="font-mono" style={{ fontSize: 11, fontWeight: 500, fill: T.muted2 }}>{x.label}</text>
         ))}
         {lines.map((l, i) => (
           <g key={i}>
             <polyline points={l.dash} style={{ fill: "none", stroke: l.color, strokeWidth: 2, strokeDasharray: "2 6", strokeLinecap: "round", opacity: 0.65 }} />
             <polyline points={l.solid} style={{ fill: "none", stroke: l.color, strokeWidth: 2.5, strokeLinecap: "round" }} />
-            <circle cx={l.tgtx} cy={l.tgty} r={4} style={{ fill: "#262a4f", stroke: l.color, strokeWidth: 2 }} />
+            <circle cx={l.tgtx} cy={l.tgty} r={4} style={{ fill: T.onAccent, stroke: l.color, strokeWidth: 2 }} />
             <circle cx={l.nowx} cy={l.nowy} r={4.5} style={{ fill: l.color }} />
             <text x={l.tgtx} y={l.tgtty} textAnchor="middle" className="font-mono" style={{ fontSize: 11, fontWeight: 600, fill: l.color }}>{l.tgtyear}</text>
           </g>

@@ -36,7 +36,7 @@ export default function BanksPage() {
         <h1 className="font-serif font-semibold text-ink m-0 mb-2 tracking-[-0.02em] max-w-[15ch] leading-[1.0] text-[clamp(40px,6.4vw,72px)]">
           The big three, side&nbsp;by&nbsp;side.
         </h1>
-        <div className="font-serif italic text-[22px] leading-[1.3] text-[#807f9f] mb-[38px]">DBS · OCBC · UOB — three banks, one lens.</div>
+        <div className="font-serif italic text-[22px] leading-[1.3] text-muted2 mb-[38px]">DBS · OCBC · UOB — three banks, one lens.</div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.45fr_1fr] gap-8 lg:gap-[52px] items-start">
           <p className="font-sans text-[18px] leading-[1.65] text-ink2 m-0 max-w-[62ch] [text-wrap:pretty]">
             Environmental, social, and governance data for Singapore&apos;s three largest banks — <strong className="font-semibold">DBS</strong>,{" "}
@@ -89,7 +89,7 @@ export default function BanksPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {bankCompanies.map((c) => (
             <a key={c.id} href={c.dataSource.url} target="_blank" rel="noopener noreferrer"
-              className="block border border-hairline rounded-[12px] bg-card p-5 hover:bg-[#2e3360] transition-colors">
+              className="block border border-hairline rounded-[12px] bg-card p-5 hover:bg-card transition-colors">
               <div className="font-serif font-semibold text-[16px] text-ink">{c.name}</div>
               <div className="font-mono font-medium text-[10px] text-muted2 mt-1.5 tracking-[0.04em] uppercase">{c.dataSource.reportingPeriod}</div>
               <div className="font-mono text-[11px] mt-4" style={{ color: c.accentColor }}>View report →</div>

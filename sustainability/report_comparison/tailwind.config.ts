@@ -8,39 +8,35 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Colours reference the CSS custom properties declared once in
+      // globals.css (:root), which mirror the pris.la design system.
+      // No hex lives here — re-theme in globals.css and every utility follows.
       colors: {
-        // ── pris.la navy design system (mapped from tokens/colors.css) ──
-        // Names kept from the original editorial theme; values re-pointed at
-        // the navy tokens so every existing utility class inherits the system.
-        // Polarity flips: paper/card are now dark surfaces, ink is light text.
-        paper: "#262a4f",       // --bg — page background
-        card: "#2e3360",        // --surface-card — raised surfaces
-        ink: "#ecebf3",         // --ink — primary text / headlines
-        ink2: "#dcdbe8",        // stepped-down heading
-        ink3: "#cbcadd",
-        body: "#b9b8cd",        // long-form body text
-        muted: "#9897b7",       // --soft — secondary text
-        muted2: "#807f9f",
-        muted3: "#6f6e8f",
-        nd: "#5b5a7a",          // faintest text (n/d)
-        hairline: "#393d63",    // --line — borders, dividers
-        hairline2: "#313457",
-        hairline3: "#444876",
-        chip: "#2e3360",
-        track: "#393d63",       // chart track / bar background
-        good: "#2faa5c",        // --ok
-        // The single brand accent (pink) for primary UI affordances.
-        accent: "#f0a8b8",      // --accent
-        onaccent: "#262a4f",    // --on-accent — text/icons on an accent fill
-        // Company accents — functional data-viz identity, from the design
-        // system's categorical viz palette (tuned for ≥4.5:1 on navy so they
-        // also work as text: sc/sm double as caution / section-kicker colours).
-        sc: "#E39A4D",   // Sembcorp — amber (viz-amber)
-        sm: "#EA7267",   // SMRT — red (viz-red, also section kicker)
-        st: "#52A8C4",   // Singtel — teal (viz-teal)
-        "sc-tint": "#E39A4D",
-        "sm-tint": "#EA7267",
-        "st-tint": "#52A8C4",
+        paper: "var(--bg)",
+        card: "var(--surface-card)",
+        ink: "var(--ink)",
+        ink2: "var(--ink-2)",
+        ink3: "var(--ink-3)",
+        body: "var(--body)",
+        muted: "var(--soft)",
+        muted2: "var(--muted-2)",
+        muted3: "var(--muted-3)",
+        nd: "var(--nd)",
+        hairline: "var(--line)",
+        hairline2: "var(--line-2)",
+        hairline3: "var(--line-3)",
+        chip: "var(--chip)",
+        track: "var(--track)",
+        good: "var(--ok)",
+        accent: "var(--accent)",
+        onaccent: "var(--on-accent)",
+        // Company accents — the design system's categorical viz palette.
+        sc: "var(--viz-amber)",   // Sembcorp
+        sm: "var(--viz-red)",     // SMRT (also section kicker)
+        st: "var(--viz-teal)",    // Singtel
+        "sc-tint": "var(--viz-amber)",
+        "sm-tint": "var(--viz-red)",
+        "st-tint": "var(--viz-teal)",
       },
       fontFamily: {
         serif: ["Newsreader", "Georgia", "serif"],

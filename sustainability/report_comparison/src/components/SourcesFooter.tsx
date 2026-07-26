@@ -29,7 +29,7 @@ export function SourcesFooter() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-9">
         {companies.map((c) => (
           <a key={c.id} href={c.dataSource.url} target="_blank" rel="noopener noreferrer"
-            className="block border border-hairline rounded-[12px] bg-card p-5 hover:bg-[#2e3360] transition-colors">
+            className="block border border-hairline rounded-[12px] bg-card p-5 hover:bg-card transition-colors">
             <div className="font-serif font-semibold text-[16px] text-ink">{c.name}</div>
             <div className="font-mono font-medium text-[10px] text-muted2 mt-1.5 tracking-[0.04em] uppercase">
               {c.dataSource.reportingPeriod} · {c.sector}
@@ -50,7 +50,7 @@ export function SourcesFooter() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-3">
         {NOTES.map((n, i) => (
           <div key={i} className="flex gap-3">
-            <span className="font-mono text-[11px] text-[#5b5a7a] flex-shrink-0 mt-0.5">{String(i + 1).padStart(2, "0")}</span>
+            <span className="font-mono text-[11px] text-nd flex-shrink-0 mt-0.5">{String(i + 1).padStart(2, "0")}</span>
             <p className="font-sans text-[13px] leading-[1.55] text-muted m-0">{n}</p>
           </div>
         ))}
