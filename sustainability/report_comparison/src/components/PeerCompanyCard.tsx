@@ -1,20 +1,22 @@
 import type { PeerCompany } from "@/data/peerData";
+import { peerMetricValue } from "@/lib/peerMetrics";
+import { CitedValue } from "./CitedValue";
 
-function fmtT(v: number | null): string {
-  if (v === null) return "N/D";
+function fmtT(v: number): string {
   if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(2)}M`;
   if (v >= 1_000) return `${(v / 1_000).toFixed(1)}k`;
   return v.toLocaleString();
 }
 
 export function PeerCompanyCard({ company: c }: { company: PeerCompany }) {
-  const stats: [string, string][] = [
-    ["Scope 1", fmtT(c.scope1)],
-    ["Scope 2", fmtT(c.scope2)],
-    ["Net-Zero", c.netZeroYear === null ? "N/D" : String(c.netZeroYear)],
-    ["Fem. Board", c.femaleBoardPct === null ? "N/D" : `${c.femaleBoardPct}%`],
-    ["Headcount", c.headcount === null ? "N/D" : (c.headcount >= 1000 ? `${(c.headcount / 1000).toFixed(1)}k` : String(c.headcount))],
-    ["Indep. Dir.", c.independentDirectorsPct === null ? "N/D" : `${c.independentDirectorsPct}%`],
+  // Each headline stat is routed through <CitedValue> so no figure is uncited.
+  const stats: { label: string; value: number | null; unit: string; display: (v: number) => string }[] = [
+    { label: "Scope 1", value: c.scope1, unit: "tCO₂e", display: fmtT },
+    { label: "Scope 2", value: c.scope2, unit: "tCO₂e", display: fmtT },
+    { label: "Net-Zero", value: c.netZeroYear, unit: "year", display: (v) => String(v) },
+    { label: "Fem. Board", value: c.femaleBoardPct, unit: "%", display: (v) => `${v}%` },
+    { label: "Headcount", value: c.headcount, unit: "employees", display: (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : String(v)) },
+    { label: "Indep. Dir.", value: c.independentDirectorsPct, unit: "%", display: (v) => `${v}%` },
   ];
 
   return (
@@ -32,10 +34,16 @@ export function PeerCompanyCard({ company: c }: { company: PeerCompany }) {
         <p className="font-sans text-[13px] leading-[1.6] text-body m-0 mb-[18px] [text-wrap:pretty]">{c.businessModel}</p>
 
         <div className="grid grid-cols-3 gap-x-3 gap-y-[14px] mb-[18px]">
-          {stats.map(([label, value]) => (
-            <div key={label}>
-              <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase">{label}</div>
-              <div className="font-serif font-medium text-[17px] text-ink leading-[1.1] mt-[5px]">{value}</div>
+          {stats.map((s) => (
+            <div key={s.label}>
+              <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase">{s.label}</div>
+              <div className="font-serif font-medium text-[17px] text-ink leading-[1.1] mt-[5px]">
+                <CitedValue
+                  mv={peerMetricValue(c, s.value, s.unit)}
+                  plain
+                  display={s.value !== null ? s.display(s.value) : undefined}
+                />
+              </div>
             </div>
           ))}
         </div>

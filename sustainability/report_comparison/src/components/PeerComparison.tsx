@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { peerCompanies, type PeerCompany } from "@/data/peerData";
+import { peerMetricValue } from "@/lib/peerMetrics";
+import { CitedValue } from "./CitedValue";
 
 type View = "absolute" | "normalized";
 
@@ -22,6 +24,12 @@ type Row = {
   sublabel?: string;
   view: View | "both";
   render: (c: PeerCompany) => { text: string; na?: boolean; nd?: boolean };
+  /**
+   * Quantitative rows supply `cite` so the cell renders through <CitedValue>
+   * with a status + citation popover. Omit for descriptive/text rows.
+   * `na: true` marks "not applicable to this business model" (no citation).
+   */
+  cite?: (c: PeerCompany) => { value: number | null; unit: string; notes?: string; na?: boolean };
 };
 
 const rows: Row[] = [
@@ -41,61 +49,87 @@ const rows: Row[] = [
 
   // ── Absolute carbon ──
   { key: "s1", label: "Scope 1", sublabel: "Direct", view: "absolute",
-    render: (c) => ({ text: fmtT(c.scope1), nd: c.scope1 === null }) },
+    render: (c) => ({ text: fmtT(c.scope1), nd: c.scope1 === null }),
+    cite: (c) => ({ value: c.scope1, unit: "tCO₂e" }) },
   { key: "s2", label: "Scope 2", sublabel: "Energy indirect", view: "absolute",
-    render: (c) => ({ text: fmtT(c.scope2), nd: c.scope2 === null }) },
+    render: (c) => ({ text: fmtT(c.scope2), nd: c.scope2 === null }),
+    cite: (c) => ({ value: c.scope2, unit: "tCO₂e", notes: c.scope2Basis }) },
   { key: "s2basis", label: "Scope 2 basis", view: "absolute",
     render: (c) => ({ text: c.scope2Basis, nd: c.scope2Basis === "N/D" }) },
   { key: "s3", label: "Scope 3", sublabel: "Value chain", view: "absolute",
-    render: (c) => ({ text: fmtT(c.scope3), nd: c.scope3 === null }) },
+    render: (c) => ({ text: fmtT(c.scope3), nd: c.scope3 === null }),
+    cite: (c) => ({ value: c.scope3, unit: "tCO₂e" }) },
   { key: "total", label: "Total GHG", view: "absolute",
-    render: (c) => ({ text: fmtT(c.totalGHG), nd: c.totalGHG === null }) },
+    render: (c) => ({ text: fmtT(c.totalGHG), nd: c.totalGHG === null }),
+    cite: (c) => ({ value: c.totalGHG, unit: "tCO₂e" }) },
   { key: "sf6", label: "SF₆ emissions", sublabel: "Switchgear gas", view: "absolute",
     render: (c) => c.naMetrics.includes("sf6tCO2e")
       ? { text: "N/A", na: true }
-      : { text: fmtT(c.sf6tCO2e), nd: c.sf6tCO2e === null } },
+      : { text: fmtT(c.sf6tCO2e), nd: c.sf6tCO2e === null },
+    cite: (c) => c.naMetrics.includes("sf6tCO2e")
+      ? { value: null, unit: "tCO₂e", na: true }
+      : { value: c.sf6tCO2e, unit: "tCO₂e" } },
 
   // ── Normalized / comparable ──
   { key: "intensity", label: "Carbon intensity", sublabel: "as reported — own unit", view: "normalized",
     render: (c) => c.intensityValue === null
       ? { text: "N/D", nd: true }
-      : { text: `${c.intensityValue} ${c.intensityUnit}` } },
+      : { text: `${c.intensityValue} ${c.intensityUnit}` },
+    cite: (c) => ({ value: c.intensityValue, unit: c.intensityUnit }) },
   { key: "normIntensity", label: "Normalised intensity", sublabel: "kg CO₂e/kWh (S1+2) — comparable", view: "normalized",
     render: (c) => c.naMetrics.includes("normalizedIntensityKgPerKwh")
       ? { text: "N/A", na: true }
       : c.normalizedIntensityKgPerKwh == null
         ? { text: "N/D", nd: true }
-        : { text: `${c.normalizedIntensityKgPerKwh} kg CO₂e/kWh` } },
+        : { text: `${c.normalizedIntensityKgPerKwh} kg CO₂e/kWh` },
+    cite: (c) => c.naMetrics.includes("normalizedIntensityKgPerKwh")
+      ? { value: null, unit: "kg CO₂e/kWh", na: true }
+      : { value: c.normalizedIntensityKgPerKwh ?? null, unit: "kg CO₂e/kWh", notes: c.normalizedIntensityNote } },
   { key: "systemLoss", label: "System / T&D loss", view: "normalized",
     render: (c) => c.naMetrics.includes("systemLossPct")
       ? { text: "N/A", na: true }
-      : { text: fmtNum(c.systemLossPct, "%"), nd: c.systemLossPct === null } },
+      : { text: fmtNum(c.systemLossPct, "%"), nd: c.systemLossPct === null },
+    cite: (c) => c.naMetrics.includes("systemLossPct")
+      ? { value: null, unit: "%", na: true }
+      : { value: c.systemLossPct, unit: "%" } },
   { key: "netzero", label: "Net-zero target", view: "normalized",
-    render: (c) => ({ text: c.netZeroYear === null ? "N/D" : String(c.netZeroYear), nd: c.netZeroYear === null }) },
+    render: (c) => ({ text: c.netZeroYear === null ? "N/D" : String(c.netZeroYear), nd: c.netZeroYear === null }),
+    cite: (c) => ({ value: c.netZeroYear, unit: "year" }) },
   { key: "headcount", label: "Headcount", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.headcount), nd: c.headcount === null }) },
+    render: (c) => ({ text: fmtNum(c.headcount), nd: c.headcount === null }),
+    cite: (c) => ({ value: c.headcount, unit: "employees" }) },
   { key: "femaleBoard", label: "Female board %", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.femaleBoardPct, "%"), nd: c.femaleBoardPct === null }) },
+    render: (c) => ({ text: fmtNum(c.femaleBoardPct, "%"), nd: c.femaleBoardPct === null }),
+    cite: (c) => ({ value: c.femaleBoardPct, unit: "%" }) },
   { key: "femaleWorkforce", label: "Female workforce %", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.femaleWorkforcePct, "%"), nd: c.femaleWorkforcePct === null }) },
+    render: (c) => ({ text: fmtNum(c.femaleWorkforcePct, "%"), nd: c.femaleWorkforcePct === null }),
+    cite: (c) => ({ value: c.femaleWorkforcePct, unit: "%" }) },
   { key: "femaleSeniorMgmt", label: "Female senior mgmt %", sublabel: "definitions vary", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.femaleSeniorMgmtPct ?? null, "%"), nd: c.femaleSeniorMgmtPct == null }) },
+    render: (c) => ({ text: fmtNum(c.femaleSeniorMgmtPct ?? null, "%"), nd: c.femaleSeniorMgmtPct == null }),
+    cite: (c) => ({ value: c.femaleSeniorMgmtPct ?? null, unit: "%", notes: "“Senior management” definitions vary by company." }) },
   { key: "training", label: "Training hrs / employee", view: "normalized",
-    render: (c) => ({ text: c.trainingHoursPerEmployee === null ? "N/D" : `${c.trainingHoursPerEmployee} hrs`, nd: c.trainingHoursPerEmployee === null }) },
+    render: (c) => ({ text: c.trainingHoursPerEmployee === null ? "N/D" : `${c.trainingHoursPerEmployee} hrs`, nd: c.trainingHoursPerEmployee === null }),
+    cite: (c) => ({ value: c.trainingHoursPerEmployee, unit: "hrs" }) },
   { key: "turnover", label: "Employee turnover %", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.employeeTurnoverPct ?? null, "%"), nd: c.employeeTurnoverPct == null }) },
+    render: (c) => ({ text: fmtNum(c.employeeTurnoverPct ?? null, "%"), nd: c.employeeTurnoverPct == null }),
+    cite: (c) => ({ value: c.employeeTurnoverPct ?? null, unit: "%" }) },
   { key: "engagement", label: "Employee engagement", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.employeeEngagementScore ?? null, "%"), nd: c.employeeEngagementScore == null }) },
+    render: (c) => ({ text: fmtNum(c.employeeEngagementScore ?? null, "%"), nd: c.employeeEngagementScore == null }),
+    cite: (c) => ({ value: c.employeeEngagementScore ?? null, unit: "%" }) },
   { key: "injury", label: "Injury rate", sublabel: "basis differs", view: "normalized",
     render: (c) => c.naMetrics.includes("injuryMetricValue")
       ? { text: "N/A", na: true }
       : c.injuryMetricValue === null
         ? { text: "N/D", nd: true }
-        : { text: `${c.injuryMetricValue} (${c.injuryMetricUnit})` } },
+        : { text: `${c.injuryMetricValue} (${c.injuryMetricUnit})` },
+    cite: (c) => c.naMetrics.includes("injuryMetricValue")
+      ? { value: null, unit: c.injuryMetricUnit, na: true }
+      : { value: c.injuryMetricValue, unit: c.injuryMetricUnit } },
   { key: "community", label: "Community investment", view: "normalized",
     render: (c) => ({ text: c.communityInvestmentNative }) },
   { key: "indepDir", label: "Independent directors %", view: "normalized",
-    render: (c) => ({ text: fmtNum(c.independentDirectorsPct, "%"), nd: c.independentDirectorsPct === null }) },
+    render: (c) => ({ text: fmtNum(c.independentDirectorsPct, "%"), nd: c.independentDirectorsPct === null }),
+    cite: (c) => ({ value: c.independentDirectorsPct, unit: "%" }) },
   { key: "esgPay", label: "ESG-linked exec pay", view: "normalized",
     render: (c) => c.esgLinkedExecComp == null
       ? { text: "N/D", nd: true }
@@ -184,10 +218,18 @@ export function PeerComparison({
                   {row.sublabel && <div className="font-sans text-[11px] text-muted3 mt-[3px]">{row.sublabel}</div>}
                 </td>
                 {companies.map((c) => {
-                  const { text, na, nd } = row.render(c);
+                  const cell = row.render(c);
+                  const ci = row.cite?.(c);
                   return (
                     <td key={c.id} className="py-[13px] px-4 text-right align-top">
-                      <span className={`font-mono text-[13px] ${na || nd ? "text-nd" : "text-ink2"}`}>{na ? "N/A" : nd ? "N/D" : text}</span>
+                      {ci && !ci.na ? (
+                        <CitedValue
+                          mv={peerMetricValue(c, ci.value, ci.unit, ci.notes)}
+                          display={ci.value !== null ? cell.text : undefined}
+                        />
+                      ) : (
+                        <span className={`font-mono text-[13px] ${cell.na || cell.nd ? "text-nd" : "text-ink2"}`}>{cell.na ? "N/A" : cell.nd ? "N/D" : cell.text}</span>
+                      )}
                     </td>
                   );
                 })}

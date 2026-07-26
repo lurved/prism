@@ -12,6 +12,7 @@
 import { describe, it, expect } from "vitest";
 
 import { METRIC_DEFS, buildMetricValue, buildMetricSeries } from "@/lib/metrics";
+import { peerMetricValue } from "@/lib/peerMetrics";
 import { companies, aggregateTotals } from "@/data/esgData";
 import { peerCompanies } from "@/data/peerData";
 import { bankCompanies } from "@/data/bankData";
@@ -119,6 +120,27 @@ describe("Every company has a resolvable source", () => {
         expect(c.dataSource.url, c.id).toMatch(URL_RE);
         expect(ids.has(c.id), `duplicate id ${c.id}`).toBe(false);
         ids.add(c.id);
+      }
+    }
+  });
+});
+
+/* ── Peer/bank figures carry the same per-figure provenance ──────── */
+describe("Peer/bank metric provenance", () => {
+  it("non-null → reported + cited; null → unverified + no citation", () => {
+    for (const set of [peerCompanies, bankCompanies]) {
+      for (const c of set) {
+        const vals = [c.scope1, c.scope2, c.scope3, c.totalGHG, c.headcount, c.femaleBoardPct, c.netZeroYear];
+        for (const v of vals) {
+          const mv = peerMetricValue(c, v, "unit");
+          if (v === null) {
+            expect(mv.status, c.id).toBe("unverified");
+            expect(mv.citation, c.id).toBeNull();
+          } else {
+            expect(mv.status, c.id).toBe("reported");
+            expect(mv.citation, c.id).not.toBeNull();
+          }
+        }
       }
     }
   });
