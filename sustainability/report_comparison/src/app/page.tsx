@@ -20,8 +20,8 @@ export default function TemasekPage() {
   // and are excluded from CSV/JSON export.
   const snapshot = [
     { value: totalHeadcount.toLocaleString(), unit: "", label: "Combined Workforce", sub: "Total employees" },
-    { value: `${avgFemaleBoard}%`, unit: "", label: "Avg Female Board", sub: "Portfolio average" },
-    { value: String(earliestNetZero), unit: "", label: "Earliest Net-Zero", sub: "Singtel — all scopes" },
+    { value: avgFemaleBoard === null ? "N/D" : `${avgFemaleBoard}%`, unit: "", label: "Avg Female Board", sub: "Portfolio average" },
+    { value: earliestNetZero === null ? "N/D" : String(earliestNetZero), unit: "", label: "Earliest Net-Zero", sub: "Singtel — all scopes" },
     { value: "2 / 3", unit: "", label: "External Assurance", sub: "Sembcorp & Singtel" },
   ];
 

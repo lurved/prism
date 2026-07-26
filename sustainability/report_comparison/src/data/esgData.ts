@@ -262,22 +262,31 @@ export const companies: Company[] = [
 export const getCompanyById = (id: string): Company | undefined =>
   companies.find((c) => c.id === id);
 
+/** Keep only disclosed (non-null) values — N/D is skipped, never coerced to 0. */
+const definedNums = (xs: (number | null)[]): number[] => xs.filter((x): x is number => x != null);
+const sumDefined = (xs: (number | null)[]): number => definedNums(xs).reduce((s, x) => s + x, 0);
+
 export const aggregateTotals = {
-  // Combined Scope 1+2 for all three companies (ktCO2e)
-  totalScope1ktCO2e: companies.reduce((s, c) => s + c.environmental.scope1Emissions, 0),
-  totalScope2ktCO2e: companies.reduce((s, c) => s + c.environmental.scope2Emissions, 0),
+  // Combined Scope 1+2 across the set (ktCO2e) — context only, not comparable.
+  // N/D values are skipped, never summed as 0.
+  totalScope1ktCO2e: sumDefined(companies.map((c) => c.environmental.scope1Emissions)),
+  totalScope2ktCO2e: sumDefined(companies.map((c) => c.environmental.scope2Emissions)),
 
   // Headcount
-  totalHeadcount: companies.reduce((s, c) => s + c.social.totalHeadcount, 0),
+  totalHeadcount: sumDefined(companies.map((c) => c.social.totalHeadcount)),
 
-  // Governance averages (for companies where data is available)
-  avgFemaleBoard: Math.round(
-    companies.reduce((s, c) => s + c.social.femaleBoardPct, 0) / companies.length
+  // Governance average over companies that disclose; null if none do.
+  avgFemaleBoard: ((v: number[]) => (v.length ? Math.round(v.reduce((s, x) => s + x, 0) / v.length) : null))(
+    definedNums(companies.map((c) => c.social.femaleBoardPct)),
   ),
 
-  // Net-zero targets
-  earliestNetZero: Math.min(...companies.map((c) => c.environmental.netZeroTargetYear)),
-  latestNetZero: Math.max(...companies.map((c) => c.environmental.netZeroTargetYear)),
+  // Net-zero targets among companies that state one; null if none do.
+  earliestNetZero: ((v: number[]) => (v.length ? Math.min(...v) : null))(
+    definedNums(companies.map((c) => c.environmental.netZeroTargetYear)),
+  ),
+  latestNetZero: ((v: number[]) => (v.length ? Math.max(...v) : null))(
+    definedNums(companies.map((c) => c.environmental.netZeroTargetYear)),
+  ),
 
   // All externally assured?
   allExternallyAssured: companies.every((c) => c.governance.externalAssurance),

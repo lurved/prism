@@ -283,7 +283,7 @@ const RADAR_AXES: { label: string; get: (c: (typeof companies)[number]) => numbe
   { label: "Female Board",      get: (c) => c.social.femaleBoardPct, max: 40 },
   { label: "Female Leadership", get: (c) => c.social.femaleLeadershipPct, max: 40 },
   { label: "Training Hrs",      get: (c) => c.social.trainingHoursPerEmployee, max: 70 },
-  { label: "Net-Zero (sooner)", get: (c) => 2055 - c.environmental.netZeroTargetYear, max: 12 },
+  { label: "Net-Zero (sooner)", get: (c) => c.environmental.netZeroTargetYear === null ? null : 2055 - c.environmental.netZeroTargetYear, max: 12 },
   { label: "S1+2 Reduction",    get: (c) => c.environmental.scope1and2ReductionPct, max: 50 },
   { label: "Indep. Directors",  get: (c) => c.governance.independentDirectorsPct, max: 100 },
 ];

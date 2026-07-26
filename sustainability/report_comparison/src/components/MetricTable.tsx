@@ -162,7 +162,7 @@ export function MetricTable({ companies }: MetricTableProps) {
         <div className="flex flex-wrap gap-x-4 gap-y-1">
           {companies.map((c) => (
             <span key={c.id} className="font-sans text-[11px] text-muted">
-              <span className="font-semibold text-muted">{c.shortName}:</span> {c.environmental.ghgIntensityValue} {c.environmental.ghgIntensityUnit}
+              <span className="font-semibold text-muted">{c.shortName}:</span> {c.environmental.ghgIntensityValue === null ? "N/D" : `${c.environmental.ghgIntensityValue} ${c.environmental.ghgIntensityUnit}`}
             </span>
           ))}
         </div>

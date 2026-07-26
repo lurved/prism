@@ -1,3 +1,5 @@
+import type { MetricStatus } from "./provenance";
+
 export type Sector = "Energy" | "Grid/Infrastructure" | "Telecom" | "Transport";
 
 export type ReportingFramework = "GRI" | "IFRS S2" | "TCFD" | "SASB" | "UN SDGs" | "SGX Core ESG";
@@ -34,7 +36,7 @@ export interface MetricValue {
    *   "unverified" → N/D: nothing disclosed / nothing to cite (value is null).
    * No "estimated" tier — estimates are never entered into this model.
    */
-  status: "confirmed" | "reported" | "unverified";
+  status: MetricStatus;
   citation: Citation | null;      // null when there is nothing to cite (N/D)
   notes?: string;                 // caveats, e.g. "includes Category 15"
 }
@@ -55,30 +57,30 @@ export interface MetricSeries {
  * Consumers should display "N/D" (Not Disclosed) for null values.
  */
 export interface EnvironmentalMetrics {
-  scope1Emissions: number;          // tCO2e (thousands = ktCO2e)
-  scope2Emissions: number;          // tCO2e (thousands), market-based where available
+  scope1Emissions: number | null;   // tCO2e (thousands = ktCO2e); null = N/D (never 0)
+  scope2Emissions: number | null;   // tCO2e (thousands), market-based where available; null = N/D
   scope3Emissions: number | null;   // tCO2e (thousands), null if not disclosed
   scope3Cat15Emissions: number | null; // tCO2e (thousands) — Category 15 (investments),
                                        // null unless the report breaks it out with a citable figure.
                                        // Enables the "Excl. Category 15" Scope 3 view.
-  ghgIntensityValue: number;        // numeric value of GHG/energy intensity
+  ghgIntensityValue: number | null; // numeric value of GHG/energy intensity; null = N/D
   ghgIntensityUnit: string;         // unit label, e.g. "tCO2e/MWh", "tCO2e/TB"
   renewableEnergyPct: number | null; // % of electricity from renewables; null if not applicable/disclosed
   renewableCapacityGW: number | null; // gross installed renewable capacity in GW; null if not applicable
-  netZeroTargetYear: number;
+  netZeroTargetYear: number | null; // target year for net zero (Scope 1+2); null if no stated target
   scope1and2ReductionPct: number | null; // % reduction Scope 1+2 vs stated baseline year; null if not extracted
   waterConsumptionM3: number | null;  // total potable water use in m³; null if not disclosed
 }
 
 export interface SocialMetrics {
-  trainingHoursPerEmployee: number;
-  femaleBoardPct: number;            // % female directors on board
+  trainingHoursPerEmployee: number | null; // GRI 404-1 avg learning hours; null = N/D
+  femaleBoardPct: number | null;     // % female directors on board; null = N/D
   femaleLeadershipPct: number | null; // % female in senior management/executive roles; null if not disclosed
-  totalHeadcount: number;
+  totalHeadcount: number | null;     // total employees; null = N/D
   employeeEngagementScore: number | null; // % or index; null if not disclosed
   lostTimeInjuryRate: number | null; // per million man-hours worked (employees); null if reported on a non-comparable basis
   lostTimeInjuryRateNote: string;    // clarification of metric used
-  communityInvestmentSGDm: number;   // SGD millions
+  communityInvestmentSGDm: number | null; // SGD millions; null = N/D
 }
 
 export interface GovernanceMetrics {
