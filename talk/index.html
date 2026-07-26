@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Talk — deep question cards</title>
 <meta name="description" content="30 question cards across 3 levels. Start light, go deeper — a card game for conversations that actually go somewhere." />
-<meta name="theme-color" content="#161310" />
+<meta name="theme-color" content="#262a4f" />
 <link rel="canonical" href="https://pris.la/talk" />
 <!-- Open Graph / social preview -->
 <meta property="og:type" content="website" />
@@ -21,16 +21,16 @@
 <meta name="twitter:image" content="https://pris.la/talk/og.png" />
 <meta name="twitter:title" content="Talk — deep question cards" />
 <meta name="twitter:description" content="30 question cards across 3 levels. Start light, go deeper." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23161310'/%3E%3Crect x='22' y='14' width='56' height='72' rx='8' fill='%23E0282B'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23262a4f'/%3E%3Crect x='22' y='14' width='56' height='72' rx='8' fill='%23EA7267'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="/analytics.js"></script>
 <style>
   :root{
-    --bg:#161310;
-    --card-bg:#FBFAF7; --card-ink:#1C1B18;
-    --acc:#FFB44A;
+    --bg:#262a4f;
+    --card-bg:#2e3360; --card-ink:#ecebf3; --line:#393d63;
+    --acc:#E39A4D;
     --t: 420ms;
     --ease: cubic-bezier(.16,.84,.34,1);
   }
@@ -39,7 +39,7 @@
   body{
     background:var(--bg);
     color:#fff;
-    font-family:"Bricolage Grotesque","Arial Black",system-ui,sans-serif;
+    font-family:"Hanken Grotesk",system-ui,sans-serif;
     overflow:hidden;
     -webkit-font-smoothing:antialiased;
     user-select:none;
@@ -87,7 +87,7 @@
   .btn:hover{ background:rgba(255,255,255,.13); border-color:rgba(255,255,255,.5); }
   .btn:active{ transform:translateY(1px); }
   .btn.icon{ padding:.5em .7em; }
-  .btn.active{ background:var(--acc); color:#1C1B18; border-color:var(--acc); }
+  .btn.active{ background:var(--acc); color:#262a4f; border-color:var(--acc); }
 
   /* ---------- card stage ---------- */
   .stage{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding: clamp(90px,14vh,140px) clamp(20px,5vw,60px); }
@@ -95,7 +95,8 @@
     position:relative; width:min(640px,92vw); max-width:92vw;
     min-height: clamp(320px,52vh,520px);
     background:var(--card-bg); color:var(--card-ink);
-    border-radius:28px; box-shadow:0 24px 70px rgba(0,0,0,.4), 0 2px 0 rgba(0,0,0,.06) inset;
+    border:1px solid var(--line);
+    border-radius:28px; box-shadow:0 24px 70px rgba(0,0,0,.45);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     text-align:center; padding:clamp(32px,6vh,64px) clamp(28px,6vw,64px);
     cursor:pointer;
@@ -169,7 +170,7 @@
   .end-sub{ font-family:"Space Mono",monospace; letter-spacing:.1em; opacity:.65; font-size:clamp(12px,2vw,16px); max-width:34ch; margin-bottom:clamp(24px,4vh,44px); }
 
   /* ---------- menu overlay ---------- */
-  #menu{ position:absolute; inset:0; z-index:80; background:rgba(12,10,8,.94); backdrop-filter:blur(8px); display:none; padding:clamp(28px,5vh,60px); overflow:auto; }
+  #menu{ position:absolute; inset:0; z-index:80; background:rgba(22,22,28,.96); backdrop-filter:blur(8px); display:none; padding:clamp(28px,5vh,60px); overflow:auto; }
   #menu.open{ display:block; }
   .menu-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:clamp(20px,4vh,40px); }
   .menu-head h3{ font-weight:800; font-size:clamp(1.5rem,4vw,2.6rem); }
@@ -288,9 +289,9 @@
 
   // ---- levels ----
   const levels = [
-    { id:1, title:"Level 1", tag:"Easy to answer, easy to laugh about", pal:{ acc:"#FFB44A" } },
-    { id:2, title:"Level 2", tag:"Slower answers, more listening",      pal:{ acc:"#3FA7E0" } },
-    { id:3, title:"Level 3", tag:"Only go as deep as feels right",      pal:{ acc:"#E0282B" } },
+    { id:1, title:"Level 1", tag:"Easy to answer, easy to laugh about", pal:{ acc:"#E39A4D" } },
+    { id:2, title:"Level 2", tag:"Slower answers, more listening",      pal:{ acc:"#6E9BE8" } },
+    { id:3, title:"Level 3", tag:"Only go as deep as feels right",      pal:{ acc:"#EA7267" } },
   ];
 
   // ---- 30 questions, 10 per level ----
