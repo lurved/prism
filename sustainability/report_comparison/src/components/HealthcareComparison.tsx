@@ -223,8 +223,8 @@ export function HealthcareComparison({ entities = healthcareEntities }: { entiti
         <div className="px-5 py-3 border-t border-hairline2 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] text-muted2">
           <span>✅ Confirmed</span>
           <span>⚠️ Estimated</span>
-          <span>❌ Unverified / not yet extracted</span>
-          <span>“pending” = report not yet fetched (not a zero)</span>
+          <span>❌ Unverified / not yet entered</span>
+          <span>“pending” = report not yet read (not a zero)</span>
           <span className="inline-flex items-center gap-1"><span className="w-[7px] h-[7px] rounded-full bg-good" />best performer</span>
         </div>
       </div>

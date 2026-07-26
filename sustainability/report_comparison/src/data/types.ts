@@ -21,7 +21,7 @@ export interface Citation {
    * principle we do not invent a date to satisfy a non-null type.
    */
   publishedDate: string | null;
-  extractedDate: string;          // when the extraction pipeline last verified this figure
+  extractedDate: string;          // when this figure was last verified against the source report (manual)
 }
 
 export interface MetricValue {
