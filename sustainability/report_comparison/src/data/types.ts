@@ -26,7 +26,15 @@ export interface MetricValue {
   value: number | null;           // null = N/D (render "N/D", never 0)
   unit: string;
   fiscalYear: string;             // e.g. "FY2024/25"
-  status: "confirmed" | "unverified"; // no "estimated" — estimates are not allowed
+  /**
+   * Provenance tier — DERIVED in buildMetricValue(), never hand-set:
+   *   "confirmed"  → a page-level location was recorded for THIS figure.
+   *   "reported"   → value is from the company's report, but no page was
+   *                  recorded during extraction (document-level citation only).
+   *   "unverified" → N/D: nothing disclosed / nothing to cite (value is null).
+   * No "estimated" tier — estimates are never entered into this model.
+   */
+  status: "confirmed" | "reported" | "unverified";
   citation: Citation | null;      // null when there is nothing to cite (N/D)
   notes?: string;                 // caveats, e.g. "includes Category 15"
 }

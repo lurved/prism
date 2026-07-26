@@ -141,6 +141,17 @@ export function CitedValue({ mv, display, className = "", emphasis = false, ndLa
   );
 }
 
+const STATUS_META: Record<MetricValue["status"], { label: string; color: string }> = {
+  confirmed: { label: "Confirmed", color: "text-[#8FC49F]" },   // page-verified
+  reported: { label: "Reported", color: "text-[#D8B27A]" },     // sourced, no page recorded
+  unverified: { label: "Unverified", color: "text-[#E8A79D]" }, // N/D
+};
+
+function StatusLabel({ status }: { status: MetricValue["status"] }) {
+  const m = STATUS_META[status];
+  return <span className={m.color}>{m.label}</span>;
+}
+
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex justify-between gap-3 py-[3px]">
@@ -181,10 +192,13 @@ function CitationBody({ mv }: { mv: MetricValue }) {
       <Row label="Published">{formatReportDate(c.publishedDate)}</Row>
       <Row label="Extracted">{formatReportDate(c.extractedDate)}</Row>
       <Row label="Status">
-        <span className={mv.status === "confirmed" ? "text-[#8FC49F]" : "text-[#E8A79D]"}>
-          {mv.status === "confirmed" ? "Confirmed" : "Unverified"}
-        </span>
+        <StatusLabel status={mv.status} />
       </Row>
+      {mv.status === "reported" && (
+        <p className="font-sans text-[10px] leading-[1.5] text-muted2 mt-1.5 mb-0">
+          As disclosed in the report; exact page not recorded during extraction.
+        </p>
+      )}
       {mv.notes && (
         <p className="font-sans text-[11px] leading-[1.5] text-muted mt-2 mb-0 [text-wrap:pretty]">{mv.notes}</p>
       )}
