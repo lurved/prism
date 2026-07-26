@@ -171,7 +171,7 @@ function CitationBody({ mv }: { mv: MetricValue }) {
           <span aria-hidden>❌</span> Unverified — citation pending
         </div>
         <p className="font-sans text-[11px] leading-[1.5] text-muted m-0">
-          This metric is not disclosed in the source report, or was not confirmed during extraction.
+          This metric is not disclosed in the source report, or could not be verified against it.
           It is shown as <span className="font-mono">N/D</span> and never substituted with a figure.
         </p>
         {mv.notes && <p className="font-sans text-[11px] leading-[1.5] text-muted mt-2 mb-0">{mv.notes}</p>}
@@ -196,7 +196,7 @@ function CitationBody({ mv }: { mv: MetricValue }) {
       </Row>
       {mv.status === "reported" && (
         <p className="font-sans text-[10px] leading-[1.5] text-muted2 mt-1.5 mb-0">
-          As disclosed in the report; exact page not recorded during extraction.
+          As disclosed in the report; exact page not recorded when this figure was entered.
         </p>
       )}
       {mv.notes && (

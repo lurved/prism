@@ -19,8 +19,8 @@ export const metadata = {
 function StatusLine({ e }: { e: HealthcareEntity }) {
   const map: Record<HealthcareEntity["status"], string> = {
     populated: "Fully populated",
-    pending_extraction: "Beds confirmed · emissions pending extraction",
-    pending_verification: "Pending verification — nothing seeded",
+    pending_extraction: "Beds confirmed · emissions pending entry",
+    pending_verification: "Pending verification — nothing entered yet",
     excluded: "Excluded — no entity-level inventory",
   };
   return <span>{map[e.status]}</span>;
@@ -172,7 +172,7 @@ export default function HealthcarePage() {
               <div className="font-sans text-[11px] text-muted mt-2 leading-[1.5]">{e.primarySource!.reportTitle}</div>
               {e.primarySource!.url
                 ? <a href={e.primarySource!.url} target="_blank" rel="noopener noreferrer" className="font-mono text-[11px] mt-3 inline-block" style={{ color: e.accentColor }}>View report →</a>
-                : <span className="font-mono text-[11px] mt-3 inline-block text-muted3">URL pending (Job H2)</span>}
+                : <span className="font-mono text-[11px] mt-3 inline-block text-muted3">URL pending</span>}
             </div>
           ))}
         </div>

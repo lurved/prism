@@ -17,10 +17,10 @@
  * are therefore EXCLUDED with rationale code EXCLUDED_NO_ENTITY_INVENTORY (the
  * healthcare analogue of the utilities EXCLUDED_GROUP_BUNDLING code).
  *
- * NOTE ON PAGE NUMBERS: where the build spec confirmed a figure (✅) but did not
- * quote an exact page, `page` is left null and `pageNote` records that the page
- * was not specified in the spec. No page number has been invented. Job H3 (IHH
- * absolute backfill) will attach exact pages when the extraction pipeline runs.
+ * NOTE ON PAGE NUMBERS: where a figure is confirmed (✅) but the exact page was
+ * not recorded when it was entered, `page` is left null and `pageNote` says so.
+ * No page number has been invented. Exact pages are attached only by re-checking
+ * the source report by hand — there is no automated extraction step.
  */
 
 import { TIER_META } from "./provenance";
@@ -50,8 +50,8 @@ export type Scope2Method = "location_based" | "market_based" | "unknown" | null;
 /** Lifecycle state of an entity row in the comparison. */
 export type EntityStatus =
   | "populated"            // fully seeded from confirmed disclosure
-  | "pending_extraction"  // some confirmed metrics; emissions await pipeline job
-  | "pending_verification" // nothing seeded yet; report not yet fetched
+  | "pending_extraction"  // some confirmed metrics; emissions not yet entered from the report
+  | "pending_verification" // nothing seeded yet; report not yet read
   | "excluded";           // no entity-level inventory — carries rationaleCode
 
 export interface Citation {
@@ -129,7 +129,7 @@ const IHH_SR2025: Citation = {
   reportTitle: "IHH Sustainability Report 2025 (SGX filing, Part 1)",
   fy: "FY2025",
   page: null,
-  pageNote: "Page not specified in build spec; Job H3 to attach exact page.",
+  pageNote: "Exact page not recorded when entered; to be attached by re-checking the source report.",
   url: "https://links.sgx.com/1.0.0/corporate-announcements/N9NJBCPX473TDDMI/", // SGX announcement (spec URL truncated)
   reportDateStamp: null,
   assuranceStatus: "internal_only",
@@ -272,14 +272,14 @@ const ihh: HealthcareEntity = {
     "Scope 3 coverage (FY2025): Categories 3, 5, 6, 7. Categories 1, 2 and 15 are identified as material but not yet reported — Cat 15 blank under the toggle is correct (no special-casing). No consolidated absolute Scope 3 tCO₂e is disclosed.",
     "2030 target: −42% Scope 1+2 vs a 2025 baseline (SBTi-referenced), announced Apr 2026.",
     "Assurance: Scope 1+2 limited assurance SG + MY only (2022–23). SR 2025 is NOT externally assured; external assurance targeted FY2027. 2024–25 rows are internal_only.",
-    "Job H3: combined Scope 1+2 backfilled from SR 2025 narrative; separate Scope 1/2 and absolute Scope 3 remain undisclosed in the report.",
+    "Combined Scope 1+2 was taken from the SR 2025 narrative; separate Scope 1/2 and absolute Scope 3 remain undisclosed in the report.",
   ],
 };
 
 /* ════════════════════════════════════════════════════════════════════════
-   THOMSON MEDICAL GROUP LTD — ⚠️ pending extraction
+   THOMSON MEDICAL GROUP LTD — ⚠️ pending entry
    SGX. Licensed beds confirmed from FY2025 AR body. All emissions/energy
-   metrics BLANK until pipeline job H1 completes. FY ends 30 June.
+   metrics BLANK until they are read and entered from the report. FY ends 30 June.
    Consolidates TMC Life Sciences Berhad (~70%, Bursa-listed) — nested listed
    entity; boundary/double-report check required before any ranking.
    ════════════════════════════════════════════════════════════════════════ */
@@ -341,7 +341,7 @@ const tmg: HealthcareEntity = {
       flag: "confirmed",
       citation: TMG_AR2025,
     },
-    // Emissions/energy/intensity: ❌ blank until Job H1 verifies the SR section.
+    // Emissions/energy/intensity: ❌ blank until the SR section is read and entered by hand.
     intensity_2025: {
       value: null,
       unit: "kg CO₂e/patient-bed-day",
@@ -356,7 +356,7 @@ const tmg: HealthcareEntity = {
   },
   dataNotes: [
     "Licensed beds confirmed from AR body: Singapore 187, Malaysia 403, Vietnam 230 (as at 30 Jun 2025).",
-    "Job H1 done (AR2025, SR section): TMG reports Scope 1+2 emissions intensity PER REVENUE, in three separate currencies per entity (p.57) — TMPL 0.0126 tCO₂e/S$'000, TMCLS 0.0415 tCO₂e/RM'000, FEMVN 0.0416 tCO₂e/VND 10M. This is NOT a patient-bed-day intensity, so it is not comparable with IHH; intensityDenominator set to null.",
+    "From AR2025 (SR section): TMG reports Scope 1+2 emissions intensity PER REVENUE, in three separate currencies per entity (p.57) — TMPL 0.0126 tCO₂e/S$'000, TMCLS 0.0415 tCO₂e/RM'000, FEMVN 0.0416 tCO₂e/VND 10M. This is NOT a patient-bed-day intensity, so it is not comparable with IHH; intensityDenominator set to null.",
     "No consolidated absolute Scope 1/2/3 tCO₂e is disclosed in AR2025 (only the per-revenue intensity). GHG measurement has begun under a TCFD framing (p.73); Scope 2 method not stated. Absolutes therefore remain blank, not zero.",
     "Commitment to Net Zero emissions by 2050 stated in the SR narrative (no interim quantified target disclosed).",
     "Frameworks: GRI (305/403/416 referenced) and TCFD (climate-risk assessment begun).",
@@ -365,7 +365,7 @@ const tmg: HealthcareEntity = {
 };
 
 /* ════════════════════════════════════════════════════════════════════════
-   RAFFLES MEDICAL GROUP — ✅ populated (Job H2 done)
+   RAFFLES MEDICAL GROUP — ✅ populated
    Source: Raffles Medical Group Annual Report 2025 (Sustainability Report
    section). Reports Scope 1 & 2 only (no Scope 3). External assurance NOT
    commissioned for FY2025. GHG intensity is not published on a bed-day basis.
@@ -497,7 +497,7 @@ const rmg: HealthcareEntity = {
     },
   },
   dataNotes: [
-    "Job H2 done (AR2025): Scope 1 = 1,592 tCO₂e and Scope 2 = 16,975 tCO₂e (FY2025; 2024: 1,198 / 17,000 tCO₂e). No Scope 3 disclosed.",
+    "From AR2025: Scope 1 = 1,592 tCO₂e and Scope 2 = 16,975 tCO₂e (FY2025; 2024: 1,198 / 17,000 tCO₂e). No Scope 3 disclosed.",
     "External assurance was NOT commissioned for FY2025. Reported per GRI Standards 2021 (applied since 2017), aligned to TCFD and IFRS S1/S2.",
     "Scope 2 location/market basis is not stated. GHG intensity is not published on a patient-bed-day basis (energy/water intensity is revenue-based) — intensityDenominator null; not intensity-comparable with IHH.",
     "Targets span three horizons (short-term to 2030, medium 2031–2040, long-term); medium-term includes reducing Scope 1+2 emissions. Baseline not quantified in the extract, so no numeric target is seeded.",
