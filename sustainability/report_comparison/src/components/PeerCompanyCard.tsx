@@ -10,13 +10,15 @@ function fmtT(v: number): string {
 
 export function PeerCompanyCard({ company: c }: { company: PeerCompany }) {
   // Each headline stat is routed through <CitedValue> so no figure is uncited.
-  const stats: { label: string; value: number | null; unit: string; display: (v: number) => string }[] = [
-    { label: "Scope 1", value: c.scope1, unit: "tCO₂e", display: fmtT },
-    { label: "Scope 2", value: c.scope2, unit: "tCO₂e", display: fmtT },
-    { label: "Net-Zero", value: c.netZeroYear, unit: "year", display: (v) => String(v) },
-    { label: "Fem. Board", value: c.femaleBoardPct, unit: "%", display: (v) => `${v}%` },
-    { label: "Headcount", value: c.headcount, unit: "employees", display: (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : String(v)) },
-    { label: "Indep. Dir.", value: c.independentDirectorsPct, unit: "%", display: (v) => `${v}%` },
+  // metricId matches the row `key` in PeerComparison so a single citationPages
+  // entry drives "confirmed" status on both the card and the full table.
+  const stats: { label: string; metricId: string; value: number | null; unit: string; display: (v: number) => string }[] = [
+    { label: "Scope 1", metricId: "s1", value: c.scope1, unit: "tCO₂e", display: fmtT },
+    { label: "Scope 2", metricId: "s2", value: c.scope2, unit: "tCO₂e", display: fmtT },
+    { label: "Net-Zero", metricId: "netzero", value: c.netZeroYear, unit: "year", display: (v) => String(v) },
+    { label: "Fem. Board", metricId: "femaleBoard", value: c.femaleBoardPct, unit: "%", display: (v) => `${v}%` },
+    { label: "Headcount", metricId: "headcount", value: c.headcount, unit: "employees", display: (v) => (v >= 1000 ? `${(v / 1000).toFixed(1)}k` : String(v)) },
+    { label: "Indep. Dir.", metricId: "indepDir", value: c.independentDirectorsPct, unit: "%", display: (v) => `${v}%` },
   ];
 
   return (
@@ -39,7 +41,7 @@ export function PeerCompanyCard({ company: c }: { company: PeerCompany }) {
               <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase">{s.label}</div>
               <div className="font-serif font-medium text-[17px] text-ink leading-[1.1] mt-[5px]">
                 <CitedValue
-                  mv={peerMetricValue(c, s.value, s.unit)}
+                  mv={peerMetricValue(c, s.value, s.unit, undefined, s.metricId)}
                   plain
                   display={s.value !== null ? s.display(s.value) : undefined}
                 />

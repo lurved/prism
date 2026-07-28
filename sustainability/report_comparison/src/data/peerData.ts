@@ -92,6 +92,17 @@ export interface PeerCompany {
 
   naMetrics: string[];          // metric keys that are N/A for this business model
   dataNotes: string[];
+
+  /**
+   * Known page references in the source report, keyed by the row `key` used
+   * in PeerComparison's row list / PeerCompanyCard's stat keys (e.g. "s1",
+   * "s2", "s3", "total", "sf6", "intensity", "normIntensity", "systemLoss",
+   * "netzero", "headcount", "femaleBoard", "femaleWorkforce",
+   * "femaleSeniorMgmt", "training", "turnover", "engagement", "injury",
+   * "indepDir"). Only populated where a page was actually recorded during
+   * extraction — never guessed. See lib/peerMetrics.ts.
+   */
+  citationPages?: Record<string, number>;
 }
 
 export const peerCompanies: PeerCompany[] = [
@@ -233,7 +244,22 @@ export const peerCompanies: PeerCompany[] = [
       "System/T&D loss % is N/D (not disclosed); CLP reports reliability indices instead (e.g. supply availability 99.999%). The metric applies to its business — this is N/D, not N/A.",
       "Injury rate uses a per-200,000-work-hours basis — different from Meralco's per-million-hours LTIFR; not directly comparable.",
       "Community figure is the HK$240M CLP Community Energy Saving Fund allocation; a consolidated community-investment total is not disclosed in the Annual Report.",
+      "Verified July 2026 against the CLP Holdings 2025 Sustainability Report (a different CLP document than the Annual Report originally cited, but the same FY2025 period, and CLP's own official report). That document does not carry CLP's absolute Scope 1/2/3/total GHG tonnages, its 0.58 kg CO2e/kWh S1+2-only intensity, female workforce/senior-management %, or board independence % — those live in the Annual Report's Five-Year ESG Data table or the separate ESG Databook, neither available in Drive — so scope1, scope2, scope3, total, normIntensity, femaleWorkforce, femaleSeniorMgmt and indepDir remain uncited (reported, not confirmed).",
+      "The Sustainability Report's 'Employees and contractors by region' table (Group total Average FTE 8,467.2) is close to but does not exactly match the stored headcount of 8,539 (a different metric — average FTE across the year vs. the Annual Report's point-in-time headcount) — left uncited rather than treated as a straight match.",
     ],
+    citationPages: {
+      // Verified July 2026 against CLP Holdings 2025 Sustainability Report (Drive copy).
+      // "...further reduced the Group's GHG emissions intensity to 0.50kg CO2e per kilowatt hour in 2025."
+      intensity: 25,
+      // "...achieve net-zero GHG emissions across our value chain by 2050."
+      netzero: 6,
+      // Sustainability agenda scorecard: Board diversity target >30% female — "2025 performance: 38%".
+      femaleBoard: 7,
+      // "51.9 training hours/employee (in line with 2024)".
+      training: 28,
+      // "The lost-time injury rate fell to a record low of 0.04."
+      injury: 79,
+    },
   },
 
   /* ═══════════════════════════════════════════════════════════════
