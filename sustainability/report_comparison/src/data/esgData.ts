@@ -194,6 +194,31 @@ export const companies: Company[] = [
       "No external assurance was obtained this reporting cycle (internal audit of Scope 1 & 2 only; external assurance targeted from FY2032).",
       "Community contribution shown is the explicitly-stated S$2.2M (FY24/25, incl. in-kind). A separate 3-year monetary series (S$1.7M/7.2M/20.4M) appears in the CSR snapshot but its definition is ambiguous in the report and was not used.",
     ],
+    citationPages: {
+      // Verified July 2026 against SMRT Sustainability Report 2024/25 (Drive copy).
+      // Sustainability Snapshot infographic (Scope 1/2/3, GHG intensity) — corroborated
+      // by the detailed GHG performance table on p.35, which is recorded here.
+      scope1: 35,
+      scope2: 35,
+      scope3: 35,
+      ghgIntensity: 35,
+      // "Achieve net zero by 2050" — Decarbonisation targets, Chapter 2.
+      netZeroTarget: 27,
+      // Water Consumption (m³) chart, SMRT Group, FY24/25.
+      waterConsumption: 37,
+      // "In FY24/25, employees received an average of 65.8 hours of structured training."
+      trainingHours: 50,
+      // "Women 3 (25%)" — Board Diversity.
+      femaleBoard: 62,
+      // Senior Management headcount 137 (Overall Workforce) / 33 (Female) diversity table.
+      femaleLeadership: 49,
+      // "Overall Workforce 9,056" — Diversity of Governance Bodies and Employees.
+      headcount: 49,
+      // "S$2.2M contributed, including 46,000 EZ-Link cards..." — CSR snapshot.
+      communityInvestment: 8,
+      // "Percentage of Independent Non-Executive Directors: 83.4%" — Board Diversity.
+      independentDirectors: 62,
+    },
   },
 
   /* ═══════════════════════════════════════════════════════════════
