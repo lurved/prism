@@ -94,6 +94,29 @@ export const companies: Company[] = [
     citationPages: {
       // Only pages actually recorded during extraction — never guessed.
       waterConsumption: 76, // GRI 303-5 table location noted in source PDF
+      // Verified July 2026 against Sembcorp Sustainability Report 2025 (Drive copy).
+      // GRI Performance Indicators table spans printed pages 76–77 (two-page
+      // spread); 76 is recorded as the first page of that spread.
+      scope1: 76,
+      scope2: 76,
+      scope3: 76,
+      scope3Cat15: 76,
+      ghgIntensity: 76,
+      renewableCapacity: 76,
+      femaleBoard: 76,
+      femaleLeadership: 76,
+      headcount: 76,
+      // "By 2050, deliver net-zero emissions (Scope 1 and 2)" — Our Climate Action Targets.
+      netZeroTarget: 72,
+      // Performance Indicators table continues onto printed pages 78–79.
+      trainingHours: 78,
+      injuryRate: 78,
+      communityInvestment: 78,
+      // "100% of our employees received ABC training" — Risk Governance.
+      antiCorruptionTraining: 54,
+      // s1s2Reduction (47.5%) is a derived intensity-reduction figure (0.40→0.21
+      // tCO2e/MWh) — it is not printed as a standalone percentage anywhere in the
+      // report, so no page is recorded for it.
     },
   },
 
@@ -171,6 +194,31 @@ export const companies: Company[] = [
       "No external assurance was obtained this reporting cycle (internal audit of Scope 1 & 2 only; external assurance targeted from FY2032).",
       "Community contribution shown is the explicitly-stated S$2.2M (FY24/25, incl. in-kind). A separate 3-year monetary series (S$1.7M/7.2M/20.4M) appears in the CSR snapshot but its definition is ambiguous in the report and was not used.",
     ],
+    citationPages: {
+      // Verified July 2026 against SMRT Sustainability Report 2024/25 (Drive copy).
+      // Sustainability Snapshot infographic (Scope 1/2/3, GHG intensity) — corroborated
+      // by the detailed GHG performance table on p.35, which is recorded here.
+      scope1: 35,
+      scope2: 35,
+      scope3: 35,
+      ghgIntensity: 35,
+      // "Achieve net zero by 2050" — Decarbonisation targets, Chapter 2.
+      netZeroTarget: 27,
+      // Water Consumption (m³) chart, SMRT Group, FY24/25.
+      waterConsumption: 37,
+      // "In FY24/25, employees received an average of 65.8 hours of structured training."
+      trainingHours: 50,
+      // "Women 3 (25%)" — Board Diversity.
+      femaleBoard: 62,
+      // Senior Management headcount 137 (Overall Workforce) / 33 (Female) diversity table.
+      femaleLeadership: 49,
+      // "Overall Workforce 9,056" — Diversity of Governance Bodies and Employees.
+      headcount: 49,
+      // "S$2.2M contributed, including 46,000 EZ-Link cards..." — CSR snapshot.
+      communityInvestment: 8,
+      // "Percentage of Independent Non-Executive Directors: 83.4%" — Board Diversity.
+      independentDirectors: 62,
+    },
   },
 
   /* ═══════════════════════════════════════════════════════════════
@@ -212,7 +260,7 @@ export const companies: Company[] = [
       scope3Cat15Emissions: null, // Cat 15 not separately broken out (only the 5-category SBTi aggregate is cited)
       ghgIntensityValue: 0.0186,
       ghgIntensityUnit: "tCO2e/TB",  // GHG intensity per terabyte of data traffic carried — standard telecom metric
-      renewableEnergyPct: 9.33,   // % of electricity backed by renewable sources (FY2024 confirmed; FY2025 "up from 9.3%" but exact not extracted)
+      renewableEnergyPct: 20.4,   // % of electricity backed by renewable sources, FY2025 — "up from 9.3% last year" (SR2025 p.23)
       renewableCapacityGW: null,  // Not applicable — Singtel does not generate its own renewable energy at scale
       netZeroTargetYear: 2045,
       scope1and2ReductionPct: 19.3, // FY2023 baseline 440.6 ktCO2e → FY2025 355.8 ktCO2e = −19.3%
@@ -221,7 +269,7 @@ export const companies: Company[] = [
     social: {
       trainingHoursPerEmployee: 39.1,   // Group FY2025 average — GRI 404-1; training investment S$19.7M in FY2025
       femaleBoardPct: 36,               // "36% of Board of Directors are women" — SR2025
-      femaleLeadershipPct: 31,          // % female Executives and Top Executives — Group FY2024 Excel (consistent trend)
+      femaleLeadershipPct: 29,          // % female Executives and Top Executives, Singtel Group, FY2025 (SR2025 p.68 appendix table; also 29% in FY2024)
       totalHeadcount: 24_284,           // Group total employees FY2025 (Singtel + Optus + NCS + Digital InfraCo) — GRI 2-7
       employeeEngagementScore: null,    // Not disclosed as a single Group score in extracted data
       lostTimeInjuryRate: 1.02,        // Workplace injury frequency rate per million hours worked — Group FY2024 from Excel (FY2025 TRIR: 2.1 per 1,000 employees)
@@ -249,11 +297,45 @@ export const companies: Company[] = [
       "Scope 3 SBTi-covered categories (1, 2, 11, 13, 15) = 2,220.3 ktCO2e; full 15-category total = 2,309.4 ktCO2e.",
       "FY2023 Scope 1/Scope 2 split is estimated (S1~12.2, S2~428.4) — only confirmed total is 440,600 tCO2e (SBTi baseline).",
       "GHG intensity metric (tCO2e/TB) is a telecom-specific measure and is not comparable with Sembcorp (tCO2e/MWh) or SMRT (tCO2e/S$M revenue).",
-      "Renewable energy % (9.33%) is from FY2024 confirmed data; FY2025 is confirmed as higher but exact % not extracted.",
+      "Renewable energy % (20.4%) is the FY2025 figure — up from 9.3% in FY2024 (SR2025 p.23).",
       "Community investment S$32.8M (Group) includes Optus (Australia) contribution; Singtel Singapore entity alone: S$7.7M.",
       "Total headcount 24,284 covers entire Singtel Group globally — much larger scope than Sembcorp and SMRT (both Singapore-centric).",
       "Singtel fiscal year runs April–March; FY2025 = 1 Apr 2024 – 31 Mar 2025.",
+      "CORRECTED (July 2026): renewableEnergyPct was previously stored as 9.33% (last year's FY2024 figure); corrected to the FY2025 figure of 20.4% per SR2025 p.23 ('up from 9.3% last year').",
+      "CORRECTED (July 2026): femaleLeadershipPct was previously stored as 31%; corrected to 29% per SR2025 p.68 People Performance Indicators table (Singtel Group female 'Executives and Top Executives', consistent across FY2025 and FY2024). A differently-defined narrative figure on p.50 (30.6% of 'management roles') is not the same metric and was not used.",
     ],
+    citationPages: {
+      // Verified July 2026 against Singtel Group Sustainability Report 2025 (Drive copy).
+      // "Overall Net-Zero Target ... by FY2045" — Our Climate Action Targets.
+      netZeroTarget: 21,
+      // "This marks a 19.3% reduction compared to our 2023 SBTi baseline" / Scope 3 total.
+      s1s2Reduction: 22,
+      scope3: 22,
+      // Environmental appendix performance-indicator table (Optus/SG/NCS/DigitalInfraCo/Group).
+      scope1: 46,
+      scope2: 46,
+      ghgIntensity: 46,
+      waterConsumption: 46,
+      // "Female representation on the Singtel Board of Directors ... stands at 36%".
+      femaleBoard: 50,
+      // People performance indicators appendix table — Total employees, Singtel Group column.
+      headcount: 68,
+      // Average training hours per employee, Singtel Group column.
+      trainingHours: 69,
+      // "we invested S$32.8 million in our communities".
+      communityInvestment: 71,
+      // "In FY2025, 20.4% of our electricity consumption was backed by renewable sources".
+      renewableEnergyPct: 23,
+      // People performance indicators appendix table — % female Executives and Top
+      // Executives, Singtel Group column.
+      femaleLeadership: 68,
+      // injuryRate: PDF appendix (p.69) shows a rounded FY2024 Group figure of 1.0
+      // per million hours, consistent with but not an exact match for the stored
+      // 1.02 (sourced from a separate Excel export) — not cited.
+      // independentDirectors: not disclosed in SR2025; data comment states this
+      // figure is sourced from Singtel's corporate-governance webpage, which is
+      // outside the Drive documents reviewed — not cited.
+    },
   },
 ];
 
