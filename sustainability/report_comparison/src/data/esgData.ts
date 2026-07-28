@@ -260,7 +260,7 @@ export const companies: Company[] = [
       scope3Cat15Emissions: null, // Cat 15 not separately broken out (only the 5-category SBTi aggregate is cited)
       ghgIntensityValue: 0.0186,
       ghgIntensityUnit: "tCO2e/TB",  // GHG intensity per terabyte of data traffic carried — standard telecom metric
-      renewableEnergyPct: 9.33,   // % of electricity backed by renewable sources (FY2024 confirmed; FY2025 "up from 9.3%" but exact not extracted)
+      renewableEnergyPct: 20.4,   // % of electricity backed by renewable sources, FY2025 — "up from 9.3% last year" (SR2025 p.23)
       renewableCapacityGW: null,  // Not applicable — Singtel does not generate its own renewable energy at scale
       netZeroTargetYear: 2045,
       scope1and2ReductionPct: 19.3, // FY2023 baseline 440.6 ktCO2e → FY2025 355.8 ktCO2e = −19.3%
@@ -269,7 +269,7 @@ export const companies: Company[] = [
     social: {
       trainingHoursPerEmployee: 39.1,   // Group FY2025 average — GRI 404-1; training investment S$19.7M in FY2025
       femaleBoardPct: 36,               // "36% of Board of Directors are women" — SR2025
-      femaleLeadershipPct: 31,          // % female Executives and Top Executives — Group FY2024 Excel (consistent trend)
+      femaleLeadershipPct: 29,          // % female Executives and Top Executives, Singtel Group, FY2025 (SR2025 p.68 appendix table; also 29% in FY2024)
       totalHeadcount: 24_284,           // Group total employees FY2025 (Singtel + Optus + NCS + Digital InfraCo) — GRI 2-7
       employeeEngagementScore: null,    // Not disclosed as a single Group score in extracted data
       lostTimeInjuryRate: 1.02,        // Workplace injury frequency rate per million hours worked — Group FY2024 from Excel (FY2025 TRIR: 2.1 per 1,000 employees)
@@ -297,12 +297,12 @@ export const companies: Company[] = [
       "Scope 3 SBTi-covered categories (1, 2, 11, 13, 15) = 2,220.3 ktCO2e; full 15-category total = 2,309.4 ktCO2e.",
       "FY2023 Scope 1/Scope 2 split is estimated (S1~12.2, S2~428.4) — only confirmed total is 440,600 tCO2e (SBTi baseline).",
       "GHG intensity metric (tCO2e/TB) is a telecom-specific measure and is not comparable with Sembcorp (tCO2e/MWh) or SMRT (tCO2e/S$M revenue).",
-      "Renewable energy % (9.33%) is from FY2024 confirmed data; FY2025 is confirmed as higher but exact % not extracted.",
+      "Renewable energy % (20.4%) is the FY2025 figure — up from 9.3% in FY2024 (SR2025 p.23).",
       "Community investment S$32.8M (Group) includes Optus (Australia) contribution; Singtel Singapore entity alone: S$7.7M.",
       "Total headcount 24,284 covers entire Singtel Group globally — much larger scope than Sembcorp and SMRT (both Singapore-centric).",
       "Singtel fiscal year runs April–March; FY2025 = 1 Apr 2024 – 31 Mar 2025.",
-      "MISMATCH (flagged July 2026, not corrected): renewableEnergyPct is stored as 9.33% but SR2025 p.23 states FY2025 electricity from renewable sources was 20.4% ('up from 9.3% last year') — the stored figure is last year's (FY2024) number, not FY2025. Left uncited pending a data-entry fix.",
-      "MISMATCH (flagged July 2026, not corrected): femaleLeadershipPct is stored as 31% but SR2025 p.68 People Performance Indicators table shows Singtel Group female 'Executives and Top Executives' at 29% for both FY2025 and FY2024 — not 31%. A nearby narrative figure on p.50 (30.6% of 'management roles') is close to 31% but is a differently-defined metric. Left uncited pending a data-entry fix.",
+      "CORRECTED (July 2026): renewableEnergyPct was previously stored as 9.33% (last year's FY2024 figure); corrected to the FY2025 figure of 20.4% per SR2025 p.23 ('up from 9.3% last year').",
+      "CORRECTED (July 2026): femaleLeadershipPct was previously stored as 31%; corrected to 29% per SR2025 p.68 People Performance Indicators table (Singtel Group female 'Executives and Top Executives', consistent across FY2025 and FY2024). A differently-defined narrative figure on p.50 (30.6% of 'management roles') is not the same metric and was not used.",
     ],
     citationPages: {
       // Verified July 2026 against Singtel Group Sustainability Report 2025 (Drive copy).
@@ -324,7 +324,11 @@ export const companies: Company[] = [
       trainingHours: 69,
       // "we invested S$32.8 million in our communities".
       communityInvestment: 71,
-      // renewableEnergyPct, femaleLeadership: MISMATCH — not cited, see dataNotes.
+      // "In FY2025, 20.4% of our electricity consumption was backed by renewable sources".
+      renewableEnergyPct: 23,
+      // People performance indicators appendix table — % female Executives and Top
+      // Executives, Singtel Group column.
+      femaleLeadership: 68,
       // injuryRate: PDF appendix (p.69) shows a rounded FY2024 Group figure of 1.0
       // per million hours, consistent with but not an exact match for the stored
       // 1.02 (sourced from a separate Excel export) — not cited.
