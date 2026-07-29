@@ -336,6 +336,24 @@ export const peerCompanies: PeerCompany[] = [
       "Independent directors 81.8% (9 of 11) uses the Companies Act basis (8 independent NEDs + Chair independent on appointment); NED-only would be 72.7%.",
       "External assurance by Deloitte LLP (limited assurance, ISAE 3000 / ISAE 3410) on ESG/Responsible Business metrics.",
       "Data taken from the SEC-filed Form 20-F because nationalgrid.com is Cloudflare-blocked to automated access. Fiscal year ends 31 March.",
+      "Verified July 2026 against the 'Responsible Business review' chapter (pp.38-52) of the National Grid plc Annual Report and Accounts 2025/26 itself (a Drive upload of that excerpt, distinct from the SEC 20-F originally cited). totalGHG, netZeroYear, headcount, femaleBoard/Workforce/SeniorMgmt %, employee engagement, LTIFR and the external assurance provider all matched exactly. Scope 1/2/3 individual absolute figures, GHG intensity (425 tCO2e/£M revenue), and independent-directors % were not present in this excerpt (the first two likely sit in the separate Responsible Business data tables; board independence is a Corporate Governance-chapter disclosure) — left uncited rather than guessed.",
+      "Community investment also corroborated in this excerpt: 'the fund commits £3.5 million of support in the UK and £3.3 million in the US' each year — not formally cited (communityInvestmentNative is a free-text field, not run through the citation system) but confirms the existing £6.8M/yr figure.",
     ],
+    citationPages: {
+      // Verified July 2026 against the Annual Report and Accounts 2025/26 "Responsible Business review" excerpt (Drive copy).
+      // "Achieve net zero by 2050."
+      netzero: 40,
+      // "Our 2025/26 GHG emissions footprint across direct and indirect sources was 37,015 ktCO2e."
+      total: 42,
+      // "Our 33,017 colleagues across the UK and US" / Gender demographic table (Board, Senior management, Whole company).
+      headcount: 48,
+      femaleBoard: 48,
+      femaleWorkforce: 48,
+      femaleSeniorMgmt: 48,
+      // "81% ... Employee engagement index in 2025/26" (Grid:Voice).
+      engagement: 48,
+      // "We have recorded a Group LTIFR of 0.11 this year."
+      injury: 49,
+    },
   },
 ];
