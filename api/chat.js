@@ -7,8 +7,12 @@
 const Anthropic = require("@anthropic-ai/sdk");
 const { Redis } = require("@upstash/redis");
 const profile = require("../agent/profile");
+const { buildSystemPrompt, DEFAULT_MODEL } = require("../agent/systemPrompt");
 
-// Redis client — env vars set automatically by Vercel Upstash integration
+// Redis client — env vars set automatically by Vercel Upstash integration.
+// Reused below for rate limiting (same client as the chat-log write), so
+// this endpoint doesn't need a second Redis library alongside the ioredis
+// client already used by api/typeme/_lib.js.
 const redis = process.env.UPSTASH_REDIS_REST_URL
   ? new Redis({
       url: process.env.UPSTASH_REDIS_REST_URL,
@@ -18,145 +22,28 @@ const redis = process.env.UPSTASH_REDIS_REST_URL
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-function buildSystemPrompt() {
-  const exp = profile.experience
-    .map(
-      (e) =>
-        `**${e.company} (${e.period}) — ${e.role}**\n${e.highlights.map((h) => `- ${h}`).join("\n")}`
-    )
-    .join("\n\n");
+const SYSTEM_PROMPT = buildSystemPrompt(profile);
 
-  const highlights = profile.highlights
-    .map((h) => `- **${h.title}:** ${h.detail}`)
-    .join("\n");
+// This endpoint is unauthenticated and CORS-open by design (the widget is
+// public), but it's backed by a metered API key — rate limit per IP so it
+// can't be used to run up the Anthropic bill. Mirrors the rateLimit()
+// convention already used in api/typeme/_lib.js.
+const RATE_LIMIT_MAX = 20;
+const RATE_LIMIT_WINDOW_SEC = 600; // 10 minutes
 
-  const strengths = profile.keyStrengths.join(", ");
-
-  const posts =
-    profile.linkedInPosts && profile.linkedInPosts.length
-      ? profile.linkedInPosts
-          .map((p) => `**${p.date}${p.title ? " — " + p.title : ""}**\n${p.summary}`)
-          .join("\n\n")
-      : "None listed yet.";
-
-  const recs =
-    profile.recommendations && profile.recommendations.length
-      ? profile.recommendations
-          .map(
-            (r) =>
-              `**${r.author}** (${r.title}, ${r.date}) — *${r.relationship}*\n"${r.text}"`
-          )
-          .join("\n\n")
-      : "None listed yet.";
-
-  const independentWork =
-    profile.independentWork && profile.independentWork.length
-      ? profile.independentWork.map((w) => `- **${w.title}:** ${w.detail}`).join("\n")
-      : "";
-
-  const education = profile.education ? profile.education.join("\n") : "";
-  const awards = profile.awards ? profile.awards.join("\n") : "";
-  const media = profile.mediaAndPress ? profile.mediaAndPress.join("\n") : "";
-
-  return `You are a warm, sharp personal agent representing ${profile.name}.
-Your purpose is to introduce Priscilla and explore how she might connect with whoever is chatting —
-whether they're a potential collaborator, advisor, partner, client, speaker booker, or just curious.
-
-Your tone is open, genuine, and professional — like a trusted colleague who knows Priscilla well.
-You highlight concrete achievements, not vague claims. You ask good questions to understand what the visitor
-is working on, then find natural points of connection with Priscilla's background and interests.
-
----
-
-## About ${profile.name}
-
-${profile.summary}
-
-**Contact:** ${profile.email} | ${profile.linkedin}
-**Location:** ${profile.location}
-
----
-
-## Key Strengths
-
-${strengths}
-
----
-
-## Career Highlights
-
-${highlights}
-
----
-
-## Experience
-
-${exp}
-
----
-
-## Independent AI Product Work
-
-${independentWork}
-
----
-
-## Thought Leadership & Speaking
-
-${profile.speakingAndThoughtLeadership.join("\n")}
-
----
-
-## LinkedIn Posts (Priscilla's own writing)
-
-${posts}
-
----
-
-## Recommendations from Colleagues
-
-${recs}
-
----
-
-## Education & Certifications
-
-${education}
-
----
-
-## Awards & Recognition
-
-${awards}
-
----
-
-## Media & Press
-
-${media}
-
----
-
-## Additional Context
-
-${profile.additionalContext}
-
----
-
-## Your Rules
-
-1. ONLY use information explicitly stated in this prompt. Do not infer, extrapolate, or draw on any external knowledge about Priscilla, her employers, or her work beyond what is written above.
-2. If asked something not covered in this prompt, say honestly: "I don't have that detail — reach out to Priscilla directly at ${profile.email} and she'll be happy to answer."
-3. Never fabricate figures, dates, titles, company names, outcomes, or any other details. If a fact isn't here, it doesn't exist for you.
-4. Encourage the visitor to reach out: ${profile.email} or ${profile.linkedin}
-5. Keep responses concise and punchy — two to four sentences per point unless asked to elaborate.
-6. If there's a natural connection between what the visitor is working on and Priscilla's background, highlight it and suggest they connect.
-7. Frame everything around collaboration and mutual value — not job seeking. Priscilla is accomplished and selective.
-8. Never discuss anything unrelated to Priscilla's work, interests, or potential collaborations.
-`;
+async function isRateLimited(ip) {
+  if (!redis) return false; // no store configured → don't block (dev)
+  const key = `chat:rl:${ip}`;
+  const n = await redis.incr(key);
+  if (n === 1) await redis.expire(key, RATE_LIMIT_WINDOW_SEC);
+  return n > RATE_LIMIT_MAX;
 }
 
-const SYSTEM_PROMPT = buildSystemPrompt();
+function clientIp(req) {
+  const fwd = req.headers["x-forwarded-for"];
+  if (fwd) return fwd.split(",")[0].trim();
+  return req.socket?.remoteAddress || "unknown";
+}
 
 module.exports = async function handler(req, res) {
   // CORS — allow requests from any origin (your GitHub Pages site)
@@ -173,6 +60,10 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    if (await isRateLimited(clientIp(req))) {
+      return res.status(429).json({ error: "Too many messages — please wait a bit and try again." });
+    }
+
     const { messages } = req.body;
 
     if (!Array.isArray(messages) || messages.length === 0) {
@@ -182,7 +73,7 @@ module.exports = async function handler(req, res) {
     const trimmed = messages.slice(-20);
 
     const result = await client.messages.create({
-      model: "claude-opus-4-8",
+      model: process.env.ANTHROPIC_CHAT_MODEL || DEFAULT_MODEL,
       max_tokens: 1024,
       system: SYSTEM_PROMPT,
       messages: trimmed,
@@ -202,7 +93,10 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).json({ reply: text });
   } catch (err) {
-    console.error(err);
+    // Log the real cause server-side (e.g. an invalid model id would surface
+    // here as a 4xx from the Anthropic API) — the user-facing message stays
+    // generic on purpose, but this is what to check first when debugging.
+    console.error("chat handler error:", err?.status ?? "", err?.message ?? err);
     return res.status(500).json({ error: "Something went wrong. Please try again." });
   }
 };
