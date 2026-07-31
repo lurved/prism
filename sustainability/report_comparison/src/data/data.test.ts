@@ -209,4 +209,25 @@ describe("Healthcare provenance", () => {
       }
     }
   });
+
+  it("a citation with no recorded page can never be effectively confirmed", () => {
+    for (const e of healthcareEntities) {
+      for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
+        if (mv.citation !== null && typeof mv.citation.page !== "number") {
+          expect(effectiveFlag(mv), `${e.id}/${key}`).not.toBe("confirmed");
+        }
+      }
+    }
+  });
+
+  it("every effectively-confirmed value carries a numeric page", () => {
+    for (const e of healthcareEntities) {
+      for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
+        if (effectiveFlag(mv) === "confirmed") {
+          expect(mv.citation, `${e.id}/${key}`).not.toBeNull();
+          expect(typeof mv.citation?.page, `${e.id}/${key} confirmed but no page`).toBe("number");
+        }
+      }
+    }
+  });
 });
