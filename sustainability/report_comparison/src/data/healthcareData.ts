@@ -177,14 +177,14 @@ const ihh: HealthcareEntity = {
       unit: "kg CO₂e/patient-bed-day",
       year: "2022",
       flag: "confirmed",
-      citation: IHH_SR2025,
+      citation: { ...IHH_SR2025, page: 5, pageNote: "Highlights of Our Sustainability Journey, footnote 4." },
     },
     intensity_2025: {
       value: 146.0,
       unit: "kg CO₂e/patient-bed-day",
       year: "2025",
       flag: "confirmed",
-      citation: IHH_SR2025,
+      citation: { ...IHH_SR2025, page: 5, pageNote: "Highlights of Our Sustainability Journey, footnote 4." },
     },
     scope2_method: {
       value: null,
@@ -192,7 +192,7 @@ const ihh: HealthcareEntity = {
       unit: "",
       year: null,
       flag: "confirmed",
-      citation: { ...IHH_SR2025, pageNote: "SR 2025 footnote (page not specified in spec)." },
+      citation: { ...IHH_SR2025, page: 5, pageNote: "Highlights of Our Sustainability Journey, footnote 4: 'Scope 2 GHG emissions are location-based figures.'" },
     },
     scope3_coverage: {
       value: null,
@@ -200,7 +200,7 @@ const ihh: HealthcareEntity = {
       unit: "",
       year: "2025",
       flag: "confirmed",
-      citation: { ...IHH_SR2025, pageNote: "SR 2025 — Scope 3 coverage note (page not specified in extract)." },
+      citation: { ...IHH_SR2025, page: 76, pageNote: "Planet — Targets and Metrics, footnote 2: 'Current reported categories are: Fuel- and energy-related activities (Cat 3), Waste (Cat 5), Business travel (Cat 6), and Employee Commuting (Cat 7).'" },
     },
     // Combined Scope 1+2 (market-based) — the report gives the COMBINED total only,
     // not a Scope 1 / Scope 2 split, so it is stored as a combined metric (never split).
@@ -209,7 +209,7 @@ const ihh: HealthcareEntity = {
       unit: "tCO₂e",
       year: "2025",
       flag: "confirmed",
-      citation: { ...IHH_SR2025, pageNote: "SR 2025 — 'Scope 1 and 2 emissions (market-based) were 271,888 tCO2e in FY2025'." },
+      citation: { ...IHH_SR2025, page: 76, pageNote: "Planet — Targets and Metrics table: 'Scope 1 and 2 emissions (market-based) were 271,888 tCO2e in FY2025', vs 2022 baseline 277,628 tCO2e." },
       note: "Combined Scope 1+2, MARKET-BASED. FY2025 271,888 tCO₂e vs 2022 baseline 277,628 tCO₂e. The report does not break out Scope 1 and Scope 2 separately; note the intensity figures are location-based.",
     },
     target_2030: {
@@ -218,7 +218,7 @@ const ihh: HealthcareEntity = {
       unit: "%",
       year: "2030",
       flag: "confirmed",
-      citation: { ...IHH_SR2025, reportTitle: "IHH SR 2025 / AGM (announced Apr 2026)" },
+      citation: { ...IHH_SR2025, page: 76, reportTitle: "IHH SR 2025 / AGM (announced Apr 2026)", pageNote: "Planet — Targets and Metrics: 'Reduce 42% Scope 1 and 2 emissions from 2025 baseline.'" },
       note: "Announced Apr 2026.",
     },
     // Separate Scope 1 / Scope 2 absolutes: the SR discloses only the COMBINED
@@ -261,7 +261,10 @@ const ihh: HealthcareEntity = {
       unit: "%",
       year: "2025",
       flag: "confirmed",
-      citation: { ...IHH_SR2025, page: 54, pageNote: "Operations assessed for corruption-related risks, p.54." },
+      // CORRECTED July 2026: previously cited p.54, which does not contain this figure.
+      // Verified against the report itself — "Percentage of operations assessed for
+      // corruption-related risks: 100% FY25 | 100% FY24 | 100% FY23" is on p.20.
+      citation: { ...IHH_SR2025, page: 20, pageNote: "Governance — Business Ethics, Percentage of operations assessed for corruption-related risks, p.20." },
       note: "Percentage of operations assessed for corruption-related risks (100% FY23–FY25).",
     },
   },
@@ -273,6 +276,7 @@ const ihh: HealthcareEntity = {
     "2030 target: −42% Scope 1+2 vs a 2025 baseline (SBTi-referenced), announced Apr 2026.",
     "Assurance: Scope 1+2 limited assurance SG + MY only (2022–23). SR 2025 is NOT externally assured; external assurance targeted FY2027. 2024–25 rows are internal_only.",
     "Combined Scope 1+2 was taken from the SR 2025 narrative; separate Scope 1/2 and absolute Scope 3 remain undisclosed in the report.",
+    "Verified July 2026 against the IHH Sustainability Report 2025 (Drive copy) — added real page numbers to intensity_2022/2025, scope2_method, scope3_coverage, scope1and2_abs, and target_2030 (previously flag: 'confirmed' with no page recorded, which the render-time effectiveFlag() check now correctly demotes to unverified unless a page is present). CORRECTED corruption_ops_pct's citation from p.54 (which does not contain this figure) to p.20, where 'Percentage of operations assessed for corruption-related risks: 100% FY25 | 100% FY24 | 100% FY23' actually appears. women_leadership_pct's existing p.47 citation was independently re-confirmed.",
   ],
 };
 
@@ -325,21 +329,21 @@ const tmg: HealthcareEntity = {
       unit: "licensed beds",
       year: "30 Jun 2025",
       flag: "confirmed",
-      citation: TMG_AR2025,
+      citation: { ...TMG_AR2025, page: 3, pageNote: "Healthcare Assets In Singapore, Malaysia and Vietnam — Singapore: '187 licensed beds'." },
     },
     beds_my: {
       value: 403,
       unit: "licensed beds",
       year: "30 Jun 2025",
       flag: "confirmed",
-      citation: TMG_AR2025,
+      citation: { ...TMG_AR2025, page: 3, pageNote: "Healthcare Assets In Singapore, Malaysia and Vietnam — Malaysia: '403 licensed beds'." },
     },
     beds_vn: {
       value: 230,
       unit: "licensed beds",
       year: "30 Jun 2025",
       flag: "confirmed",
-      citation: TMG_AR2025,
+      citation: { ...TMG_AR2025, page: 3, pageNote: "Healthcare Assets In Singapore, Malaysia and Vietnam — Vietnam: '230 licensed beds'." },
     },
     // Emissions/energy/intensity: ❌ blank until the SR section is read and entered by hand.
     intensity_2025: {
@@ -358,9 +362,10 @@ const tmg: HealthcareEntity = {
     "Licensed beds confirmed from AR body: Singapore 187, Malaysia 403, Vietnam 230 (as at 30 Jun 2025).",
     "From AR2025 (SR section): TMG reports Scope 1+2 emissions intensity PER REVENUE, in three separate currencies per entity (p.57) — TMPL 0.0126 tCO₂e/S$'000, TMCLS 0.0415 tCO₂e/RM'000, FEMVN 0.0416 tCO₂e/VND 10M. This is NOT a patient-bed-day intensity, so it is not comparable with IHH; intensityDenominator set to null.",
     "No consolidated absolute Scope 1/2/3 tCO₂e is disclosed in AR2025 (only the per-revenue intensity). GHG measurement has begun under a TCFD framing (p.73); Scope 2 method not stated. Absolutes therefore remain blank, not zero.",
-    "Commitment to Net Zero emissions by 2050 stated in the SR narrative (no interim quantified target disclosed).",
+    "Commitment to Net Zero emissions by 2050 stated in the SR narrative (p.61; no interim quantified target disclosed).",
     "Frameworks: GRI (305/403/416 referenced) and TCFD (climate-risk assessment begun).",
     "Nested listed subsidiary TMC Life Sciences Berhad (~70%, Bursa-listed): boundary/double-report check required before TMG appears in any ranking.",
+    "Verified July 2026 against the TMG FY2025 Annual Report (Drive copy). Added p.3 to the beds_sg/beds_my/beds_vn citations (previously flag: 'confirmed' with no page recorded). Re-confirmed the per-revenue intensity table on p.57 exactly as previously noted (TMPL 0.0126, TMCLS 0.0415, FEMVN 0.0416) — not cited as a metric since intensity_2025's value is null (not on a comparable bed-day basis) and this field carries no citation object to attach a page to.",
   ],
 };
 
@@ -410,7 +415,9 @@ const rmg: HealthcareEntity = {
       unit: "tCO₂e",
       year: "2025",
       flag: "confirmed",
-      citation: RMG_AR2025,
+      // Overridden from the base RMG_AR2025 page (59, the GRI 305 index cross-reference)
+      // to p.41, where the figure itself is printed: "• Scope 1: 1,592 tCO₂e".
+      citation: { ...RMG_AR2025, page: 41, pageNote: "Environment — GHG Emissions: '• Scope 1: 1,592 tCO₂e'." },
       note: "Scope 1 GHG emissions FY2025 (2024: 1,198 tCO₂e).",
     },
     scope2_abs: {
@@ -418,7 +425,7 @@ const rmg: HealthcareEntity = {
       unit: "tCO₂e",
       year: "2025",
       flag: "confirmed",
-      citation: RMG_AR2025,
+      citation: { ...RMG_AR2025, page: 41, pageNote: "Environment — GHG Emissions: '• Scope 2: 16,975 tCO₂e'." },
       note: "Scope 2 GHG emissions FY2025 (2024: 17,000 tCO₂e). Location/market basis not stated.",
     },
     scope3_abs: {
@@ -435,7 +442,7 @@ const rmg: HealthcareEntity = {
       unit: "",
       year: null,
       flag: "confirmed",
-      citation: { ...RMG_AR2025, pageNote: "Report does not label Scope 2 as location- or market-based." },
+      citation: { ...RMG_AR2025, page: 41, pageNote: "Environment — GHG Emissions section (p.41) reports Scope 1/2 figures without a location- vs market-based label." },
     },
     intensity_2025: {
       value: null,
@@ -467,7 +474,10 @@ const rmg: HealthcareEntity = {
       unit: "%",
       year: "2025",
       flag: "confirmed",
-      citation: { ...RMG_AR2025, pageNote: "Social — female employees as % of total (SR p.39)." },
+      // CORRECTED July 2026: this metric previously had no `page` override, so it
+      // silently inherited RMG_AR2025's page 59 (the GRI 305 GHG index cross-reference
+      // — unrelated to workforce data). Verified against the report itself.
+      citation: { ...RMG_AR2025, page: 50, pageNote: "Social — 'EMPLOYEES, BY GENDER': Female employees 2,231 (75%)." },
       note: "Female employees as % of total workforce (2024: 76%).",
     },
     turnover_pct: {
@@ -475,7 +485,8 @@ const rmg: HealthcareEntity = {
       unit: "%",
       year: "2025",
       flag: "confirmed",
-      citation: { ...RMG_AR2025, pageNote: "Engagement & Retention — employee turnover rate." },
+      // CORRECTED July 2026: previously inherited the wrong page 59 (GRI 305 index) — see women_workforce_pct.
+      citation: { ...RMG_AR2025, page: 40, pageNote: "Engagement & Retention: '• Employee Turnover Rate: 17% (2024: 22%)'." },
       note: "Employee turnover rate (2024: 22%); target to maintain below 25%.",
     },
     fatalities: {
@@ -483,7 +494,8 @@ const rmg: HealthcareEntity = {
       unit: "",
       year: "2025",
       flag: "confirmed",
-      citation: { ...RMG_AR2025, pageNote: "Workplace Health & Safety — fatalities." },
+      // CORRECTED July 2026: previously inherited the wrong page 59 (GRI 305 index) — see women_workforce_pct.
+      citation: { ...RMG_AR2025, page: 40, pageNote: "Workplace Health & Safety: '• Fatality: 0 (2024: 0)'." },
       note: "Workplace fatalities (2024: 0). High-consequence injuries: 0. A disclosed zero, not N/D.",
     },
     community_donations: {
@@ -492,7 +504,8 @@ const rmg: HealthcareEntity = {
       unit: "SGD",
       year: "2025",
       flag: "confirmed",
-      citation: { ...RMG_AR2025, pageNote: "CSR — donations made." },
+      // CORRECTED July 2026: previously inherited the wrong page 59 (GRI 305 index) — see women_workforce_pct.
+      citation: { ...RMG_AR2025, page: 40, pageNote: "CSR: '• Donations made: $27,069 (2024: $87,850)'." },
       note: "Donations made in FY2025 (2024: S$87,850).",
     },
   },
@@ -502,6 +515,7 @@ const rmg: HealthcareEntity = {
     "Scope 2 location/market basis is not stated. GHG intensity is not published on a patient-bed-day basis (energy/water intensity is revenue-based) — intensityDenominator null; not intensity-comparable with IHH.",
     "Targets span three horizons (short-term to 2030, medium 2031–2040, long-term); medium-term includes reducing Scope 1+2 emissions. Baseline not quantified in the extract, so no numeric target is seeded.",
     "Group boundary spans Singapore plus regional operations (China, Vietnam and others); disclosed Scope 1/2 are group figures.",
+    "Verified July 2026 against the Raffles Medical Group Annual Report 2025 (Drive copy). Re-pointed scope1_abs/scope2_abs/scope2_method from the base citation's p.59 (GRI 305 index cross-reference) to p.41, where the figures themselves are printed. CORRECTED women_workforce_pct, turnover_pct, fatalities, and community_donations, which had silently inherited the same p.59 (unrelated to any of those figures) because no page override had been set — each now points to the page where it actually appears (pp.40, 50). women_board_pct and women_leadership_pct's existing p.49 citations were independently re-confirmed.",
   ],
 };
 
@@ -571,14 +585,17 @@ export const FLAG_META: Record<SourceFlag, { icon: string; label: string }> = {
 
 /**
  * Effective flag for a metric value. Enforces the hard rule: a value with no
- * page-level citation cannot be ✅ — it degrades to ❌. (page === null with no
- * citation object counts as "no page".)
+ * page-level citation cannot be ✅ — it degrades to ❌. This checks
+ * citation.page specifically (not just citation !== null) — a citation object
+ * with page: null still means no page-level location was recorded, so it
+ * cannot earn ✅ either. Mirrors buildMetricValue()/peerMetricValue()'s
+ * "confirmed requires a recorded page" rule in the other three verticals.
  */
 export function effectiveFlag(mv: MetricValue): SourceFlag {
   // No disclosed value at all ⇒ unverified/blank.
   if (mv.value === null && mv.display === undefined) return "unverified";
   // A disclosed value with no page-level citation cannot be ✅ (spec §3).
-  if (mv.citation === null) return "unverified";
+  if (mv.citation === null || typeof mv.citation.page !== "number") return "unverified";
   return mv.flag;
 }
 

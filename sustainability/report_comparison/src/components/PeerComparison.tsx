@@ -224,7 +224,7 @@ export function PeerComparison({
                     <td key={c.id} className="py-[13px] px-4 text-right align-top">
                       {ci && !ci.na ? (
                         <CitedValue
-                          mv={peerMetricValue(c, ci.value, ci.unit, ci.notes)}
+                          mv={peerMetricValue(c, ci.value, ci.unit, ci.notes, row.key)}
                           display={ci.value !== null ? cell.text : undefined}
                         />
                       ) : (
