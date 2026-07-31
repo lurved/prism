@@ -1,0 +1,26 @@
+version: 2
+updates:
+  # Root site: Eleventy/Tina + Vercel serverless functions (/api, agent/).
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      tinacms:
+        patterns:
+          - "tinacms"
+          - "@tinacms/*"
+
+  # ESG tracker (Next.js) — CI (.github/workflows/ci.yml) typechecks, tests,
+  # lints, and builds every PR, so version bumps here get verified before merge.
+  - package-ecosystem: "npm"
+    directory: "/sustainability/report_comparison"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
