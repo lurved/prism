@@ -45,8 +45,9 @@
     villager: { glyph: "○", label: "Villager", blurb: "You have no special power. Listen closely during the day and vote out whoever you think is a wolf." },
   };
 
-  async function api(path, opts) {
-    const res = await fetch("/api/who" + path, opts);
+  // The whole API is one endpoint, routed on `op` (see api/who/index.js).
+  async function request(url, opts) {
+    const res = await fetch(url, opts);
     let data = null;
     try { data = await res.json(); } catch (e) { /* no body */ }
     if (!res.ok) {
@@ -56,6 +57,17 @@
       throw err;
     }
     return data;
+  }
+  function apiPost(op, payload) {
+    return request("/api/who", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ op, ...payload }),
+    });
+  }
+  function apiState(s) {
+    const q = new URLSearchParams({ op: "state", code: s.code, playerId: s.playerId, token: s.token });
+    return request("/api/who?" + q.toString());
   }
 
   // ── app state ──
@@ -79,9 +91,7 @@
   async function poll() {
     if (!session) return;
     try {
-      const q = `?code=${encodeURIComponent(session.code)}&playerId=${encodeURIComponent(session.playerId)}&token=${encodeURIComponent(session.token)}`;
-      const data = await api("/state" + q);
-      gameState = data;
+      gameState = await apiState(session);
       formError = "";
       render();
     } catch (err) {
@@ -115,10 +125,7 @@
   async function hostGame(name) {
     submitting = true; render();
     try {
-      const data = await api("/create", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
-      });
+      const data = await apiPost("create", { name });
       session = { code: data.code, playerId: data.playerId, token: data.token, name };
       store.set(session);
       submitting = false;
@@ -134,10 +141,7 @@
   async function joinGame(code, name) {
     submitting = true; render();
     try {
-      const data = await api("/join", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: code.toUpperCase(), name }),
-      });
+      const data = await apiPost("join", { code: code.toUpperCase(), name });
       session = { code: data.code, playerId: data.playerId, token: data.token, name };
       store.set(session);
       submitting = false;
@@ -157,10 +161,7 @@
   async function startGame() {
     submitting = true; render();
     try {
-      await api("/start", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(session),
-      });
+      await apiPost("start", session);
       submitting = false;
       await poll();
     } catch (err) {
@@ -173,10 +174,7 @@
   async function submitAction(type, targetId) {
     submitting = true; render();
     try {
-      await api("/action", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...session, type, targetId }),
-      });
+      await apiPost("move", { ...session, type, targetId });
       submitting = false;
       selectedTarget = null;
       await poll();
@@ -192,10 +190,7 @@
     chatDraft = "";
     render();
     try {
-      await api("/action", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...session, type: "chat", text }),
-      });
+      await apiPost("move", { ...session, type: "chat", text });
       await poll();
     } catch (err) { /* silent, will resync on next poll */ }
   }
@@ -203,10 +198,7 @@
   async function forceTally() {
     submitting = true; render();
     try {
-      await api("/host", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...session, action: "force_tally" }),
-      });
+      await apiPost("host", { ...session, action: "force_tally" });
       submitting = false;
       await poll();
     } catch (err) {
@@ -217,10 +209,7 @@
 
   async function kickPlayer(targetId) {
     try {
-      await api("/host", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...session, action: "kick", targetId }),
-      });
+      await apiPost("host", { ...session, action: "kick", targetId });
       await poll();
     } catch (err) { /* ignore */ }
   }
