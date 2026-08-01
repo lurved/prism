@@ -14,6 +14,7 @@
   --muted: var(--soft);
   --wolf: var(--viz-red);
   --safe: var(--ok);
+  --accent-soft: rgba(240, 168, 184, 0.12); /* matches typeme's accent-tint alias */
 }
 
 * { box-sizing: border-box; }
@@ -222,8 +223,10 @@ input, textarea { font-family: inherit; }
 .role-card {
   text-align: center;
   padding: 30px 22px;
+  border-radius: var(--radius-panel);
+  border: 1px solid transparent;
 }
-.role-card .role-glyph { font-size: 36px; margin-bottom: 10px; }
+.role-card .role-glyph { font-size: 36px; margin-bottom: 10px; color: var(--ink); }
 .role-card h2 {
   font-family: var(--font-display);
   font-size: 30px;
@@ -232,7 +235,7 @@ input, textarea { font-family: inherit; }
 }
 .role-card p { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin: 0; }
 .role-card.is-werewolf { border-color: var(--wolf); }
-.role-card.is-werewolf h2 { color: var(--wolf); }
+.role-card.is-werewolf h2, .role-card.is-werewolf .role-glyph { color: var(--wolf); }
 
 /* ── target grid (choose a player to act on) ── */
 .target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; }
@@ -247,7 +250,7 @@ input, textarea { font-family: inherit; }
   transition: border-color var(--ease-lift), background var(--ease-lift);
 }
 .target-btn:hover:not(:disabled) { border-color: var(--accent); }
-.target-btn.selected { border-color: var(--accent); background: rgba(240, 168, 184, 0.12); }
+.target-btn.selected { border-color: var(--accent); background: var(--accent-soft); }
 .target-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .target-btn.skip { grid-column: 1 / -1; }
 
@@ -264,7 +267,7 @@ input, textarea { font-family: inherit; }
 .progress-track {
   height: 6px;
   background: var(--bg);
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   overflow: hidden;
 }
 .progress-fill {
