@@ -9,6 +9,7 @@
     { "source": "/typeme/u/:slug/rate", "destination": "/api/typeme/hub?slug=:slug&mode=rate" },
     { "source": "/typeme/u/:slug", "destination": "/api/typeme/hub?slug=:slug" },
     { "source": "/typeme", "destination": "/typeme/index.html" },
+    { "source": "/who", "destination": "/who/index.html" },
     { "source": "/sustainability/sr2026", "destination": "/sustainability/sr2026/index.html" },
     { "source": "/sustainability/report_comparison", "destination": "/sustainability/report_comparison/index.html" }
   ]

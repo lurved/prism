@@ -1,0 +1,359 @@
+/* ============================================================
+   Who — a werewolf party game. Navy design system.
+   Imports the shared tokens; everything below is local to /who.
+   ============================================================ */
+
+@import "../tokens/fonts.css";
+@import "../tokens/colors.css";
+@import "../tokens/typography.css";
+@import "../tokens/spacing.css";
+
+:root {
+  --card: var(--surface-card);
+  --hair: var(--line);
+  --muted: var(--soft);
+  --wolf: var(--viz-red);
+  --safe: var(--ok);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  display: flex;
+  justify-content: center;
+  padding: 28px 16px 56px;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app { width: 100%; max-width: 460px; }
+
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+
+/* ── brand ── */
+.who-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.who-brand .glyph { color: var(--accent); font-size: 20px; }
+.who-brand h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: var(--tracking-display);
+  margin: 0;
+}
+.who-brand .tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── generic card / panel ── */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-panel);
+  padding: 22px;
+  margin-bottom: 16px;
+}
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+.panel-sub {
+  font-size: var(--text-body-sm);
+  color: var(--muted);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+/* ── buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 18px;
+  border-radius: var(--radius-button);
+  font-family: var(--font-mono);
+  font-size: var(--text-button);
+  letter-spacing: var(--tracking-button);
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition: opacity var(--ease-lift), transform var(--ease-lift);
+}
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.btn-outline { background: transparent; color: var(--ink); border-color: var(--hair); }
+.btn-outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.btn-danger { background: transparent; color: var(--wolf); border-color: var(--wolf); }
+.btn-row { display: flex; gap: 10px; }
+.btn-row .btn { width: auto; flex: 1; }
+
+/* ── form ── */
+.field { margin-bottom: 14px; }
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.field input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.5px solid var(--hair);
+  border-radius: var(--radius-input);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 16px;
+  outline: none;
+  transition: border-color var(--ease-lift);
+}
+.field input:focus { border-color: var(--accent); }
+.field input::placeholder { color: var(--muted); }
+.error-msg {
+  color: var(--wolf);
+  font-size: var(--text-body-sm);
+  margin: -6px 0 14px;
+}
+
+/* ── landing choice cards ── */
+.choice-row { display: flex; flex-direction: column; gap: 14px; }
+.choice-card {
+  display: block;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-panel);
+  padding: 20px;
+  color: var(--ink);
+  transition: border-color var(--ease-lift), transform var(--ease-lift);
+}
+.choice-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.choice-card h3 { font-family: var(--font-display); font-size: 19px; font-weight: 500; margin: 0 0 4px; }
+.choice-card p { font-size: var(--text-body-sm); color: var(--muted); margin: 0; }
+
+/* ── room code ── */
+.room-code {
+  font-family: var(--font-mono);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-align: center;
+  color: var(--accent);
+  margin: 4px 0 14px;
+}
+.share-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px dashed var(--hair);
+  border-radius: var(--radius-input);
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--muted);
+  word-break: break-all;
+  margin-bottom: 16px;
+}
+.share-link button {
+  flex-shrink: 0;
+  background: transparent;
+  border: 1px solid var(--hair);
+  color: var(--ink);
+  border-radius: var(--radius-button);
+  padding: 6px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* ── player list ── */
+.player-list { list-style: none; margin: 0 0 4px; padding: 0; }
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hair);
+  font-size: 15px;
+}
+.player-row:last-child { border-bottom: none; }
+.player-row .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--safe); flex-shrink: 0;
+}
+.player-row.dead .dot { background: var(--muted); }
+.player-row.dead { color: var(--muted); text-decoration: line-through; }
+.player-row .host-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-left: auto;
+}
+.player-row .role-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-left: auto;
+}
+.player-row.role-werewolf .role-tag { color: var(--wolf); }
+
+/* ── role card ── */
+.role-card {
+  text-align: center;
+  padding: 30px 22px;
+}
+.role-card .role-glyph { font-size: 36px; margin-bottom: 10px; }
+.role-card h2 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.role-card p { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin: 0; }
+.role-card.is-werewolf { border-color: var(--wolf); }
+.role-card.is-werewolf h2 { color: var(--wolf); }
+
+/* ── target grid (choose a player to act on) ── */
+.target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; }
+.target-btn {
+  background: var(--bg);
+  border: 1.5px solid var(--hair);
+  border-radius: var(--radius-input);
+  padding: 12px 10px;
+  color: var(--ink);
+  font-size: 14px;
+  text-align: center;
+  transition: border-color var(--ease-lift), background var(--ease-lift);
+}
+.target-btn:hover:not(:disabled) { border-color: var(--accent); }
+.target-btn.selected { border-color: var(--accent); background: rgba(240, 168, 184, 0.12); }
+.target-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.target-btn.skip { grid-column: 1 / -1; }
+
+/* ── progress bar ── */
+.progress-wrap { margin: 14px 0; }
+.progress-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+.progress-track {
+  height: 6px;
+  background: var(--bg);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+/* ── event log ── */
+.log-list { list-style: none; margin: 0; padding: 0; }
+.log-list li {
+  font-size: 14px;
+  color: var(--soft);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--hair);
+  line-height: 1.5;
+}
+.log-list li:last-child { border-bottom: none; }
+.log-list li.death, .log-list li.lynch { color: var(--ink); }
+.log-list li .r { color: var(--muted); font-family: var(--font-mono); font-size: 11px; margin-right: 6px; }
+
+/* ── seer history ── */
+.seer-log { margin-top: 14px; }
+.seer-row { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; }
+.seer-row .verdict.wolf { color: var(--wolf); font-weight: 600; }
+.seer-row .verdict.clear { color: var(--safe); font-weight: 600; }
+
+/* ── chat ── */
+.chat-box {
+  background: var(--bg);
+  border: 1px solid var(--hair);
+  border-radius: var(--radius-panel);
+  padding: 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+.chat-msg { font-size: 14px; margin-bottom: 8px; line-height: 1.4; }
+.chat-msg .who { font-weight: 600; margin-right: 6px; }
+.chat-msg .who.me { color: var(--accent); }
+.chat-form { display: flex; gap: 8px; margin-bottom: 20px; }
+.chat-form input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1.5px solid var(--hair);
+  border-radius: var(--radius-input);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 14px;
+  outline: none;
+}
+.chat-form input:focus { border-color: var(--accent); }
+.chat-form button {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  border-radius: var(--radius-input);
+  padding: 0 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+/* ── winner banner ── */
+.winner-banner {
+  text-align: center;
+  padding: 8px 0 6px;
+}
+.winner-banner .glyph { font-size: 40px; margin-bottom: 8px; }
+.winner-banner h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+.winner-banner p { color: var(--muted); font-size: 15px; margin: 0; }
+
+.hint { font-size: 13px; color: var(--muted); text-align: center; margin: 10px 0 0; line-height: 1.5; }
+.spacer { height: 8px; }
+.back-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 18px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.back-link:hover { color: var(--accent); }
