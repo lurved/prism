@@ -1,18 +1,21 @@
 /**
- * WHO — shared server logic for the werewolf party game.
+ * WHO — shared server logic.
+ *
+ * The app is a role dealer for an in-person werewolf game, not an online game
+ * engine: it hands every player a private role and hands the host — who is the
+ * moderator — the full roster. Everything after that (night, day, voting) is
+ * played face to face, so there are no phases, actions, votes or chat here.
+ *
  * Storage is the same Upstash/ioredis instance used by typeme, keyed as:
  *
- *   who:codes                     set    every active room code (uniqueness)
- *   who:room:{code}                JSON   room/game state (phase, round, host, night plan)
- *   who:players:{code}             hash   playerId -> JSON player record (name, role, alive, token)
- *   who:order:{code}               list   playerIds in join order
- *   who:actions:{code}:{round}:{phase}  hash  playerId -> JSON submitted action (this round+phase)
- *   who:log:{code}                 list   public narrative event log (deaths, lynches, phase changes)
- *   who:chat:{code}                list   day-phase discussion messages
- *   who:rl:{bucket}                str    rate-limit counters (TTL)
+ *   who:codes            set    every active room code (uniqueness)
+ *   who:room:{code}      JSON   { code, hostPlayerId, phase, round }
+ *   who:players:{code}   hash   playerId -> JSON { id, name, token, role, isHost }
+ *   who:order:{code}     list   playerIds in join order
+ *   who:rl:{bucket}      str    rate-limit counters (TTL)
  *
- * All room keys carry a TTL so finished/abandoned games fall out of Redis on
- * their own rather than needing a cleanup job.
+ * All room keys carry a TTL so abandoned rooms fall out of Redis on their own
+ * rather than needing a cleanup job.
  */
 
 const crypto = require("crypto");
@@ -27,11 +30,13 @@ const redis = process.env.REDIS_URL
   : null;
 if (redis) redis.on("error", (e) => console.error("redis:", e.message));
 
-const ROOM_TTL = 6 * 60 * 60; // 6h — long enough for a full game + stragglers
-const MIN_PLAYERS = 5;
+const ROOM_TTL = 6 * 60 * 60; // 6h — a long games night, then it expires
+
+// Counts below are PLAYERS, excluding the host/moderator (who is never dealt a
+// playing role). Four is the smallest deal that still yields a real game
+// (1 wolf, 1 seer, 2 villagers).
+const MIN_PLAYERS = 4;
 const MAX_PLAYERS = 20;
-const CHAT_CAP = 200;
-const LOG_CAP = 300;
 
 // ── id helpers ──
 // Room codes: short, spoken/typed aloud, no ambiguous chars (0/O, 1/I/L).
@@ -54,9 +59,9 @@ function parse(raw) {
   return typeof raw === "string" ? JSON.parse(raw) : raw;
 }
 
-// ── rate limiting (same shape as typeme's) ──
+// ── rate limiting ──
 async function rateLimit(bucket, max, windowSec) {
-  if (!redis) return true;
+  if (!redis) return true; // no store → don't block (dev)
   const key = `who:rl:${bucket}`;
   const n = await redis.incr(key);
   if (n === 1) await redis.expire(key, windowSec);
@@ -85,8 +90,7 @@ async function getPlayers(code) {
 }
 async function getPlayer(code, playerId) {
   if (!redis) return null;
-  const raw = await redis.hget(`who:players:${code}`, playerId);
-  return parse(raw);
+  return parse(await redis.hget(`who:players:${code}`, playerId));
 }
 async function savePlayer(code, player) {
   await redis.hset(`who:players:${code}`, player.id, JSON.stringify(player));
@@ -97,62 +101,37 @@ async function getOrder(code) {
   return redis.lrange(`who:order:${code}`, 0, -1);
 }
 
-async function appendLog(code, entry) {
-  const row = { ...entry, ts: new Date().toISOString() };
-  await redis.rpush(`who:log:${code}`, JSON.stringify(row));
-  await redis.ltrim(`who:log:${code}`, -LOG_CAP, -1);
-  await redis.expire(`who:log:${code}`, ROOM_TTL);
-}
-async function getLog(code) {
-  if (!redis) return [];
-  const rows = await redis.lrange(`who:log:${code}`, 0, -1);
-  return rows.map(parse);
-}
-
-async function appendChat(code, entry) {
-  const row = { ...entry, ts: new Date().toISOString() };
-  await redis.rpush(`who:chat:${code}`, JSON.stringify(row));
-  await redis.ltrim(`who:chat:${code}`, -CHAT_CAP, -1);
-  await redis.expire(`who:chat:${code}`, ROOM_TTL);
-}
-async function getChat(code) {
-  if (!redis) return [];
-  const rows = await redis.lrange(`who:chat:${code}`, 0, -1);
-  return rows.map(parse);
+// ── roles ──
+const ROLE_LABEL = {
+  moderator: "Moderator",
+  werewolf: "Werewolf",
+  seer: "Seer",
+  doctor: "Doctor",
+  villager: "Villager",
+};
+function roleLabel(role) {
+  return ROLE_LABEL[role] || role;
 }
 
-// ── night/day action bookkeeping ──
-function actionsKey(code, round, phase) {
-  return `who:actions:${code}:${round}:${phase}`;
-}
-async function submitAction(code, round, phase, playerId, action) {
-  const key = actionsKey(code, round, phase);
-  await redis.hset(key, playerId, JSON.stringify({ ...action, ts: new Date().toISOString() }));
-  await redis.expire(key, ROOM_TTL);
-}
-async function getActions(code, round, phase) {
-  if (!redis) return {};
-  const raw = await redis.hgetall(actionsKey(code, round, phase));
-  const out = {};
-  for (const [pid, v] of Object.entries(raw)) out[pid] = parse(v);
-  return out;
+// Composition for n players (moderator excluded). Wolves stay a clear minority
+// at every size; the seer joins from 4 players and the doctor from 6.
+function composition(n) {
+  const werewolf = Math.max(1, Math.floor(n / 4));
+  const seer = n >= 4 ? 1 : 0;
+  const doctor = n >= 6 ? 1 : 0;
+  const villager = Math.max(0, n - werewolf - seer - doctor);
+  return { werewolf, seer, doctor, villager };
 }
 
-// ── role assignment ──
-// Scales the special-role count to the lobby size; villagers fill the rest.
-// Kept deliberately conservative so wolves never approach half the table.
 function buildRoleDeck(n) {
-  const wolves = Math.max(1, Math.floor(n / 4));
-  const seer = n >= 5 ? 1 : 0;
-  const doctor = n >= 7 ? 1 : 0;
-  const villagers = n - wolves - seer - doctor;
+  const c = composition(n);
   const deck = [];
-  for (let i = 0; i < wolves; i++) deck.push("werewolf");
-  for (let i = 0; i < seer; i++) deck.push("seer");
-  for (let i = 0; i < doctor; i++) deck.push("doctor");
-  for (let i = 0; i < villagers; i++) deck.push("villager");
+  for (const [role, count] of Object.entries(c)) {
+    for (let i = 0; i < count; i++) deck.push(role);
+  }
   return shuffle(deck);
 }
+
 function shuffle(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -162,181 +141,48 @@ function shuffle(arr) {
   return a;
 }
 
-function countAlive(players, role) {
-  return Object.values(players).filter((p) => p.alive && (!role || p.role === role)).length;
-}
-
-// Winner check: null while the game continues.
-function checkWinner(players) {
-  const wolves = countAlive(players, "werewolf");
-  const others = Object.values(players).filter((p) => p.alive && p.role !== "werewolf").length;
-  if (wolves === 0) return "villagers";
-  if (wolves >= others) return "werewolves";
-  return null;
-}
-
-// Tally votes into a target id; returns null on a tie (no lynch/no kill).
-function tallyVotes(actions, aliveIds) {
-  const counts = {};
-  for (const pid of Object.keys(actions)) {
-    if (!aliveIds.includes(pid)) continue; // dead player actions are stale, ignore
-    const target = actions[pid].targetId;
-    if (!target || target === "skip") continue;
-    counts[target] = (counts[target] || 0) + 1;
-  }
-  let best = null;
-  let bestCount = 0;
-  let tie = false;
-  for (const [target, c] of Object.entries(counts)) {
-    if (c > bestCount) {
-      best = target;
-      bestCount = c;
-      tie = false;
-    } else if (c === bestCount) {
-      tie = true;
-    }
-  }
-  if (tie || !best) return null;
-  return best;
-}
-
-const ROLE_LABEL = { werewolf: "Werewolf", seer: "Seer", doctor: "Doctor", villager: "Villager" };
-function roleLabel(role) {
-  return ROLE_LABEL[role] || role;
-}
-
-async function acquireLock(code, round, phase) {
-  if (!redis) return true;
-  const key = `who:lock:${code}:${round}:${phase}`;
-  const ok = await redis.set(key, "1", "NX", "EX", 30);
-  return ok === "OK";
-}
-
-// Deals roles across every joined player and moves the room into night 1.
-async function startGame(code) {
+// Deals a fresh set of roles to everyone except the host, who is always the
+// moderator. Safe to call repeatedly — each call is a new round.
+async function dealRoles(code) {
   const order = await getOrder(code);
   const players = await getPlayers(code);
-  const deck = buildRoleDeck(order.length);
-  for (let i = 0; i < order.length; i++) {
-    const p = players[order[i]];
+  const room = await getRoom(code);
+
+  const playerIds = order.filter((pid) => players[pid] && pid !== room.hostPlayerId);
+  const deck = buildRoleDeck(playerIds.length);
+
+  for (let i = 0; i < playerIds.length; i++) {
+    const p = players[playerIds[i]];
     p.role = deck[i];
-    p.alive = true;
-    p.lastProtectedId = null;
+    await savePlayer(code, p);
+  }
+  const host = players[room.hostPlayerId];
+  if (host) {
+    host.role = "moderator";
+    await savePlayer(code, host);
+  }
+
+  room.phase = "dealt";
+  room.round = (room.round || 0) + 1;
+  await saveRoom(code, room);
+  return room.round;
+}
+
+// Clears every dealt role and reopens the room so latecomers can join.
+async function reopenLobby(code) {
+  const players = await getPlayers(code);
+  for (const p of Object.values(players)) {
+    p.role = null;
     await savePlayer(code, p);
   }
   const room = await getRoom(code);
-  room.phase = "night";
-  room.round = 1;
-  room.winner = null;
-  await saveRoom(code, room);
-  await appendLog(code, { type: "start", round: 1, text: "Roles are dealt. Night falls on the village." });
-}
-
-// Resolves the current phase once every required actor has submitted (or,
-// with force:true, on-demand from the host — missing actions count as an
-// abstain/no-target rather than blocking the game forever).
-async function tryResolve(code, { force = false } = {}) {
-  const room = await getRoom(code);
-  if (!room || (room.phase !== "night" && room.phase !== "day")) return;
-
-  const players = await getPlayers(code);
-  const alive = Object.values(players).filter((p) => p.alive);
-  const { phase, round } = room;
-  const actions = await getActions(code, round, phase);
-
-  if (phase === "night") {
-    const wolves = alive.filter((p) => p.role === "werewolf");
-    const seer = alive.find((p) => p.role === "seer");
-    const doctor = alive.find((p) => p.role === "doctor");
-    const ready =
-      wolves.every((w) => actions[w.id]) &&
-      (!seer || !!actions[seer.id]) &&
-      (!doctor || !!actions[doctor.id]);
-    if (!ready && !force) return;
-    if (!(await acquireLock(code, round, phase))) return;
-
-    const wolfIds = wolves.map((w) => w.id);
-    const wolfTarget = tallyVotes(actions, wolfIds);
-    const doctorProtectId = doctor && actions[doctor.id] ? actions[doctor.id].targetId : null;
-    if (doctor) {
-      doctor.lastProtectedId = doctorProtectId || null;
-      await savePlayer(code, doctor);
-    }
-
-    let diedId = null;
-    let saved = false;
-    if (wolfTarget) {
-      if (doctorProtectId && doctorProtectId === wolfTarget) saved = true;
-      else diedId = wolfTarget;
-    }
-
-    if (diedId) {
-      const victim = players[diedId];
-      victim.alive = false;
-      await savePlayer(code, victim);
-      await appendLog(code, {
-        type: "death", round, playerId: diedId, name: victim.name, role: victim.role,
-        text: `${victim.name} was found dead. They were a ${roleLabel(victim.role)}.`,
-      });
-    } else if (saved) {
-      await appendLog(code, { type: "saved", round, text: "Someone was attacked in the night, but survived." });
-    } else {
-      await appendLog(code, { type: "peaceful", round, text: "The village wakes to find everyone safe." });
-    }
-
-    await finishPhase(code, room);
-    return;
-  }
-
-  if (phase === "day") {
-    const ready = alive.every((p) => actions[p.id]);
-    if (!ready && !force) return;
-    if (!(await acquireLock(code, round, phase))) return;
-
-    const aliveIds = alive.map((p) => p.id);
-    const lynchTarget = tallyVotes(actions, aliveIds);
-    if (lynchTarget) {
-      const victim = players[lynchTarget];
-      victim.alive = false;
-      await savePlayer(code, victim);
-      await appendLog(code, {
-        type: "lynch", round, playerId: lynchTarget, name: victim.name, role: victim.role,
-        text: `${victim.name} was voted out by the village. They were a ${roleLabel(victim.role)}.`,
-      });
-    } else {
-      await appendLog(code, { type: "no-lynch", round, text: "The village couldn't agree. No one was voted out." });
-    }
-
-    await finishPhase(code, room, { advanceRound: true });
-    return;
-  }
-}
-
-// Shared tail of tryResolve: check for a winner, or move to the next phase.
-async function finishPhase(code, room, { advanceRound = false } = {}) {
-  const playersNow = await getPlayers(code);
-  const winner = checkWinner(playersNow);
-  if (winner) {
-    room.phase = "ended";
-    room.winner = winner;
-    await appendLog(code, {
-      type: "ended",
-      text: winner === "villagers"
-        ? "The village has eliminated every werewolf. Villagers win!"
-        : "The werewolves equal or outnumber the village. Werewolves win!",
-    });
-  } else if (advanceRound) {
-    room.phase = "night";
-    room.round += 1;
-  } else {
-    room.phase = "day";
-  }
+  room.phase = "lobby";
   await saveRoom(code, room);
 }
 
-// Shared auth: loads the room + the requesting player and checks the token.
-// Writes an error response and returns null on failure so callers can
-// `if (!ctx) return;` straight after calling this.
+// ── auth ──
+// Loads the room + requesting player and checks the token. Writes an error
+// response and returns null on failure, so callers can `if (!ctx) return;`.
 async function authPlayer(req, res, params) {
   const code = String(params.code || "").trim().toUpperCase();
   const { playerId, token: tok } = params;
@@ -365,8 +211,5 @@ module.exports = {
   redis, MIN_PLAYERS, MAX_PLAYERS, ROOM_TTL,
   roomCode, id, token, parse, rateLimit, clientIp,
   getRoom, saveRoom, getPlayers, getPlayer, savePlayer, getOrder,
-  appendLog, getLog, appendChat, getChat,
-  submitAction, getActions,
-  buildRoleDeck, countAlive, checkWinner, tallyVotes,
-  roleLabel, startGame, tryResolve, authPlayer,
+  roleLabel, composition, buildRoleDeck, dealRoles, reopenLobby, authPlayer,
 };
