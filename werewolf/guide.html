@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>How to moderate — Werewolf</title>
+  <meta name="description" content="A short script for running a werewolf game out loud: what to say each night, how to run the day, and how the game ends." />
+
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="pris.la" />
+  <meta property="og:title" content="How to moderate — Werewolf" />
+  <meta property="og:description" content="A short script for running a werewolf game out loud." />
+  <meta property="og:url" content="https://pris.la/werewolf/guide" />
+  <meta property="og:image" content="https://pris.la/werewolf/og.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="How to moderate — Werewolf" />
+  <meta name="twitter:description" content="A short script for running a werewolf game out loud." />
+  <meta name="twitter:image" content="https://pris.la/werewolf/og.png" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316161c'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' fill='%23f0a8b8' text-anchor='middle'%3EW%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/werewolf/app.css" />
+  <script src="/analytics.js"></script>
+</head>
+<body>
+  <div id="app">
+    <div class="who-brand">
+      <span class="glyph">●</span>
+      <h1>Werewolf</h1>
+      <span class="tag">Moderating</span>
+    </div>
+
+    <a class="back-link" href="/werewolf">← Back to the game</a>
+
+    <p class="lede">
+      You run the game; you don't play it. Everyone else has a secret role on their
+      phone — your job is to call the night out loud, keep track of what happens, and
+      announce it in the morning.
+    </p>
+
+    <div class="panel">
+      <h2 class="panel-title">Before you start</h2>
+      <ul class="guide-list">
+        <li>Deal the roles, then tell everyone to <strong>tap to reveal</strong> and put their phone face down.</li>
+        <li>Keep your own screen private — your roster is the only place the roles exist.</li>
+        <li>Sit where you can see everyone. You'll need to watch people point with their eyes closed.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">Each night</h2>
+      <p class="panel-sub">Read the bold lines aloud. The Doctor only appears in games of 6 players or more — skip that step if there isn't one.</p>
+      <ol class="script-list">
+        <li class="script-step"><span class="say">"Night falls. Everyone close your eyes."</span></li>
+        <li class="script-step">
+          <span class="say">"Werewolves, open your eyes and look at each other. Agree on one person, and point at them."</span>
+          <span class="note">Give them a moment. Remember who they picked.</span>
+        </li>
+        <li class="script-step"><span class="say">"Werewolves, close your eyes."</span></li>
+        <li class="script-step">
+          <span class="say">"Seer, open your eyes. Point at someone."</span>
+          <span class="note">Check your roster. Thumbs up if that person is a werewolf, thumbs down if they aren't.</span>
+        </li>
+        <li class="script-step"><span class="say">"Seer, close your eyes."</span></li>
+        <li class="script-step">
+          <span class="say">"Doctor, open your eyes. Point at someone to protect."</span>
+          <span class="note">If they pick the werewolves' target, nobody dies tonight. They may pick themselves.</span>
+        </li>
+        <li class="script-step"><span class="say">"Doctor, close your eyes."</span></li>
+        <li class="script-step"><span class="say">"Everyone, open your eyes."</span></li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">Each day</h2>
+      <ol class="script-list">
+        <li class="script-step">
+          <span class="say">"[Name] didn't survive the night. They were a [role]."</span>
+          <span class="note">If the Doctor saved them, say <em>"Someone was attacked last night — but they survived"</em> and name nobody.</span>
+        </li>
+        <li class="script-step">
+          <span class="say">"Talk. You've got a few minutes."</span>
+          <span class="note">Stay out of it. Don't hint, don't react — you know everything and they'll read your face.</span>
+        </li>
+        <li class="script-step">
+          <span class="say">"Time to vote. Point at who you want out, on three. Three, two, one."</span>
+          <span class="note">Most fingers wins. A tie means nobody goes out today.</span>
+        </li>
+        <li class="script-step">
+          <span class="say">"[Name] is out. They were a [role]."</span>
+          <span class="note">Then check whether anyone has won. If not, call the night again.</span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">How it ends</h2>
+      <ul class="guide-list">
+        <li><strong>The village wins</strong> the moment the last werewolf is out.</li>
+        <li><strong>The werewolves win</strong> as soon as they equal or outnumber everyone else — at that point they can't be outvoted.</li>
+      </ul>
+      <p class="panel-sub" style="margin: 14px 0 0;">
+        Check after every elimination. Games usually end sooner than people expect.
+      </p>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title">Worth knowing</h2>
+      <ul class="guide-list">
+        <li>Eliminated players stay at the table but say nothing. No hints, no faces.</li>
+        <li>If someone peeks or opens their eyes early, don't restart — just carry on.</li>
+        <li>Keep nights brisk. Long silences are where the game loses its nerve.</li>
+        <li>Finished a round? <strong>Deal again</strong> reshuffles the same group. <strong>Back to lobby</strong> reopens the room so latecomers can join.</li>
+      </ul>
+    </div>
+
+    <a class="back-link" href="/werewolf">← Back to the game</a>
+  </div>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
