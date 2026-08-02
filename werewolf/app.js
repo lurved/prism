@@ -1,4 +1,4 @@
-/* Who — role dealer for an in-person werewolf game. Vanilla JS SPA (no build
+/* Werewolf — role dealer for an in-person werewolf game. Vanilla JS SPA (no build
    step, matches the rest of pris.la).
 
    The app's whole job is to hand each player a private role and hand the host —
@@ -230,8 +230,8 @@
   function brand() {
     return el("div", { class: "who-brand" },
       el("span", { class: "glyph" }, "●"),
-      el("h1", null, "Who"),
-      el("span", { class: "tag" }, "Werewolf"),
+      el("h1", null, "Werewolf"),
+      el("span", { class: "tag" }, "Secret roles"),
     );
   }
 
