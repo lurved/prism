@@ -286,6 +286,113 @@ input { font-family: inherit; }
 }
 .reveal-card p { color: var(--muted); font-size: 14px; margin: 0; }
 
+/* ── moderator script ── */
+.script-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color var(--ease-lift);
+}
+.script-toggle:hover { color: var(--accent); }
+.script-toggle .chev {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1;
+  color: var(--accent);
+}
+.script-body { margin-top: 18px; }
+
+.script-list {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+}
+.script-step {
+  counter-increment: step;
+  position: relative;
+  padding: 0 0 12px 26px;
+  border-bottom: 1px solid var(--hair);
+  margin-bottom: 12px;
+}
+.script-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.script-step::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+.script-step .say {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.script-step .note {
+  display: block;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.script-end {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0;
+}
+
+.guide-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-button);
+  letter-spacing: var(--tracking-button);
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color var(--ease-lift);
+}
+.guide-link:hover { border-bottom-color: var(--accent); }
+.script-body .guide-link { margin-top: 20px; }
+
+/* ── guide page ── */
+.guide-list {
+  margin: 0;
+  padding-left: 18px;
+  list-style: none;
+}
+.guide-list li {
+  position: relative;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--soft);
+  margin-bottom: 10px;
+}
+.guide-list li:last-child { margin-bottom: 0; }
+.guide-list li::before {
+  content: "—";
+  position: absolute;
+  left: -18px;
+  color: var(--accent);
+}
+.guide-list strong { color: var(--ink); font-weight: 600; }
+a.back-link { text-decoration: none; }
+
 /* ── misc ── */
 .hint { font-size: 13px; color: var(--muted); text-align: center; margin: 10px 0 0; line-height: 1.5; }
 .back-link {

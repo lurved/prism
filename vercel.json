@@ -14,6 +14,7 @@
     { "source": "/typeme/u/:slug", "destination": "/api/typeme/hub?slug=:slug" },
     { "source": "/typeme", "destination": "/typeme/index.html" },
     { "source": "/werewolf", "destination": "/werewolf/index.html" },
+    { "source": "/werewolf/guide", "destination": "/werewolf/guide.html" },
     { "source": "/sustainability/sr2026", "destination": "/sustainability/sr2026/index.html" },
     { "source": "/sustainability/report_comparison", "destination": "/sustainability/report_comparison/index.html" }
   ]

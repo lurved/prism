@@ -64,6 +64,41 @@
     },
   };
   const ROLE_ORDER = ["werewolf", "seer", "doctor", "villager"];
+  const GUIDE_URL = "/werewolf/guide";
+
+  // The lines a moderator reads aloud, built for the roles actually in play —
+  // no point calling for a Doctor in a 5-player game that hasn't got one.
+  function nightScript(comp) {
+    const steps = [
+      { say: "Night falls. Everyone close your eyes." },
+      { say: "Werewolves, open your eyes and look at each other. Agree on one person, and point at them.",
+        note: "Remember who they picked." },
+      { say: "Werewolves, close your eyes." },
+    ];
+    if (comp.seer) {
+      steps.push({ say: "Seer, open your eyes. Point at someone.",
+        note: "Thumbs up if that person is a werewolf, thumbs down if they aren't." });
+      steps.push({ say: "Seer, close your eyes." });
+    }
+    if (comp.doctor) {
+      steps.push({ say: "Doctor, open your eyes. Point at someone to protect.",
+        note: "If they pick the werewolves' target, nobody dies tonight." });
+      steps.push({ say: "Doctor, close your eyes." });
+    }
+    steps.push({ say: "Everyone, open your eyes." });
+    return steps;
+  }
+
+  const DAY_SCRIPT = [
+    { say: "[Name] didn't survive the night. They were a [role].",
+      note: "If the Doctor saved them, say someone was attacked but survived — and name nobody." },
+    { say: "Talk. You've got a few minutes.",
+      note: "Stay out of it. You know everything and they'll read your face." },
+    { say: "Time to vote. Point at who you want out, on three. Three, two, one.",
+      note: "Most fingers wins. A tie means nobody goes out." },
+    { say: "[Name] is out. They were a [role].",
+      note: "Then check for a winner. If nobody's won, call the night again." },
+  ];
 
   // The whole API is one endpoint, routed on `op` (see api/werewolf/index.js).
   async function request(url, opts) {
@@ -101,6 +136,8 @@
   let submitting = false;
   let revealed = false;      // players tap to reveal, so a neighbour can't peek
   let seenRound = 0;         // re-hide the card whenever a new round is dealt
+  let scriptOpen = false;    // moderator's read-aloud script, open state
+  let lastStateKey = "";     // skip re-rendering when a poll changes nothing
   let pollTimer = null;
 
   function currentView() {
@@ -118,7 +155,14 @@
         revealed = false;
       }
       gameState = data;
+      // Re-rendering replaces #app wholesale, which throws away scroll
+      // position — unbearable if you're halfway down the script when a poll
+      // lands. Most polls change nothing, so only redraw when something did.
+      const key = JSON.stringify(data);
+      const hadError = !!formError;
       formError = "";
+      if (key === lastStateKey && !hadError) return;
+      lastStateKey = key;
       render();
     } catch (err) {
       if (err.status === 403 || err.status === 404) {
@@ -223,6 +267,8 @@
     formError = "";
     revealed = false;
     seenRound = 0;
+    scriptOpen = false;
+    lastStateKey = "";
     render();
   }
 
@@ -275,6 +321,8 @@
       ),
       formError ? el("p", { class: "error-msg", style: { marginTop: "14px", textAlign: "center" } }, formError) : null,
       el("p", { class: "hint" }, "Needs a moderator plus at least 4 players."),
+      el("p", { style: { textAlign: "center", margin: "18px 0 0" } },
+        el("a", { class: "guide-link", href: GUIDE_URL }, "How to moderate →")),
     );
   }
 
@@ -422,6 +470,40 @@
     );
   }
 
+  function stepList(steps) {
+    return el("ol", { class: "script-list" },
+      steps.map((s) => el("li", { class: "script-step" },
+        el("span", { class: "say" }, `“${s.say}”`),
+        s.note ? el("span", { class: "note" }, s.note) : null,
+      )),
+    );
+  }
+
+  // Collapsed by default so it never buries the roster; open state lives in a
+  // variable rather than a <details> element, which a re-render would reset.
+  function scriptPanel(g) {
+    return el("div", { class: "panel" },
+      el("button", {
+        class: "script-toggle",
+        onclick: () => { scriptOpen = !scriptOpen; render(); },
+      },
+        el("span", null, "What to say"),
+        el("span", { class: "chev" }, scriptOpen ? "−" : "+"),
+      ),
+      scriptOpen ? el("div", { class: "script-body" },
+        el("div", { class: "progress-label" }, "Each night"),
+        stepList(nightScript(g.composition)),
+        el("div", { class: "progress-label", style: { marginTop: "18px" } }, "Each day"),
+        stepList(DAY_SCRIPT),
+        el("div", { class: "progress-label", style: { marginTop: "18px" } }, "How it ends"),
+        el("p", { class: "script-end" },
+          "The village wins the moment the last werewolf is out. The werewolves win as soon as they equal or outnumber everyone else. Check after every elimination."),
+        el("a", { class: "guide-link", href: GUIDE_URL, target: "_blank", rel: "noopener" },
+          "Full moderator guide →"),
+      ) : null,
+    );
+  }
+
   function screenModerator(g) {
     const info = ROLE_INFO.moderator;
     return el("div", null,
@@ -438,6 +520,7 @@
         el("div", { class: "progress-label" }, "This game — " + compositionLine(g.composition)),
         rosterList(g, { withRoles: true }),
       ),
+      scriptPanel(g),
       el("div", { class: "btn-row", style: { marginBottom: "16px" } },
         el("button", { class: "btn btn-outline", disabled: submitting, onclick: dealRoles }, "Deal again"),
         el("button", { class: "btn btn-outline", disabled: submitting, onclick: () => hostAction("reopen") }, "Back to lobby"),
