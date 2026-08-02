@@ -1,6 +1,7 @@
 /* ============================================================
-   Who — a werewolf party game. Navy design system.
-   Imports the shared tokens; everything below is local to /who.
+   Who — role dealer for an in-person werewolf game.
+   Imports the shared pris.la tokens; everything below is local
+   to /who and consumes those tokens only (no raw hex/fonts).
    ============================================================ */
 
 @import "../tokens/fonts.css";
@@ -34,14 +35,14 @@ body {
 #app { width: 100%; max-width: 460px; }
 
 button { font-family: inherit; cursor: pointer; }
-input, textarea { font-family: inherit; }
+input { font-family: inherit; }
 
 /* ── brand ── */
 .who-brand {
   display: flex;
   align-items: baseline;
   gap: 10px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .who-brand .glyph { color: var(--accent); font-size: 20px; }
 .who-brand h1 {
@@ -57,6 +58,13 @@ input, textarea { font-family: inherit; }
   letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.lede {
+  font-size: var(--text-lede);
+  line-height: 1.6;
+  color: var(--soft);
+  margin: 0 0 24px;
 }
 
 /* ── generic card / panel ── */
@@ -94,14 +102,14 @@ input, textarea { font-family: inherit; }
   letter-spacing: var(--tracking-button);
   text-transform: uppercase;
   border: 1px solid transparent;
-  transition: opacity var(--ease-lift), transform var(--ease-lift);
+  transition: opacity var(--ease-lift), transform var(--ease-lift), border-color var(--ease-lift), color var(--ease-lift);
 }
 .btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
 .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 .btn-outline { background: transparent; color: var(--ink); border-color: var(--hair); }
 .btn-outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.btn-danger { background: transparent; color: var(--wolf); border-color: var(--wolf); }
+.btn-outline:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-row { display: flex; gap: 10px; }
 .btn-row .btn { width: auto; flex: 1; }
 
@@ -123,7 +131,7 @@ input, textarea { font-family: inherit; }
   border-radius: var(--radius-input);
   background: var(--bg);
   color: var(--ink);
-  font-size: 16px;
+  font-size: 16px; /* ≥16px stops iOS zooming the page on focus */
   outline: none;
   transition: border-color var(--ease-lift);
 }
@@ -139,6 +147,7 @@ input, textarea { font-family: inherit; }
 .choice-row { display: flex; flex-direction: column; gap: 14px; }
 .choice-card {
   display: block;
+  width: 100%;
   text-align: left;
   background: var(--card);
   border: 1px solid var(--hair);
@@ -149,9 +158,9 @@ input, textarea { font-family: inherit; }
 }
 .choice-card:hover { border-color: var(--accent); transform: translateY(-1px); }
 .choice-card h3 { font-family: var(--font-display); font-size: 19px; font-weight: 500; margin: 0 0 4px; }
-.choice-card p { font-size: var(--text-body-sm); color: var(--muted); margin: 0; }
+.choice-card p { font-size: var(--text-body-sm); color: var(--muted); margin: 0; line-height: 1.5; }
 
-/* ── room code ── */
+/* ── room code + share link ── */
 .room-code {
   font-family: var(--font-mono);
   font-size: 40px;
@@ -185,9 +194,10 @@ input, textarea { font-family: inherit; }
   font-size: 11px;
   text-transform: uppercase;
 }
+.share-link button:hover { border-color: var(--accent); color: var(--accent); }
 
-/* ── player list ── */
-.player-list { list-style: none; margin: 0 0 4px; padding: 0; }
+/* ── roster ── */
+.player-list { list-style: none; margin: 0; padding: 0; }
 .player-row {
   display: flex;
   align-items: center;
@@ -201,23 +211,34 @@ input, textarea { font-family: inherit; }
   width: 8px; height: 8px; border-radius: 50%;
   background: var(--safe); flex-shrink: 0;
 }
-.player-row.dead .dot { background: var(--muted); }
-.player-row.dead { color: var(--muted); text-decoration: line-through; }
-.player-row .host-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--accent);
-  text-transform: uppercase;
-  margin-left: auto;
-}
 .player-row .role-tag {
   font-family: var(--font-mono);
   font-size: 10px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
   margin-left: auto;
 }
+.player-row .role-tag.mod { color: var(--accent); }
+.player-row .role-tag.kick {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.player-row .role-tag.kick:hover { color: var(--wolf); }
+.player-row.role-werewolf .dot { background: var(--wolf); }
 .player-row.role-werewolf .role-tag { color: var(--wolf); }
+
+/* ── section label (reused as a small caps heading) ── */
+.progress-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
 
 /* ── role card ── */
 .role-card {
@@ -226,7 +247,7 @@ input, textarea { font-family: inherit; }
   border-radius: var(--radius-panel);
   border: 1px solid transparent;
 }
-.role-card .role-glyph { font-size: 36px; margin-bottom: 10px; color: var(--ink); }
+.role-card .role-glyph { font-size: 36px; margin-bottom: 10px; color: var(--ink); line-height: 1; }
 .role-card h2 {
   font-family: var(--font-display);
   font-size: 30px;
@@ -236,117 +257,37 @@ input, textarea { font-family: inherit; }
 .role-card p { color: var(--muted); font-size: 14.5px; line-height: 1.55; margin: 0; }
 .role-card.is-werewolf { border-color: var(--wolf); }
 .role-card.is-werewolf h2, .role-card.is-werewolf .role-glyph { color: var(--wolf); }
+.role-card.is-moderator { border-color: var(--accent); }
+.role-card.is-moderator h2, .role-card.is-moderator .role-glyph { color: var(--accent); }
 
-/* ── target grid (choose a player to act on) ── */
-.target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; }
-.target-btn {
-  background: var(--bg);
-  border: 1.5px solid var(--hair);
-  border-radius: var(--radius-input);
-  padding: 12px 10px;
-  color: var(--ink);
-  font-size: 14px;
+/* ── tap-to-reveal (keeps a role off-screen until the player is ready) ── */
+.reveal-card {
+  display: block;
+  width: 100%;
   text-align: center;
-  transition: border-color var(--ease-lift), background var(--ease-lift);
-}
-.target-btn:hover:not(:disabled) { border-color: var(--accent); }
-.target-btn.selected { border-color: var(--accent); background: var(--accent-soft); }
-.target-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.target-btn.skip { grid-column: 1 / -1; }
-
-/* ── progress bar ── */
-.progress-wrap { margin: 14px 0; }
-.progress-label {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 6px;
-  letter-spacing: 0.04em;
-}
-.progress-track {
-  height: 6px;
-  background: var(--bg);
-  border-radius: var(--radius-pill);
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: var(--accent);
-  transition: width 0.3s ease;
-}
-
-/* ── event log ── */
-.log-list { list-style: none; margin: 0; padding: 0; }
-.log-list li {
-  font-size: 14px;
-  color: var(--soft);
-  padding: 7px 0;
-  border-bottom: 1px solid var(--hair);
-  line-height: 1.5;
-}
-.log-list li:last-child { border-bottom: none; }
-.log-list li.death, .log-list li.lynch { color: var(--ink); }
-.log-list li .r { color: var(--muted); font-family: var(--font-mono); font-size: 11px; margin-right: 6px; }
-
-/* ── seer history ── */
-.seer-log { margin-top: 14px; }
-.seer-row { display: flex; justify-content: space-between; font-size: 14px; padding: 6px 0; }
-.seer-row .verdict.wolf { color: var(--wolf); font-weight: 600; }
-.seer-row .verdict.clear { color: var(--safe); font-weight: 600; }
-
-/* ── chat ── */
-.chat-box {
-  background: var(--bg);
-  border: 1px solid var(--hair);
-  border-radius: var(--radius-panel);
-  padding: 12px;
-  max-height: 220px;
-  overflow-y: auto;
-  margin-bottom: 10px;
-}
-.chat-msg { font-size: 14px; margin-bottom: 8px; line-height: 1.4; }
-.chat-msg .who { font-weight: 600; margin-right: 6px; }
-.chat-msg .who.me { color: var(--accent); }
-.chat-form { display: flex; gap: 8px; margin-bottom: 20px; }
-.chat-form input {
-  flex: 1;
-  padding: 10px 12px;
-  border: 1.5px solid var(--hair);
-  border-radius: var(--radius-input);
-  background: var(--card);
+  padding: 46px 22px;
+  border-style: dashed;
   color: var(--ink);
-  font-size: 14px;
-  outline: none;
+  transition: border-color var(--ease-lift), transform var(--ease-lift);
 }
-.chat-form input:focus { border-color: var(--accent); }
-.chat-form button {
-  background: var(--accent);
-  color: var(--on-accent);
-  border: none;
-  border-radius: var(--radius-input);
-  padding: 0 16px;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-/* ── winner banner ── */
-.winner-banner {
-  text-align: center;
-  padding: 8px 0 6px;
-}
-.winner-banner .glyph { font-size: 40px; margin-bottom: 8px; }
-.winner-banner h2 {
+.reveal-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.reveal-card .role-glyph {
   font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 500;
-  margin: 0 0 6px;
+  font-size: 44px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 12px;
 }
-.winner-banner p { color: var(--muted); font-size: 15px; margin: 0; }
+.reveal-card h2 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+.reveal-card p { color: var(--muted); font-size: 14px; margin: 0; }
 
+/* ── misc ── */
 .hint { font-size: 13px; color: var(--muted); text-align: center; margin: 10px 0 0; line-height: 1.5; }
-.spacer { height: 8px; }
 .back-link {
   display: inline-block;
   font-family: var(--font-mono);
