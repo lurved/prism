@@ -1,11 +1,11 @@
 /**
- * Renders who/og.png — the static share card for /who.
+ * Renders werewolf/og.png — the static share card for /werewolf.
  *
  * The card has no per-room content, so it ships as a committed PNG (like
  * /sides and /talk) rather than a Serverless Function: the project sits at
  * Vercel's per-deployment function cap. Re-run after changing the copy:
  *
- *   npm i --no-save @vercel/og && node scripts/who-og.mjs
+ *   npm i --no-save @vercel/og && node scripts/werewolf-og.mjs
  */
 import { ImageResponse } from "@vercel/og";
 import { readFile, writeFile } from "node:fs/promises";
@@ -52,7 +52,7 @@ function card() {
       h("div", { style: { display: "flex", gap: 16, marginTop: 40 } }, ...group.map(dot))),
     h("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-end" } },
       h("div", { style: { display: "flex", fontFamily: "Inter", fontSize: 30, color: C.muted } }, "A moderator plus 4 or more players."),
-      h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 36, color: C.ink } }, "pris.la/who")));
+      h("div", { style: { display: "flex", fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 36, color: C.ink } }, "pris.la/werewolf")));
 }
 
 const fontDir = path.join(ROOT, "api/typeme/fonts");
@@ -63,6 +63,6 @@ const fonts = [
 ];
 
 const res = new ImageResponse(card(), { width: 1200, height: 630, fonts });
-const out = path.join(ROOT, "who/og.png");
+const out = path.join(ROOT, "werewolf/og.png");
 await writeFile(out, Buffer.from(await res.arrayBuffer()));
 console.log("wrote", path.relative(ROOT, out));

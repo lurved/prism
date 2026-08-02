@@ -6,7 +6,10 @@
  * moderator — the full roster. Everything after that (night, day, voting) is
  * played face to face, so there are no phases, actions, votes or chat here.
  *
- * Storage is the same Upstash/ioredis instance used by typeme, keyed as:
+ * Storage is the same Upstash/ioredis instance used by typeme. The key prefix
+ * is still `who:` — it predates the move from /who to /werewolf and is kept on
+ * purpose: it's invisible to users, and renaming it would orphan every live
+ * room mid-game for no benefit. Not an oversight.
  *
  *   who:codes            set    every active room code (uniqueness)
  *   who:room:{code}      JSON   { code, hostPlayerId, phase, round }

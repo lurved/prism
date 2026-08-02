@@ -7,11 +7,11 @@
  * operations into separate files pushed the deployment over that cap and it
  * stopped building — hence one file, one function.
  *
- *   POST /api/who  { op: "create", name }
- *   POST /api/who  { op: "join", code, name }
- *   POST /api/who  { op: "deal", code, playerId, token }
- *   POST /api/who  { op: "host", code, playerId, token, action, targetId? }
- *   GET  /api/who?op=state&code=&playerId=&token=
+ *   POST /api/werewolf  { op: "create", name }
+ *   POST /api/werewolf  { op: "join", code, name }
+ *   POST /api/werewolf  { op: "deal", code, playerId, token }
+ *   POST /api/werewolf  { op: "host", code, playerId, token, action, targetId? }
+ *   GET  /api/werewolf?op=state&code=&playerId=&token=
  *
  * `op` is deliberately distinct from the `action` field the host controls use,
  * so routing never collides with request payloads.

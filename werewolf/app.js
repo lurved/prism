@@ -65,7 +65,7 @@
   };
   const ROLE_ORDER = ["werewolf", "seer", "doctor", "villager"];
 
-  // The whole API is one endpoint, routed on `op` (see api/who/index.js).
+  // The whole API is one endpoint, routed on `op` (see api/werewolf/index.js).
   async function request(url, opts) {
     const res = await fetch(url, opts);
     let data = null;
@@ -79,7 +79,7 @@
     return data;
   }
   function apiPost(op, payload) {
-    return request("/api/who", {
+    return request("/api/werewolf", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ op, ...payload }),
@@ -87,7 +87,7 @@
   }
   function apiState(s) {
     const q = new URLSearchParams({ op: "state", code: s.code, playerId: s.playerId, token: s.token });
-    return request("/api/who?" + q.toString());
+    return request("/api/werewolf?" + q.toString());
   }
 
   // ── app state ──
@@ -341,7 +341,7 @@
 
   function screenLobby() {
     const g = gameState;
-    const link = `${location.origin}/who?join=${g.code}`;
+    const link = `${location.origin}/werewolf?join=${g.code}`;
     const short = ((g.minPlayers - g.playerCount) > 0) ? g.minPlayers - g.playerCount : 0;
 
     if (!g.you.isHost) {
