@@ -1,5 +1,5 @@
 /**
- * WHO — single entry point for the whole API.
+ * WEREWOLF — single entry point for the whole API.
  *
  * Every operation lives behind this one function, dispatched on `op`, because
  * Vercel counts each api/*.js file as a separate Serverless Function and the

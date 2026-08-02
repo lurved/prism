@@ -1,5 +1,5 @@
 /**
- * WHO — shared server logic.
+ * WEREWOLF — shared server logic.
  *
  * The app is a role dealer for an in-person werewolf game, not an online game
  * engine: it hands every player a private role and hands the host — who is the
