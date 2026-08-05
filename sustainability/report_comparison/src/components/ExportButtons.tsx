@@ -12,7 +12,7 @@ import { useState } from "react";
 import type { Company } from "@/data/types";
 import { buildMetricSeries } from "@/lib/metrics";
 
-const DISCLAIMER = "Values are as reported by companies; no estimation or interpolation applied. N/D = not disclosed (empty cell).";
+const DISCLAIMER = "Values are as reported by companies; no estimation or interpolation applied. Empty value cell = N/D (not disclosed, status 'unverified') or N/A (does not apply to that business model, status 'not_applicable') — never 0.";
 
 function csvEscape(v: string): string {
   if (/[",\n]/.test(v)) return `"${v.replace(/"/g, '""')}"`;
@@ -34,9 +34,12 @@ function toCSV(companies: Company[]): string {
         s.companyName,
         s.metricLabel,
         mv.fiscalYear,
-        mv.value === null ? "" : String(mv.value), // N/D → empty, never 0
+        mv.value === null ? "" : String(mv.value), // N/D and N/A → empty, never 0
         mv.unit,
-        mv.status,
+        // N/A is not a provenance tier — it is surfaced here so the export can
+        // distinguish "does not apply" from "not disclosed", both of which are
+        // an empty value cell.
+        mv.notApplicable ? "not_applicable" : mv.status,
         mv.citation?.reportName ?? "",
         mv.citation?.page != null ? String(mv.citation.page) : "",
         mv.citation?.publishedDate ?? "",

@@ -167,6 +167,25 @@ export function MetricTable({ companies }: MetricTableProps) {
           ))}
         </div>
       </div>
+
+      {/* Scope 2 basis is not uniform across this set, so it is stated per
+          company here rather than asserted once in the column label. */}
+      <div className="px-5 py-3 border-t border-hairline2">
+        <p className="font-mono font-medium text-[10px] tracking-[0.08em] uppercase text-muted2 mb-1">Scope 2 reporting basis differs by company</p>
+        <div className="flex flex-col gap-y-1">
+          {companies.map((c) => (
+            <span key={c.id} className="font-sans text-[11px] text-muted">
+              <span className="font-semibold text-muted">{c.shortName}:</span> {c.environmental.scope2Basis}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="px-5 py-3 border-t border-hairline2 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] text-muted2">
+        <span>N/D = not disclosed in the report</span>
+        <span>N/A = does not apply to this business model</span>
+        <span>Emissions in ktCO₂e, as reported.</span>
+      </div>
     </div>
   );
 }

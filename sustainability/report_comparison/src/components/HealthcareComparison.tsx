@@ -15,6 +15,7 @@ function FlagBadge({ flag }: { flag: SourceFlag }) {
   const meta = FLAG_META[flag];
   const tone =
     flag === "confirmed" ? "text-good"
+    : flag === "reported" ? "text-muted2"
     : flag === "estimated" ? "text-sc"
     : "text-nd";
   return (
@@ -165,11 +166,13 @@ export function HealthcareComparison({ entities = healthcareEntities }: { entiti
       <div className="mb-5 border-l-2 border-sc pl-4 py-0.5">
         <p className="font-sans text-[12px] leading-[1.55] text-muted m-0">
           <span className="font-semibold">Comparability audit.</span> A “best performer” badge requires ≥2 entities each
-          publishing a <span className="font-semibold">confirmed</span> value on the <span className="font-semibold">same
-          intensity denominator</span> (patient-bed-day) and <span className="font-semibold">same Scope 2 method</span>.
-          IHH and RMG report confirmed absolute emissions, but only IHH publishes the patient-bed-day intensity used for
-          ranking (RMG and TMG report on different denominators), so <span className="font-semibold">no best-performer badge
-          renders</span> (n = 1 on the comparable denominator is not a comparison).
+          publishing a <span className="font-semibold">page-verified (✅ confirmed)</span> value on the{" "}
+          <span className="font-semibold">same intensity denominator</span> (patient-bed-day) and{" "}
+          <span className="font-semibold">same Scope 2 method</span>. Only IHH publishes a patient-bed-day intensity at
+          all — and it is cited to the report without a recorded page, so it ranks as{" "}
+          <span className="font-semibold">• reported</span>, not ✅ confirmed. RMG&apos;s Scope 1/2 absolutes are
+          page-verified but sit on a revenue denominator, and TMG&apos;s emissions are not yet entered. So{" "}
+          <span className="font-semibold">no best-performer badge renders</span>.
           {rankNotes.length > 0 && <span className="block mt-1 text-muted2">{rankNotes.join(" · ")}</span>}
         </p>
       </div>
@@ -221,7 +224,8 @@ export function HealthcareComparison({ entities = healthcareEntities }: { entiti
         </table>
 
         <div className="px-5 py-3 border-t border-hairline2 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[10px] text-muted2">
-          <span>✅ Confirmed</span>
+          <span>✅ Confirmed — page recorded</span>
+          <span>• Reported — from the report, no page recorded</span>
           <span>⚠️ Estimated</span>
           <span>❌ Unverified / not yet entered</span>
           <span>“pending” = report not yet read (not a zero)</span>

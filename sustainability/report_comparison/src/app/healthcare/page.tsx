@@ -42,7 +42,7 @@ export default function HealthcarePage() {
             <strong className="font-semibold">Raffles Medical</strong> (Scope 1 &amp; 2, no Scope 3) and{" "}
             <strong className="font-semibold">Thomson Medical</strong> (beds + revenue-basis intensity; absolutes pending). The boundary is the listed group
             reporting entity, not individual hospital campuses. Every figure carries a source flag.{" "}
-            <span className="font-mono text-[14px] text-muted2">✅ Confirmed · ⚠️ Estimated · ❌ Unverified.</span>
+            <span className="font-mono text-[14px] text-muted2">✅ Confirmed (page recorded) · • Reported (no page) · ⚠️ Estimated · ❌ Unverified.</span>
           </p>
           <aside className="border-l-2 border-sm pl-[18px] py-1 font-sans text-[13px] leading-[1.6] text-muted [text-wrap:pretty]">
             <span className="block font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-sm mb-[9px]">No interpolation</span>

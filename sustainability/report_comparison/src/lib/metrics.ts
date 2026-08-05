@@ -62,13 +62,18 @@ export const METRIC_DEFS: MetricDef[] = [
   {
     metricId: "scope2",
     label: "Scope 2 Emissions",
-    sublabel: "Market-based",
+    // The reporting basis is NOT uniform across this set (Sembcorp is
+    // location-based, SMRT does not state a basis, only Singtel is
+    // market-based), so it cannot be asserted in the column label. It is
+    // carried per company in scope2Basis → popover, export and table footer.
+    sublabel: "Energy indirect — basis differs",
     category: "Environmental",
     getRaw: (c) => c.environmental.scope2Emissions,
     unit: "ktCO₂e",
     format: fmtEmissions,
     lowerIsBetter: true,
     comparable: false,
+    notes: (c) => `Reporting basis: ${c.environmental.scope2Basis}.`,
   },
   {
     metricId: "scope3",
@@ -283,6 +288,24 @@ export function buildMetricValue(c: Company, def: MetricDef): MetricValue {
   const value = def.getRaw(c);
   const unit = typeof def.unit === "function" ? def.unit(c) : def.unit;
   const notes = def.notes?.(c);
+  // N/A takes precedence over N/D: a metric that cannot apply to this business
+  // model is a different fact from one the company failed to disclose, and
+  // rendering the first as the second reads as a disclosure failure.
+  // The reason is mandatory (it is the map value) and surfaces in the popover.
+  const naReason = c.naMetrics?.[def.metricId];
+  if (naReason !== undefined) {
+    return {
+      value: null,
+      unit,
+      fiscalYear: c.reportingPeriod,
+      // Nothing is cited because there is nothing to disclose — but this is
+      // "does not apply", not "unverified"; notApplicable drives the display.
+      status: "unverified",
+      citation: null,
+      notApplicable: true,
+      notes: naReason,
+    };
+  }
   if (value === null) {
     // Nothing to cite — never a substituted number, never a guessed citation.
     return { value: null, unit, fiscalYear: c.reportingPeriod, status: "unverified", citation: null, notes };

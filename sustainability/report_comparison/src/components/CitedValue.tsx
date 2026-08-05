@@ -5,7 +5,9 @@
  *
  * Every displayed figure on the comparison page flows through this component so
  * that no number ever appears without a status (confirmed / unverified) and a
- * source (§1). A `null` value renders "N/D" — never 0.
+ * source (§1). A `null` value renders "N/D" — never 0. A value flagged
+ * `notApplicable` renders "N/A" with its reason: the metric does not apply to
+ * this business model, which is not the same fact as a failure to disclose.
  *
  * Interaction: hover (desktop) / tap (mobile) / keyboard focus opens a popover
  * with the report name, page, published + extracted dates, and a "View report"
@@ -42,9 +44,10 @@ export function CitedValue({ mv, display, className = "", emphasis = false, ndLa
   const popRef = useRef<HTMLDivElement>(null);
   const id = useId();
 
+  const isNA = mv.notApplicable === true;
   const isND = mv.value === null;
   const hasCitation = mv.citation !== null;
-  const text = isND ? ndLabel : (display ?? String(mv.value));
+  const text = isNA ? "N/A" : isND ? ndLabel : (display ?? String(mv.value));
 
   const position = () => {
     const el = triggerRef.current;
@@ -163,6 +166,28 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 function CitationBody({ mv }: { mv: MetricValue }) {
   const c = mv.citation;
+
+  // "Does not apply to this business model" — distinct from "not disclosed".
+  // There is nothing to cite, and nothing the company failed to report.
+  if (mv.notApplicable) {
+    return (
+      <div>
+        <div className="flex items-center gap-1.5 font-sans font-semibold text-[12px] text-muted2 mb-1.5">
+          <span aria-hidden>—</span> N/A — not applicable
+        </div>
+        <p className="font-sans text-[11px] leading-[1.5] text-muted m-0">
+          {mv.notes ?? "This metric does not apply to this company's business model."}
+        </p>
+        <p className="font-sans text-[10px] leading-[1.5] text-muted2 mt-2 mb-0">
+          Shown as <span className="font-mono">N/A</span>, not{" "}
+          <span className="font-mono">N/D</span> — this is not a disclosure gap.
+        </p>
+        <div className="mt-2 pt-2 border-t border-hairline">
+          <Row label="Fiscal year">{mv.fiscalYear}</Row>
+        </div>
+      </div>
+    );
+  }
 
   if (!c) {
     return (

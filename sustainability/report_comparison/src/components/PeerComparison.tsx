@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { peerCompanies, type PeerCompany } from "@/data/peerData";
+import { peerCompanies, COMMUNITY_BASIS_LABEL, type PeerCompany } from "@/data/peerData";
 import { peerMetricValue } from "@/lib/peerMetrics";
 import { CitedValue } from "./CitedValue";
 
@@ -23,7 +23,13 @@ type Row = {
   label: string;
   sublabel?: string;
   view: View | "both";
-  render: (c: PeerCompany) => { text: string; na?: boolean; nd?: boolean };
+  /**
+   * `qualifier` renders as a small line under the value. Use it where the
+   * figures in a row are not the same KIND of number and the cell would
+   * otherwise be misread (e.g. community investment: annual total vs
+   * multi-year commitment).
+   */
+  render: (c: PeerCompany) => { text: string; na?: boolean; nd?: boolean; qualifier?: string };
   /**
    * Quantitative rows supply `cite` so the cell renders through <CitedValue>
    * with a status + citation popover. Omit for descriptive/text rows.
@@ -125,8 +131,14 @@ const rows: Row[] = [
     cite: (c) => c.naMetrics.includes("injuryMetricValue")
       ? { value: null, unit: c.injuryMetricUnit, na: true }
       : { value: c.injuryMetricValue, unit: c.injuryMetricUnit } },
-  { key: "community", label: "Community investment", view: "normalized",
-    render: (c) => ({ text: c.communityInvestmentNative }) },
+  // Native currency AND period basis — the figures in this row are not the same
+  // kind of number, so neither is ever shown without the other.
+  { key: "community", label: "Community investment", sublabel: "native currency · basis differs", view: "normalized",
+    render: (c) => ({
+      text: c.communityInvestmentNative,
+      nd: c.communityInvestmentBasis === "not_disclosed",
+      qualifier: COMMUNITY_BASIS_LABEL[c.communityInvestmentBasis],
+    }) },
   { key: "indepDir", label: "Independent directors %", view: "normalized",
     render: (c) => ({ text: fmtNum(c.independentDirectorsPct, "%"), nd: c.independentDirectorsPct === null }),
     cite: (c) => ({ value: c.independentDirectorsPct, unit: "%" }) },
@@ -230,6 +242,9 @@ export function PeerComparison({
                       ) : (
                         <span className={`font-mono text-[13px] ${cell.na || cell.nd ? "text-nd" : "text-ink2"}`}>{cell.na ? "N/A" : cell.nd ? "N/D" : cell.text}</span>
                       )}
+                      {cell.qualifier && (
+                        <div className="font-sans text-[10px] leading-[1.35] text-muted3 mt-[3px] [text-wrap:pretty]">{cell.qualifier}</div>
+                      )}
                     </td>
                   );
                 })}
@@ -270,6 +285,7 @@ export function PeerComparison({
           <span>N/D = not disclosed</span>
           <span>N/A = not applicable to this business model</span>
           <span>Emissions in tCO₂e, as reported.</span>
+          <span>Community figures are native-currency and differ in basis — never ranked.</span>
         </div>
       </div>
     </div>

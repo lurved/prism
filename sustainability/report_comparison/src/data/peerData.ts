@@ -24,6 +24,26 @@ export type PeerBusinessModel =
   | "Transmission & distribution only"
   | "Universal bank (commercial + retail + wealth)";
 
+/**
+ * What a community-investment figure actually MEASURES. Required, because the
+ * reported figures are not the same kind of number: an annual total, a
+ * single-programme allocation and a multi-year commitment cannot be read off
+ * the same row without saying which is which. (DBS's "SGD 1B / 10yr" is a
+ * ten-year commitment; scanned next to annual figures it looks ~60× its peers.)
+ */
+export type CommunityBasis =
+  | "annual"                 // annual total for the reporting year, as reported
+  | "programme_allocation"   // one fund/programme, not a consolidated total
+  | "multi_year_commitment"  // pledged over several years — not annual spend
+  | "not_disclosed";
+
+export const COMMUNITY_BASIS_LABEL: Record<CommunityBasis, string> = {
+  annual: "annual total, as reported",
+  programme_allocation: "single programme — not a consolidated total",
+  multi_year_commitment: "multi-year commitment — not annual spend",
+  not_disclosed: "no consolidated total disclosed",
+};
+
 export interface PeerDataSource {
   reportTitle: string;
   reportingPeriod: string;
@@ -82,6 +102,8 @@ export interface PeerCompany {
   injuryMetricValue: number | null;
   injuryMetricUnit: string;     // unit differs by company — stated explicitly
   communityInvestmentNative: string;   // native currency, as reported
+  /** What that figure measures — never omit; drives the qualifier in the table. */
+  communityInvestmentBasis: CommunityBasis;
   communityInvestmentNote: string;
   independentDirectorsPct: number | null;
   esgLinkedExecComp?: boolean | null;    // exec remuneration linked to ESG/sustainability
@@ -141,6 +163,7 @@ export const peerCompanies: PeerCompany[] = [
     injuryMetricValue: 1.42,
     injuryMetricUnit: "LTIFR (lost-time injury freq. rate, per million hours)",
     communityInvestmentNative: "PhP 224M",
+    communityInvestmentBasis: "annual",
     communityInvestmentNote:
       "PhP 224 million CSR project expenses (2024, GRI 201-1). ≈ S$5.1M at PhP→SGD ≈ 0.0228 (mid-2025, approximate). One Meralco Foundation programmes reported separately.",
     independentDirectorsPct: 27.3, // 3 independent of 11 directors
@@ -215,6 +238,7 @@ export const peerCompanies: PeerCompany[] = [
     injuryMetricValue: 0.04,
     injuryMetricUnit: "Lost-time injury rate per 200,000 work hours",
     communityInvestmentNative: "HK$240M",
+    communityInvestmentBasis: "programme_allocation",
     communityInvestmentNote:
       "HK$240M allocated under the CLP Community Energy Saving Fund (programme allocation). A single consolidated community-investment total is not disclosed in the Annual Report.",
     independentDirectorsPct: 54,  // Independent Non-executive Directors, 13-member board
@@ -288,6 +312,7 @@ export const peerCompanies: PeerCompany[] = [
     injuryMetricValue: 0.11,
     injuryMetricUnit: "LTIFR per 100,000 hours worked (employees + contractors)",
     communityInvestmentNative: "£6.8M/yr",
+    communityInvestmentBasis: "programme_allocation",
     communityInvestmentNote:
       "Grid for Good Energy Affordability Fund: £3.5M/yr (UK) + £3.3M/yr (US) ≈ £6.8M/yr. A consolidated total community-investment figure is not disclosed in the 20-F.",
     independentDirectorsPct: 81.8, // 9 of 11 (8 independent NEDs + independent-on-appointment Chair)

@@ -57,6 +57,7 @@ export const bankCompanies: PeerCompany[] = [
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
     communityInvestmentNative: "SGD 1B / 10yr (DBS Foundation)",
+    communityInvestmentBasis: "multi_year_commitment",
     communityInvestmentNote:
       "DBS Foundation commitment of up to SGD 1 billion over 10 years; no annual community-investment SGD total disclosed in the SR. Employee volunteering >270,000 hours in FY2024.",
     independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
@@ -118,6 +119,7 @@ export const bankCompanies: PeerCompany[] = [
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
     communityInvestmentNative: "N/D",
+    communityInvestmentBasis: "not_disclosed",
     communityInvestmentNote:
       "No consolidated community-investment SGD total in the SR. 17,666 employee volunteers across 531 projects.",
     independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
@@ -179,6 +181,7 @@ export const bankCompanies: PeerCompany[] = [
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — office injury rate 0.10/100 FTE reported, not industrial LTIFR)",
     communityInvestmentNative: "SGD 16.1M",
+    communityInvestmentBasis: "annual",
     communityInvestmentNote:
       "SGD 16.1M monetary community contributions in FY2024 (GRI 201-1, EY-assured), incl. UOB Heartbeat Run (>SGD 3M). Avg 2.9 volunteer hours/employee.",
     independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)

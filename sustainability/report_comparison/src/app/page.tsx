@@ -42,7 +42,7 @@ export default function TemasekPage() {
             <strong className="font-semibold">Sembcorp Industries</strong> (FY2025),{" "}
             <strong className="font-semibold">SMRT Corporation</strong> (FY2024/25), and{" "}
             <strong className="font-semibold">Singtel Group</strong> (FY2025). Every figure is verified against source.{" "}
-            <span className="font-mono text-[14px] text-muted2">N/D = not disclosed in official report.</span>
+            <span className="font-mono text-[14px] text-muted2">N/D = not disclosed in official report · N/A = not applicable to that business model.</span>
           </p>
           <aside className="border-l-2 border-sm pl-[18px] py-1 font-sans text-[13px] leading-[1.6] text-muted [text-wrap:pretty]">
             <span className="block font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-sm mb-[9px]">Read with care</span>
@@ -99,7 +99,7 @@ export default function TemasekPage() {
             <span className="inline-flex items-center gap-1.5 font-sans font-medium text-[12px] text-muted">
               <span className="font-mono text-[13px] text-muted2">123°</span> = cited · hover / tap for source
             </span>
-            <span className="font-mono font-medium text-[12px] text-muted3">N/D = not disclosed</span>
+            <span className="font-mono font-medium text-[12px] text-muted3">N/D = not disclosed · N/A = not applicable</span>
           </div>
           <ExportButtons companies={companies} />
         </div>
@@ -129,7 +129,10 @@ export default function TemasekPage() {
               Every figure is taken directly from a company&apos;s own latest published report and carries a
               citation (hover or tap the dotted value). Nothing is estimated, interpolated, or filled: a metric
               that a report does not disclose is shown as <span className="font-mono">N/D</span> — never zero, never
-              a computed substitute. Charts break the line at a missing year rather than drawing through it.
+              a computed substitute. A metric that cannot apply to a company&apos;s business model — installed renewable
+              capacity for a transit operator or a telco — is shown as <span className="font-mono">N/A</span> with its
+              reason, so a structural non-applicability is never mistaken for a disclosure gap. Charts break the line
+              at a missing year rather than drawing through it.
             </p>
           </div>
           <div>
@@ -161,7 +164,7 @@ export default function TemasekPage() {
             </div>
             <div>
               <div className="font-serif font-medium text-[28px] leading-none text-muted">{fmtM(totalScope2ktCO2e)}<span className="font-mono text-[12px] text-muted3 ml-1">tCO₂e</span></div>
-              <div className="font-sans text-[11px] text-muted2 mt-1.5">Combined Scope 2 · market-based</div>
+              <div className="font-sans text-[11px] text-muted2 mt-1.5">Combined Scope 2 · mixed reporting bases</div>
             </div>
           </div>
         </div>

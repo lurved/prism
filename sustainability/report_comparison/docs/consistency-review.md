@@ -351,8 +351,26 @@ Non-breaking, in three phases. Nothing here requires a redesign or a data re-ext
 - `categories.ts` + `CategoryConfig`; the four `page.tsx` files collapse into one template.
 - Derive hero dates and nav from the registry.
 
-**Fix now, regardless of phase** (these are wrong today, not just inconsistent):
-- Scope 2 "Market-based" sublabel on the Temasek matrix (§2.5) — it mislabels two of three companies.
-- SMRT / Singtel renewable capacity shown as N/D when the data file says N/A (§2.4).
-- Healthcare `effectiveFlag()` vs its own docstring (§2.1) — page-less figures showing ✅.
-- DBS community investment period basis (§2.6).
+**Fix now, regardless of phase** — these were wrong, not just inconsistent. **All four are
+done**; each is now covered by a test in `data.test.ts` so it cannot regress:
+
+- ✅ **Scope 2 basis (§2.5)** — `scope2Basis` is now a required per-company field. The column
+  label makes no claim ("Energy indirect — basis differs"), the basis reaches the popover and
+  the CSV `notes`, and a per-company strip under the matrix states all three. The emissions
+  panel and the Scope 2 context tile no longer say "market-based throughout".
+  *Test: the Scope 2 label may not contain "market-based" or "location-based".*
+- ✅ **N/A vs N/D (§2.4)** — `Company.naMetrics` is a `Record<metricId, reason>`; the reason is
+  mandatory and shows in the popover. SMRT and Singtel renewable capacity now render **N/A**
+  with their reason instead of N/D. Exports emit `not_applicable` so the two states stay
+  distinct in a CSV. *Test: every `naMetrics` key is a real metric and carries a reason.*
+- ✅ **Healthcare provenance (§2.1)** — `SourceFlag` gained the `reported` tier and
+  `effectiveFlag()` now degrades a page-less citation to **• reported**, matching
+  `buildMetricValue()`. IHH's figures render • rather than ✅. *Test: identical evidence tiers
+  identically across verticals.*
+- ✅ **Community investment basis (§2.6)** — `communityInvestmentBasis` is required on
+  `PeerCompany`; every cell carries a qualifier line, so DBS reads "multi-year commitment —
+  not annual spend". *Test: the basis is consistent with the figure shown.*
+
+These fixes deliberately anticipate the target model: `notApplicable`, the mandatory N/A
+reason, the required basis fields and the shared provenance ladder are all §3 decisions
+landed early on the current schemas, so Phase 1 absorbs them rather than redoing them.
