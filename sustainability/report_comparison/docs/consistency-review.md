@@ -16,6 +16,11 @@ writing a fourth data model and a third comparison table.
 The fix is a **metric spine** (one canonical registry every category answers) plus a **page
 contract** (same sections, same order, same legend). Everything else falls out of those two.
 
+Both are anchored to the frameworks the source reports are written against — **GHG Protocol**
+for accounting, **IFRS S1/S2** for disclosure, **GRI** for the social and governance rows that
+IFRS S2 does not cover. See §3, which is the framework-grounded version of this
+recommendation; the standards decide what the spine contains rather than our judgement.
+
 ---
 
 ## 1. What exists today
@@ -160,115 +165,210 @@ scanning the row sees DBS as ~60× OCBC.
 
 Two artifacts to build, in this order. Everything else in §4–§6 follows from them.
 
-### 3.1 A metric spine — `src/data/spine.ts`
+Both are **anchored to the frameworks the reports themselves are written against** — the GHG
+Protocol for the accounting rules, IFRS S1/S2 for the disclosure rules, GRI for the social and
+governance rows that IFRS S2 does not cover. That anchoring is not decoration: it decides what
+the spine contains, what qualifiers each figure must carry, and when two figures may be
+compared at all.
 
-One canonical registry that **every** category answers. A metric is either *disclosed*,
-*N/D*, *N/A (with reason)*, or *pending* — never absent. This is the "template of key data
-points" you asked about.
+> **Verify before publishing.** Paragraph-level references below are given so the intent is
+> traceable, but they should be checked against the current standards text before any of this
+> wording is shown on the site. The site's credibility rests on its citations, and a framework
+> claim deserves the same discipline as an emissions figure.
 
-**Tier 1 — the twelve rows every category page shows, in this order.** These are what make
-the four pages feel like one product.
+### 3.0 Division of labour between the frameworks
 
-| # | key | label | unit / type | comparable |
-|---|---|---|---|---|
-| 1 | `scope1_abs` | Scope 1 | tCO₂e | no (boundary differs) |
-| 2 | `scope2_abs` | Scope 2 | tCO₂e + `scope2_basis` enum | no |
-| 3 | `scope3_abs` | Scope 3 | tCO₂e + `scope3_coverage` text | no |
-| 4 | `intensity_reported` | Carbon intensity | value + unit + `denominator` enum | no |
-| 5 | `net_zero_year` | Net-zero target | year | no |
-| 6 | `interim_target` | Interim target | % + baseline year + scope | no |
-| 7 | `headcount` | Headcount | employees | no |
-| 8 | `female_board_pct` | Female board | % | **yes** |
-| 9 | `female_leadership_pct` | Female leadership | % + `definition` string | no |
-| 10 | `training_hours_per_employee` | Training hrs/employee | hrs | **yes** |
-| 11 | `independent_directors_pct` | Independent directors | % | no |
-| 12 | `external_assurance` | External assurance | status enum + provider + scope | **yes** |
+| | Answers the question | Gives the spine |
+|---|---|---|
+| **GHG Protocol** (Corporate Standard; Scope 2 Guidance 2015; Scope 3 Standard) | *What does this number mean?* | The **accounting qualifiers** every emissions figure must carry to be interpretable |
+| **IFRS S1** | *Who is reporting, over what period, against what comparatives?* | The **entity and period contract** |
+| **IFRS S2** | *Which climate metrics must be disclosed?* | **Tier 1 itself** — the cross-industry metric categories |
+| **GRI** (305/403/404/405/201) | *Which social & governance metrics?* | The **non-climate rows**, which IFRS S2 does not address |
 
-**Tier 2 — shown when any entity in the category discloses it**, hidden as a row otherwise:
-`scope1and2_abs`, `scope3_cat15`, `renewable_share_pct`, `water_m3`, `female_workforce_pct`,
-`turnover_pct`, `engagement_pct`, `safety_rate` (+ `basis` enum), `fatalities`,
-`community_investment` (+ `currency` + `period_basis` enum), `anti_corruption_training_pct`,
-`esg_linked_exec_comp`, `frameworks`.
+The single most important consequence: **a metric is not `value + unit + citation`.** Both
+frameworks insist a GHG figure is meaningless without its accounting basis. So every figure in
+the spine carries a *disclosure envelope*, and that envelope — not a hand-set boolean — is what
+determines whether two figures may sit in the same comparison.
 
-**Tier 3 — category packs**, declared by the category, appended after Tier 1/2:
+### 3.1 The disclosure envelope (GHG Protocol)
 
-- utilities → `sf6_tco2e`, `system_loss_pct`, `normalized_intensity_kwh`, `renewable_capacity_gw`
-- banks → `financed_emissions_status`, `sustainable_finance_committed`, `sector_target_progress`
-- healthcare → `beds_licensed` (per country), `intensity_bed_day`
-- telecom/transport → `intensity_per_tb`, `intensity_per_pkm`
+Fields every emissions figure carries. Each replaces something currently living in a code
+comment or a `dataNotes` string:
 
-Each spine entry carries: `key`, `label`, `sublabel`, `category` (E/S/G/Entity), `unit`,
-`valueType`, `comparable`, `lowerIsBetter`, `tier`, `appliesTo[]`. This is essentially
-`METRIC_DEFS` generalised — the pattern already exists, it just needs to stop being
-Temasek-only and stop being duplicated inline inside two components.
+| Envelope field | Framework basis | Today |
+|---|---|---|
+| `consolidation`: `equity_share` \| `financial_control` \| `operational_control` | GHG Protocol organizational boundaries | prose only — Sembcorp is equity-share, National Grid is operational-control, and the site never says so structurally |
+| `consolidated_vs_associates` split | Corporate Standard — report the group separately from JVs/associates | Sembcorp's Scope 1 is literally "subsidiaries 4,345.4 + JVs & associates 3,080.0" **in a code comment** |
+| `scope2_location` **and** `scope2_market` as two fields | Scope 2 Guidance (2015) **dual reporting** | one field + a basis string (see below) |
+| `scope3_categories_included: number[]` (of the 15) + exclusion rationale | Corporate Value Chain (Scope 3) Standard | free text — `"Categories 3, 11, and 15 only"` |
+| `base_year`, `base_year_value`, `recalculation_note` | base-year recalculation policy for structural change | Singtel's FY2025 Scope 1 "+57.2% due to scope expansion, not a real increase" is a textbook recalculation trigger, recorded as a `dataNote` |
+| `gwp_source` (IPCC AR5 / AR6) | required for cross-entity comparability | absent — material for SF₆-heavy grid utilities |
+| `biogenic_separate` | biogenic CO₂ reported outside the scopes | Sembcorp's intensity denominator includes biogenic; noted in prose only |
 
-### 3.2 One entity shape — `src/data/entity.ts`
+**Dual Scope 2 supersedes the fix already shipped.** §2.5 was fixed by making `scope2Basis` a
+required per-company string. That removed a false claim, but the framework-correct model is two
+fields, because the Scope 2 Guidance expects both numbers. The data is already there and
+currently discarded: DBS 26,322 market / 50,889 location; OCBC 35,373 / 68,391; UOB 1,700 /
+73,700; Singtel 342.5 market / 467.7 location. Storing both makes the market-vs-location gap —
+i.e. the effect of RECs — a *visible metric* rather than a caveat, which is one of the more
+interesting things this dataset could show.
+
+### 3.2 Tier 1 = the IFRS S2 cross-industry metric categories
+
+Rather than the twelve rows invented from what the data happened to contain, Tier 1 should be
+**IFRS S2's cross-industry metric categories** (S2 para 29 (a)–(g)). This is the defensible
+answer to "which key data points?" — it is not our opinion, it is the disclosure standard the
+reporting entities are themselves moving onto.
+
+| S2 | Metric | Spine keys | Site status today |
+|---|---|---|---|
+| (a) | Absolute gross GHG — Scope 1, 2, 3, in tCO₂e, GHG Protocol basis | `scope1_abs`, `scope2_location`, `scope2_market`, `scope3_abs` + envelope | **strong** — the site's core |
+| (b) | Transition-risk exposure — assets/activities vulnerable | `transition_risk_exposure_pct` | **absent** |
+| (c) | Physical-risk exposure — assets/activities vulnerable | `physical_risk_exposure_pct` | **absent** |
+| (d) | Climate opportunities — assets/activities aligned | `climate_opportunity_pct` | partial — banks' sustainable-finance figures are this metric, uncategorised |
+| (e) | Capital deployment toward climate risks/opportunities | `climate_capex` | **absent** |
+| (f) | Internal carbon price — price/tonne and how applied | `internal_carbon_price` | **absent** |
+| (g) | % of executive remuneration linked to climate | `exec_remuneration_climate_pct` | **stored as a boolean** — S2 asks for a percentage |
+
+This mapping is the most valuable output of the framework lens: it shows the site is excellent
+on (a), accidentally holds (d), and is silent on (b), (c), (e), (f) — the four that a
+sustainability or investment audience most wants and that separate an emissions table from a
+climate-disclosure product. (g) is a one-field upgrade from a Yes/No to a number.
+
+**Targets become structured, not free text.** S2 (paras 33–37) expects, per target: objective,
+scope covered, base period, target period, milestones, whether third-party validated (e.g.
+SBTi), gross vs net, and any reliance on carbon credits. Today this is a prose string —
+`reductionTarget: "Operational: −25% S1+2 intensity by 2030 vs 2018 (−17.9% to date)…"` — which
+cannot be compared, ranked or checked.
+
+### 3.3 Tier 2 = GRI-anchored social & governance
+
+**IFRS S2 is climate-only.** The site's social and governance rows are therefore *not* IFRS
+territory, and labelling them as such would be a misrepresentation. They map cleanly to GRI —
+and the data files already cite these standards in their comments, so this is formalising what
+the extraction already did:
+
+| Row | GRI |
+|---|---|
+| `training_hours_per_employee` | GRI 404-1 |
+| `female_board_pct`, `female_leadership_pct`, `female_workforce_pct` | GRI 405-1 |
+| `safety_rate`, `fatalities` | GRI 403-9 |
+| `community_investment` | GRI 201-1 |
+| `anti_corruption_training_pct` | GRI 205-2 |
+| emissions rows (cross-reference) | GRI 305-1/-2/-3 |
+
+Every spine row therefore declares its **authority** (`IFRS S2` / `GHG Protocol` / `GRI` /
+`house`). The matrix can then show which standard each row answers to — a substantial
+credibility upgrade, and it makes "house" rows (ones we invented) visibly distinct from
+standard-anchored ones.
+
+### 3.4 Tier 3 = industry packs (S2 industry-based guidance)
+
+IFRS S2 requires industry-based metrics alongside the cross-industry ones. That is exactly the
+"category pack" concept, with a standards basis:
+
+- **Banks** → `financed_emissions_abs` (Scope 3 Cat 15), per-sector intensity + target
+  progress, PCAF data-quality score. Note this reframes the banks page's central finding:
+  "none of the three aggregate a financed-emissions figure" is not merely a data gap, it is a
+  **gap against S2's industry-based guidance for commercial banking** — a much stronger and
+  more useful statement, and one the site can make with authority.
+- **Utilities** → SF₆, T&D loss %, generation intensity kgCO₂e/kWh, % non-carbon capacity.
+- **Healthcare** → bed-day intensity, licensed beds.
+
+### 3.5 Comparability becomes computed, not asserted
+
+Today `comparable` is a hand-set boolean on Temasek, `rankable` on healthcare, and absent on
+utility/banks. With the envelope in place it becomes a **derived** property:
+
+> Two figures are comparable only if their envelopes agree — same `consolidation`, same Scope 2
+> method, same `scope3_categories_included`, same `gwp_source`, and (for intensities) the same
+> denominator.
+
+The healthcare page already implements a version of this in `bestPerformer()` — checking
+denominator and Scope 2 method parity before allowing a badge. Generalising it means the site
+can *explain a suppressed badge in framework terms* ("Sembcorp reports on equity share,
+National Grid on operational control — not comparable per GHG Protocol organizational
+boundaries") instead of a hand-written caveat paragraph. That is the difference between a site
+that says "read with care" and one that shows its work.
+
+### 3.6 What this makes possible: a disclosure-coverage scorecard
+
+Once Tier 1 is the S2 cross-industry set and absence is impossible, you get a genuinely new
+capability for free: **per-entity coverage against IFRS S2** — "IHH discloses 3 of 7
+cross-industry metric categories; DBS discloses 5 of 7." That is a defensible, framework-backed
+score that does not require estimating a single number, which is precisely the constraint this
+project has held to throughout. It is also a far more interesting headline than a combined
+emissions total that the site already (correctly) demotes to "context only".
+
+### 3.7 One entity shape — `src/data/entity.ts`
 
 ```ts
 interface Entity {
-  // identity
   id; name; shortName; logoInitials; accentColor;
-  category: CategoryId;            // "temasek" | "utility" | "banks" | "healthcare" | …
-  listing: string | null;          // "SGX" | "Bursa + SGX" | "Public (unlisted)"
+  category: CategoryId;
+  listing: string | null;
   countries: string[];
   businessModel: string;
 
-  // boundary — currently scattered across dataNotes prose
+  // ── IFRS S1: reporting entity & period ──
+  // S1 requires the sustainability reporting entity to be the same as the
+  // financial-statement entity, over the same period. This is the principled
+  // basis for the healthcare page's "listed group, not hospital campus" rule
+  // and for excluding SGH/TTSH/NUH — an S1 boundary test, not our preference.
   reportingPeriod: string;         // "FY2024/25"
-  fiscalYearEnd: string;           // "03-31"  ← new, enables a vintage-spread warning
-  consolidation: "equity" | "operational_control" | "financial_control" | "unknown";
+  fiscalYearEnd: string;           // "03-31" — enables an automatic vintage-spread warning
+  reportLagNote: string | null;    // e.g. banks' PCAF one-year lag on financed emissions
   boundaryNote: string | null;
+
+  // ── GHG Protocol: organizational boundary ──
+  consolidation: "equity_share" | "financial_control" | "operational_control" | "unknown";
 
   status: "populated" | "pending_extraction" | "pending_verification" | "excluded";
   rationaleCode: RationaleCode | null;
 
-  source: Source;                  // ONE citation shape (below)
+  source: Source;
   metrics: Record<SpineKey, Cell>; // every Tier 1 key present, always
   dataNotes: string[];
+  estimationUncertainty: string[]; // IFRS S1 requires this disclosed — currently informal
 }
 
 type Cell =
   | { state: "disclosed"; value: number | string; unit: string; year: string;
-      provenance: Provenance; citation: Citation; note?: string }
-  | { state: "nd" }                              // applies, not disclosed
-  | { state: "na"; reason: string }              // does not apply — reason required
-  | { state: "pending" };                        // not yet extracted
+      envelope: Envelope; provenance: Provenance; citation: Citation; note?: string }
+  | { state: "nd" }                    // applies, not disclosed
+  | { state: "na"; reason: string }    // does not apply — reason required
+  | { state: "pending" };              // not yet extracted
 ```
 
-Three things this buys immediately: `state` replaces four different missing-data
-vocabularies with one; `na` requires a reason so §2.4 can't recur; `fiscalYearEnd` lets the
-page warn automatically when a category mixes FY2024 with FY2025/26 instead of relying on a
-hand-written "Read with care" aside.
+**IFRS S1 also requires comparative information for prior periods.** That makes the
+single-year-snapshot problem (§2.7 — only Temasek has a time series) a framework gap, not a
+nice-to-have: `metrics` should hold a short series per key, as the Temasek model already does.
 
-### 3.3 One provenance ladder, enforced
+### 3.8 One provenance ladder, enforced
 
 ```
 confirmed   page recorded for THIS figure
-reported    from the entity's own report, no page recorded      ← healthcare needs this tier
+reported    from the entity's own report, no page recorded
 estimated   third-party / study — quarantined, never rankable, never an entity row
 unverified  nothing to cite (N/D)
 ```
 
-Derive it in one builder (as `buildMetricValue()` already does) — never hand-set. Add the
-page check healthcare's own docstring already promises, then decide deliberately: either
-page-less figures are `reported` everywhere (recommended — honest, and most of the corpus is
-page-less), or they're `unverified` everywhere. Not one rule per tab.
+Already unified in `provenance.ts` and now enforced identically on all four categories.
+Separately, record the **assurance level** per figure from the source (`none` /
+`internal_only` / `external_limited` / `external_reasonable`) — the healthcare model already
+does this and it should be standard, because "limited assurance" and "reasonable assurance" are
+materially different claims. Worth checking where the sustainability assurance standards have
+landed (ISSA 5000) before fixing the vocabulary.
 
-### 3.4 Presentation contract
+### 3.9 Presentation contract
 
-- **Store tCO₂e everywhere.** Format at render, never at rest. One `fmtEmissions()`.
-- **One legend component**, rendered identically on all four pages:
-  `N/D = not disclosed · N/A = not applicable · Pending = not yet extracted · ✅ page-verified · • reported`.
-- **Badge rule, uniform:** a best-performer badge appears only when `comparable: true` **and**
-  ≥2 entities disclose **and** their basis enums match. Replaces `comparable` (Temasek),
-  `rankable` (healthcare), and nothing at all (utility/banks).
-- **Currency:** amount + ISO currency + `period_basis` (`annual` | `multi_year_commitment` |
-  `programme_allocation`) as three fields, never a pre-formatted string. Render the basis as
-  a sublabel so DBS's 10-year commitment can never be read as annual spend.
-- **Controlled framework vocabulary** with an alias map (`"GRI 2021" → GRI`,
-  `"TCFD-aligned" → TCFD`), so chips are countable and filterable.
-
----
+- **Store tCO₂e everywhere** (the IFRS S2 measurement unit). Format at render, never at rest.
+- **One legend component** on all four pages.
+- **Badges** derive from envelope agreement (§3.5), never a hand-set flag.
+- **Currency:** amount + ISO currency + `period_basis` as three fields, never a formatted string.
+- **Controlled framework vocabulary** with an alias map (`"GRI 2021" → GRI`, `"TCFD-aligned" →
+  TCFD`, `"HKFRS S2" → IFRS S2 (HK)`), so chips are countable and a "reports under IFRS S2"
+  filter is possible.
 
 ## 4. Page contract
 
@@ -276,17 +376,24 @@ Every category page renders the same sections, in the same order, with the same 
 Sections with no content render as an explicit empty state rather than disappearing — that's
 what keeps the numbering stable across tabs.
 
-| # | Section | Notes |
-|---|---|---|
-| — | Hero | eyebrow date **derived** from `max(extractedDate)`, not typed |
-| 01 | Snapshot | same four tiles every category: workforce · avg female board · earliest net-zero · assurance coverage |
-| 02 | Emissions | as-reported chart + caveat block (caveat text is per-category config) |
-| 03 | Comparison Matrix | Tier 1 → Tier 2 → category pack; As-Reported / Comparable toggle |
-| 04 | Profiles | one card component for all categories |
-| 05 | Excluded & Pending | rationale codes; "None" when empty |
-| 06 | Methodology | **shared component, identical text on all four pages** |
-| 07 | Export | one CSV schema across all categories |
-| 08 | Sources & Caveats | |
+| # | Section | Notes | Framework basis |
+|---|---|---|---|
+| — | Hero | eyebrow date **derived** from `max(extractedDate)`, not typed | |
+| 01 | Snapshot | same four tiles every category: workforce · avg female board · earliest net-zero · assurance coverage | |
+| 02 | Disclosure coverage | per-entity coverage against the S2 cross-industry set (§3.6) — the framework-backed headline, replacing combined totals that are not comparable anyway | IFRS S2 ¶29 |
+| 03 | Emissions | as-reported chart + caveat block (caveat text is per-category config) | GHG Protocol |
+| 04 | Comparison Matrix | Tier 1 → Tier 2 → industry pack; As-Reported / Comparable toggle, where "Comparable" filters on envelope agreement (§3.5) | S2 ¶29 + GRI |
+| 05 | Profiles | one card component; shows boundary, consolidation approach, base year and assurance level | GHG Protocol + IFRS S1 |
+| 06 | Excluded & Pending | rationale codes; "None" when empty | IFRS S1 reporting-entity test |
+| 07 | Methodology | **shared component, identical on all four pages**, stating the framework basis of each tier | |
+| 08 | Export | one CSV schema across all categories, envelope fields included | |
+| 09 | Sources & Caveats | | |
+
+Two things the framework lens adds here. **Methodology becomes a real asset rather than
+boilerplate** — it can state plainly that Tier 1 is the IFRS S2 cross-industry set, Tier 2 is
+GRI-anchored, and emissions accounting follows the GHG Protocol, which is a far stronger claim
+than "we don't estimate". And the **Comparable view stops being a label and becomes a filter**:
+it shows only figures whose envelopes agree, and names the reason when it withholds one.
 
 The end state is that a category page is a config object, not a bespoke file:
 
@@ -310,16 +417,22 @@ up. No `Header.tsx` edit, no new comparison component.
 **New company in an existing category**
 1. Copy the entity template; fill `id`, identity, boundary, `fiscalYearEnd`, `consolidation`.
 2. Fill **all Tier 1 keys** — a value, or `nd`, or `na` + reason. No key may be absent.
-3. Emissions in **tCO₂e**. Record a page number wherever you had the PDF open — that's the
+3. Fill the **envelope** for every emissions figure: consolidation approach, both Scope 2
+   figures where the report gives them, Scope 3 categories included, base year, GWP source.
+   This is the step that makes the figure comparable to anything else — without it the number
+   is uninterpretable, and the Comparable view will (correctly) refuse to rank it.
+4. Emissions in **tCO₂e**. Record a page number wherever you had the PDF open — that's the
    difference between ✅ and •.
-4. Anything surprising goes in `dataNotes` *and*, if it affects how a number should be read,
-   in the cell's `note` so it reaches the popover.
-5. `npm test` — the data gate checks provenance, ranges, units, URLs, and (once added) the
-   Tier 1 completeness and tCO₂e magnitude rules.
+5. Anything surprising goes in `dataNotes` *and*, if it affects how a number should be read,
+   in the cell's `note` so it reaches the popover. Estimation uncertainty goes in
+   `estimationUncertainty` (IFRS S1 expects it disclosed).
+6. `npm test` — the data gate checks provenance, ranges, units, URLs, and (once added) the
+   Tier 1 completeness, envelope completeness and tCO₂e magnitude rules.
 
 **New category**
 1. New data file, same `Entity[]` shape.
-2. Define the Tier 3 pack (usually 2–4 metrics).
+2. Define the Tier 3 industry pack from **IFRS S2's industry-based guidance** for that
+   industry (usually 2–4 metrics), rather than inventing one.
 3. Add a `CategoryConfig`, write two caveat paragraphs.
 4. Done — no new components, no new export, no `Header.tsx` edit.
 
@@ -333,12 +446,24 @@ Non-breaking, in three phases. Nothing here requires a redesign or a data re-ext
 
 **Phase 1 — data layer only, zero UI change (highest value, lowest risk)**
 - Convert Temasek to tCO₂e at rest; single `fmtEmissions()`.
-- Land `spine.ts`; map all four existing datasets onto spine keys via adapters (keep the
-  current files as-is behind the adapter).
-- Unify `Citation` into one shape; give healthcare the `reported` tier.
+- Land `spine.ts` with Tier 1 = the **S2 cross-industry categories** and each row declaring its
+  authority (`IFRS S2` / `GHG Protocol` / `GRI` / `house`); map all four existing datasets onto
+  spine keys via adapters (keep the current files as-is behind the adapter).
+- Add the **envelope** to emissions figures: `consolidation`, dual Scope 2, `scope3_categories_included`,
+  `base_year`, `gwp_source`. Most of this is already in the data — as code comments and
+  `dataNotes` prose — so this is largely promotion, not re-extraction.
+- Unify `Citation` into one shape; give healthcare the `reported` tier. *(done)*
 - Controlled framework vocabulary + alias map.
-- Extend `data.test.ts`: Tier 1 completeness, emissions-magnitude sanity, `na` requires a
-  reason, `scope2_basis` present wherever `scope2_abs` is disclosed.
+- Extend `data.test.ts`: Tier 1 completeness, envelope completeness, emissions-magnitude
+  sanity, `na` requires a reason.
+
+**Phase 1.5 — the disclosure gaps the framework lens exposes**
+These are data-collection tasks, not engineering, and they are where the site gets materially
+more useful. Per entity, capture what the reports say about S2 ¶29 (b)–(g): transition- and
+physical-risk exposure, capital deployment, internal carbon price, and the **percentage** of
+executive remuneration linked to climate (currently a boolean). Where a report is silent,
+that is itself the finding — and with Tier 1 fixed, silence becomes visible and countable
+rather than an absent row.
 
 **Phase 2 — one matrix, one export**
 - Single `ComparisonMatrix` reading the spine; retire the inline `rows[]` in
