@@ -56,6 +56,9 @@ export const bankCompanies: PeerCompany[] = [
     employeeEngagementScore: 91, // My Voice 2024
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
+    sustainableFinanceNative: "SGD 89bn sustainable-finance commitments (Dec 2024)",
+    financedEmissionsStatus:
+      "Power 208 kgCO₂/MWh (on track to 138 by 2030); Oil & Gas 26.4 MtCO₂e (on track); Steel and Shipping not on track. PCAF referenced.",
     communityInvestmentNative: "SGD 1B / 10yr (DBS Foundation)",
     communityInvestmentBasis: "multi_year_commitment",
     communityInvestmentNote:
@@ -118,6 +121,9 @@ export const bankCompanies: PeerCompany[] = [
     employeeTurnoverPct: 12,
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
+    sustainableFinanceNative: "SGD 71bn committed portfolio (end-2024)",
+    financedEmissionsStatus:
+      "2023 data year: Real Estate alignment −4.0% (on track); Steel 1.91 tCO₂/tSteel (on track to 1.68 by 2030). PCAF data-quality scoring applied.",
     communityInvestmentNative: "N/D",
     communityInvestmentBasis: "not_disclosed",
     communityInvestmentNote:
@@ -180,6 +186,9 @@ export const bankCompanies: PeerCompany[] = [
     employeeTurnoverPct: 13.6,
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — office injury rate 0.10/100 FTE reported, not industrial LTIFR)",
+    sustainableFinanceNative: "SGD 58.0bn portfolio (31 Dec 2024)",
+    financedEmissionsStatus:
+      "2023 data year, all on track: Power 242 kgCO₂/MWh; Automotive 121 gCO₂/veh-km; Real estate 80 kgCO₂/m²; Steel 1.64 tCO₂/t. PCAF + PACTA + SBTi + GFANZ.",
     communityInvestmentNative: "SGD 16.1M",
     communityInvestmentBasis: "annual",
     communityInvestmentNote:

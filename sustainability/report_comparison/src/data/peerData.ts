@@ -112,6 +112,14 @@ export interface PeerCompany {
   externalAssuranceProvider: string | null;
   frameworks: string[];
 
+  // ── IFRS S2 industry-based guidance (financial institutions) ──
+  /** Sustainable-finance portfolio as reported — an S2 ¶29(d) climate-opportunity
+   *  metric. null for non-financial entities. Verbatim from the source report. */
+  sustainableFinanceNative?: string | null;
+  /** Per-sector financed-emissions target progress, as reported. Banks track
+   *  this by sector but publish no aggregate figure — see dataNotes. */
+  financedEmissionsStatus?: string | null;
+
   naMetrics: string[];          // metric keys that are N/A for this business model
   dataNotes: string[];
 }

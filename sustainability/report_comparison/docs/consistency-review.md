@@ -440,41 +440,45 @@ That's the goal state: category #5 is a data file plus ~20 lines of config.
 
 ---
 
-## 6. Migration path
+## 6. Migration path — status
 
-Non-breaking, in three phases. Nothing here requires a redesign or a data re-extraction.
+Phases 1–3 are **built**. The spine and the page contract are live; all four
+categories render through them.
 
-**Phase 1 — data layer only, zero UI change (highest value, lowest risk)**
-- Convert Temasek to tCO₂e at rest; single `fmtEmissions()`.
-- Land `spine.ts` with Tier 1 = the **S2 cross-industry categories** and each row declaring its
-  authority (`IFRS S2` / `GHG Protocol` / `GRI` / `house`); map all four existing datasets onto
-  spine keys via adapters (keep the current files as-is behind the adapter).
-- Add the **envelope** to emissions figures: `consolidation`, dual Scope 2, `scope3_categories_included`,
-  `base_year`, `gwp_source`. Most of this is already in the data — as code comments and
-  `dataNotes` prose — so this is largely promotion, not re-extraction.
-- Unify `Citation` into one shape; give healthcare the `reported` tier. *(done)*
-- Controlled framework vocabulary + alias map.
-- Extend `data.test.ts`: Tier 1 completeness, envelope completeness, emissions-magnitude
-  sanity, `na` requires a reason.
+| | Status | Where |
+|---|---|---|
+| **Phase 1** — data layer | ✅ done | `src/data/spine/` — `types.ts` (envelope, cell, entity), `registry.ts` (Tier 1/2 + packs), `envelopes.ts` (per-entity GHG Protocol basis), `comparability.ts`, `adapters.ts` |
+| **Phase 2** — one matrix, one export | ✅ done | `ComparisonMatrix`, `SpineCell`, `SpineExport`, `Methodology`/`Legend`, `CoveragePanel`, `EntityProfiles`, `ExcludedTable` |
+| **Phase 3** — page template | ✅ done | `CategoryPage` + `categories.tsx`; the four `page.tsx` files are now 8–35 lines each |
+| **Phase 1.5** — the disclosure gaps | ⬜ open | data collection, see below |
 
-**Phase 1.5 — the disclosure gaps the framework lens exposes**
-These are data-collection tasks, not engineering, and they are where the site gets materially
-more useful. Per entity, capture what the reports say about S2 ¶29 (b)–(g): transition- and
-physical-risk exposure, capital deployment, internal carbon price, and the **percentage** of
-executive remuneration linked to climate (currently a boolean). Where a report is silent,
-that is itself the finding — and with Tier 1 fixed, silence becomes visible and countable
-rather than an absent row.
+What the build changed structurally:
 
-**Phase 2 — one matrix, one export**
-- Single `ComparisonMatrix` reading the spine; retire the inline `rows[]` in
-  `PeerComparison.tsx` and `ROWS[]` in `HealthcareComparison.tsx`.
-- Single export schema; healthcare's extra fields (`rationale_code`, `boundary_note`,
-  `assurance_status`) become standard columns for every category — they're good columns.
-- Shared `<Legend>` and `<Methodology>`.
+- **Emissions are tCO₂e at rest everywhere.** The ktCO₂e→tCO₂e conversion for the
+  Temasek dataset happens in exactly one place (`adapters.ts`), and a test asserts
+  every disclosed absolute lands on a tonnes scale — the 1000× trap is closed.
+- **Dual Scope 2 is live.** The previously-discarded second basis is now shown for
+  all three banks (DBS 50.9k location / 26.3k market; OCBC 68.4k / 35.4k; UOB 73.7k /
+  1.7k), so the REC effect is a visible figure rather than a caveat.
+- **Comparability is computed.** `assessComparability()` blocks a row when envelopes
+  disagree and returns the reason — e.g. Temasek Scope 1 is withheld because
+  "organizational boundary differs (Sembcorp Equity share; SMRT Not stated; Singtel
+  Not stated)". Three hand-set flags (`comparable`, `rankable`, nothing) are gone.
+- **Thirteen components deleted**, including the three divergent tables and two
+  export implementations. Adding a category no longer means writing a table.
+- **Nav derives from the registry**, so a new category is one entry, not two
+  parallel literals.
 
-**Phase 3 — page template**
-- `categories.ts` + `CategoryConfig`; the four `page.tsx` files collapse into one template.
-- Derive hero dates and nav from the registry.
+Current S2 ¶29 coverage, computed from the data: Sembcorp, SMRT, Singtel, Meralco,
+CLP, National Grid, IHH and RMG each **1/7**; DBS, OCBC and UOB **2/7** (they hold
+(d) via sustainable finance); TMG **0/7**. Every entity fails (g) — none discloses
+the *percentage* of executive remuneration linked to climate, only a yes/no.
+
+**Phase 1.5 — the open work.** This is data collection, not engineering, and it is
+where the site gets materially more useful. Per entity, capture what the reports say
+about S2 ¶29 (b), (c), (e), (f) and the (g) percentage. The rows already exist and
+render as N/D with the framework reason attached, so the gaps are visible and
+countable today — filling them raises the coverage scores without touching code.
 
 **Fix now, regardless of phase** — these were wrong, not just inconsistent. **All four are
 done**; each is now covered by a test in `data.test.ts` so it cannot regress:
