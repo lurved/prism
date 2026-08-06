@@ -20,6 +20,7 @@ import { COMMUNITY_BASIS_LABEL } from "../peerData";
 import type { HealthcareEntity, MetricValue as HcMetricValue } from "../healthcareData";
 import { effectiveFlag } from "../healthcareData";
 import { ENVELOPES, FISCAL_YEAR_END, UNKNOWN_ENVELOPE } from "./envelopes";
+import { PERIOD_MISMATCH, s2DisclosuresFor, type S2GapKey } from "./s2Disclosures";
 import {
   CONSOLIDATION_LABEL,
   SCOPE2_METHOD_LABEL,
@@ -124,18 +125,93 @@ function envelopeCells(env: Envelope, period: string, cite: SpineCitation | null
   };
 }
 
-/** The S2 ¶29(b)–(f) rows, absent across the whole current corpus. Listed
- *  explicitly so the silence is countable rather than an absent row. */
-function s2GapCells(): Record<string, Cell> {
-  const gap = (ref: string) =>
-    ND(`Not disclosed in the source report. IFRS S2 ${ref} asks for this as a cross-industry metric.`);
-  return {
-    transition_risk_exposure: gap("¶29(b)"),
-    physical_risk_exposure: gap("¶29(c)"),
-    climate_opportunity: gap("¶29(d)"),
-    climate_capital_deployment: gap("¶29(e)"),
-    internal_carbon_price: gap("¶29(f)"),
-  };
+const S2_GAP_REFS: Record<S2GapKey, string> = {
+  transition_risk_exposure: "¶29(b)",
+  physical_risk_exposure: "¶29(c)",
+  climate_opportunity: "¶29(d)",
+  climate_capital_deployment: "¶29(e)",
+  internal_carbon_price: "¶29(f)",
+  exec_remuneration_climate_pct: "¶29(g)",
+};
+
+/**
+ * The S2 ¶29(b)–(f) rows. Populated from s2Disclosures.ts where the entity
+ * actually publishes the metric, and otherwise an N/D that names the paragraph
+ * asking for it — so silence is countable rather than an absent row.
+ *
+ * Where the only available report covers a LATER period than the entity row,
+ * the N/D says so instead of implying the entity failed to disclose.
+ */
+function s2GapCells(entityId: string, cite: SpineCitation | null): Record<string, Cell> {
+  const disclosed = s2DisclosuresFor(entityId);
+  const mismatch = PERIOD_MISMATCH[entityId];
+  const keys: S2GapKey[] = [
+    "transition_risk_exposure",
+    "physical_risk_exposure",
+    "climate_opportunity",
+    "climate_capital_deployment",
+    "internal_carbon_price",
+  ];
+  const out: Record<string, Cell> = {};
+  for (const key of keys) {
+    const d = disclosed[key];
+    if (d) {
+      out[key] = {
+        state: "disclosed",
+        value: d.value,
+        display: d.display,
+        unit: d.unit,
+        year: d.year,
+        provenance: d.page !== null ? "confirmed" : "reported",
+        citation: {
+          reportTitle: d.reportTitle,
+          url: cite?.url ?? null,
+          page: d.page,
+          publishedDate: cite?.publishedDate ?? null,
+          extractedDate: cite?.extractedDate ?? "2026-08",
+        },
+        note: d.note,
+      };
+    } else if (mismatch) {
+      out[key] = ND(
+        `Not extracted: ${mismatch} Mixing periods would breach the IFRS S1 same-period rule, so ${S2_GAP_REFS[key]} is left open pending a period refresh.`,
+      );
+    } else {
+      out[key] = ND(
+        `Not disclosed in the source report. IFRS S2 ${S2_GAP_REFS[key]} asks for this as a cross-industry metric.`,
+      );
+    }
+  }
+  return out;
+}
+
+/**
+ * S2 ¶29(g) asks for the PERCENTAGE of executive remuneration linked to
+ * climate. Where an entity publishes one it is used; otherwise a boolean
+ * "linked / not linked" is all the corpus holds, and the honest cell is an N/D
+ * carrying that finding rather than a Yes that does not answer the question.
+ */
+function execPayCellFor(entityId: string, linked: boolean | null | undefined, cite: SpineCitation | null): Cell {
+  const d = s2DisclosuresFor(entityId).exec_remuneration_climate_pct;
+  if (d) {
+    return {
+      state: "disclosed",
+      value: d.value,
+      display: d.display,
+      unit: d.unit,
+      year: d.year,
+      provenance: d.page !== null ? "confirmed" : "reported",
+      citation: {
+        reportTitle: d.reportTitle,
+        url: cite?.url ?? null,
+        page: d.page,
+        publishedDate: cite?.publishedDate ?? null,
+        extractedDate: cite?.extractedDate ?? "2026-08",
+      },
+      note: d.note,
+    };
+  }
+  return execPayCell(linked);
 }
 
 /**
@@ -212,8 +288,8 @@ export function fromCompany(c: Company, categoryId: string): Entity {
       note: "Subset of Scope 3; disclosed only where the report breaks it out.",
     }),
 
-    ...s2GapCells(),
-    exec_remuneration_climate_pct: execPayCell(g.esgLinkedExecutiveComp),
+    ...s2GapCells(c.id, src),
+    exec_remuneration_climate_pct: execPayCellFor(c.id, g.esgLinkedExecutiveComp, src),
 
     net_zero_year: num(e.netZeroTargetYear, "year", period, companyCite(c, "netZeroTarget"), {
       display: e.netZeroTargetYear ? String(e.netZeroTargetYear) : undefined,
@@ -429,11 +505,11 @@ export function fromPeer(c: PeerCompany, categoryId: string): Entity {
       ? ND("Financed emissions (Cat 15) are tracked by sector but not aggregated into a single figure — see the financed-emissions row.")
       : ND("Category 15 not separately broken out."),
 
-    ...s2GapCells(),
+    ...s2GapCells(c.id, cite),
     climate_opportunity: c.sustainableFinanceNative
       ? txt(c.sustainableFinanceNative, period, cite, "Sustainable-finance portfolio — an IFRS S2 ¶29(d) climate-opportunity metric.")
       : ND("Not disclosed in the source report. IFRS S2 ¶29(d) asks for this as a cross-industry metric."),
-    exec_remuneration_climate_pct: execPayCell(c.esgLinkedExecComp),
+    exec_remuneration_climate_pct: execPayCellFor(c.id, c.esgLinkedExecComp, cite),
 
     net_zero_year: num(c.netZeroYear, "year", period, cite, {
       display: c.netZeroYear ? String(c.netZeroYear) : undefined,
@@ -680,8 +756,8 @@ export function fromHealthcare(h: HealthcareEntity, categoryId: string): Entity 
     scope3_abs: pendingOr(hcCell(h.metrics.scope3_abs, "tCO₂e")),
     scope3_cat15: ND("Category 15 not separately broken out."),
 
-    ...s2GapCells(),
-    exec_remuneration_climate_pct: execPayCell(null),
+    ...s2GapCells(h.id, cite),
+    exec_remuneration_climate_pct: execPayCellFor(h.id, null, cite),
 
     net_zero_year: ND("No dated net-zero year with a citable figure in the source report."),
     interim_target: pendingOr(hcCell(h.metrics.target_2030)),

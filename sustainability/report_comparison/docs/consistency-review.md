@@ -501,18 +501,42 @@ Four further Phase 1 items are now **done** alongside the spine:
   existing notes, so it is now named and shown as "restatement & data-quality
   caveats". A real S1 estimation-uncertainty disclosure remains data-entry work.
 
-**Still open: the ¶29(b)–(g) extraction.** This is data collection, not
-engineering, and it cannot be done from this environment — Singtel's report
-portal, the DBS SR2024 PDF and even the SEC-hosted National Grid 20-F all return
-HTTP 403 to automated fetch, matching the blocks already recorded in the CLP and
-National Grid data notes. Filling these requires opening the source reports by
-hand (or a session with working outbound access) and entering the figures the
-same way every other number in this project was entered.
+**¶29(b)–(g) extraction — done, from the reports in Drive.** Eight reports whose
+period matches their entity row were searched (Sembcorp, SMRT, Singtel, CLP,
+National Grid, IHH, TMG, RMG). Results:
 
-The rows already exist and render as N/D **with the framework reason attached**,
-so the gaps are visible and countable today. Filling them raises the coverage
-scores without touching code — which is exactly what the spine was built to make
-possible.
+- **Sembcorp publishes the full ¶29 set** — (b) business activities vulnerable to
+  transition risks S$1.0bn / 50%; (c) assets vulnerable to physical risks S$1.9bn
+  / 13%; (d) activities aligned to climate opportunities S$723M / 36%;
+  (e) capital deployment S$626M; (f) internal carbon price **range** S$25–183/tCO₂e.
+  It is the only entity in the corpus with a table explicitly labelled against
+  S2 (29). Coverage **1/7 → 6/7**.
+- **Singtel** publishes (f) a S$50/tCO₂e shadow price, formalised as its
+  emissions-weighted average cost of carbon (e-WACC), and (g) ESG KPIs
+  contributing **20% of long-term incentive plans**. The (g) figure is carried
+  with an explicit caveat: it is an ESG measure spanning climate action *and*
+  talent development, over LTI rather than total remuneration — narrower and
+  broader at once than what ¶29(g) asks. Coverage **1/7 → 3/7**.
+- **CLP, National Grid, SMRT, IHH, RMG, TMG disclose none of (b)–(g).** That is
+  the finding, not a gap in the extraction. National Grid's Responsible Business
+  databook — the document earlier data notes recorded as blocked — is in Drive and
+  does *not* contain the absolute SF₆ figure, training hours or anti-corruption
+  percentage either, so those N/Ds are now confirmed rather than assumed.
+
+Current coverage: Sembcorp 6/7 · Singtel 3/7 · DBS/OCBC/UOB 2/7 · SMRT, Meralco,
+CLP, National Grid, IHH, RMG 1/7 · TMG 0/7.
+
+Pages are null throughout, because the PDF text extraction carries no reliable
+page markers — so these figures render **• reported**, not ✅ confirmed. Attaching
+pages is a manual re-check, held to the same standard as every other figure here.
+
+**Open: a period refresh for four entities.** Drive holds FY2025 reports for
+Meralco, DBS, OCBC and UOB while those entity rows are FY2024. ¶29(b)–(g) was
+deliberately **not** backfilled for them — taking a figure from one year into a row
+labelled another would breach the IFRS S1 same-period rule this model is built on.
+Their cells say exactly that, and a test pins it. Refreshing those four to FY2025
+is the next piece of data work, and it is a bigger change than a metric backfill:
+it moves the headline emissions, the envelope and the comparatives too.
 
 Worth noting one thing the comparatives work turned up: the Temasek historical
 table rounds (Singtel FY2025 Scope 1 appears as 13.2 kt) while the headline field

@@ -203,12 +203,41 @@ describe("S2 cross-industry coverage", () => {
     expect(s2Coverage(sembcorp).covered).toContain("a");
   });
 
-  it("records the exec-pay gap: S2 asks for a %, the corpus stores a boolean", () => {
-    // Every entity in the corpus fails (g) — none discloses the percentage.
-    // If this ever passes, the data has genuinely improved and the test
-    // should be updated to match.
-    for (const e of allEntities) {
-      expect(isDisclosed(e.metrics.exec_remuneration_climate_pct), `${e.id}`).toBe(false);
+  it("credits the ¶29 metrics Sembcorp actually publishes", () => {
+    // Sembcorp is the only entity in the corpus with a full S2 ¶29 metrics
+    // table — (b) through (f). Extracted from its SR2025.
+    const sembcorp = temasekEntities.find((e) => e.id === "sembcorp")!;
+    for (const k of [
+      "transition_risk_exposure",
+      "physical_risk_exposure",
+      "climate_opportunity",
+      "climate_capital_deployment",
+      "internal_carbon_price",
+    ]) {
+      expect(isDisclosed(sembcorp.metrics[k]), `sembcorp/${k}`).toBe(true);
+    }
+    expect(s2Coverage(sembcorp).score).toBe(6); // (a)-(f); (g) is in the AR, not the SR
+  });
+
+  it("credits Singtel's internal carbon price and remuneration disclosure", () => {
+    const singtel = temasekEntities.find((e) => e.id === "singtel")!;
+    const icp = singtel.metrics.internal_carbon_price;
+    expect(isDisclosed(icp) && icp.value).toBe(50);
+    const pay = singtel.metrics.exec_remuneration_climate_pct;
+    expect(isDisclosed(pay) && pay.value).toBe(20);
+    // The caveat must travel with the figure: it is an ESG measure over LTI,
+    // not the climate-only share of total remuneration S2 asks for.
+    expect(isDisclosed(pay) && pay.note).toMatch(/talent development|long-term incentive/i);
+  });
+
+  it("does not backfill ¶29 metrics across a period mismatch", () => {
+    // Drive holds FY2025 reports for these while their rows are FY2024.
+    // Mixing periods would breach the IFRS S1 same-period rule.
+    for (const id of ["meralco", "dbs", "ocbc", "uob"]) {
+      const e = allEntities.find((x) => x.id === id)!;
+      const cell = e.metrics.internal_carbon_price;
+      expect(cell.state, `${id}`).toBe("nd");
+      expect(cell.state === "nd" && cell.note).toMatch(/Not extracted/);
     }
   });
 });
