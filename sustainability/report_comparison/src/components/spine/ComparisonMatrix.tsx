@@ -29,6 +29,7 @@ import {
 } from "@/data/spine";
 import { SpineCell } from "./SpineCell";
 import { resolveFrameworks } from "@/data/spine/frameworks";
+import { assessUsability } from "@/data/spine/usability";
 
 const AUTHORITY_TONE: Record<string, string> = {
   "IFRS S2": "text-good bg-[rgba(63,122,82,0.10)]",
@@ -192,7 +193,11 @@ export function ComparisonMatrix({ entities, pack, groupLabel, caveats }: Props)
                         </td>
                       ) : (
                         <td key={e.id} className="py-[13px] px-4 text-right align-top">
-                          <SpineCell cell={e.metrics[row.key]} isWinner={winnerId === e.id} />
+                          <SpineCell
+                            cell={e.metrics[row.key]}
+                            isWinner={winnerId === e.id}
+                            usability={assessUsability(e.metrics[row.key], row, e)}
+                          />
                         </td>
                       ),
                     )}

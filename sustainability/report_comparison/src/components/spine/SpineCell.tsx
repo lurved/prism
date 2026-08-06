@@ -13,6 +13,7 @@
  */
 import { TIER_META } from "@/data/provenance";
 import type { Cell, SeriesPoint } from "@/data/spine";
+import { USABILITY_LABEL, type UsabilityVerdict } from "@/data/spine/usability";
 
 const TONE: Record<string, string> = {
   confirmed: "text-good",
@@ -82,7 +83,39 @@ function Line({ label, value }: { label: string; value: React.ReactNode }) {
   );
 }
 
-export function SpineCell({ cell, isWinner = false }: { cell: Cell | undefined; isWinner?: boolean }) {
+/**
+ * Decision-usefulness marker. A thin bar rather than another badge: an analyst
+ * scanning a column needs to see at a glance which figures carry weight,
+ * without the row turning into a wall of icons.
+ */
+function UsabilityBar({ verdict }: { verdict: UsabilityVerdict }) {
+  const tone =
+    verdict.grade === "high" ? "bg-good"
+    : verdict.grade === "moderate" ? "bg-sm"
+    : verdict.grade === "limited" ? "bg-sc"
+    : "bg-hairline";
+  const title = [
+    `Decision-usefulness: ${USABILITY_LABEL[verdict.grade]}`,
+    ...verdict.limitations.map((l) => `• ${l}`),
+  ].join("\n");
+  return (
+    <span
+      className={`inline-block w-[18px] h-[3px] rounded-full ${tone} align-middle`}
+      title={title}
+      aria-label={title}
+    />
+  );
+}
+
+export function SpineCell({
+  cell,
+  isWinner = false,
+  usability,
+}: {
+  cell: Cell | undefined;
+  isWinner?: boolean;
+  usability?: UsabilityVerdict;
+}) {
   if (!cell) {
     return <span className="font-mono text-[13px] text-nd">—</span>;
   }
@@ -135,6 +168,7 @@ export function SpineCell({ cell, isWinner = false }: { cell: Cell | undefined; 
         {isWinner && <span className="w-[7px] h-[7px] rounded-full bg-good" title="Best performer — envelopes agree" />}
         <span className={`font-mono text-[13px] ${isWinner ? "text-ink font-semibold" : "text-ink2"}`}>{cell.display}</span>
         <ProvenanceMark tier={cell.provenance} />
+        {usability && <UsabilityBar verdict={usability} />}
       </span>
       {cell.series && (
         <div className="mt-[2px]">

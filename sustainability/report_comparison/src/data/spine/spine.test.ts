@@ -27,6 +27,7 @@ import {
 } from "./index";
 import { CATEGORIES } from "./categories";
 import { resolveFrameworks, unmappedFrameworks, reportsUnder } from "./frameworks";
+import { assessUsability, engagementQuestions, entityUsability, isStale } from "./usability";
 
 const CATEGORY_SETS: { id: string; pack: PackId; entities: Entity[] }[] = [
   { id: "temasek", pack: "diversified", entities: temasekEntities },
@@ -366,5 +367,117 @@ describe("Structured targets", () => {
         expect(e.targets.some((t) => t.objective === "Net zero"), `${e.id}`).toBe(true);
       }
     }
+  });
+});
+
+
+/* ── Decision-usefulness: the analyst layer ──────────────────────── */
+describe("Decision-usefulness", () => {
+  it("never grades an undisclosed figure as usable", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      for (const e of entities) {
+        for (const row of rowsForPack(pack)) {
+          const cell = e.metrics[row.key];
+          const v = assessUsability(cell, row, e);
+          if (!isDisclosed(cell)) {
+            expect(v.grade, `${e.id}/${row.key}`).toBe("not_usable");
+          }
+        }
+      }
+    }
+  });
+
+  it("requires page-verification AND external assurance for a high grade", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      for (const e of entities) {
+        for (const row of rowsForPack(pack)) {
+          const v = assessUsability(e.metrics[row.key], row, e);
+          if (v.grade === "high") {
+            expect(v.checks.pageVerified, `${e.id}/${row.key}`).toBe(true);
+            expect(v.checks.externallyAssured, `${e.id}/${row.key}`).toBe(true);
+            expect(v.checks.basisStated, `${e.id}/${row.key}`).toBe(true);
+            expect(v.checks.current, `${e.id}/${row.key}`).toBe(true);
+          }
+        }
+      }
+    }
+  });
+
+  it("caps a stale row at 'limited', however well sourced", () => {
+    // Meralco/DBS/OCBC/UOB rows are FY2024 with FY2025 reports available.
+    for (const id of ["meralco", "dbs", "ocbc", "uob"]) {
+      const e = allEntities.find((x) => x.id === id)!;
+      expect(isStale(e), id).toBe(true);
+      const row = SPINE.find((r) => r.key === "scope1_abs")!;
+      const v = assessUsability(e.metrics.scope1_abs, row, e);
+      expect(["limited", "not_usable"], id).toContain(v.grade);
+      expect(v.limitations.join(" ")).toMatch(/superseded/i);
+    }
+  });
+
+  it("downgrades a figure whose accounting basis is unstated", () => {
+    // SMRT does not state its consolidation approach, so its Scope 1 cannot
+    // be relied on for comparison however precisely it is reported.
+    const smrt = temasekEntities.find((e) => e.id === "smrt")!;
+    const row = SPINE.find((r) => r.key === "scope1_abs")!;
+    const v = assessUsability(smrt.metrics.scope1_abs, row, smrt);
+    expect(v.checks.basisStated).toBe(false);
+    expect(v.grade).toBe("limited");
+  });
+
+  it("always explains a grade below high", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      for (const e of entities) {
+        for (const row of rowsForPack(pack)) {
+          const v = assessUsability(e.metrics[row.key], row, e);
+          if (v.grade !== "high") {
+            expect(v.limitations.length, `${e.id}/${row.key} graded ${v.grade} with no reason`).toBeGreaterThan(0);
+          }
+        }
+      }
+    }
+  });
+
+  it("rolls up to a usable share within 0-100", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      for (const e of entities) {
+        const u = entityUsability(e, rowsForPack(pack));
+        expect(u.usableShare).toBeGreaterThanOrEqual(0);
+        expect(u.usableShare).toBeLessThanOrEqual(100);
+      }
+    }
+  });
+});
+
+/* ── Engagement questions ────────────────────────────────────────── */
+describe("Engagement questions", () => {
+  it("turns every structural gap into a question with a standards basis", () => {
+    for (const e of allEntities) {
+      for (const q of engagementQuestions(e)) {
+        expect(q.question.trim().length, `${e.id}`).toBeGreaterThan(30);
+        expect(q.basis.trim().length, `${e.id}`).toBeGreaterThan(5);
+        expect(q.topic.trim().length).toBeGreaterThan(2);
+      }
+    }
+  });
+
+  it("asks for dual Scope 2 where only one basis is published", () => {
+    // Singtel publishes market-based only.
+    const singtel = temasekEntities.find((e) => e.id === "singtel")!;
+    expect(engagementQuestions(singtel).some((q) => /dual reporting/i.test(q.basis))).toBe(true);
+  });
+
+  it("asks the boundary question where consolidation is unstated", () => {
+    const smrt = temasekEntities.find((e) => e.id === "smrt")!;
+    expect(engagementQuestions(smrt).some((q) => /consolidation approach/i.test(q.question))).toBe(true);
+  });
+
+  it("raises no S2 ¶29 question against an entity that discloses the set", () => {
+    // Sembcorp discloses (b)-(f); only (g) is outstanding, so the question
+    // must name (g) and not the ones it does publish.
+    const sembcorp = temasekEntities.find((e) => e.id === "sembcorp")!;
+    const q = engagementQuestions(sembcorp).find((x) => /cross-industry/i.test(x.topic));
+    expect(q?.question).toMatch(/¶29\(g\)/);
+    expect(q?.question).not.toMatch(/¶29\(b\)/);
   });
 });

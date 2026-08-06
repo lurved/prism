@@ -16,6 +16,7 @@ import { SectionHead } from "@/components/SectionHead";
 import { RequestFooter } from "@/components/RequestCta";
 import { ComparisonMatrix } from "./ComparisonMatrix";
 import { CoveragePanel } from "./CoveragePanel";
+import { AnalystBrief } from "./AnalystBrief";
 import { Legend, Methodology } from "./Methodology";
 import { SpineExport } from "./SpineExport";
 import { EntityProfiles } from "./EntityProfiles";
@@ -63,9 +64,15 @@ export function CategoryPage({ config }: { config: CategoryConfig }) {
         <CoveragePanel entities={entities} />
       </section>
 
-      {/* ── 02 Emissions ── */}
+      {/* ── 02 Analyst brief — can these numbers be used, and what to ask ── */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="02" title="Emissions" descriptor="Absolute gross GHG, as reported · GHG Protocol basis" />
+        <SectionHead index="02" title="Analyst Brief" descriptor="Decision-usefulness, currency & open questions" />
+        <AnalystBrief entities={entities} pack={pack} />
+      </section>
+
+      {/* ── 03 Emissions ── */}
+      <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
+        <SectionHead index="03" title="Emissions" descriptor="Absolute gross GHG, as reported · GHG Protocol basis" />
         {config.slots?.emissions ?? (
           <p className="font-sans text-[13px] text-muted2 border border-hairline rounded-[12px] bg-card p-5 m-0">
             No multi-year emissions series is available for this category — the entities publish single-year figures.
@@ -76,7 +83,7 @@ export function CategoryPage({ config }: { config: CategoryConfig }) {
 
       {/* ── 03 Comparison matrix ── */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="03" title="Comparison Matrix" descriptor="Two views: as-reported & comparable" />
+        <SectionHead index="04" title="Comparison Matrix" descriptor="Two views: as-reported & comparable" />
         <ComparisonMatrix
           entities={entities}
           pack={pack}
@@ -87,31 +94,31 @@ export function CategoryPage({ config }: { config: CategoryConfig }) {
 
       {/* ── 04 Entity profiles ── */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="04" title="Entity Profiles" descriptor="Boundary, accounting basis & data notes" />
+        <SectionHead index="05" title="Entity Profiles" descriptor="Boundary, accounting basis & data notes" />
         <EntityProfiles entities={entities} />
       </section>
 
       {/* ── 05 Excluded & pending — always present, "None" when empty ── */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="05" title="Excluded & Pending" descriptor="With rationale codes" />
+        <SectionHead index="06" title="Excluded & Pending" descriptor="With rationale codes" />
         <ExcludedTable excluded={excluded} entities={entities} />
       </section>
 
       {/* ── 06 Methodology — identical on every page ── */}
       <section id="methodology" className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2 scroll-mt-24">
-        <SectionHead index="06" title="Methodology" descriptor="How to read this comparison" />
+        <SectionHead index="07" title="Methodology" descriptor="How to read this comparison" />
         <Methodology />
       </section>
 
       {/* ── 07 Export ── */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="07" title="Export" descriptor="One CSV/JSON schema across all categories" />
+        <SectionHead index="08" title="Export" descriptor="One CSV/JSON schema across all categories" />
         <SpineExport entities={entities} pack={pack} categoryId={config.id} />
       </section>
 
       {/* ── 08 Sources ── */}
       <section className="max-w-page mx-auto px-5 sm:px-8 pt-14 pb-2">
-        <SectionHead index="08" title="Sources & Caveats" descriptor="Where every figure comes from" />
+        <SectionHead index="09" title="Sources & Caveats" descriptor="Where every figure comes from" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {entities
             .filter((e) => e.source)

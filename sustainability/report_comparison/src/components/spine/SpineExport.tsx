@@ -14,6 +14,7 @@
  */
 import { useState } from "react";
 import { rowsForPack, type Entity, type PackId } from "@/data/spine";
+import { assessUsability, engagementQuestions, isStale } from "@/data/spine/usability";
 
 const DISCLAIMER =
   "As reported by each entity; no estimation or interpolation. state=disclosed|nd|na|pending. An empty value is never a zero. Emissions in tCO2e. Tier 1 = IFRS S2 cross-industry metrics; Tier 2 = GRI; Tier 3 = industry pack.";
@@ -25,6 +26,7 @@ const COLS = [
   "metric_key", "metric_label", "tier", "authority", "authority_ref",
   "state", "value", "display", "unit", "year", "provenance",
   "report_title", "page", "source_url", "note", "na_reason",
+  "usability", "usability_limitations", "row_is_current",
 ];
 
 function esc(v: unknown): string {
@@ -44,20 +46,23 @@ function rowsFor(entities: Entity[], pack: PackId) {
       env.scope3Categories ? env.scope3Categories.join(" ") : "", env.baseYear ?? "",
       env.gwpSource, env.assurance,
     ];
+    const current = !isStale(e);
     for (const row of spine) {
       const cell = e.metrics[row.key];
       if (!cell) continue;
+      const u = assessUsability(cell, row, e);
+      const grade = [u.grade, u.limitations.join(" | "), String(current)];
       const meta = [row.key, row.label, row.tier, row.authority, row.authorityRef ?? ""];
       if (cell.state === "disclosed") {
         out.push([...base, ...meta, "disclosed", cell.value ?? "", cell.display, cell.unit, cell.year,
           cell.provenance, cell.citation?.reportTitle ?? "", cell.citation?.page ?? "",
-          cell.citation?.url ?? "", cell.note ?? "", ""]);
+          cell.citation?.url ?? "", cell.note ?? "", "", ...grade]);
       } else if (cell.state === "na") {
-        out.push([...base, ...meta, "na", "", "N/A", "", "", "", "", "", "", "", cell.reason]);
+        out.push([...base, ...meta, "na", "", "N/A", "", "", "", "", "", "", "", cell.reason, ...grade]);
       } else if (cell.state === "nd") {
-        out.push([...base, ...meta, "nd", "", "N/D", "", "", "unverified", "", "", "", cell.note ?? "", ""]);
+        out.push([...base, ...meta, "nd", "", "N/D", "", "", "unverified", "", "", "", cell.note ?? "", "", ...grade]);
       } else {
-        out.push([...base, ...meta, "pending", "", "pending", "", "", "", "", "", "", "", ""]);
+        out.push([...base, ...meta, "pending", "", "pending", "", "", "", "", "", "", "", "", ...grade]);
       }
     }
   }
@@ -85,6 +90,8 @@ function toJSON(entities: Entity[], pack: PackId): string {
         envelope: e.envelope, source: e.source,
         metrics: Object.fromEntries(spine.map((r) => [r.key, e.metrics[r.key] ?? null])),
         targets: e.targets, dataNotes: e.dataNotes, caveatNotes: e.caveatNotes,
+        isCurrent: !isStale(e),
+        engagementQuestions: engagementQuestions(e),
       })),
     },
     null,

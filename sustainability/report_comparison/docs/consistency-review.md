@@ -370,6 +370,66 @@ landed (ISSA 5000) before fixing the vocabulary.
   TCFD`, `"HKFRS S2" → IFRS S2 (HK)`), so chips are countable and a "reports under IFRS S2"
   filter is possible.
 
+## 3.10 The analyst layer — decision-usefulness
+
+Everything above establishes what a figure *is*. IFRS S1 frames the purpose of
+all of it as information "useful to primary users in making decisions relating to
+providing resources to the entity", which is a different question:
+
+> Can I use this number, and if not, what do I ask the company?
+
+`usability.ts` answers it per figure, deriving a grade from explicit checks —
+sourced, page-verified, externally assured, accounting basis stated, current —
+so an analyst can see why a figure scored what it did and disagree with the
+reasoning rather than trusting a black box.
+
+| Grade | Meaning |
+|---|---|
+| **High** | Page-verified and externally assured, on a stated basis. Usable directly. |
+| **Moderate** | From the entity's own report on a stated basis, but not both verified and assured. |
+| **Limited** | Basis unstated, or the figure is superseded by a later report. |
+| **Not usable** | N/D, N/A, or not yet extracted. |
+
+Three deliberate design choices:
+
+- **Staleness caps a grade at "limited", however well sourced.** Meralco, DBS,
+  OCBC and UOB hold FY2024 rows while FY2025 reports exist, so they score **0%
+  usable** — loudly, at the top of the page. That is the correct signal: an
+  investor cannot act on last year's data when this year's is published.
+- **An unstated accounting basis downgrades a precise figure.** SMRT's Scope 1 is
+  reported to three decimal places, but SMRT never states its consolidation
+  approach, so the number cannot support a comparison. Precision is not
+  reliability, and the grade says so.
+- **The share is always shown with its denominator.** TMG is 100% usable over 5
+  disclosed figures; Sembcorp is 100% over 30. Without the base those read
+  identically, which would be actively misleading.
+
+The grade measures the **disclosure**, never the entity's climate performance.
+Conflating the two is the most common failure in ESG scoring, and the panel says
+so on the page.
+
+**Engagement questions.** Each structural gap converts into a question to put to
+the company, with its standards basis — dual Scope 2 where only one basis is
+published, the consolidation approach where it is unstated, Scope 3 category
+coverage, GWP vintage, base-year recalculation policy, assurance intent, the
+outstanding ¶29 metrics, and whether targets are gross or net of carbon credits.
+A gap is only worth recording if it converts into something an analyst can act on.
+
+Current picture (disclosed figures per entity):
+
+| Entity | Usable | Grades (high/mod/ltd/none) | Open questions |
+|---|---|---|---|
+| Sembcorp | 100% of 30 | 15/15/0/13 | 4 |
+| CLP | 96% of 23 | 0/22/1/23 | 4 |
+| National Grid | 96% of 24 | 0/23/1/22 | 5 |
+| Singtel | 85% of 27 | 10/13/4/16 | 5 |
+| IHH | 85% of 13 | 0/11/2/31 | 6 |
+| SMRT | 82% of 17 | 0/14/3/26 | 7 |
+| TMG | 100% of 5 | 0/5/0/39 | 7 |
+| Meralco · DBS · OCBC · UOB | **0%** — superseded | 0/0/·/· | 6–7 each |
+
+---
+
 ## 4. Page contract
 
 Every category page renders the same sections, in the same order, with the same numbering.
