@@ -474,11 +474,51 @@ CLP, National Grid, IHH and RMG each **1/7**; DBS, OCBC and UOB **2/7** (they ho
 (d) via sustainable finance); TMG **0/7**. Every entity fails (g) — none discloses
 the *percentage* of executive remuneration linked to climate, only a yes/no.
 
-**Phase 1.5 — the open work.** This is data collection, not engineering, and it is
-where the site gets materially more useful. Per entity, capture what the reports say
-about S2 ¶29 (b), (c), (e), (f) and the (g) percentage. The rows already exist and
-render as N/D with the framework reason attached, so the gaps are visible and
-countable today — filling them raises the coverage scores without touching code.
+**Phase 1.5 — the open work, and why it is still open.**
+
+Four further Phase 1 items are now **done** alongside the spine:
+
+- **Controlled framework vocabulary** (`frameworks.ts`) — every raw string in the
+  corpus resolves to one canonical standard, with the original kept as display
+  detail. "GRI 2021" / "GRI G4 Electric Utilities" collapse to one GRI chip;
+  "HKFRS S2" resolves to IFRS S2 with the Hong Kong adoption noted rather than
+  asserting the texts are identical. A raw string with no mapping now *fails the
+  test suite* instead of silently becoming its own category. This is what makes
+  "which entities report under IFRS S2?" answerable.
+- **IFRS S1 comparatives** — figures carry a `series` where the report publishes
+  prior periods, and the matrix shows the change between the last two disclosed
+  years. A gap breaks the comparison rather than interpolating through it. This
+  also removes the year-in-the-key smell: IHH's `intensity_2022` / `intensity_2025`
+  are folded into one series, so a future year is data, not a new key plus a
+  component edit.
+- **Structured targets (S2 ¶33–37)** — `Target` carries objective, scope, base
+  period, target period, third-party validation, gross-vs-net and carbon-credit
+  reliance, with the verbatim statement always preserved. The nulls are the
+  finding: **no entity in the corpus publishes a target with all the elements S2
+  asks for**, and a test pins that so it is noticed if it changes.
+- **Honest labelling of the caveat list** — the derived note list was labelled as
+  IFRS S1 estimation uncertainty, which it is not. It is a keyword heuristic over
+  existing notes, so it is now named and shown as "restatement & data-quality
+  caveats". A real S1 estimation-uncertainty disclosure remains data-entry work.
+
+**Still open: the ¶29(b)–(g) extraction.** This is data collection, not
+engineering, and it cannot be done from this environment — Singtel's report
+portal, the DBS SR2024 PDF and even the SEC-hosted National Grid 20-F all return
+HTTP 403 to automated fetch, matching the blocks already recorded in the CLP and
+National Grid data notes. Filling these requires opening the source reports by
+hand (or a session with working outbound access) and entering the figures the
+same way every other number in this project was entered.
+
+The rows already exist and render as N/D **with the framework reason attached**,
+so the gaps are visible and countable today. Filling them raises the coverage
+scores without touching code — which is exactly what the spine was built to make
+possible.
+
+Worth noting one thing the comparatives work turned up: the Temasek historical
+table rounds (Singtel FY2025 Scope 1 appears as 13.2 kt) while the headline field
+is precise (13.228 kt). The adapter now uses the precise figure for the current
+period so the series tail and the displayed value cannot disagree; prior years
+stay exactly as the report presents them.
 
 **Fix now, regardless of phase** — these were wrong, not just inconsistent. **All four are
 done**; each is now covered by a test in `data.test.ts` so it cannot regress:

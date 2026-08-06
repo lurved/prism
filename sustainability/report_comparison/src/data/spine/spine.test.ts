@@ -26,6 +26,7 @@ import {
   type PackId,
 } from "./index";
 import { CATEGORIES } from "./categories";
+import { resolveFrameworks, unmappedFrameworks, reportsUnder } from "./frameworks";
 
 const CATEGORY_SETS: { id: string; pack: PackId; entities: Entity[] }[] = [
   { id: "temasek", pack: "diversified", entities: temasekEntities },
@@ -232,6 +233,108 @@ describe("Category registry", () => {
       expect(c.entities.length, c.id).toBeGreaterThan(0);
       for (const e of c.entities.filter((x) => x.status === "populated")) {
         expect(e.source, `${e.id} has no source`).not.toBeNull();
+      }
+    }
+  });
+});
+
+
+/* ── Controlled framework vocabulary ─────────────────────────────── */
+describe("Framework vocabulary", () => {
+  it("maps every raw framework string in the corpus — no silent new categories", () => {
+    const all = allEntities.flatMap((e) => e.frameworks);
+    expect(unmappedFrameworks(all), "unmapped framework strings").toEqual([]);
+  });
+
+  it("collapses spelling variants onto one canonical name", () => {
+    // "GRI 2021" and "GRI G4 Electric Utilities" both mean GRI; previously
+    // they rendered as three separate chips.
+    const meralco = utilityEntities.find((e) => e.id === "meralco")!;
+    const canon = resolveFrameworks(meralco.frameworks).map((f) => f.canonical);
+    expect(canon.filter((c) => c === "GRI")).toHaveLength(1);
+    expect(new Set(canon).size).toBe(canon.length);
+  });
+
+  it("makes a cross-category standards filter possible", () => {
+    // The question the free-text vocabulary could not answer.
+    const s2 = allEntities.filter((e) => reportsUnder(e.frameworks, "IFRS S2"));
+    expect(s2.length).toBeGreaterThan(0);
+    // CLP reports under HKFRS S2 — the HK adoption — and must be counted.
+    expect(s2.map((e) => e.id)).toContain("clp");
+  });
+
+  it("keeps the raw string for display detail", () => {
+    const clp = utilityEntities.find((e) => e.id === "clp")!;
+    const hk = resolveFrameworks(clp.frameworks).find((f) => f.canonical === "IFRS S2")!;
+    expect(hk.raw).toBe("HKFRS S2");
+    expect(hk.qualifier).toMatch(/Hong Kong/);
+  });
+});
+
+/* ── IFRS S1 comparatives ────────────────────────────────────────── */
+describe("Comparative information", () => {
+  it("attaches a series only where the report publishes ≥2 periods", () => {
+    for (const e of allEntities) {
+      for (const [key, cell] of Object.entries(e.metrics)) {
+        if (cell.state !== "disclosed" || !cell.series) continue;
+        const disclosed = cell.series.filter((p) => p.value !== null);
+        expect(disclosed.length, `${e.id}/${key} has a 1-point series`).toBeGreaterThanOrEqual(2);
+      }
+    }
+  });
+
+  it("orders series oldest-first and ends on the current value", () => {
+    for (const e of allEntities) {
+      for (const [key, cell] of Object.entries(e.metrics)) {
+        if (cell.state !== "disclosed" || !cell.series) continue;
+        const years = cell.series.map((p) => p.year);
+        expect(years, `${e.id}/${key} series is not chronological`).toEqual([...years].sort());
+        expect(cell.series[cell.series.length - 1].value, `${e.id}/${key} series tail ≠ current value`).toBe(cell.value);
+      }
+    }
+  });
+
+  it("carries the Temasek emissions history in tCO₂e", () => {
+    const singtel = temasekEntities.find((e) => e.id === "singtel")!;
+    const s3 = singtel.metrics.scope3_abs;
+    expect(s3.state === "disclosed" && s3.series?.length).toBe(3);
+    expect(s3.state === "disclosed" && s3.series?.[0].value).toBe(3_622_500); // FY2023, 3,622.5 kt
+  });
+
+  it("folds IHH's year-keyed intensity into one series instead of two keys", () => {
+    const ihh = healthcareSpineEntities.find((e) => e.id === "ihh")!;
+    const cell = ihh.metrics.intensity_bed_day;
+    expect(cell.state === "disclosed" && cell.series?.map((p) => p.year)).toEqual(["2022", "2025"]);
+  });
+});
+
+/* ── IFRS S2 ¶33–37 targets ──────────────────────────────────────── */
+describe("Structured targets", () => {
+  it("never discards what the report actually says", () => {
+    for (const e of allEntities) {
+      for (const t of e.targets) {
+        expect(t.verbatim?.trim().length, `${e.id} target has no verbatim statement`).toBeGreaterThan(0);
+        expect(t.objective.trim().length).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("records the finding: no entity publishes a fully S2-structured target", () => {
+    // Every target in the corpus is missing at least one element S2 asks for
+    // (gross vs net, carbon-credit reliance, or third-party validation).
+    // If this ever fails, an entity has improved its disclosure and the
+    // coverage story should be revisited.
+    const complete = allEntities.flatMap((e) => e.targets).filter(
+      (t) => t.grossOrNet !== null && t.usesCarbonCredits !== null && t.thirdPartyValidated !== null,
+    );
+    expect(complete).toHaveLength(0);
+  });
+
+  it("gives every entity with a net-zero year a corresponding target", () => {
+    for (const e of allEntities) {
+      const nz = e.metrics.net_zero_year;
+      if (nz?.state === "disclosed") {
+        expect(e.targets.some((t) => t.objective === "Net zero"), `${e.id}`).toBe(true);
       }
     }
   });

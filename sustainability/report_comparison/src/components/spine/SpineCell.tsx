@@ -12,7 +12,7 @@
  *   ✅ confirmed (page recorded) · • reported · ⚠️ estimated · ❌ unverified
  */
 import { TIER_META } from "@/data/provenance";
-import type { Cell } from "@/data/spine";
+import type { Cell, SeriesPoint } from "@/data/spine";
 
 const TONE: Record<string, string> = {
   confirmed: "text-good",
@@ -42,6 +42,32 @@ function Popover({ label, children }: { label: string; children: React.ReactNode
       </button>
       <span className="pointer-events-none invisible group-hover:visible group-focus-within:visible absolute z-40 right-0 top-full mt-1 w-72 rounded-[10px] border border-hairline bg-card p-3 text-left shadow-lg">
         {children}
+      </span>
+    </span>
+  );
+}
+
+/**
+ * Comparatives (IFRS S1). Shows the prior disclosed period and the change, so
+ * a figure is readable as a direction rather than a lone number. A gap in the
+ * series breaks the comparison — it is never interpolated through.
+ */
+function Comparative({ series }: { series: SeriesPoint[] }) {
+  const points = series.filter((p) => p.value !== null) as { year: string; value: number }[];
+  if (points.length < 2) return null;
+  const [prev, latest] = [points[points.length - 2], points[points.length - 1]];
+  if (prev.value === 0) return null;
+  const pct = ((latest.value - prev.value) / Math.abs(prev.value)) * 100;
+  const up = pct > 0;
+  const flat = Math.abs(pct) < 0.05;
+  return (
+    <span
+      className="font-mono text-[10px] text-muted3"
+      title={points.map((p) => `${p.year}: ${p.value.toLocaleString()}`).join(" · ")}
+    >
+      {prev.year} → {latest.year}{" "}
+      <span className={flat ? "text-muted3" : up ? "text-sc" : "text-good"}>
+        {flat ? "flat" : `${up ? "+" : ""}${pct.toFixed(1)}%`}
       </span>
     </span>
   );
@@ -110,6 +136,11 @@ export function SpineCell({ cell, isWinner = false }: { cell: Cell | undefined; 
         <span className={`font-mono text-[13px] ${isWinner ? "text-ink font-semibold" : "text-ink2"}`}>{cell.display}</span>
         <ProvenanceMark tier={cell.provenance} />
       </span>
+      {cell.series && (
+        <div className="mt-[2px]">
+          <Comparative series={cell.series} />
+        </div>
+      )}
       <div className="mt-[3px]">
         {c ? (
           <Popover label="cite">

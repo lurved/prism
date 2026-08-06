@@ -28,8 +28,21 @@ import {
   type Cell,
   type Entity,
   type Envelope,
+  type SeriesPoint,
   type SpineCitation,
+  type Target,
 } from "./types";
+
+/**
+ * Notes that touch restatement, extraction limits or data quality. This is a
+ * keyword heuristic over the existing notes — a reading aid, NOT the entity's
+ * own IFRS S1 estimation-uncertainty disclosure, and the UI labels it as such.
+ */
+function caveatsFrom(notes: string[]): string[] {
+  return notes.filter((n) =>
+    /restat|estimat|approximate|not extract|not recorded|ambiguous|CORRECTED|blocked|pending|not stated/i.test(n),
+  );
+}
 
 /* ── Cell constructors ───────────────────────────────────────────── */
 
@@ -54,12 +67,15 @@ function num(
   unit: string,
   year: string,
   cite: SpineCitation | null,
-  opts: { display?: string; note?: string } = {},
+  opts: { display?: string; note?: string; series?: SeriesPoint[] } = {},
 ): Cell {
   if (value === null) return ND(opts.note);
   const display =
     opts.display ?? (unit === "tCO₂e" ? fmtTonnes(value) : `${value.toLocaleString()}${unit ? ` ${unit}` : ""}`);
-  return { state: "disclosed", value, display, unit, year, provenance: tierFor(cite), citation: cite, note: opts.note };
+  // A series is only attached when the report publishes comparatives — two or
+  // more points. One point is a single-year disclosure, not a trend.
+  const series = opts.series && opts.series.filter((p) => p.value !== null).length >= 2 ? opts.series : undefined;
+  return { state: "disclosed", value, display, unit, year, provenance: tierFor(cite), citation: cite, note: opts.note, series };
 }
 
 function txt(display: string | null, year: string, cite: SpineCitation | null, note?: string): Cell {
@@ -171,9 +187,12 @@ export function fromCompany(c: Company, categoryId: string): Entity {
     reporting_period: meta(c.dataSource.reportingPeriod, period, src),
     ...envelopeCells(env, period, src),
 
-    scope1_abs: num(kt(e.scope1Emissions), "tCO₂e", period, companyCite(c, "scope1")),
+    scope1_abs: num(kt(e.scope1Emissions), "tCO₂e", period, companyCite(c, "scope1"), {
+      series: histSeries(c, "scope1", kt(e.scope1Emissions)),
+    }),
     scope2_abs: num(kt(e.scope2Emissions), "tCO₂e", period, companyCite(c, "scope2"), {
       note: `Reporting basis: ${e.scope2Basis}.`,
+      series: histSeries(c, "scope2", kt(e.scope2Emissions)),
     }),
     // Dual reporting: the value is placed under the basis the report actually
     // states, and the other side is N/D — never duplicated across both.
@@ -186,7 +205,9 @@ export function fromCompany(c: Company, categoryId: string): Entity {
         ? num(kt(e.scope2Emissions), "tCO₂e", period, companyCite(c, "scope2"))
         : ND(`Market-based Scope 2 not disclosed. ${e.scope2Basis}.`),
     scope1and2_abs: ND("Scope 1 and Scope 2 are reported separately; no combined total is published."),
-    scope3_abs: num(kt(e.scope3Emissions), "tCO₂e", period, companyCite(c, "scope3")),
+    scope3_abs: num(kt(e.scope3Emissions), "tCO₂e", period, companyCite(c, "scope3"), {
+      series: histSeries(c, "scope3", kt(e.scope3Emissions)),
+    }),
     scope3_cat15: num(kt(e.scope3Cat15Emissions), "tCO₂e", period, companyCite(c, "scope3Cat15"), {
       note: "Subset of Scope 3; disclosed only where the report breaks it out.",
     }),
@@ -300,10 +321,69 @@ export function fromCompany(c: Company, categoryId: string): Entity {
       accessDate: c.dataSource.accessDate,
     },
     metrics,
+    targets: companyTargets(c, env.baseYearNote),
     frameworks: c.governance.reportingFrameworks,
     dataNotes: c.dataNotes,
-    estimationUncertainty: c.dataNotes.filter((n) => /restat|estimat|not extract|ambiguous|CORRECTED/i.test(n)),
+    caveatNotes: caveatsFrom(c.dataNotes),
   };
+}
+
+/**
+ * ktCO₂e history → tCO₂e comparatives, oldest first.
+ *
+ * The historical table ROUNDS (Singtel FY2025 Scope 1 appears there as 13.2 kt)
+ * while the headline field carries the precise figure (13.228 kt). Where the
+ * final history row is the current reporting period, the precise headline value
+ * is used for it, so the series tail and the displayed figure cannot disagree.
+ * Prior years stay exactly as the report presents them.
+ */
+function histSeries(
+  c: Company,
+  scope: "scope1" | "scope2" | "scope3",
+  currentTonnes: number | null,
+): SeriesPoint[] {
+  const points: SeriesPoint[] = c.historicalEmissions.map((h) => ({
+    year: h.year,
+    value: h[scope] === null || h[scope] === undefined ? null : (h[scope] as number) * KT_TO_T,
+  }));
+  const last = points[points.length - 1];
+  if (last && currentTonnes !== null && last.year === c.reportingPeriod) {
+    last.value = currentTonnes;
+  }
+  return points;
+}
+
+function companyTargets(c: Company, baseNote: string | null): Target[] {
+  const out: Target[] = [];
+  if (c.environmental.netZeroTargetYear !== null) {
+    out.push({
+      objective: "Net zero",
+      verbatim: c.strategy,
+      scopeCovered: "Scope 1+2",
+      basePeriod: c.baselineYear || null,
+      targetPeriod: String(c.environmental.netZeroTargetYear),
+      value: null,
+      unit: null,
+      thirdPartyValidated: c.id === "singtel" ? true : null,
+      grossOrNet: null,
+      usesCarbonCredits: null,
+    });
+  }
+  if (c.environmental.scope1and2ReductionPct !== null) {
+    out.push({
+      objective: "Scope 1+2 reduction achieved to date",
+      verbatim: baseNote ?? c.strategy,
+      scopeCovered: "Scope 1+2",
+      basePeriod: c.baselineYear || null,
+      targetPeriod: null,
+      value: c.environmental.scope1and2ReductionPct,
+      unit: "%",
+      thirdPartyValidated: c.id === "singtel" ? true : null,
+      grossOrNet: null,
+      usesCarbonCredits: null,
+    });
+  }
+  return out;
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -479,10 +559,45 @@ export function fromPeer(c: PeerCompany, categoryId: string): Entity {
       accessDate: c.dataSource.accessDate,
     },
     metrics,
+    targets: peerTargets(c, env.baseYear),
     frameworks: c.frameworks,
     dataNotes: c.dataNotes,
-    estimationUncertainty: c.dataNotes.filter((n) => /approximate|estimat|not extract|N\/D|blocked/i.test(n)),
+    caveatNotes: caveatsFrom(c.dataNotes),
   };
+}
+
+function peerTargets(c: PeerCompany, basePeriod: string | null): Target[] {
+  const validated = /SBTi/i.test(c.reductionTarget) || c.frameworks.some((f) => /SBTi/i.test(f)) ? true : null;
+  const out: Target[] = [];
+  if (c.netZeroYear !== null) {
+    out.push({
+      objective: "Net zero",
+      verbatim: c.reductionTarget,
+      scopeCovered: null,
+      basePeriod,
+      targetPeriod: String(c.netZeroYear),
+      value: null,
+      unit: null,
+      thirdPartyValidated: validated,
+      grossOrNet: null,
+      usesCarbonCredits: null,
+    });
+  }
+  if (c.reductionTarget) {
+    out.push({
+      objective: "Interim reduction target",
+      verbatim: c.reductionTarget,
+      scopeCovered: null,
+      basePeriod,
+      targetPeriod: null,
+      value: null,
+      unit: null,
+      thirdPartyValidated: validated,
+      grossOrNet: null,
+      usesCarbonCredits: null,
+    });
+  }
+  return out;
 }
 
 /**
@@ -572,8 +687,8 @@ export function fromHealthcare(h: HealthcareEntity, categoryId: string): Entity 
     interim_target: pendingOr(hcCell(h.metrics.target_2030)),
     target_validated: ND("No third-party target validation stated in the source report."),
 
-    intensity_bed_day: pendingOr(hcCell(h.metrics.intensity_2025)),
-    intensity_reported: pendingOr(hcCell(h.metrics.intensity_2025)),
+    intensity_bed_day: pendingOr(withSeries(hcCell(h.metrics.intensity_2025), hcIntensitySeries(h))),
+    intensity_reported: pendingOr(withSeries(hcCell(h.metrics.intensity_2025), hcIntensitySeries(h))),
     renewable_share_pct: ND("Renewable electricity share not disclosed."),
     water_m3: ND("Water consumption not disclosed."),
 
@@ -636,8 +751,48 @@ export function fromHealthcare(h: HealthcareEntity, categoryId: string): Entity 
         }
       : null,
     metrics,
+    targets: hcTargets(h),
     frameworks: h.frameworks ?? [],
     dataNotes: h.dataNotes,
-    estimationUncertainty: h.dataNotes.filter((n) => /not yet|pending|not recorded|not stated|blank/i.test(n)),
+    caveatNotes: caveatsFrom(h.dataNotes),
   };
+}
+
+/**
+ * IHH publishes its bed-day intensity for 2022 and 2025 under two separate
+ * metric keys — the "year in the key" smell from the review. They are folded
+ * into one comparative series here, so adding a future year is data, not a new
+ * key plus a component edit.
+ */
+function hcIntensitySeries(h: HealthcareEntity): SeriesPoint[] {
+  return Object.entries(h.metrics)
+    .filter(([k, mv]) => /^intensity_\d{4}$/.test(k) && mv.value !== null)
+    .map(([k, mv]) => ({ year: k.slice(-4), value: mv.value }))
+    .sort((a, b) => a.year.localeCompare(b.year));
+}
+
+/** Attach comparatives to an already-built cell (≥2 points, else unchanged). */
+function withSeries(cell: Cell, series: SeriesPoint[]): Cell {
+  if (cell.state !== "disclosed") return cell;
+  if (series.filter((p) => p.value !== null).length < 2) return cell;
+  return { ...cell, series };
+}
+
+function hcTargets(h: HealthcareEntity): Target[] {
+  const mv = h.metrics.target_2030;
+  if (!mv || (mv.value === null && mv.display === undefined)) return [];
+  return [
+    {
+      objective: "Interim reduction target",
+      verbatim: mv.display ?? String(mv.value),
+      scopeCovered: "Scope 1+2",
+      basePeriod: ENVELOPES[h.id]?.baseYear ?? null,
+      targetPeriod: mv.year,
+      value: mv.value,
+      unit: mv.unit || "%",
+      thirdPartyValidated: null,
+      grossOrNet: null,
+      usesCarbonCredits: null,
+    },
+  ];
 }

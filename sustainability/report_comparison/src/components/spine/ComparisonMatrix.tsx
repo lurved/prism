@@ -28,6 +28,7 @@ import {
   type View,
 } from "@/data/spine";
 import { SpineCell } from "./SpineCell";
+import { resolveFrameworks } from "@/data/spine/frameworks";
 
 const AUTHORITY_TONE: Record<string, string> = {
   "IFRS S2": "text-good bg-[rgba(63,122,82,0.10)]",
@@ -172,11 +173,29 @@ export function ComparisonMatrix({ entities, pack, groupLabel, caveats }: Props)
                         <div className="font-sans text-[10px] text-muted3 mt-[4px] [text-wrap:pretty]">{reason}</div>
                       )}
                     </td>
-                    {entities.map((e) => (
-                      <td key={e.id} className="py-[13px] px-4 text-right align-top">
-                        <SpineCell cell={e.metrics[row.key]} isWinner={winnerId === e.id} />
-                      </td>
-                    ))}
+                    {entities.map((e) =>
+                      row.key === "frameworks" ? (
+                        // Rendered through the controlled vocabulary so "GRI 2021"
+                        // and "GRI" are one chip, and a filter is possible.
+                        <td key={e.id} className="py-[13px] px-4 text-right align-top">
+                          <span className="inline-flex flex-wrap gap-[5px] justify-end">
+                            {resolveFrameworks(e.frameworks).map((f) => (
+                              <span
+                                key={f.canonical}
+                                title={f.qualifier ? `${f.raw} — ${f.qualifier}` : f.raw}
+                                className="font-mono font-medium text-[10px] text-muted bg-chip rounded-[5px] px-2 py-[3px]"
+                              >
+                                {f.canonical}
+                              </span>
+                            ))}
+                          </span>
+                        </td>
+                      ) : (
+                        <td key={e.id} className="py-[13px] px-4 text-right align-top">
+                          <SpineCell cell={e.metrics[row.key]} isWinner={winnerId === e.id} />
+                        </td>
+                      ),
+                    )}
                   </tr>
                 </Fragment>
               );

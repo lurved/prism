@@ -72,15 +72,43 @@ export function EntityProfiles({ entities }: { entities: Entity[] }) {
               <p className="font-sans text-[11px] leading-[1.5] text-muted2 m-0 mb-3">{e.reportLagNote}</p>
             )}
 
+            {e.targets.length > 0 && (
+              <div className="mb-3">
+                <div className="font-mono font-medium text-[9px] text-muted3 tracking-[0.08em] uppercase mb-1.5">
+                  Targets · S2 ¶33–37
+                </div>
+                <ul className="space-y-2">
+                  {e.targets.map((t, i) => (
+                    <li key={i} className="border-l-2 border-hairline pl-3">
+                      <div className="font-sans font-medium text-[11px] text-ink2">
+                        {t.objective}
+                        {t.targetPeriod ? ` · ${t.targetPeriod}` : ""}
+                        {t.value !== null ? ` · ${t.value}${t.unit ?? ""}` : ""}
+                      </div>
+                      <div className="font-mono text-[9px] text-muted3 mt-[2px]">
+                        base {t.basePeriod ?? "not stated"} · scope {t.scopeCovered ?? "not stated"} · validated{" "}
+                        {t.thirdPartyValidated === null ? "not stated" : t.thirdPartyValidated ? "yes" : "no"} · gross/net{" "}
+                        {t.grossOrNet ?? "not stated"}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <p className="font-sans text-[10px] leading-[1.5] text-muted3 mt-1.5 m-0">
+                  &ldquo;Not stated&rdquo; means the report does not publish that element of the target — S2 ¶33–37 asks
+                  for all of them.
+                </p>
+              </div>
+            )}
+
             <div className="mt-auto space-y-2">
-              {e.estimationUncertainty.length > 0 && (
+              {e.caveatNotes.length > 0 && (
                 <details>
                   <summary className="font-mono text-[11px] text-muted3 cursor-pointer hover:text-muted select-none">
-                    {e.estimationUncertainty.length} estimation-uncertainty note
-                    {e.estimationUncertainty.length > 1 ? "s" : ""} ▾
+                    {e.caveatNotes.length} restatement &amp; data-quality caveat
+                    {e.caveatNotes.length > 1 ? "s" : ""} ▾
                   </summary>
                   <ul className="mt-2 space-y-1.5">
-                    {e.estimationUncertainty.map((n, i) => (
+                    {e.caveatNotes.map((n: string, i: number) => (
                       <li key={i} className="font-sans text-[11px] text-muted leading-snug pl-3 border-l-2 border-sc">
                         {n}
                       </li>

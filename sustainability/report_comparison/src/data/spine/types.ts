@@ -118,6 +118,15 @@ export interface SpineCitation {
  * N/A (with a mandatory reason), or pending. Absence is not a state, because
  * an absent row is indistinguishable from an oversight.
  */
+/** One prior-period observation. IFRS S1 expects comparative information, so
+ *  a figure that has a history carries it rather than losing it. */
+export interface SeriesPoint {
+  year: string;
+  /** null = the entity did not disclose that year — the line breaks, never
+   *  interpolates through the gap. */
+  value: number | null;
+}
+
 export type Cell =
   | {
       state: "disclosed";
@@ -129,6 +138,12 @@ export type Cell =
       provenance: ProvenanceTier;
       citation: SpineCitation | null;
       note?: string;
+      /**
+       * Prior periods, oldest first, INCLUDING the current year as the last
+       * point. Present only where the report actually publishes comparatives;
+       * absent is "single-year disclosure", never an implied flat line.
+       */
+      series?: SeriesPoint[];
     }
   | { state: "nd"; note?: string }
   | { state: "na"; reason: string }
@@ -165,6 +180,36 @@ export interface SpineRow {
 }
 
 /* ── Entity ──────────────────────────────────────────────────────── */
+
+/* ── IFRS S2 ¶33–37: targets ─────────────────────────────────────── */
+
+/**
+ * A climate target in the shape S2 asks for. Most fields are nullable on
+ * purpose: no entity in this corpus publishes targets in this structure, and
+ * the nulls are the finding. `verbatim` always carries what the report
+ * actually says, so nothing is lost to the structuring attempt.
+ */
+export interface Target {
+  /** "Net zero", "Interim Scope 1+2 reduction", … */
+  objective: string;
+  /** Verbatim-ish statement from the report — never discarded. */
+  verbatim: string;
+  /** Scopes the target covers, where stated. */
+  scopeCovered: string | null;
+  /** Base period against which progress is measured (S2 ¶34(b)). */
+  basePeriod: string | null;
+  /** Period by which the target is to be met. */
+  targetPeriod: string | null;
+  /** Quantified target value where one is stated. */
+  value: number | null;
+  unit: string | null;
+  /** Validated by a third party (e.g. SBTi) — null when not stated. */
+  thirdPartyValidated: boolean | null;
+  /** Gross vs net of carbon credits (S2 ¶36) — null when the report is silent. */
+  grossOrNet: "gross" | "net" | null;
+  /** Whether the target relies on carbon credits — null when not stated. */
+  usesCarbonCredits: boolean | null;
+}
 
 export interface EntitySource {
   reportTitle: string;
@@ -205,8 +250,17 @@ export interface Entity {
   envelope: Envelope;
   source: EntitySource | null;
   metrics: Record<string, Cell>;
+  /** Structured climate targets (S2 ¶33-37). Empty when none are stated. */
+  targets: Target[];
+  /** Raw framework strings as the dataset records them. Resolve through
+   *  frameworks.ts before display or filtering. */
   frameworks: string[];
   dataNotes: string[];
-  /** IFRS S1 expects sources of estimation uncertainty to be disclosed. */
-  estimationUncertainty: string[];
+  /**
+   * Notes that touch restatements, extraction limits or data quality.
+   * DERIVED by keyword from dataNotes — a useful reading aid, but NOT the
+   * entity's own IFRS S1 estimation-uncertainty disclosure. Labelled in the UI
+   * as a caveat list so it is never mistaken for one.
+   */
+  caveatNotes: string[];
 }

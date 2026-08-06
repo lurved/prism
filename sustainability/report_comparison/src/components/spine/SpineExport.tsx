@@ -84,7 +84,7 @@ function toJSON(entities: Entity[], pack: PackId): string {
         boundaryNote: e.boundaryNote, rationaleCode: e.rationaleCode,
         envelope: e.envelope, source: e.source,
         metrics: Object.fromEntries(spine.map((r) => [r.key, e.metrics[r.key] ?? null])),
-        dataNotes: e.dataNotes, estimationUncertainty: e.estimationUncertainty,
+        targets: e.targets, dataNotes: e.dataNotes, caveatNotes: e.caveatNotes,
       })),
     },
     null,
