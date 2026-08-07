@@ -20,6 +20,7 @@ import {
   type Usability,
 } from "@/data/spine/usability";
 import { rowsForPack, type Entity, type PackId } from "@/data/spine";
+import { backlogItems, completeness } from "@/data/spine/completeness";
 
 const GRADE_TONE: Record<Usability, string> = {
   high: "bg-good",
@@ -38,9 +39,50 @@ const GRADE_TEXT: Record<Usability, string> = {
 export function AnalystBrief({ entities, pack }: { entities: Entity[]; pack: PackId }) {
   const rows = rowsForPack(pack);
   const stale = entities.filter(isStale);
+  const { ours, theirs } = completeness(entities, rows);
+  const backlog = backlogItems(entities, rows);
 
   return (
     <div className="space-y-6">
+      {/* 0. The split. Two kinds of gap have been rendered identically on this
+             page, which makes the whole thing read as a defect list. It is not:
+             the large number is the finding, and the small one is our backlog. */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="border border-hairline rounded-[12px] bg-card p-5">
+          <div className="font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 mb-2">
+            Our backlog — finite
+          </div>
+          {ours.clear ? (
+            <p className="font-sans text-[13px] leading-[1.6] text-ink2 m-0">
+              <strong className="font-semibold">Clear.</strong> Every applicable figure has been extracted, page-referenced
+              and refreshed to the latest available report.
+            </p>
+          ) : (
+            <ul className="space-y-2.5 m-0 pl-0 list-none">
+              {backlog.map((b) => (
+                <li key={b.label}>
+                  <div className="font-sans font-semibold text-[12px] text-ink2">{b.label}</div>
+                  <div className="font-sans text-[11px] leading-[1.5] text-muted mt-[2px] [text-wrap:pretty]">{b.detail}</div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="border border-hairline rounded-[12px] bg-card p-5">
+          <div className="font-mono font-semibold text-[10px] tracking-[0.14em] uppercase text-muted2 mb-2">
+            Their disclosure — the finding
+          </div>
+          <div className="font-serif font-medium text-[34px] leading-none text-ink">{theirs.notDisclosed}</div>
+          <p className="font-sans text-[12px] leading-[1.55] text-muted mt-2 m-0 [text-wrap:pretty]">
+            metrics these {theirs.entityCount} entities apply but do not disclose, and{" "}
+            {theirs.boundaryUnstated} that do not state a GHG Protocol consolidation basis.{" "}
+            <strong className="font-semibold text-ink2">This is not a defect list — it is the result.</strong> It will
+            never reach zero, and a version of this page where it did would be misrepresenting the reports.
+          </p>
+        </div>
+      </div>
+
       {/* 1. Currency — the first thing that invalidates an analysis */}
       {stale.length > 0 && (
         <div className="border border-sc rounded-[12px] bg-card p-5">

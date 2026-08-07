@@ -28,6 +28,7 @@ import {
 import { CATEGORIES } from "./categories";
 import { resolveFrameworks, unmappedFrameworks, reportsUnder } from "./frameworks";
 import { assessUsability, engagementQuestions, entityUsability, isStale } from "./usability";
+import { backlogItems, completeness } from "./completeness";
 
 const CATEGORY_SETS: { id: string; pack: PackId; entities: Entity[] }[] = [
   { id: "temasek", pack: "diversified", entities: temasekEntities },
@@ -544,5 +545,48 @@ describe("Engagement questions", () => {
     const q = engagementQuestions(sembcorp).find((x) => /cross-industry/i.test(x.topic));
     expect(q?.question).toMatch(/¶29\(g\)/);
     expect(q?.question).not.toMatch(/¶29\(b\)/);
+  });
+});
+
+
+/* ── Our backlog vs their disclosure ─────────────────────────────── */
+describe("Completeness split", () => {
+  it("counts every cell exactly once, into one bucket or the other", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      const rows = rowsForPack(pack);
+      const { ours, theirs } = completeness(entities, rows);
+      const cells = entities.flatMap((e) => rows.filter((r) => e.metrics[r.key] !== undefined).length);
+      const total = cells.reduce((a, b) => a + b, 0);
+      expect(ours.pending + theirs.notDisclosed + theirs.notApplicable + ours.disclosed).toBe(total);
+    }
+  });
+
+  it("keeps the two registers separate — a disclosure gap is never our backlog", () => {
+    // The whole point: N/D counts belong to the entity, never to us.
+    const rows = rowsForPack("banks");
+    const { ours, theirs } = completeness(bankEntities, rows);
+    expect(theirs.notDisclosed).toBeGreaterThan(0);
+    expect(ours.pending).toBeLessThan(theirs.notDisclosed);
+  });
+
+  it("states our backlog as concrete, closeable items", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      for (const item of backlogItems(entities, rowsForPack(pack))) {
+        // "lots of flags" is not actionable; a count plus what closes it is.
+        expect(item.label).toMatch(/\d/);
+        expect(item.detail.length).toBeGreaterThan(20);
+      }
+    }
+  });
+
+  it("reports a clear backlog only when nothing is left for us to do", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      const { ours } = completeness(entities, rowsForPack(pack));
+      if (ours.clear) {
+        expect(ours.pending).toBe(0);
+        expect(ours.unpaged).toBe(0);
+        expect(ours.staleEntities).toHaveLength(0);
+      }
+    }
   });
 });
