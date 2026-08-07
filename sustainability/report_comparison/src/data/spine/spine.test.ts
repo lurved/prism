@@ -143,12 +143,39 @@ describe("Provenance ladder", () => {
 
 /* ── Comparability is derived from the GHG Protocol envelope ─────── */
 describe("Comparability", () => {
-  it("blocks a row when the organizational boundary differs", () => {
-    // Meralco and CLP report on equity share; National Grid on operational
-    // control. Under the GHG Protocol those Scope 1 figures are not comparable.
+  it("blocks the utilities set on period before anything else", () => {
+    // Meralco FY2024, CLP FY2025, National Grid FY2025/26 — this set was never
+    // period-comparable, which is a more fundamental blocker than the boundary
+    // difference below and must be reported first.
     const row = SPINE.find((r) => r.key === "scope1_abs")!;
     const verdict = assessComparability(row, utilityEntities);
+    expect(verdict.blockedReason).toMatch(/reporting periods differ/i);
+    expect(verdict.eligible).toHaveLength(0);
+  });
+
+  it("blocks a row when the organizational boundary differs", () => {
+    // Hold the period constant to isolate the envelope check: Meralco and CLP
+    // report on equity share, National Grid on operational control, so under
+    // the GHG Protocol those Scope 1 figures are not comparable.
+    const row = SPINE.find((r) => r.key === "scope1_abs")!;
+    const samePeriod = utilityEntities.map((e) => ({ ...e, reportingPeriod: "FY2025" }));
+    const verdict = assessComparability(row, samePeriod);
     expect(verdict.blockedReason).toMatch(/organizational boundary/i);
+    expect(verdict.eligible).toHaveLength(0);
+  });
+
+  it("blocks a row when reporting periods differ, whatever the envelopes say", () => {
+    // The error a partial period refresh of a peer set would introduce: two
+    // banks on FY2025 and one still on FY2024 would otherwise compare cleanly,
+    // because their accounting bases are identical across years.
+    const row = SPINE.find((r) => r.key === "scope2_location")!;
+    const mixed = [
+      { ...bankEntities[0], reportingPeriod: "FY2025" },
+      bankEntities[1],
+      bankEntities[2],
+    ];
+    const verdict = assessComparability(row, mixed);
+    expect(verdict.blockedReason).toMatch(/reporting periods differ/i);
     expect(verdict.eligible).toHaveLength(0);
   });
 

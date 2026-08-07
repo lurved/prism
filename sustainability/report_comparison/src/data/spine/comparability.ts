@@ -70,6 +70,26 @@ export function assessComparability(row: SpineRow, entities: Entity[]): Comparab
     };
   }
 
+  // PERIOD FIRST. Two entities in different fiscal years are not comparable
+  // however well their accounting bases agree — a Scope 2 column mixing FY2024
+  // and FY2025 is a different-year comparison wearing the clothes of a
+  // like-for-like one. This is the specific error a partial period refresh of
+  // a peer set would introduce, and the envelope checks below would not catch
+  // it, because the accounting basis can be identical across years.
+  const periods = new Map<string, string[]>();
+  for (const e of disclosed) {
+    periods.set(e.reportingPeriod, [...(periods.get(e.reportingPeriod) ?? []), e.shortName]);
+  }
+  if (periods.size > 1) {
+    const parts = Array.from(periods.entries())
+      .map(([period, names]) => `${names.join(", ")} ${period}`)
+      .join("; ");
+    return {
+      eligible: [],
+      blockedReason: `Not comparable — reporting periods differ (${parts}). Figures from different fiscal years cannot be compared like for like.`,
+    };
+  }
+
   for (const field of row.comparabilityKeys ?? []) {
     const seen = new Map<string, string[]>();
     for (const e of disclosed) {
