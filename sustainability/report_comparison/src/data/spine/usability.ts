@@ -69,9 +69,11 @@ export interface UsabilityVerdict {
  * grade — an investor cannot act on last year's data when this year's exists.
  */
 export const LATEST_AVAILABLE: Record<string, string> = {
+  // Refreshed to FY2025 in Aug 2026 — no longer stale, so they are not listed.
+  // Still behind: the FY2025 reports exist but could not be read here (Meralco's
+  // integrated report returns empty; UOB's text extraction stops at p.79, before
+  // the environmental section that begins at p.117).
   meralco: "FY2025",
-  dbs: "FY2025",
-  ocbc: "FY2025",
   uob: "FY2025",
 };
 

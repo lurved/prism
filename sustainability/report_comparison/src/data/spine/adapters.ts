@@ -481,6 +481,8 @@ export function fromPeer(c: PeerCompany, categoryId: string): Entity {
   const period = c.reportingPeriod;
   const cite = peerCite(c);
   const isBank = c.businessModel.startsWith("Universal bank");
+  // Not yet read for THIS period → pending, never N/D. See PeerCompany.notExtracted.
+  const pend = new Set(c.notExtracted ?? []);
   const naIf = (key: string, cell: Cell): Cell =>
     c.naMetrics.includes(key) ? NA(`Does not apply to this business model (${c.businessModel}).`) : cell;
 
@@ -608,6 +610,10 @@ export function fromPeer(c: PeerCompany, categoryId: string): Entity {
     frameworks: meta(c.frameworks.join(" · "), period, cite),
   };
 
+  pend.forEach((key) => {
+    metrics[key] = PENDING;
+  });
+
   return {
     id: c.id,
     name: c.name,
@@ -625,7 +631,7 @@ export function fromPeer(c: PeerCompany, categoryId: string): Entity {
       ? "Financed-emissions data year lags operational data by one year (standard PCAF lag)."
       : null,
     boundaryNote: c.climateContext,
-    status: "populated",
+    status: pend.size > 0 ? "pending_extraction" : "populated",
     rationaleCode: null,
     envelope: env,
     source: {

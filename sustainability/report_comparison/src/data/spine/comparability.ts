@@ -50,6 +50,18 @@ const FIELD_LABEL: Record<string, string> = {
   baseYear: "base year",
 };
 
+/** Whether an envelope field is effectively unstated for comparison purposes. */
+function isUnstated(field: keyof Envelope, env: Envelope): boolean {
+  switch (field) {
+    case "consolidation": return env.consolidation === "unknown";
+    case "scope2Method": return env.scope2Method === "not_stated";
+    case "scope3Categories": return env.scope3Categories === null;
+    case "gwpSource": return env.gwpSource === "not_stated";
+    case "baseYear": return env.baseYear === null;
+    default: return false;
+  }
+}
+
 export interface ComparabilityVerdict {
   /** Entities whose figures may sit in one comparison. */
   eligible: Entity[];
@@ -91,6 +103,21 @@ export function assessComparability(row: SpineRow, entities: Entity[]): Comparab
   }
 
   for (const field of row.comparabilityKeys ?? []) {
+    // An UNSTATED basis can never satisfy a comparability check. Two entities
+    // that both fail to state their consolidation approach are not thereby
+    // comparable — you cannot assert equivalence from ignorance, and treating
+    // matching unknowns as agreement is how uncomparable figures end up in the
+    // same column.
+    const unstated = disclosed.filter((e) => isUnstated(field, e.envelope));
+    if (unstated.length > 0) {
+      return {
+        eligible: [],
+        blockedReason: `Not comparable — ${FIELD_LABEL[field] ?? field} is not stated by ${unstated
+          .map((e) => e.shortName)
+          .join(", ")}, so equivalence cannot be established.`,
+      };
+    }
+
     const seen = new Map<string, string[]>();
     for (const e of disclosed) {
       const k = JSON.stringify(e.envelope[field] ?? null);

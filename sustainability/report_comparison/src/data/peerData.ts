@@ -121,6 +121,13 @@ export interface PeerCompany {
   financedEmissionsStatus?: string | null;
 
   naMetrics: string[];          // metric keys that are N/A for this business model
+  /**
+   * SPINE keys whose figures have NOT yet been extracted for this reporting
+   * period. They render as "pending", never as N/D — claiming an entity did not
+   * disclose something we simply have not read yet would be a false statement
+   * about that entity. Empty/absent = everything applicable was extracted.
+   */
+  notExtracted?: string[];
   dataNotes: string[];
 }
 

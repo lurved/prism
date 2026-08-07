@@ -179,10 +179,31 @@ describe("Comparability", () => {
     expect(verdict.eligible).toHaveLength(0);
   });
 
-  it("allows a row when the envelopes agree", () => {
-    // All three banks dual-report Scope 2 and share an (unknown) boundary.
+  it("blocks the banks set while UOB lags a period behind", () => {
+    // DBS and OCBC are refreshed to FY2025; UOB is still FY2024 because its
+    // report could not be read. The set is therefore not comparable, and the
+    // matrix says so rather than presenting a cross-year column as like-for-like.
     const row = SPINE.find((r) => r.key === "scope2_location")!;
-    const verdict = assessComparability(row, bankEntities);
+    expect(assessComparability(row, bankEntities).blockedReason).toMatch(/reporting periods differ/i);
+  });
+
+  it("refuses to treat matching unknowns as agreement", () => {
+    // DBS and UOB do not state a consolidation approach; OCBC states
+    // operational control. Before this rule, three unstated bases "agreed" and
+    // compared freely — equivalence asserted from ignorance.
+    const row = SPINE.find((r) => r.key === "scope2_location")!;
+    const samePeriod = bankEntities.map((e) => ({ ...e, reportingPeriod: "FY2025" }));
+    expect(assessComparability(row, samePeriod).blockedReason).toMatch(/not stated by/i);
+  });
+
+  it("allows a row when the envelopes are stated and agree", () => {
+    const row = SPINE.find((r) => r.key === "scope2_location")!;
+    const stated = bankEntities.map((e) => ({
+      ...e,
+      reportingPeriod: "FY2025",
+      envelope: { ...e.envelope, consolidation: "operational_control" as const },
+    }));
+    const verdict = assessComparability(row, stated);
     expect(verdict.blockedReason).toBeNull();
     expect(verdict.eligible.length).toBeGreaterThanOrEqual(2);
   });
@@ -261,7 +282,8 @@ describe("S2 cross-industry coverage", () => {
   it("does not backfill ¶29 metrics across a period mismatch", () => {
     // Drive holds FY2025 reports for these while their rows are FY2024.
     // Mixing periods would breach the IFRS S1 same-period rule.
-    for (const id of ["meralco", "dbs", "ocbc", "uob"]) {
+    // Meralco and UOB only — DBS and OCBC have since been refreshed to FY2025.
+    for (const id of ["meralco", "uob"]) {
       const e = allEntities.find((x) => x.id === id)!;
       const cell = e.metrics.internal_carbon_price;
       expect(cell.state, `${id}`).toBe("nd");
@@ -431,8 +453,8 @@ describe("Decision-usefulness", () => {
   });
 
   it("caps a stale row at 'limited', however well sourced", () => {
-    // Meralco/DBS/OCBC/UOB rows are FY2024 with FY2025 reports available.
-    for (const id of ["meralco", "dbs", "ocbc", "uob"]) {
+    // Meralco and UOB remain FY2024 with FY2025 reports available but unreadable.
+    for (const id of ["meralco", "uob"]) {
       const e = allEntities.find((x) => x.id === id)!;
       expect(isStale(e), id).toBe(true);
       const row = SPINE.find((r) => r.key === "scope1_abs")!;
@@ -463,6 +485,22 @@ describe("Decision-usefulness", () => {
         }
       }
     }
+  });
+
+  it("clears the staleness flag on the refreshed banks", () => {
+    for (const id of ["dbs", "ocbc"]) {
+      const e = allEntities.find((x) => x.id === id)!;
+      expect(e.reportingPeriod, id).toBe("FY2025");
+      expect(isStale(e), id).toBe(false);
+    }
+  });
+
+  it("renders unextracted fields as pending, never as N/D", () => {
+    // Claiming an entity did not disclose something we have not read would be
+    // a false statement about that entity.
+    const dbs = allEntities.find((e) => e.id === "dbs")!;
+    expect(dbs.metrics.female_board_pct.state).toBe("pending");
+    expect(dbs.status).toBe("pending_extraction");
   });
 
   it("rolls up to a usable share within 0-100", () => {

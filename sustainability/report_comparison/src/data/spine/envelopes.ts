@@ -101,6 +101,7 @@ export const ENVELOPES: Record<string, Envelope> = {
   /* ── Banks ─────────────────────────────────────────────────────── */
   dbs: {
     ...base,
+    // FY2025. Still not stated in SR2025.
     consolidation: "unknown",
     // Both bases disclosed: market 26,322 / location 50,889 — dual reporting satisfied.
     scope2Method: "dual_reported",
@@ -108,17 +109,25 @@ export const ENVELOPES: Record<string, Envelope> = {
     scope3Categories: [1, 3, 4, 5, 6, 7, 8, 13],
     baseYear: null,
     baseYearNote: "Interim 2030 CRREM-aligned Scope 1+2 target; baseline year not stated in the extract.",
-    assurance: "external_limited",
-    assuranceProvider: "PwC Singapore (SSAE 3000/3410) — financed emissions NOT assured",
+    // FY2025 assurance statement not located in the extracted text.
+    assurance: "unknown",
+    assuranceProvider: null,
   },
   ocbc: {
     ...base,
-    consolidation: "unknown",
-    scope2Method: "dual_reported", // market 35,373 / location 68,391
-    scope3Categories: null, // operational Scope 3, categories not enumerated
+    // SR2025 footnote 32: "we apply the operational control approach to define
+    // our emissions boundary" — closes a field that was unknown at FY2024.
+    consolidation: "operational_control",
+    scope2Method: "dual_reported", // FY2025: market 30,551 / location 78,650
+    scope3Categories: null, // business air travel + waste; category numbers not stated
     baseYear: null,
+    baseYearNote:
+      "FY2025 widened the inventory to include fugitive emissions and expanded entity coverage to align with the IFRS Sustainability Disclosure Standards — a structural change that lifts Scope 1 from 132 to 2,001 tCO₂e without emissions rising.",
+    // SR2025 footnote 34: GWPs from the GHG Protocol "Global Warming Potential
+    // Values" (August 2024).
+    gwpSource: "GHGP_2024",
     assurance: "external_limited",
-    assuranceProvider: "PwC Singapore (SSAE 3000/3410) — financed emissions NOT assured",
+    assuranceProvider: "External assurance for selected indicators (SR2025 p.140)",
   },
   uob: {
     ...base,

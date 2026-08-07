@@ -42,7 +42,7 @@ export type Scope2Method =
 
 /** Which IPCC assessment report supplied the GWPs. Material wherever
  *  high-GWP gases (SF₆, HFCs) are a meaningful share — i.e. grid utilities. */
-export type GwpSource = "AR4" | "AR5" | "AR6" | "not_stated";
+export type GwpSource = "AR4" | "AR5" | "AR6" | "GHGP_2024" | "not_stated";
 
 /** Assurance level over the reported figures. "limited" and "reasonable" are
  *  materially different claims and must not be flattened to a boolean. */
@@ -95,6 +95,10 @@ export const GWP_LABEL: Record<GwpSource, string> = {
   AR4: "IPCC AR4",
   AR5: "IPCC AR5",
   AR6: "IPCC AR6",
+  // OCBC cites the GHG Protocol's own GWP table rather than an IPCC assessment
+  // report. Recorded as stated rather than mapped onto an AR we would be
+  // inferring.
+  GHGP_2024: "GHG Protocol GWP values (Aug 2024)",
   not_stated: "Not stated",
 };
 

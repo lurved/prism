@@ -148,8 +148,6 @@ export function s2DisclosuresFor(entityId: string): Partial<Record<S2GapKey, S2D
  * tests so this is a recorded decision rather than an unexplained gap.
  */
 export const PERIOD_MISMATCH: Record<string, string> = {
-  meralco: "Row is FY2024; the available report is the One Meralco 2025 Integrated Report.",
-  dbs: "Row is FY2024; the available report is DBS Sustainability Report 2025.",
-  ocbc: "Row is FY2024; the available report is OCBC Sustainability Report 2025.",
-  uob: "Row is FY2024; the available report is UOB Sustainability Report 2025.",
+  meralco: "Row is FY2024; the One Meralco 2025 Integrated Report exists but could not be read (the file returns empty content, and the 17-A filing carries no emissions section).",
+  uob: "Row is FY2024; UOB SR2025 exists but its text extraction stops at p.79, before the Direct Environmental Impact section that begins at p.117.",
 };
