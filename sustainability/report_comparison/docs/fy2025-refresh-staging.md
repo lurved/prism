@@ -18,14 +18,28 @@ against a FY2024 one. That is a worse outcome than all three being a year old:
 staleness is visible and flagged, whereas a mixed-period comparison looks
 like-for-like and is not.
 
-**UOB's FY2025 GHG figures are not in Drive.** Neither `UOB SR2025.pdf` nor
-`uob-annual-report-2025.pdf` contains the quantitative environmental table — the
-SR points to a separate "Direct Environmental Impact" data source that is not
-among the uploaded files. Everything else needed for UOB is available; only the
-emissions table is missing.
+**CORRECTION (superseding the first version of this note).** I previously wrote
+that UOB's FY2025 figures were "not in Drive" and that the SR pointed to a
+separate published data supplement. **That was wrong**, and it was the wrong kind
+of wrong: I inferred a publication gap from a tooling failure.
 
-**What unblocks it:** the UOB FY2025 environmental data supplement. With that,
-all three banks can move in one commit. Meralco is independent of this — the
+What actually happened: UOB's emissions table did not survive the PDF→text
+conversion. "Direct Environmental Impact" is not a separate document — the
+report's own contents page lists it as **a section of SR2025 beginning at
+page 117**. The SR extracted the least text of the three banks (217K characters)
+despite being the largest file (14 MB), which is consistent with heavy table and
+chart content being dropped. The same conversion swallowed OCBC's social tables
+and DBS's board data.
+
+The narrower, accurate blocker: **UOB's absolute Scope 1/2/3 tonnages could not
+be read out of the PDF with the tools available here.** The file is 14 MB, over
+the 10 MB Drive download cap, so the pages cannot be fetched and read directly
+either. This is a retrieval limitation on our side, not a disclosure gap at UOB.
+
+**What unblocks it:** the absolute Scope 1/2/3 figures from SR2025 §Direct
+Environmental Impact (from p.117) — by any of: page images of ~pp.117–120, a
+sub-10 MB extract of those pages uploaded to Drive, or the figures read off
+manually. With those, all three banks move in one commit. Meralco is independent of this — the
 utilities set already spans three periods, so refreshing it improves alignment
 rather than breaking it.
 
@@ -124,19 +138,39 @@ People: female workforce 56%; leadership positions (MD and above) filled by wome
 
 ## UOB — Sustainability Report 2025 / Annual Report 2025 (FY2025)
 
-**Emissions table not present in either document.** Available:
+More is recoverable than the first version of this note claimed. Verified:
+
+**Combined Scope 1+2 emissions intensity (kgCO₂e/m²/year), location-based** —
+extracted from the progress chart and checked against the report's own stated
+percentages:
+
+| 2018 (baseline) | 2024 | 2025 | 2030 target |
+|---|---|---|---|
+| 108.2 | 88.8 ✓ | **75.4** | 81.1 |
+| — | −17.9% | **−30.4%** | −25% |
+
+✓ 88.8 matches the currently stored FY2024 value. The percentages reproduce
+exactly from the values (−17.9%, −30.3%, −25.0%), so the series is internally
+consistent and confidently read.
 
 - **Internal carbon price (IFRS S2 ¶29(f)): S$3–11 per tCO₂e**, applied in
-  decision-making to assess cost-benefit of efficiency initiatives. This is a
-  new ¶29(f) disclosure and would take UOB's coverage from 2/7 to 3/7.
-- Operational carbon neutrality maintained; carbon-neutrality commitment covers
-  Scope 1, Scope 2 and Scope 3 (business air travel and waste in operations).
-- Operational target: −25% combined Scope 1+2 emissions **intensity** by 2030 vs
-  2018 baseline; stated as on track. The target is on a **location-based** basis
-  and excludes the effect of renewables.
+  decision-making to assess cost-benefit of efficiency initiatives. Takes UOB's
+  cross-industry coverage from 2/7 to 3/7.
+- **Reporting boundary:** Group (Bank + subsidiaries), 1 Jan – 31 Dec 2025.
+  United Overseas Insurance is excluded except for its Scope 2; associates and
+  joint ventures are excluded on non-controlling-interest grounds, with
+  materiality to be reassessed as information becomes available.
+- **Financed-emissions cycle changed:** 2024 intensities are as at 31 December,
+  2025 as at 30 June, and future reporting will be as at 30 June. This is a
+  measurement-date change, so the financed-emissions rows are **not** a
+  like-for-like 2024→2025 movement and need a note saying so.
+- Operational carbon neutrality maintained; the commitment covers Scope 1,
+  Scope 2 and Scope 3 (business air travel and waste in operations).
+- The −25% by 2030 target is on a **location-based** basis and explicitly
+  excludes renewable energy certificates and carbon credits.
 - Female senior management: 38% (AR2025).
 
----
+**Still missing: absolute Scope 1/2/3 tonnages** — see the correction above.
 
 ## Meralco — One Meralco 2025 Integrated Report
 
