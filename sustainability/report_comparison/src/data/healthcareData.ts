@@ -3,9 +3,13 @@
  *
  * PRIME DIRECTIVE (non-negotiable, mirrors peerData.ts):
  *  - No interpolation. Blank > guessed. Every figure carries a source flag:
- *      "confirmed" ✅  |  "estimated" ⚠️  |  "unverified" ❌
- *  - A value with NO page-level citation cannot be rendered ✅ — it degrades to ❌
- *    (see §3 of the build spec: "No page → no citation popover → ❌ badge").
+ *      "confirmed" ✅  |  "reported" •  |  "estimated" ⚠️  |  "unverified" ❌
+ *  - A value with NO page-level citation cannot be rendered ✅. It degrades to
+ *    • "reported" when the figure is cited to the entity's own report without a
+ *    page, and to ❌ when there is nothing to cite at all. This is the same
+ *    ladder the utilities/banks verticals use — see effectiveFlag() below and
+ *    buildMetricValue() in lib/metrics.ts. Identical evidence must never render
+ *    ✅ on one page and • on another.
  *  - Intensity is NEVER derived by us. We only store an entity's OWN published
  *    ratio (with citation), or the raw numerator + denominator separately.
  *    We never invent a denominator to compute a cross-entity intensity.
@@ -565,20 +569,35 @@ export const mohContextBanner: ContextBanner = {
 /* ── Flag presentation helpers ── */
 export const FLAG_META: Record<SourceFlag, { icon: string; label: string }> = {
   confirmed: TIER_META.confirmed,
+  reported: TIER_META.reported,
   estimated: TIER_META.estimated,
   unverified: TIER_META.unverified,
 };
 
 /**
- * Effective flag for a metric value. Enforces the hard rule: a value with no
- * page-level citation cannot be ✅ — it degrades to ❌. (page === null with no
- * citation object counts as "no page".)
+ * Effective flag for a metric value. Enforces the hard rule that "confirmed"
+ * is earned, never asserted — and enforces it the SAME way the other verticals
+ * do (see buildMetricValue() in lib/metrics.ts):
+ *
+ *   no value                      → ❌ unverified
+ *   value, no citation at all     → ❌ unverified
+ *   value, cited, no page         → •  reported   (from the report, not page-verified)
+ *   value, cited, page recorded   →    the entered flag (✅ confirmed / ⚠️ estimated)
+ *
+ * The "no page" case previously returned the entered flag unchanged, so
+ * page-less figures rendered ✅ here while identical evidence rendered • on the
+ * banks and utilities pages. Most of this dataset is page-less, so healthcare
+ * read as better-sourced than it is.
  */
 export function effectiveFlag(mv: MetricValue): SourceFlag {
   // No disclosed value at all ⇒ unverified/blank.
   if (mv.value === null && mv.display === undefined) return "unverified";
-  // A disclosed value with no page-level citation cannot be ✅ (spec §3).
+  // A disclosed value with nothing to cite cannot be ✅ (spec §3).
   if (mv.citation === null) return "unverified";
+  // Cited to the document but not to a page ⇒ "reported", not "confirmed".
+  // "estimated" is a statement about the SOURCE (third-party study), not about
+  // page-verification, so it is not downgraded by a missing page.
+  if (mv.citation.page === null && mv.flag !== "estimated") return "reported";
   return mv.flag;
 }
 

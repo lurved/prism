@@ -2,21 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { CATEGORIES } from "@/data/spine/categories";
 
+// Nav and subtitles derive from the category registry, so adding a category is
+// one entry there — not two parallel literals to keep in sync here.
 // hrefs are basePath-relative; Next <Link> prepends the configured basePath.
-const navItems = [
-  { label: "Temasek", href: "/" },
-  { label: "Utility", href: "/infra" },
-  { label: "Banks", href: "/banks" },
-  { label: "Healthcare", href: "/healthcare" },
-];
+const navItems = CATEGORIES.map((c) => ({ label: c.label, href: c.href }));
 
-const SUBTITLES: Record<string, string> = {
-  "/": "Temasek Portfolio",
-  "/infra": "Electricity Utility",
-  "/banks": "Singapore Banks",
-  "/healthcare": "Healthcare",
-};
+const SUBTITLES: Record<string, string> = Object.fromEntries(
+  CATEGORIES.map((c) => [c.href, c.subtitle]),
+);
 
 function isActive(pathname: string | null, href: string): boolean {
   const path = (pathname ?? "/").replace(/\/$/, "") || "/";

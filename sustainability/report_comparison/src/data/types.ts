@@ -29,6 +29,14 @@ export interface MetricValue {
   unit: string;
   fiscalYear: string;             // e.g. "FY2024/25"
   /**
+   * True when the metric does not apply to this company's business model —
+   * render "N/A", never "N/D". A missing metric that *could* have been
+   * disclosed (N/D) and one that could not (N/A) are different facts, and
+   * showing the second as the first reads as a disclosure failure.
+   * Derived in buildMetricValue() from Company.naMetrics; never hand-set.
+   */
+  notApplicable?: boolean;
+  /**
    * Provenance tier — DERIVED in buildMetricValue(), never hand-set:
    *   "confirmed"  → a page-level location was recorded for THIS figure.
    *   "reported"   → value is from the company's report, but no page was
@@ -58,7 +66,13 @@ export interface MetricSeries {
  */
 export interface EnvironmentalMetrics {
   scope1Emissions: number | null;   // tCO2e (thousands = ktCO2e); null = N/D (never 0)
-  scope2Emissions: number | null;   // tCO2e (thousands), market-based where available; null = N/D
+  scope2Emissions: number | null;   // tCO2e (thousands); null = N/D
+  /**
+   * Basis on which Scope 2 is reported, verbatim-ish from the source report.
+   * Required, and stored per company: the basis is NOT uniform across this set,
+   * so it can never be asserted once in a column label.
+   */
+  scope2Basis: string;
   scope3Emissions: number | null;   // tCO2e (thousands), null if not disclosed
   scope3Cat15Emissions: number | null; // tCO2e (thousands) — Category 15 (investments),
                                        // null unless the report breaks it out with a citable figure.
@@ -126,6 +140,14 @@ export interface Company {
   governance: GovernanceMetrics;
   historicalEmissions: YearlyEmissions[];
   dataNotes: string[]; // important caveats about data quality or scope changes
+  /**
+   * Metrics that do not APPLY to this company's business model, keyed by
+   * metricId (see lib/metrics.ts) → the reason, which is required and surfaces
+   * in the citation popover. These render "N/A", not "N/D".
+   * A metric the company simply does not disclose does NOT belong here — that
+   * is `null` in the metric field and renders "N/D".
+   */
+  naMetrics?: Record<string, string>;
   /**
    * Known page references in the source report, keyed by metricId (see lib/metrics.ts).
    * Only populated where a page was actually recorded during extraction — never guessed.

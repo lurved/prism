@@ -14,7 +14,7 @@ import { describe, it, expect } from "vitest";
 import { METRIC_DEFS, buildMetricValue, buildMetricSeries } from "@/lib/metrics";
 import { peerMetricValue } from "@/lib/peerMetrics";
 import { companies, aggregateTotals } from "@/data/esgData";
-import { peerCompanies } from "@/data/peerData";
+import { peerCompanies, COMMUNITY_BASIS_LABEL } from "@/data/peerData";
 import { bankCompanies } from "@/data/bankData";
 import {
   healthcareEntities,
@@ -146,6 +146,68 @@ describe("Peer/bank metric provenance", () => {
   });
 });
 
+/* ── N/A is a distinct state from N/D, and must carry a reason ───── */
+describe("Not-applicable metrics", () => {
+  it("every naMetrics entry names a real metric and gives a reason", () => {
+    const known = new Set(METRIC_DEFS.map((d) => d.metricId));
+    for (const c of companies) {
+      for (const [metricId, reason] of Object.entries(c.naMetrics ?? {})) {
+        expect(known.has(metricId), `${c.id}: unknown metricId "${metricId}"`).toBe(true);
+        expect(reason.trim().length, `${c.id}/${metricId} needs a reason`).toBeGreaterThan(20);
+      }
+    }
+  });
+
+  it("renders N/A (not N/D) with no citation, and never carries a value", () => {
+    for (const c of companies) {
+      for (const def of METRIC_DEFS) {
+        const mv = buildMetricValue(c, def);
+        if (c.naMetrics?.[def.metricId] !== undefined) {
+          expect(mv.notApplicable, `${c.id}/${def.metricId}`).toBe(true);
+          expect(mv.value, `${c.id}/${def.metricId}`).toBeNull();
+          expect(mv.citation, `${c.id}/${def.metricId}`).toBeNull();
+          expect(mv.notes, `${c.id}/${def.metricId}`).toBe(c.naMetrics[def.metricId]);
+        } else {
+          expect(mv.notApplicable, `${c.id}/${def.metricId}`).toBeFalsy();
+        }
+      }
+    }
+  });
+});
+
+/* ── Scope 2 basis is stated per company, never asserted in a label ── */
+describe("Scope 2 reporting basis", () => {
+  it("every company states its own basis, and it reaches the metric notes", () => {
+    for (const c of companies) {
+      expect(c.environmental.scope2Basis?.trim().length, c.id).toBeGreaterThan(0);
+      const def = METRIC_DEFS.find((d) => d.metricId === "scope2")!;
+      expect(buildMetricValue(c, def).notes, c.id).toContain(c.environmental.scope2Basis);
+    }
+  });
+
+  it("the Scope 2 column label makes no claim about the basis", () => {
+    const def = METRIC_DEFS.find((d) => d.metricId === "scope2")!;
+    // The set is genuinely mixed (Sembcorp location-based, SMRT unstated,
+    // Singtel market-based), so a single label can only ever be wrong for two
+    // of the three.
+    expect(`${def.label} ${def.sublabel ?? ""}`.toLowerCase()).not.toMatch(/market-based|location-based/);
+  });
+});
+
+/* ── Community investment: the basis is never left implicit ──────── */
+describe("Community investment basis", () => {
+  it("peer + bank sets declare a basis consistent with the figure shown", () => {
+    for (const set of [peerCompanies, bankCompanies]) {
+      for (const c of set) {
+        expect(COMMUNITY_BASIS_LABEL[c.communityInvestmentBasis], c.id).toBeTruthy();
+        // "not_disclosed" and an actual figure are mutually exclusive.
+        const looksDisclosed = c.communityInvestmentNative.trim() !== "N/D";
+        expect(c.communityInvestmentBasis !== "not_disclosed", c.id).toBe(looksDisclosed);
+      }
+    }
+  });
+});
+
 /* ── N/D never silently becomes 0 in aggregates ──────────────────── */
 describe("Aggregates respect N/D", () => {
   it("aggregateTotals are finite (no NaN from null arithmetic)", () => {
@@ -168,5 +230,31 @@ describe("Healthcare provenance", () => {
         }
       }
     }
+  });
+
+  // "Confirmed" must be earned the SAME way on every vertical: a page was
+  // recorded for THIS figure. Without this, page-less healthcare figures
+  // rendered ✅ while identical evidence rendered • on banks/utilities.
+  it("a citation with no page degrades to 'reported', never 'confirmed'", () => {
+    for (const e of healthcareEntities) {
+      for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
+        if (mv.citation !== null && mv.citation.page === null) {
+          expect(effectiveFlag(mv), `${e.id}/${key}`).not.toBe("confirmed");
+        }
+        if (effectiveFlag(mv) === "confirmed") {
+          expect(typeof mv.citation?.page, `${e.id}/${key} confirmed but no page`).toBe("number");
+        }
+      }
+    }
+  });
+
+  it("matches how the other verticals tier the same evidence", () => {
+    // Same evidentiary state, same tier, whichever page you are on.
+    const pageless = peerMetricValue(peerCompanies[0], 42, "unit"); // peer sets record no pages
+    expect(pageless.status).toBe("reported");
+    const hcPageless = healthcareEntities
+      .flatMap((e) => Object.values(e.metrics) as HcMetricValue[])
+      .find((mv) => mv.citation !== null && mv.citation.page === null && mv.value !== null);
+    expect(hcPageless && effectiveFlag(hcPageless)).toBe("reported");
   });
 });
