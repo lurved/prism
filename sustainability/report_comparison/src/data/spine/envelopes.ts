@@ -109,9 +109,10 @@ export const ENVELOPES: Record<string, Envelope> = {
     scope3Categories: [1, 3, 4, 5, 6, 7, 8, 13],
     baseYear: null,
     baseYearNote: "Interim 2030 CRREM-aligned Scope 1+2 target; baseline year not stated in the extract.",
-    // FY2025 assurance statement not located in the extracted text.
-    assurance: "unknown",
-    assuranceProvider: null,
+    // SR2025 contents: "Independent practitioner's limited assurance report on
+    // Identified Sustainability Information", p.126.
+    assurance: "external_limited",
+    assuranceProvider: "Independent practitioner — limited assurance (SR2025 p.126); not named in the extracted text",
   },
   ocbc: {
     ...base,
