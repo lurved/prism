@@ -24,11 +24,11 @@
  * from one year into a row labelled another would break exactly the IFRS S1
  * same-period rule this model is built on. They need a period refresh first.
  *
- * PAGE NUMBERS. The PDF text extraction carries no reliable page markers, so
- * `page` is null throughout and these figures render as "reported" (sourced,
- * not page-verified) rather than "confirmed". Attaching pages requires a
- * manual re-check against the PDFs — the same standard every other figure in
- * this project is held to.
+ * PAGE NUMBERS. Sembcorp's five ¶29 figures are now page-verified: the batch
+ * extraction pipeline (scripts/extract) located the Climate Risks metrics
+ * table on PDF page 20, so those cells render "confirmed". Singtel's two are
+ * still page-less and render "reported" — its report has not yet been put
+ * through the pipeline.
  */
 
 /** The ¶29(b)–(g) spine keys this file can populate. */
@@ -50,10 +50,16 @@ export interface S2Disclosure {
   reportTitle: string;
   /** null = no page-level location recorded. Never guessed. */
   page: number | null;
+  /** Clarifies what `page` refers to — e.g. a PDF page index where the page
+   *  carries no printed folio. */
+  pageNote?: string;
   note?: string;
 }
 
 const SEMBCORP_SR2025 = "Sembcorp Sustainability Report 2025";
+/** All five ¶29 metrics sit in one table, located by the extraction pipeline.
+ *  The page carries no printed folio, so the PDF index is cited as such. */
+const SEMBCORP_P20 = "PDF page 20 (Climate Risks metrics table); the page carries no printed folio.";
 const SINGTEL_SR2025 = "Singtel Group Sustainability Report 2025";
 
 export const S2_DISCLOSURES: Record<string, Partial<Record<S2GapKey, S2Disclosure>>> = {
@@ -67,7 +73,8 @@ export const S2_DISCLOSURES: Record<string, Partial<Record<S2GapKey, S2Disclosur
       unit: "%",
       year: "FY2025",
       reportTitle: SEMBCORP_SR2025,
-      page: null,
+      page: 20,
+      pageNote: SEMBCORP_P20,
       note: "Business activities vulnerable to transition risks: S$1.0 billion, 50% of the relevant base. Reported in the Climate Risks metrics table against S2 ¶29.",
     },
     physical_risk_exposure: {
@@ -76,7 +83,8 @@ export const S2_DISCLOSURES: Record<string, Partial<Record<S2GapKey, S2Disclosur
       unit: "%",
       year: "FY2025",
       reportTitle: SEMBCORP_SR2025,
-      page: null,
+      page: 20,
+      pageNote: SEMBCORP_P20,
       note: "Assets vulnerable to physical risks: S$1.9 billion, 13% of the relevant base.",
     },
     climate_opportunity: {
@@ -85,7 +93,8 @@ export const S2_DISCLOSURES: Record<string, Partial<Record<S2GapKey, S2Disclosur
       unit: "%",
       year: "FY2025",
       reportTitle: SEMBCORP_SR2025,
-      page: null,
+      page: 20,
+      pageNote: SEMBCORP_P20,
       note: "Business activities aligned to climate-related opportunities: S$723 million, 36% of the relevant base.",
     },
     climate_capital_deployment: {
@@ -94,7 +103,8 @@ export const S2_DISCLOSURES: Record<string, Partial<Record<S2GapKey, S2Disclosur
       unit: "SGD m",
       year: "FY2025",
       reportTitle: SEMBCORP_SR2025,
-      page: null,
+      page: 20,
+      pageNote: SEMBCORP_P20,
       note: "Capital deployment for climate-related opportunities, FY2025.",
     },
     internal_carbon_price: {
@@ -106,7 +116,8 @@ export const S2_DISCLOSURES: Record<string, Partial<Record<S2GapKey, S2Disclosur
       unit: "SGD/tCO₂e",
       year: "FY2025",
       reportTitle: SEMBCORP_SR2025,
-      page: null,
+      page: 20,
+      pageNote: SEMBCORP_P20,
       note: "Internal carbon price disclosed as a RANGE of S$25 to S$183 per tCO₂e under Sembcorp's Group Internal Carbon Pricing Framework. Stored as a range, not reduced to a single figure.",
     },
     // (g) is not in the Sustainability Report — the remuneration framework sits

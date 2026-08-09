@@ -167,6 +167,7 @@ function s2GapCells(entityId: string, cite: SpineCitation | null): Record<string
           reportTitle: d.reportTitle,
           url: cite?.url ?? null,
           page: d.page,
+          pageNote: d.pageNote,
           publishedDate: cite?.publishedDate ?? null,
           extractedDate: cite?.extractedDate ?? "2026-08",
         },
