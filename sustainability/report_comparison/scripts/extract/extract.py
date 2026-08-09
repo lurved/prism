@@ -23,13 +23,19 @@ grep the artifact, and the page number comes with the hit.
 
 Usage
 -----
-Point it at PDFs — a whole folder, or individual files:
+Point it at PDFs — a whole folder tree, or individual files:
 
-    python3 extract.py ~/reports                     # every PDF in the folder
+    python3 extract.py ~/reports                     # every PDF beneath it
     python3 extract.py ~/reports/uob-sr2025.pdf      # one file
     python3 extract.py a.pdf b.pdf --out data/extracted
 
-Slugs are derived from filenames; override for a single file with --slug.
+Folders are searched recursively, and a PDF is recognised by its bytes rather
+than a `.pdf` suffix, because several reports in this corpus were uploaded
+without one.
+
+Slugs are derived from filenames; override for a single file with --slug. A
+report whose bytes were already extracted is skipped even if the filename has
+changed, so re-runs never fork an artifact in two.
 
 PDFs do NOT belong in the repo — they are large and binary. Keep them wherever
 you like locally and commit only `data/extracted/*.json`, which is small,
@@ -129,16 +135,62 @@ def extract(pdf_bytes: bytes, slug: str, title: str | None) -> dict:
     }
 
 
+def is_pdf(path: pathlib.Path) -> bool:
+    """Decided by the file's first bytes, not its name — see gather()."""
+    try:
+        with path.open("rb") as fh:
+            return fh.read(5) == b"%PDF-"
+    except OSError:
+        return False
+
+
 def gather(inputs: list[pathlib.Path]) -> list[pathlib.Path]:
+    """Expand folders into the PDFs beneath them.
+
+    Two things about a real reports folder drove this. It has SUBFOLDERS — a
+    Drive mount puts the reports under `AI-Data/documents`, so pointing at the
+    top level must still find them; hence rglob. And some files carry NO `.pdf`
+    EXTENSION: three reports in the current corpus (Sembcorp, IHH, Keppel) were
+    uploaded without one, and the mount reproduces the name as-is. Selecting on
+    the suffix silently skipped those — a missing report looks exactly like a
+    non-disclosure downstream, which is the failure mode this whole pipeline
+    exists to end. So membership is decided by the magic bytes.
+
+    A folder therefore yields PDFs only. Drive JSON payloads still work, but
+    must be named explicitly.
+    """
     files: list[pathlib.Path] = []
     for p in inputs:
         if p.is_dir():
-            files.extend(sorted(q for q in p.iterdir() if q.suffix.lower() == ".pdf"))
+            files.extend(sorted(q for q in p.rglob("*") if q.is_file() and is_pdf(q)))
         else:
             files.append(p)
     if not files:
         raise SystemExit("No PDFs found.")
     return files
+
+
+def existing_by_sha(out: pathlib.Path) -> dict[str, str]:
+    """sha256 → slug for artifacts already written.
+
+    Keyed on the SOURCE HASH rather than the slug so that the same report
+    arriving under a different filename is recognised as already extracted
+    instead of landing a second time under a second slug.
+
+    Artifacts run to megabytes; the keys needed here are the first four in the
+    file, so only the head is read.
+    """
+    index: dict[str, str] = {}
+    for f in sorted(out.glob("*.json")):
+        try:
+            with f.open(encoding="utf-8", errors="replace") as fh:
+                head = fh.read(4096)
+        except OSError:
+            continue
+        m = re.search(r'"sourceSha256":\s*"([0-9a-f]{64})"', head)
+        if m:
+            index[m.group(1)] = f.stem
+    return index
 
 
 def main() -> None:
@@ -156,6 +208,10 @@ def main() -> None:
         raise SystemExit("--slug only makes sense with a single input.")
 
     args.out.mkdir(parents=True, exist_ok=True)
+    # Skip work already done — the whole point is to extract once. A reissued
+    # report has different bytes, so a different hash, and is re-extracted.
+    seen = {} if args.force else existing_by_sha(args.out)
+
     for path in files:
         if not path.exists():
             print(f"  !! {path}: not found", file=sys.stderr)
@@ -164,19 +220,19 @@ def main() -> None:
         slug = args.slug or slugify(path.name)
         dest = args.out / f"{slug}.json"
 
-        # Skip work that has already been done — the whole point is to extract
-        # once. A changed PDF has a different hash and is re-extracted.
-        if dest.exists() and not args.force:
-            try:
-                prev = json.loads(dest.read_text())
-                if prev.get("sourceSha256") == hashlib.sha256(pdf_bytes).hexdigest():
-                    print(f"  = {slug}: unchanged, skipped")
-                    continue
-            except Exception:
-                pass
+        sha = hashlib.sha256(pdf_bytes).hexdigest()
+        if sha in seen:
+            prior = seen[sha]
+            # Same bytes under a different name — a rename, a duplicate copy,
+            # or a slug this repo already chose by hand. Extracting would fork
+            # the artifact in two, so the first one stands.
+            note = "unchanged" if prior == slug else f"identical to {prior}.json"
+            print(f"  = {slug}: {note}, skipped")
+            continue
 
         art = extract(pdf_bytes, slug, title)
         dest.write_text(json.dumps(art, ensure_ascii=False, indent=1))
+        seen[sha] = slug  # two copies of one report in a single run
         empty = art["emptyPages"]
         print(
             f"  + {slug}: {art['pageCount']} pages, {art['totalChars']:,} chars"

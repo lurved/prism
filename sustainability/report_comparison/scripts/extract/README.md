@@ -4,23 +4,33 @@
 
 ## The workflow
 
-Download the reports wherever you like locally, then:
+Point it at the folder holding the reports, from the repo root:
 
 ```bash
 pip3 install pymupdf
-python3 scripts/extract/extract.py ~/reports          # every PDF in the folder
+python3 scripts/extract/extract.py "$HOME/Library/CloudStorage/GoogleDrive-lurved@gmail.com/My Drive/AI-Data"
 git add data/extracted && git commit -m "extract: FY2025 reports"
 ```
 
 That's it. One artifact per report lands in `data/extracted/<slug>.json`, and
 everything downstream reads those instead of PDFs.
 
+The folder is searched **recursively** — the reports sit a level down in
+`AI-Data/documents`, so naming the top level is enough. A file counts as a PDF
+by its **first bytes, not its suffix**: Sembcorp's, IHH's and Keppel's uploads
+carry no `.pdf` extension, and selecting on the name skipped them silently,
+which downstream is indistinguishable from the company not disclosing.
+
 **Do not commit the PDFs.** They're large and binary; the repo stays clean with
 just the JSON artifacts, which are small, diffable and greppable. Keep the PDFs
 on your machine — the artifacts record a SHA-256 of each source, so a later run
 can tell whether a report has been reissued.
 
-Re-running is free: unchanged files are skipped by hash. `--force` overrides.
+Re-running is free: files whose bytes were already extracted are skipped. The
+check is on the **source hash, not the slug**, so a report that arrives under a
+different filename — a rename, a second copy, or a slug this repo picked by
+hand like `sembcorp-sr2025` — is recognised as done rather than extracted a
+second time under a second name. `--force` overrides.
 
 ### Other inputs
 
