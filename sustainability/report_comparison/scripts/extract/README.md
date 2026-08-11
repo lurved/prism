@@ -4,19 +4,25 @@
 
 ## The workflow
 
-Point it at the folder holding the reports, from the repo root:
+Drop the reports in `sustainability/sustainability-report/`, then from
+`sustainability/report_comparison`:
 
 ```bash
 pip3 install pymupdf
-python3 scripts/extract/extract.py "$HOME/Library/CloudStorage/GoogleDrive-lurved@gmail.com/My Drive/AI-Data"
+npm run extract
 git add data/extracted && git commit -m "extract: FY2025 reports"
 ```
 
 That's it. One artifact per report lands in `data/extracted/<slug>.json`, and
 everything downstream reads those instead of PDFs.
 
-The folder is searched **recursively** — the reports sit a level down in
-`AI-Data/documents`, so naming the top level is enough. A file counts as a PDF
+`sustainability-report/` is **git-ignored** — the PDFs live there for the
+extractor to read and are never committed. The artifacts are what the repo
+keeps.
+
+Any other folder works too — `python3 scripts/extract/extract.py <path>`,
+including a Google Drive mount. It is searched **recursively**, so naming a
+folder that holds the reports one level down is enough. A file counts as a PDF
 by its **first bytes, not its suffix**: Sembcorp's, IHH's and Keppel's uploads
 carry no `.pdf` extension, and selecting on the name skipped them silently,
 which downstream is indistinguishable from the company not disclosing.
