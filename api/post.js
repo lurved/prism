@@ -21,8 +21,15 @@ const REPO = "lurved/prism";
 const BRANCH = "main";
 const TAGS = ["AI", "Design", "Product", "Data", "Tools"];
 
+// Cleanup is a nice-to-have: it must never be what stops a note from going up.
+// Bounded well inside the function's own budget, with retries off, so a slow or
+// overloaded API degrades to the raw transcript instead of timing out the publish.
 const anthropic = process.env.ANTHROPIC_API_KEY
-  ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  ? new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      timeout: 20000,
+      maxRetries: 0,
+    })
   : null;
 
 // Turn a title into a filename-safe slug.
@@ -145,13 +152,55 @@ async function commitToGitHub(filename, contents, message) {
   });
   if (!res.ok) {
     const detail = await res.text();
+    // 401/403 here is nearly always the PAT: fine-grained tokens expire, and the
+    // generic message sends you looking at the wrong thing.
+    if (res.status === 401 || res.status === 403) {
+      throw new Error(
+        `GitHub rejected the token (${res.status}). GITHUB_TOKEN is expired, revoked, ` +
+          `or missing "Contents: Read and write" on ${REPO}. Issue a new fine-grained ` +
+          `PAT and update it in the Vercel project env vars.`
+      );
+    }
     throw new Error(`GitHub API ${res.status}: ${detail}`);
   }
   return res.json();
 }
 
+// GET /api/post — secret-gated self-check, so a failing publish can be diagnosed
+// from the phone instead of the Vercel logs. Reports which env vars are present
+// and whether the GitHub token can still see the repo.
+async function diagnose(res) {
+  const checks = {
+    BLOG_POST_SECRET: !!process.env.BLOG_POST_SECRET,
+    GITHUB_TOKEN: !!process.env.GITHUB_TOKEN,
+    ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
+    GROQ_API_KEY: !!process.env.GROQ_API_KEY,
+  };
+
+  let github = "GITHUB_TOKEN is not set";
+  if (process.env.GITHUB_TOKEN) {
+    try {
+      const probe = await fetch(`https://api.github.com/repos/${REPO}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "User-Agent": "prism-blog-poster",
+        },
+      });
+      github = probe.ok
+        ? "ok — token can read the repo"
+        : `FAILING — GitHub returned ${probe.status} (expired/revoked token, or missing repo access)`;
+    } catch (err) {
+      github = `FAILING — could not reach GitHub: ${String(err.message || err)}`;
+    }
+  }
+
+  return res.status(200).json({ ok: true, env: checks, github });
+}
+
 module.exports = async function handler(req, res) {
-  if (req.method !== "POST") {
+  if (req.method !== "POST" && req.method !== "GET") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
@@ -161,6 +210,8 @@ module.exports = async function handler(req, res) {
   if (!expected || !secret || secret !== expected) {
     return res.status(401).json({ error: "Unauthorized" });
   }
+
+  if (req.method === "GET") return diagnose(res);
 
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
@@ -220,3 +271,8 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "Publish failed", detail: String(err.message || err) });
   }
 };
+
+// Must come after the assignment above — setting it before would be wiped when
+// module.exports is replaced by the handler. Cleanup + the GitHub commit need
+// more headroom than the default budget.
+module.exports.config = { maxDuration: 60 };
