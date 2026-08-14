@@ -26,54 +26,69 @@ export const bankCompanies: PeerCompany[] = [
     city: "Singapore",
     climateContext: "Singapore-HQ universal bank; core markets SG, HK, Greater China, S/SE Asia, India",
     businessModel: "Universal bank (commercial + retail + wealth)",
-    reportingPeriod: "FY2024",
+    reportingPeriod: "FY2025",
     dataSource: {
-      reportTitle: "DBS Group Holdings Sustainability Report 2024",
-      reportingPeriod: "FY2024 (1 Jan – 31 Dec 2024)",
+      reportTitle: "DBS Group Holdings Sustainability Report 2025",
+      reportingPeriod: "FY2025 (1 Jan – 31 Dec 2025)",
       url: "https://www.dbs.com/iwov-resources/images/sustainability/reporting/pdf/web/DBS_SR2024.pdf",
-      accessDate: "June 2026",
+      accessDate: "August 2026",
     },
-    scope1: 1_300,
-    scope2: 26_322,           // market-based (location-based: 50,889)
-    scope3: 56_162,           // OPERATIONAL Scope 3 only (financed emissions not aggregated)
-    totalGHG: 83_784,         // S1 + S2(market) + S3(operational)
-    scope2Basis: "Market-based (location-based 50,889 tCO₂e also reported)",
-    intensityValue: 3.76,
-    intensityUnit: "tCO2e/SGD M income (operational)",
+    scope1: 1_148,            // backup generators 75 + owned vehicles 4 + refrigerants/fire retardants 1,069
+    scope2: 23_571,           // market-based (location-based: 50,091)
+    scope3: 51_987,           // OPERATIONAL Scope 3 only (financed emissions not aggregated)
+    totalGHG: 76_706,         // S1 + S2(market) + S3(operational); location-based total 103,226
+    scope2Basis: "Market-based (location-based 50,091 tCO₂e also reported)",
+    intensityValue: 39,
+    intensityUnit: "kgCO2e/m² GFA (S1+2 market-based)",
     sf6tCO2e: null,
     systemLossPct: null,
     renewableNote:
-      "Onsite renewable 1,488 MWh; 47,800 MWh of RECs purchased (HK, China, India, Indonesia). Renewable % of consumption not stated. 40/41 SG branches BCA Green Mark Platinum.",
+      "RECs purchased across HK, China, India and Indonesia; renewable % of consumption not stated. Market-based Scope 2 is materially below location-based as a result.",
     netZeroYear: 2050,
     reductionTarget:
       "Own-operations net zero by 2050 (interim 2030 CRREM-aligned S1+2 target). Financed-emissions net zero by 2050 across nine priority sectors (Power by 2040).",
-    headcount: 41_638,
-    femaleBoardPct: 20,        // 2 of 10 directors (FY2024 Annual Report CG section)
+    headcount: 39_983,
+    femaleBoardPct: null,      // FY2024 figure came from the Annual Report CG section; AR2025 not held
     femaleWorkforcePct: 49,
     femaleSeniorMgmtPct: 41,   // SVP–MD level
-    trainingHoursPerEmployee: 33.4,
-    employeeTurnoverPct: 6.6,  // voluntary attrition
-    employeeEngagementScore: 91, // My Voice 2024
+    trainingHoursPerEmployee: null, // N/D: SR2025 gives an aggregate (>1.3M hours), not a per-employee figure — deriving one is not permitted here
+    employeeTurnoverPct: 7,    // voluntary attrition rate, Table 4 total row (2,944 of 39,983)
+    employeeEngagementScore: 91, // My Voice 2025
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
-    communityInvestmentNative: "SGD 1B / 10yr (DBS Foundation)",
+    communityInvestmentNative: "N/D",
+    communityInvestmentBasis: "not_disclosed",
     communityInvestmentNote:
-      "DBS Foundation commitment of up to SGD 1 billion over 10 years; no annual community-investment SGD total disclosed in the SR. Employee volunteering >270,000 hours in FY2024.",
-    independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
-    esgLinkedExecComp: true,         // variable pay vs balanced scorecard incl. sustainability
-    antiCorruptionTrainingPct: null, // DBS explicitly does not report this % (GRI 205-2)
-    externalAssurance: true,
-    externalAssuranceProvider: "PwC Singapore (limited; SSAE 3000/3410) — financed emissions NOT assured",
+      "No consolidated annual community-investment total located in SR2025 for FY2025.",
+    independentDirectorsPct: null, // Annual Report CG section — outside source scope
+    esgLinkedExecComp: true,       // balanced-scorecard linkage restated in SR2025
+    antiCorruptionTrainingPct: null,
+    externalAssurance: true,       // SR2025 contents lists an independent practitioner's limited assurance report at p.126
+    externalAssuranceProvider:
+      "Independent practitioner — limited assurance over Identified Sustainability Information (SR2025 p.126); the practitioner is not named in the extracted text",
     frameworks: ["GRI 2021", "TCFD", "SASB", "IFRS S2"],
+    sustainableFinanceNative: null,
+    financedEmissionsStatus: null,
     naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
+    // Nothing left unread in SR2025. Board composition and independent
+    // directors are NOT listed here: they sit in the Annual Report's Corporate
+    // Governance Statement, which is outside this comparison's source scope —
+    // see spine/scope.ts. They render "out of scope", not pending, because we
+    // are not going to read them.
+    notExtracted: [],
     dataNotes: [
-      "Universal bank: operational emissions (83,784 tCO₂e incl. operational Scope 3) are tiny vs FINANCED emissions, which dominate but are NOT aggregated into one figure — DBS discloses per-sector intensity/absolute targets only.",
-      "Scope 2 shown is market-based (26,322 tCO₂e); location-based is 50,889 tCO₂e (difference = RECs in HK/China/India/Indonesia).",
-      "Scope 3 (56,162 tCO₂e) is OPERATIONAL only (Cats 1,3,4,5,6,7,8,13). Financed emissions (Cat 15) are tracked by sector, not aggregated, and are explicitly outside external assurance.",
-      "Financed-emissions progress: Power 208 kgCO₂/MWh (on track to 138 by 2030); Oil & Gas 26.4 MtCO₂e (on track); Steel and Shipping not on track. PCAF referenced.",
-      "Sustainable finance: SGD 89bn commitments at Dec 2024 (from SGD 70bn); SGD 38bn sustainable bonds facilitated in FY2024.",
-      "Employee engagement 91% (My Voice 2024). Voluntary attrition 6.6%. Female senior management (SVP–MD) 41%.",
-      "Governance (board 20% female, 70% independent of 10, ESG-linked exec pay) is from the FY2024 Annual Report CG section. Anti-corruption training %: DBS explicitly does not report it.",
+      "PERIOD REFRESHED to FY2025 (Aug 2026) from DBS Sustainability Report 2025.",
+      "RESTATEMENT: SR2025 restates every FY2024 emissions figure. Total GHG (market-based) FY2024 is restated from 83,784 to 81,852 tCO₂e; Scope 1 from 1,300 to 1,484; Scope 2 market-based from 26,322 to 24,871; Scope 3 from 56,162 to 55,497. Year-on-year movement must be read against the RESTATED comparatives, not against the figures previously shown here.",
+      "Universal bank: operational emissions (76,706 tCO₂e market-based) are tiny vs FINANCED emissions, which dominate but are NOT aggregated into one figure — DBS discloses per-sector intensity/absolute targets only.",
+      "Scope 2 shown is market-based (23,571 tCO₂e); location-based is 50,091 tCO₂e. Total on a location basis is 103,226 tCO₂e.",
+      "Scope 1 composition FY2025: backup generators 75, owned vehicle transport 4, refrigerants and fire retardants 1,069 tCO₂e. Reporting on petrol and diesel vehicles for executive transport was discontinued in 2025.",
+      "Headcount fell to 39,983 (FY2024: 41,638), attributed in the report to higher voluntary attrition and post-integration optimisation in India and Taiwan.",
+      "Female workforce 49% and female senior management (SVP–MD) 41% — both unchanged from FY2024.",
+      "Voluntary attrition 7% in FY2025 (2,944 of 39,983), unchanged from FY2024 — taken from the Table 4 total row as reported, not derived.",
+      "Training hours are disclosed only in aggregate (over 1.3 million hours across the group); SR2025 publishes no per-employee figure, and deriving one is not permitted here — so the per-employee row is N/D.",
+      "Anti-corruption training %: DBS explicitly does not report this under GRI 205-2.",
+      "Assurance: SR2025's contents page lists an Independent practitioner's limited assurance report on Identified Sustainability Information at p.126, so FY2025 carries external limited assurance. The practitioner is not named in the extracted text.",
+      "OUT OF SCOPE (not a DBS disclosure gap): board composition and independent directors. DBS reports these in the Corporate Governance Statement of its Annual Report, under the SGX Listing Rules and the Code of Corporate Governance. This comparison reads sustainability reporting only, so the cells are marked out of scope rather than N/D.",
       "SF₆, system loss and industrial injury rate are N/A for a bank.",
     ],
   },
@@ -88,54 +103,67 @@ export const bankCompanies: PeerCompany[] = [
     city: "Singapore",
     climateContext: "Singapore-HQ universal bank; core markets SG, Malaysia, Indonesia, Greater China; insurer Great Eastern",
     businessModel: "Universal bank (commercial + retail + wealth)",
-    reportingPeriod: "FY2024",
+    reportingPeriod: "FY2025",
     dataSource: {
-      reportTitle: "OCBC Sustainability Report 2024",
-      reportingPeriod: "FY2024 operational; financed-emissions data year 2023 (PCAF lag)",
+      reportTitle: "OCBC Sustainability Report 2025",
+      reportingPeriod: "FY2025 (1 Jan – 31 Dec 2025)",
       url: "https://www.ocbc.com/iwov-resources/sg/ocbc/gbc/pdf/ocbc-sustainability-report-2024.pdf",
-      accessDate: "June 2026",
+      accessDate: "August 2026",
     },
-    scope1: 132,              // excludes refrigerants (not consolidated)
-    scope2: 35_373,           // market-based (location-based: 68,391)
-    scope3: 3_475,            // operational Scope 3 only
-    totalGHG: 38_980,         // S1 + S2(market) + S3(operational)
-    scope2Basis: "Market-based (location-based 68,391 tCO₂e also reported)",
-    intensityValue: 0.0117,
+    scope1: 2_001,            // now INCLUDES fugitive emissions (FY2024: 132, which excluded them)
+    scope2: 30_551,           // market-based (location-based: 78,650)
+    scope3: 3_657,            // operational Scope 3: business air travel + waste
+    totalGHG: 36_209,         // S1 + S2(market) + S3
+    scope2Basis: "Market-based (location-based 78,650 tCO₂e also reported)",
+    intensityValue: 0.0094,
     intensityUnit: "tCO2e/ft² floor area (S2 location-based)",
     sf6tCO2e: null,
     systemLossPct: null,
     renewableNote:
-      "Additional solar installed in Malaysia and China in 2024. Onsite renewable not consolidated for reporting. Operational carbon neutrality achieved in 2024 via RECs + offsets.",
+      "Market-based Scope 2 is projected to fall to 25,518 tCO₂e once EACs for China and Malaysia are issued; those certificates were NOT used to adjust the reported figure. Operational carbon neutrality maintained.",
     netZeroYear: 2050,
     reductionTarget:
       "Operational carbon neutrality maintained annually. Financed-emissions net zero by 2050 across six priority sectors (NZBA signatory).",
-    headcount: 33_655,        // incl. Great Eastern Holdings
-    femaleBoardPct: 30,        // 3 of 10 directors (FY2024 Annual Report CG section — corrects the SR chart's 40%)
+    headcount: null,          // "over 30,000 employees across 19 locations" — not an exact figure
+    femaleBoardPct: null,     // Annual Report CG section — outside source scope
     femaleWorkforcePct: 56,
-    femaleSeniorMgmtPct: 38,
-    trainingHoursPerEmployee: 54.3,
-    employeeTurnoverPct: 12,
+    femaleSeniorMgmtPct: 43,  // leadership positions, Managing Director and above
+    trainingHoursPerEmployee: null,
+    employeeTurnoverPct: null,
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — no material operational injury exposure)",
     communityInvestmentNative: "N/D",
+    communityInvestmentBasis: "not_disclosed",
     communityInvestmentNote:
-      "No consolidated community-investment SGD total in the SR. 17,666 employee volunteers across 531 projects.",
-    independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)
-    esgLinkedExecComp: true,         // "sustainability incl. climate incorporated in senior exec scorecards"
-    antiCorruptionTrainingPct: null,
+      "No consolidated community-investment total in SR2025; the report cites a 13% increase in community engagement activities.",
+    independentDirectorsPct: null,
+    esgLinkedExecComp: true,
+    antiCorruptionTrainingPct: 100, // mandatory training completion, FY2025 — see note on scope
     externalAssurance: true,
-    externalAssuranceProvider: "PwC Singapore (limited; SSAE 3000/3410) — financed emissions NOT assured",
+    externalAssuranceProvider: "External assurance obtained for selected indicators (SR2025 p.140)",
     frameworks: ["GRI 2021", "TCFD", "SASB", "UN SDGs"],
+    sustainableFinanceNative: null,
+    financedEmissionsStatus: null,
     naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
+    // Genuinely still unread — OCBC's social tables did not survive the PDF
+    // text conversion, so these are our gap, not OCBC's. Board composition and
+    // independent directors are NOT here: they sit in the Annual Report's
+    // Corporate Governance Statement, outside the source scope (spine/scope.ts).
+    notExtracted: ["training_hours_per_employee", "turnover_pct"],
     dataNotes: [
-      "Universal bank: operational emissions (38,980 tCO₂e market-based) are immaterial vs financed emissions, which are tracked by sector but not published as one aggregate figure.",
-      "Financed-emissions progress uses 2023 measurement-year data (standard PCAF one-year lag); operational data is FY2024.",
-      "Scope 1 (132 tCO₂e) EXCLUDES refrigerants (not yet consolidated), so it understates true Scope 1.",
-      "Scope 2 shown is market-based (35,373 tCO₂e); location-based 68,391 tCO₂e. The market-based figure rose ~50% YoY due to a methodology change, not a real increase.",
-      "Financed sectors (2023 data): Real Estate alignment −4.0% (on track); Steel 1.91 tCO₂/tSteel (on track to 1.68 by 2030). PCAF data-quality scoring applied.",
-      "Sustainable finance: SGD 71bn committed portfolio at end-2024 (+SGD 15bn YoY); >SGD 9bn to SMEs since 2020.",
-      "Board: 3 of 10 directors are women (30%) and 7 of 10 are independent (70%) per the FY2024 Annual Report CG section — this corrects the SR sustainability chart's '40%', which did not reconcile. Female senior management 38%; all-leadership 42%.",
-      "Community-investment SGD total is not disclosed in the SR (N/D). SF₆, system loss, injury rate N/A for a bank.",
+      "PERIOD REFRESHED to FY2025 (Aug 2026) from OCBC Sustainability Report 2025.",
+      "BOUNDARY EXPANSION, material: Scope 1 rose from 132 to 2,001 tCO₂e because fugitive emissions were brought into the inventory and entity coverage was widened to align with the IFRS Sustainability Disclosure Standards. This is NOT a real increase in emissions. Read year-on-year movement with that in mind.",
+      "Consolidation approach is OPERATIONAL CONTROL, covering Great Eastern Holdings, OCBC Yuanshen, Pac Lease Berhad, PTOS, and Bank of Singapore (HK and MY). International branches are excluded as together under 1.5% of Group emissions, assessed as immaterial under IFRS S2.",
+      "GWP values are taken from the GHG Protocol 'Global Warming Potential Values' (August 2024) — one of the very few entities in this set to state a GWP basis at all.",
+      "Scope 1 excludes Great Eastern Holdings' fugitive emissions. R22 (HCFC-22) is excluded per EPA and GHG Protocol guidance; 52.4 kg of R22 was recorded in 2025.",
+      "Scope 2 shown is market-based (30,551 tCO₂e); location-based is 78,650 tCO₂e. Scope 2 intensity improved to 0.0094 from 0.0117 tCO₂e/ft², though the GFA denominator methodology was also refined during the year.",
+      "Scope 3 (3,657 tCO₂e) comprises business air travel plus, newly for 2025, emissions associated with waste.",
+      "Water consumption rose to 765,070 m³ (FY2024: 470,083) alongside the same entity-coverage expansion.",
+      "Headcount: SR2025 describes 'over 30,000 employees across 19 locations' and publishes no exact group figure, so the headcount row is N/D rather than an approximation.",
+      "Anti-corruption training 100% (FY2025) is completion of MANDATORY training covering fraud awareness, whistleblowing, anti-bribery and anti-corruption together, including Great Eastern Holdings — a broader bundle than GRI 205-2's anti-corruption-specific training, so read it as completion of that combined programme.",
+      "PENDING (not yet read, not a disclosure gap): training hours and turnover. OCBC's social data tables did not survive the PDF text conversion; they are in SR2025 and will be read from it.",
+      "OUT OF SCOPE (not an OCBC disclosure gap): board composition and independent directors. OCBC reports these in the Corporate Governance Statement of its Annual Report, under the SGX Listing Rules and the Code of Corporate Governance. This comparison reads sustainability reporting only, so the cells are marked out of scope rather than N/D.",
+      "SF₆, system loss and industrial injury rate are N/A for a bank.",
     ],
   },
 
@@ -178,7 +206,11 @@ export const bankCompanies: PeerCompany[] = [
     employeeTurnoverPct: 13.6,
     injuryMetricValue: null,
     injuryMetricUnit: "N/A (bank — office injury rate 0.10/100 FTE reported, not industrial LTIFR)",
+    sustainableFinanceNative: "SGD 58.0bn portfolio (31 Dec 2024)",
+    financedEmissionsStatus:
+      "2023 data year, all on track: Power 242 kgCO₂/MWh; Automotive 121 gCO₂/veh-km; Real estate 80 kgCO₂/m²; Steel 1.64 tCO₂/t. PCAF + PACTA + SBTi + GFANZ.",
     communityInvestmentNative: "SGD 16.1M",
+    communityInvestmentBasis: "annual",
     communityInvestmentNote:
       "SGD 16.1M monetary community contributions in FY2024 (GRI 201-1, EY-assured), incl. UOB Heartbeat Run (>SGD 3M). Avg 2.9 volunteer hours/employee.",
     independentDirectorsPct: 70,     // 7 of 10 (FY2024 Annual Report CG section)

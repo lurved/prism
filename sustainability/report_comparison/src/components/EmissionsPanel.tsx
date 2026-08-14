@@ -100,7 +100,9 @@ export function EmissionsPanel() {
         <p className="font-sans text-[13px] leading-[1.55] text-muted m-0 max-w-[88ch]">
           Sembcorp Scope 3 (15.3M tCO₂e) includes Category 15 Investments — a common energy-company convention that
           inflates Scope 3 relative to telecom and grid peers. Use the <em>Excl. Category 15</em> toggle to remove it
-          where a company discloses the breakdown. Scope 2 is market-based throughout.
+          where a company discloses the breakdown. Scope 2 is <em>not</em> reported on a common basis: only Singtel&apos;s
+          is market-based — Sembcorp&apos;s is location-based and SMRT does not state a basis, so the Scope 2 bars are
+          not like-for-like. Each company&apos;s basis is listed under the comparison matrix.
         </p>
       </div>
     </div>

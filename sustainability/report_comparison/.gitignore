@@ -19,3 +19,7 @@ tsconfig.tsbuildinfo
 /banks/
 /infra/
 /healthcare/
+
+# python
+__pycache__/
+*.pyc

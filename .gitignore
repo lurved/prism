@@ -11,4 +11,9 @@ tina/__generated__/
 
 # ESG tracker static-export output (build artifact)
 sustainability/esg-export/
+
+# Source sustainability reports. Deposited here locally and read by
+# scripts/extract; NEVER committed — they are hundreds of MB of binary, and
+# the point of data/extracted/*.json is that the artifact replaces the PDF.
+sustainability/sustainability-report/
 .env*

@@ -45,11 +45,12 @@ export const companies: Company[] = [
       // All emissions figures from GRI 305-1, 305-2, 305-3 disclosures in ESG appendix
       scope1Emissions: 7_425.4,   // ktCO2e — subsidiaries: 4,345.4; JVs & associates: 3,080.0
       scope2Emissions: 282.9,     // ktCO2e — location-based; market-based disclosure not separately stated in extracted text
+      scope2Basis: "Location-based — no separate market-based figure disclosed",
       scope3Emissions: 15_340.2,  // ktCO2e — Cat 3 (fuel/energy): 2,876.1; Cat 11 (sold products): 2,596.3; Cat 15 (investments): 9,867.8
       scope3Cat15Emissions: 9_867.8, // ktCO2e — Category 15 (investments), separately disclosed in ESG appendix
       ghgIntensityValue: 0.21,
       ghgIntensityUnit: "tCO2e/MWh",
-      renewableEnergyPct: null,   // Not reported as % of own consumption; 67% of gross capacity is renewable
+      renewableEnergyPct: null,   // N/D — not reported as % of own consumption; 67% of gross capacity is renewable
       renewableCapacityGW: 15.0,  // Gross installed renewable capacity as at 31 Dec 2025
       netZeroTargetYear: 2050,
       scope1and2ReductionPct: 47.5, // GHG intensity: 0.40 → 0.21 tCO2e/MWh since 2010 baseline = ~47.5% intensity reduction
@@ -90,7 +91,9 @@ export const companies: Company[] = [
       "Learning hours (26.5 hrs) = average learning hours per employee per GRI 404-1.",
       "Water consumption figure exists in GRI 303-5 table (page 76 of source PDF) but was not extractable from binary-encoded PDF.",
       "Scope 3 Category 15 (investments) = 9,867.8 ktCO₂e is disclosed separately, enabling an excl.-Cat-15 view.",
+      "Scope 2 (282.9 ktCO₂e) is location-based; the report does not disclose a separate market-based figure.",
     ],
+    naMetrics: {}, // every tracked metric applies to a power generator
     citationPages: {
       // Only pages actually recorded during extraction — never guessed.
       waterConsumption: 76, // GRI 303-5 table location noted in source PDF
@@ -151,12 +154,13 @@ export const companies: Company[] = [
       // Source: SMRT Group GHG table, Sustainability Snapshot (p.7) & Performance (p.35)
       scope1Emissions: 129.195,   // ktCO2e — SMRT Group FY24/25
       scope2Emissions: 372.164,   // ktCO2e — largest source (traction electricity); basis (location/market) not specified
+      scope2Basis: "Not stated — the report does not label its Scope 2 location- or market-based",
       scope3Emissions: 209.757,   // ktCO2e — Group FY24/25
       scope3Cat15Emissions: null, // SMRT does not break out a Category 15 (investments) figure
       ghgIntensityValue: 295,
       ghgIntensityUnit: "tCO2e/S$M revenue (Rail, S1+2)",
-      renewableEnergyPct: null,   // Onsite renewable 4,864,298 kWh of 893,001,643 kWh total (~0.5%); not reported as a % — see dataNotes
-      renewableCapacityGW: null,  // N/A — SMRT is not a power generator
+      renewableEnergyPct: null,   // N/D — onsite renewable 4,864,298 kWh of 893,001,643 kWh total (~0.5%); not reported as a % — see dataNotes
+      renewableCapacityGW: null,  // N/A — see naMetrics (SMRT owns no generation capacity)
       netZeroTargetYear: 2050,
       scope1and2ReductionPct: null, // Total GHG has risen with network expansion; no reduction-vs-baseline achieved. Target: −20% vs 2022 by 2030
       waterConsumptionM3: 1_599_629, // SMRT Group water consumption FY24/25
@@ -193,7 +197,13 @@ export const companies: Company[] = [
       "Injury rate is reported as 593 per 100,000 employees — a different basis from the other companies' per-million-hours LTIR — so it is marked N/D here to avoid a misleading comparison.",
       "No external assurance was obtained this reporting cycle (internal audit of Scope 1 & 2 only; external assurance targeted from FY2032).",
       "Community contribution shown is the explicitly-stated S$2.2M (FY24/25, incl. in-kind). A separate 3-year monetary series (S$1.7M/7.2M/20.4M) appears in the CSR snapshot but its definition is ambiguous in the report and was not used.",
+      "SMRT's Scope 2 is not labelled location- or market-based in the report — the basis is shown as 'not stated' rather than assumed.",
+      "Renewable capacity is N/A (not merely undisclosed): SMRT operates trains, buses and taxis and owns no generation capacity.",
     ],
+    naMetrics: {
+      renewableCapacity:
+        "SMRT is a mass-transit operator, not a power generator — it owns no installed generation capacity, so the metric does not apply.",
+    },
     citationPages: {
       // Verified July 2026 against SMRT Sustainability Report 2024/25 (Drive copy).
       // Sustainability Snapshot infographic (Scope 1/2/3, GHG intensity) — corroborated
@@ -256,12 +266,13 @@ export const companies: Company[] = [
       // Scope expanded in FY2025 to include Singtel Global Offices and NCS for Scope 1+2
       scope1Emissions: 13.228,    // ktCO2e — Group FY2025 (expanded scope: Singtel + Optus + NCS + Digital InfraCo)
       scope2Emissions: 342.540,   // ktCO2e — market-based; location-based: 467.7 ktCO2e (FY2024 from Excel, FY2025 not extracted)
+      scope2Basis: "Market-based (location-based FY2024: 467.7 ktCO₂e)",
       scope3Emissions: 2_309.368, // ktCO2e — all 15 categories; SBTi-covered categories (1,2,11,13,15): 2,220.3 ktCO2e
       scope3Cat15Emissions: null, // Cat 15 not separately broken out (only the 5-category SBTi aggregate is cited)
       ghgIntensityValue: 0.0186,
       ghgIntensityUnit: "tCO2e/TB",  // GHG intensity per terabyte of data traffic carried — standard telecom metric
       renewableEnergyPct: 20.4,   // % of electricity backed by renewable sources, FY2025 — "up from 9.3% last year" (SR2025 p.23)
-      renewableCapacityGW: null,  // Not applicable — Singtel does not generate its own renewable energy at scale
+      renewableCapacityGW: null,  // N/A — see naMetrics (Singtel procures rather than generates)
       netZeroTargetYear: 2045,
       scope1and2ReductionPct: 19.3, // FY2023 baseline 440.6 ktCO2e → FY2025 355.8 ktCO2e = −19.3%
       waterConsumptionM3: 618_885,  // Potable water use (m³) — Group FY2025 (GRI 303-5)
@@ -303,7 +314,12 @@ export const companies: Company[] = [
       "Singtel fiscal year runs April–March; FY2025 = 1 Apr 2024 – 31 Mar 2025.",
       "CORRECTED (July 2026): renewableEnergyPct was previously stored as 9.33% (last year's FY2024 figure); corrected to the FY2025 figure of 20.4% per SR2025 p.23 ('up from 9.3% last year').",
       "CORRECTED (July 2026): femaleLeadershipPct was previously stored as 31%; corrected to 29% per SR2025 p.68 People Performance Indicators table (Singtel Group female 'Executives and Top Executives', consistent across FY2025 and FY2024). A differently-defined narrative figure on p.50 (30.6% of 'management roles') is not the same metric and was not used.",
+      "Renewable capacity is N/A (not merely undisclosed): Singtel procures renewable-backed electricity rather than generating it — the relevant metric is Renewable Energy % (20.4%).",
     ],
+    naMetrics: {
+      renewableCapacity:
+        "Singtel is a telecom operator: it procures renewable-backed electricity rather than generating it, so installed renewable capacity does not apply. Its comparable metric is Renewable Energy % (20.4% of electricity, FY2025).",
+    },
     citationPages: {
       // Verified July 2026 against Singtel Group Sustainability Report 2025 (Drive copy).
       // "Overall Net-Zero Target ... by FY2045" — Our Climate Action Targets.
