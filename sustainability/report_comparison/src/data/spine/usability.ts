@@ -112,6 +112,8 @@ export function assessUsability(cell: Cell | undefined, row: SpineRow, entity: E
   if (!cell) return notUsable("No value on this row.");
   if (cell.state === "nd") return notUsable("Not disclosed by the entity.");
   if (cell.state === "na") return notUsable("Does not apply to this business model.");
+  if (cell.state === "out_of_scope")
+    return notUsable("Disclosed by the entity, in a document outside this comparison's source scope.");
   if (cell.state === "pending") return notUsable("Report not yet read — figure not extracted.");
 
   const assured = entity.envelope.assurance === "external_limited" || entity.envelope.assurance === "external_reasonable";

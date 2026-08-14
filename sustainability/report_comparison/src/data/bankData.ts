@@ -60,7 +60,7 @@ export const bankCompanies: PeerCompany[] = [
     communityInvestmentBasis: "not_disclosed",
     communityInvestmentNote:
       "No consolidated annual community-investment total located in SR2025 for FY2025.",
-    independentDirectorsPct: null, // Annual Report CG section; AR2025 not held
+    independentDirectorsPct: null, // Annual Report CG section — outside source scope
     esgLinkedExecComp: true,       // balanced-scorecard linkage restated in SR2025
     antiCorruptionTrainingPct: null,
     externalAssurance: true,       // SR2025 contents lists an independent practitioner's limited assurance report at p.126
@@ -70,11 +70,12 @@ export const bankCompanies: PeerCompany[] = [
     sustainableFinanceNative: null,
     financedEmissionsStatus: null,
     naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
-    // Only fields genuinely still unread. Everything else has been resolved to
-    // its true state: a value, an N/D the report supports, or N/A.
-    // Board composition and independent directors sit in the Annual Report's
-    // Corporate Governance Statement, which we do not hold.
-    notExtracted: ["female_board_pct", "independent_directors_pct"],
+    // Nothing left unread in SR2025. Board composition and independent
+    // directors are NOT listed here: they sit in the Annual Report's Corporate
+    // Governance Statement, which is outside this comparison's source scope —
+    // see spine/scope.ts. They render "out of scope", not pending, because we
+    // are not going to read them.
+    notExtracted: [],
     dataNotes: [
       "PERIOD REFRESHED to FY2025 (Aug 2026) from DBS Sustainability Report 2025.",
       "RESTATEMENT: SR2025 restates every FY2024 emissions figure. Total GHG (market-based) FY2024 is restated from 83,784 to 81,852 tCO₂e; Scope 1 from 1,300 to 1,484; Scope 2 market-based from 26,322 to 24,871; Scope 3 from 56,162 to 55,497. Year-on-year movement must be read against the RESTATED comparatives, not against the figures previously shown here.",
@@ -87,7 +88,7 @@ export const bankCompanies: PeerCompany[] = [
       "Training hours are disclosed only in aggregate (over 1.3 million hours across the group); SR2025 publishes no per-employee figure, and deriving one is not permitted here — so the per-employee row is N/D.",
       "Anti-corruption training %: DBS explicitly does not report this under GRI 205-2.",
       "Assurance: SR2025's contents page lists an Independent practitioner's limited assurance report on Identified Sustainability Information at p.126, so FY2025 carries external limited assurance. The practitioner is not named in the extracted text.",
-      "PENDING (not yet read, not a disclosure gap): board composition and independent directors, which sit in the Annual Report's Corporate Governance Statement — a document we do not hold.",
+      "OUT OF SCOPE (not a DBS disclosure gap): board composition and independent directors. DBS reports these in the Corporate Governance Statement of its Annual Report, under the SGX Listing Rules and the Code of Corporate Governance. This comparison reads sustainability reporting only, so the cells are marked out of scope rather than N/D.",
       "SF₆, system loss and industrial injury rate are N/A for a bank.",
     ],
   },
@@ -124,7 +125,7 @@ export const bankCompanies: PeerCompany[] = [
     reductionTarget:
       "Operational carbon neutrality maintained annually. Financed-emissions net zero by 2050 across six priority sectors (NZBA signatory).",
     headcount: null,          // "over 30,000 employees across 19 locations" — not an exact figure
-    femaleBoardPct: null,     // Annual Report CG section; AR2025 not held
+    femaleBoardPct: null,     // Annual Report CG section — outside source scope
     femaleWorkforcePct: 56,
     femaleSeniorMgmtPct: 43,  // leadership positions, Managing Director and above
     trainingHoursPerEmployee: null,
@@ -144,12 +145,11 @@ export const bankCompanies: PeerCompany[] = [
     sustainableFinanceNative: null,
     financedEmissionsStatus: null,
     naMetrics: ["sf6tCO2e", "systemLossPct", "injuryMetricValue", "normalizedIntensityKgPerKwh"],
-    // Only fields genuinely still unread — OCBC's social tables did not survive
-    // the PDF text conversion, so these are our gap, not OCBC's.
-    notExtracted: [
-      "female_board_pct", "independent_directors_pct",
-      "training_hours_per_employee", "turnover_pct",
-    ],
+    // Genuinely still unread — OCBC's social tables did not survive the PDF
+    // text conversion, so these are our gap, not OCBC's. Board composition and
+    // independent directors are NOT here: they sit in the Annual Report's
+    // Corporate Governance Statement, outside the source scope (spine/scope.ts).
+    notExtracted: ["training_hours_per_employee", "turnover_pct"],
     dataNotes: [
       "PERIOD REFRESHED to FY2025 (Aug 2026) from OCBC Sustainability Report 2025.",
       "BOUNDARY EXPANSION, material: Scope 1 rose from 132 to 2,001 tCO₂e because fugitive emissions were brought into the inventory and entity coverage was widened to align with the IFRS Sustainability Disclosure Standards. This is NOT a real increase in emissions. Read year-on-year movement with that in mind.",
@@ -161,7 +161,8 @@ export const bankCompanies: PeerCompany[] = [
       "Water consumption rose to 765,070 m³ (FY2024: 470,083) alongside the same entity-coverage expansion.",
       "Headcount: SR2025 describes 'over 30,000 employees across 19 locations' and publishes no exact group figure, so the headcount row is N/D rather than an approximation.",
       "Anti-corruption training 100% (FY2025) is completion of MANDATORY training covering fraud awareness, whistleblowing, anti-bribery and anti-corruption together, including Great Eastern Holdings — a broader bundle than GRI 205-2's anti-corruption-specific training, so read it as completion of that combined programme.",
-      "PENDING (not yet read, not a disclosure gap): board composition, independent directors, training hours and turnover. OCBC's social data tables did not survive the PDF text conversion.",
+      "PENDING (not yet read, not a disclosure gap): training hours and turnover. OCBC's social data tables did not survive the PDF text conversion; they are in SR2025 and will be read from it.",
+      "OUT OF SCOPE (not an OCBC disclosure gap): board composition and independent directors. OCBC reports these in the Corporate Governance Statement of its Annual Report, under the SGX Listing Rules and the Code of Corporate Governance. This comparison reads sustainability reporting only, so the cells are marked out of scope rather than N/D.",
       "SF₆, system loss and industrial injury rate are N/A for a bank.",
     ],
   },

@@ -475,8 +475,18 @@ up. No `Header.tsx` edit, no new comparison component.
 ## 5. Adding a company / a category — the checklist this produces
 
 **New company in an existing category**
+0. **Source scope: the entity's sustainability reporting, wherever it publishes it.** A
+   standalone sustainability report where one exists; the sustainability section of an
+   annual or integrated report where that *is* the report — six of twelve entities report
+   that way, Sembcorp among them, and it is the only full IFRS S2 ¶29 discloser in the
+   corpus. What is *out* of scope is reaching into a different part of an annual report
+   (typically the Corporate Governance Statement) to fill a metric the sustainability
+   reporting omits. Record such cells in `spine/scope.ts`.
 1. Copy the entity template; fill `id`, identity, boundary, `fiscalYearEnd`, `consolidation`.
-2. Fill **all Tier 1 keys** — a value, or `nd`, or `na` + reason. No key may be absent.
+2. Fill **all Tier 1 keys** — a value, or `nd`, or `na` + reason, or `out_of_scope` + reason.
+   No key may be absent. Pick the state by what it *asserts*: `nd` says the entity did not
+   disclose, `na` says the metric does not apply, `out_of_scope` says we did not read the
+   document it lives in. Using the wrong one makes a false claim about the company.
 3. Fill the **envelope** for every emissions figure: consolidation approach, both Scope 2
    figures where the report gives them, Scope 3 categories included, base year, GWP source.
    This is the step that makes the figure comparable to anything else — without it the number

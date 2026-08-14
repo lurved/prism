@@ -2,11 +2,15 @@
  * One cell of the comparison matrix — the single place a spine figure is
  * rendered, on every category page.
  *
- * The four states are visually distinct on purpose:
+ * The five states are visually distinct on purpose:
  *   disclosed  the value, with a provenance mark and a citation popover
  *   N/D        applies to this entity, not disclosed in the report
  *   N/A        does not apply to this business model — with a mandatory reason
+ *   scope      disclosed by the entity, in a document we do not read
  *   pending    the report has not been read yet (never a zero, never a blank)
+ *
+ * N/D and "scope" look different because they say different things about the
+ * entity: one is a gap in their reporting, the other a boundary in ours.
  *
  * Provenance marks follow the one ladder in provenance.ts:
  *   ✅ confirmed (page recorded) · • reported · ⚠️ estimated · ❌ unverified
@@ -138,6 +142,31 @@ export function SpineCell({
             <span className="block font-sans text-[11px] leading-[1.5] text-muted">{cell.reason}</span>
             <span className="block font-sans text-[10px] leading-[1.5] text-muted2 mt-2">
               Shown as N/A, not N/D — this is not a disclosure gap.
+            </span>
+          </Popover>
+        </div>
+      </div>
+    );
+  }
+
+  if (cell.state === "out_of_scope") {
+    return (
+      <div className="text-right">
+        <span
+          className="font-mono text-[12px] text-muted3"
+          title="Disclosed by the entity, outside this comparison's source scope"
+        >
+          out of scope
+        </span>
+        <div className="mt-[3px]">
+          <Popover label="why">
+            <span className="block font-sans font-semibold text-[11px] text-ink2 mb-1">
+              Outside the source scope
+            </span>
+            <span className="block font-sans text-[11px] leading-[1.5] text-muted">{cell.reason}</span>
+            <span className="block font-sans text-[10px] leading-[1.5] text-muted2 mt-2">
+              Shown here rather than as N/D, because the entity does disclose it — this comparison
+              reads sustainability reporting only.
             </span>
           </Popover>
         </div>

@@ -10,14 +10,16 @@
  * impossible.
  *
  * Cell state round-trips explicitly: a value cell is never empty-because-zero,
- * and N/D, N/A and pending are distinguishable in the `state` column.
+ * and N/D, N/A, out-of-scope and pending are distinguishable in the `state`
+ * column — a consumer must be able to tell a gap in the entity's reporting
+ * from a boundary in ours.
  */
 import { useState } from "react";
 import { rowsForPack, type Entity, type PackId } from "@/data/spine";
 import { assessUsability, engagementQuestions, isStale } from "@/data/spine/usability";
 
 const DISCLAIMER =
-  "As reported by each entity; no estimation or interpolation. state=disclosed|nd|na|pending. An empty value is never a zero. Emissions in tCO2e. Tier 1 = IFRS S2 cross-industry metrics; Tier 2 = GRI; Tier 3 = industry pack.";
+  "As reported by each entity; no estimation or interpolation. state=disclosed|nd|na|out_of_scope|pending. An empty value is never a zero. Emissions in tCO2e. Tier 1 = IFRS S2 cross-industry metrics; Tier 2 = GRI; Tier 3 = industry pack.";
 
 const COLS = [
   "entity_id", "entity_name", "category", "status", "listing", "countries",
@@ -25,7 +27,7 @@ const COLS = [
   "scope3_categories", "base_year", "gwp_source", "assurance_level",
   "metric_key", "metric_label", "tier", "authority", "authority_ref",
   "state", "value", "display", "unit", "year", "provenance",
-  "report_title", "page", "source_url", "note", "na_reason",
+  "report_title", "page", "source_url", "note", "na_or_scope_reason",
   "usability", "usability_limitations", "row_is_current",
 ];
 
@@ -59,6 +61,8 @@ function rowsFor(entities: Entity[], pack: PackId) {
           cell.citation?.url ?? "", cell.note ?? "", "", ...grade]);
       } else if (cell.state === "na") {
         out.push([...base, ...meta, "na", "", "N/A", "", "", "", "", "", "", "", cell.reason, ...grade]);
+      } else if (cell.state === "out_of_scope") {
+        out.push([...base, ...meta, "out_of_scope", "", "out of scope", "", "", "", "", "", "", "", cell.reason, ...grade]);
       } else if (cell.state === "nd") {
         out.push([...base, ...meta, "nd", "", "N/D", "", "", "unverified", "", "", "", cell.note ?? "", "", ...grade]);
       } else {
@@ -144,7 +148,7 @@ export function SpineExport({ entities, pack, categoryId }: { entities: Entity[]
       </button>
       <span className="font-sans text-[11px] text-muted2 max-w-[52ch]">
         Same schema for every category, including the GHG Protocol envelope — rows from different categories
-        concatenate directly. N/D, N/A and pending stay distinguishable.
+        concatenate directly. N/D, N/A, out-of-scope and pending stay distinguishable.
       </span>
     </div>
   );

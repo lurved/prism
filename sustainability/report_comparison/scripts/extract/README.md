@@ -20,6 +20,13 @@ everything downstream reads those instead of PDFs.
 extractor to read and are never committed. The artifacts are what the repo
 keeps.
 
+**What belongs in it:** each entity's sustainability reporting. That includes
+an annual or integrated report when the sustainability report is *inside* it —
+TMG (pp. 54–100), Raffles, National Grid's 20-F, CLP, Meralco and Sembcorp all
+publish that way. It does not include annual reports fetched to fill a metric
+the sustainability reporting leaves out; those cells are marked out of scope
+instead. The rule and its exclusions live in `src/data/spine/scope.ts`.
+
 Any other folder works too — `python3 scripts/extract/extract.py <path>`,
 including a Google Drive mount. It is searched **recursively**, so naming a
 folder that holds the reports one level down is enough. A file counts as a PDF

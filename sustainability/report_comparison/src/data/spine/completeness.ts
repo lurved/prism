@@ -48,6 +48,13 @@ export interface TheirDisclosure {
 export interface CompletenessSplit {
   ours: OurBacklog;
   theirs: TheirDisclosure;
+  /**
+   * Cells in NEITHER bucket: the entity discloses the figure, but in a
+   * document this comparison does not read (see scope.ts). Counted apart
+   * because adding it to `ours` would invent work we have decided not to do,
+   * and adding it to `theirs` would blame the entity for a boundary we drew.
+   */
+  outOfScope: number;
 }
 
 export function completeness(entities: Entity[], rows: SpineRow[]): CompletenessSplit {
@@ -56,6 +63,7 @@ export function completeness(entities: Entity[], rows: SpineRow[]): Completeness
   let disclosed = 0;
   let notDisclosed = 0;
   let notApplicable = 0;
+  let outOfScope = 0;
 
   for (const e of entities) {
     for (const row of rows) {
@@ -63,6 +71,7 @@ export function completeness(entities: Entity[], rows: SpineRow[]): Completeness
       if (!c) continue;
       if (c.state === "pending") pending++;
       else if (c.state === "na") notApplicable++;
+      else if (c.state === "out_of_scope") outOfScope++;
       else if (c.state === "nd") notDisclosed++;
       else {
         disclosed++;
@@ -86,6 +95,7 @@ export function completeness(entities: Entity[], rows: SpineRow[]): Completeness
       boundaryUnstated: entities.filter((e) => e.envelope.consolidation === "unknown").length,
       entityCount: entities.length,
     },
+    outOfScope,
   };
 }
 

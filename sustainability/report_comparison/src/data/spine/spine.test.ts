@@ -22,6 +22,8 @@ import {
   bankEntities,
   healthcareSpineEntities,
   allEntities,
+  OUT_OF_SCOPE,
+  applySourceScope,
   type Entity,
   type PackId,
 } from "./index";
@@ -498,10 +500,12 @@ describe("Decision-usefulness", () => {
 
   it("renders unextracted fields as pending, never as N/D", () => {
     // Claiming an entity did not disclose something we have not read would be
-    // a false statement about that entity.
-    const dbs = allEntities.find((e) => e.id === "dbs")!;
-    expect(dbs.metrics.female_board_pct.state).toBe("pending");
-    expect(dbs.status).toBe("pending_extraction");
+    // a false statement about that entity. OCBC's social tables did not
+    // survive the PDF text conversion, so these are ours to close.
+    const ocbc = allEntities.find((e) => e.id === "ocbc")!;
+    expect(ocbc.metrics.training_hours_per_employee.state).toBe("pending");
+    expect(ocbc.metrics.turnover_pct.state).toBe("pending");
+    expect(ocbc.status).toBe("pending_extraction");
   });
 
   it("rolls up to a usable share within 0-100", () => {
@@ -554,10 +558,10 @@ describe("Completeness split", () => {
   it("counts every cell exactly once, into one bucket or the other", () => {
     for (const { pack, entities } of CATEGORY_SETS) {
       const rows = rowsForPack(pack);
-      const { ours, theirs } = completeness(entities, rows);
+      const { ours, theirs, outOfScope } = completeness(entities, rows);
       const cells = entities.flatMap((e) => rows.filter((r) => e.metrics[r.key] !== undefined).length);
       const total = cells.reduce((a, b) => a + b, 0);
-      expect(ours.pending + theirs.notDisclosed + theirs.notApplicable + ours.disclosed).toBe(total);
+      expect(ours.pending + theirs.notDisclosed + theirs.notApplicable + outOfScope + ours.disclosed).toBe(total);
     }
   });
 
@@ -588,5 +592,83 @@ describe("Completeness split", () => {
         expect(ours.staleEntities).toHaveLength(0);
       }
     }
+  });
+});
+
+describe("Source scope", () => {
+  it("gives every out-of-scope cell a reason a reader can check", () => {
+    for (const e of allEntities) {
+      for (const cell of Object.values(e.metrics)) {
+        if (cell.state === "out_of_scope") {
+          // Same bar as N/A: an unexplained exclusion is indistinguishable
+          // from a figure we quietly gave up on.
+          expect(cell.reason.length).toBeGreaterThan(40);
+        }
+      }
+    }
+  });
+
+  it("never blanks a figure the entity actually discloses", () => {
+    // The scope rule may only replace a NON-disclosed cell. If a figure has
+    // been read from the entity's sustainability reporting, it must survive.
+    for (const [entityId, excluded] of Object.entries(OUT_OF_SCOPE)) {
+      const raw = allEntities.find((e) => e.id === entityId);
+      expect(raw, `${entityId} not found`).toBeDefined();
+      const disclosed: Entity = {
+        ...raw!,
+        metrics: {
+          ...raw!.metrics,
+          [Object.keys(excluded)[0]]: {
+            state: "disclosed",
+            value: 33,
+            display: "33%",
+            unit: "%",
+            year: "FY2025",
+            provenance: "reported",
+            citation: null,
+          },
+        },
+      };
+      const after = applySourceScope(disclosed);
+      expect(after.metrics[Object.keys(excluded)[0]].state).toBe("disclosed");
+    }
+  });
+
+  it("keeps out-of-scope cells out of BOTH the backlog and the disclosure finding", () => {
+    for (const { pack, entities } of CATEGORY_SETS) {
+      const split = completeness(entities, rowsForPack(pack));
+      const counted =
+        split.ours.pending + split.theirs.notDisclosed + split.theirs.notApplicable + split.outOfScope;
+      let cells = 0;
+      let disclosed = 0;
+      for (const e of entities) {
+        for (const row of rowsForPack(pack)) {
+          const c = e.metrics[row.key];
+          if (!c) continue;
+          cells++;
+          if (c.state === "disclosed") disclosed++;
+        }
+      }
+      // Every cell lands in exactly one bucket — nothing double-counted as
+      // both our backlog and their gap.
+      expect(counted + disclosed).toBe(cells);
+    }
+  });
+
+  it("marks board composition out of scope for the banks, never N/D", () => {
+    for (const id of ["dbs", "ocbc"]) {
+      const e = bankEntities.find((x) => x.id === id)!;
+      for (const key of ["female_board_pct", "independent_directors_pct"]) {
+        // N/D would assert the bank does not disclose it. It does — in the
+        // Corporate Governance Statement, which this comparison does not read.
+        expect(e.metrics[key]?.state, `${id}.${key}`).toBe("out_of_scope");
+      }
+    }
+  });
+
+  it("does not treat an out-of-scope cell as decision-useful", () => {
+    const e = bankEntities.find((x) => x.id === "dbs")!;
+    const row = SPINE.find((r) => r.key === "female_board_pct")!;
+    expect(assessUsability(e.metrics.female_board_pct, row, e).grade).toBe("not_usable");
   });
 });

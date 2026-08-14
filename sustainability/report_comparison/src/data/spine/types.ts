@@ -115,12 +115,19 @@ export interface SpineCitation {
   extractedDate: string;
 }
 
-/* ── The cell: four states, absence is not one of them ───────────── */
+/* ── The cell: five states, absence is not one of them ───────────── */
 
 /**
  * Every Tier 1 key is present on every entity. A metric is disclosed, N/D,
- * N/A (with a mandatory reason), or pending. Absence is not a state, because
- * an absent row is indistinguishable from an oversight.
+ * N/A (with a mandatory reason), out of scope (also with a reason), or
+ * pending. Absence is not a state, because an absent row is indistinguishable
+ * from an oversight.
+ *
+ * The states answer different questions and must not be collapsed:
+ *   nd            THEY did not disclose it — the finding
+ *   na            it does not apply to this business model
+ *   out_of_scope  WE do not read the document it lives in (see scope.ts)
+ *   pending       we have not read it yet, but will
  */
 /** One prior-period observation. IFRS S1 expects comparative information, so
  *  a figure that has a history carries it rather than losing it. */
@@ -151,6 +158,9 @@ export type Cell =
     }
   | { state: "nd"; note?: string }
   | { state: "na"; reason: string }
+  /** Disclosed by the entity, but in a document this comparison does not read.
+   *  Reason is mandatory — an unexplained exclusion reads as an oversight. */
+  | { state: "out_of_scope"; reason: string }
   | { state: "pending" };
 
 /* ── Spine rows ──────────────────────────────────────────────────── */
