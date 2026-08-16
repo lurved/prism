@@ -578,7 +578,11 @@ export function effectiveFlag(mv: MetricValue): SourceFlag {
   // No disclosed value at all ⇒ unverified/blank.
   if (mv.value === null && mv.display === undefined) return "unverified";
   // A disclosed value with no page-level citation cannot be ✅ (spec §3).
-  if (mv.citation === null) return "unverified";
+  // A citation object with page === null is "no page" too — a report title
+  // and URL alone are not a page-level citation (this was the actual gap:
+  // several metrics carried a citation with page: null and still displayed
+  // ✅ confirmed, because only `citation === null` was checked here).
+  if (mv.citation === null || mv.citation.page === null) return "unverified";
   return mv.flag;
 }
 

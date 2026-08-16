@@ -169,4 +169,17 @@ describe("Healthcare provenance", () => {
       }
     }
   });
+
+  // Regression test for the actual gap the audit found: effectiveFlag() only
+  // checked `citation === null`, not `citation.page === null`, so a value
+  // with a citation object but no recorded page still rendered ✅ confirmed.
+  it("a citation with no page number can never be effectively confirmed", () => {
+    for (const e of healthcareEntities) {
+      for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
+        if (mv.citation !== null && mv.citation.page === null) {
+          expect(effectiveFlag(mv), `${e.id}/${key}`).not.toBe("confirmed");
+        }
+      }
+    }
+  });
 });
