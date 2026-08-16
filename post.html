@@ -249,6 +249,13 @@
 
     function setStatus(msg, kind) { statusEl.className = "status " + (kind || ""); statusEl.innerHTML = msg; }
 
+    // The server sends { error, detail } — detail is the part that says what
+    // actually broke, so show it rather than the generic headline alone.
+    function errorText(data, status) {
+      const parts = [data && data.error, data && data.detail].filter(Boolean);
+      return parts.length ? parts.join(" — ") : "HTTP " + status;
+    }
+
     // ── Media: upload photos/videos directly to Vercel Blob ──
     const strip = $("mediaStrip");
     let uploadClient = null;
@@ -403,7 +410,7 @@
         });
         if (res.status === 401) { handleUnauthorized("Transcription"); return; }
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        if (!res.ok) throw new Error(errorText(data, res.status));
         const text = (data.text || "").trim();
         if (!text) { setStatus("Didn't catch anything — try again.", "err"); return; }
         ta.value = ta.value.trim() ? ta.value.replace(/\s+$/, "") + "\n\n" + text : text;
@@ -444,7 +451,7 @@
         });
         if (res.status === 401) { handleUnauthorized("Publish"); return; }
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        if (!res.ok) throw new Error(errorText(data, res.status));
         ta.value = "";
         mediaItems.splice(0).forEach((m) => m.el?.remove());
         const mediaNote = data.media ? ` with ${data.media} media` : "";
