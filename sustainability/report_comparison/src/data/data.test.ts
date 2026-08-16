@@ -14,7 +14,7 @@ import { describe, it, expect } from "vitest";
 import { METRIC_DEFS, buildMetricValue, buildMetricSeries } from "@/lib/metrics";
 import { peerMetricValue } from "@/lib/peerMetrics";
 import { companies, aggregateTotals } from "@/data/esgData";
-import { peerCompanies } from "@/data/peerData";
+import { peerCompanies, type PeerCompany } from "@/data/peerData";
 import { bankCompanies } from "@/data/bankData";
 import {
   healthcareEntities,
@@ -126,19 +126,59 @@ describe("Every company has a resolvable source", () => {
 });
 
 /* ── Peer/bank figures carry the same per-figure provenance ──────── */
+// metricId strings mirror the row `key` used in PeerComparison / PeerCompanyCard.
+const PEER_METRIC_IDS: Array<[string, (c: PeerCompany) => number | null]> = [
+  ["s1", (c) => c.scope1],
+  ["s2", (c) => c.scope2],
+  ["s3", (c) => c.scope3],
+  ["total", (c) => c.totalGHG],
+  ["headcount", (c) => c.headcount],
+  ["femaleBoard", (c) => c.femaleBoardPct],
+  ["netzero", (c) => c.netZeroYear],
+  ["indepDir", (c) => c.independentDirectorsPct],
+];
+
 describe("Peer/bank metric provenance", () => {
-  it("non-null → reported + cited; null → unverified + no citation", () => {
+  it("non-null → reported|confirmed + cited; null → unverified + no citation", () => {
     for (const set of [peerCompanies, bankCompanies]) {
       for (const c of set) {
-        const vals = [c.scope1, c.scope2, c.scope3, c.totalGHG, c.headcount, c.femaleBoardPct, c.netZeroYear];
-        for (const v of vals) {
-          const mv = peerMetricValue(c, v, "unit");
+        for (const [metricId, get] of PEER_METRIC_IDS) {
+          const v = get(c);
+          const mv = peerMetricValue(c, v, "unit", undefined, metricId);
           if (v === null) {
-            expect(mv.status, c.id).toBe("unverified");
-            expect(mv.citation, c.id).toBeNull();
+            expect(mv.status, `${c.id}/${metricId}`).toBe("unverified");
+            expect(mv.citation, `${c.id}/${metricId}`).toBeNull();
           } else {
-            expect(mv.status, c.id).toBe("reported");
-            expect(mv.citation, c.id).not.toBeNull();
+            expect(["confirmed", "reported"], `${c.id}/${metricId}`).toContain(mv.status);
+            expect(mv.citation, `${c.id}/${metricId}`).not.toBeNull();
+          }
+        }
+      }
+    }
+  });
+
+  it("never emits a confirmed value without a page-level citation", () => {
+    for (const set of [peerCompanies, bankCompanies]) {
+      for (const c of set) {
+        for (const [metricId, get] of PEER_METRIC_IDS) {
+          const v = get(c);
+          const mv = peerMetricValue(c, v, "unit", undefined, metricId);
+          if (mv.status === "confirmed") {
+            expect(mv.citation, `${c.id}/${metricId}`).not.toBeNull();
+            expect(typeof mv.citation?.page, `${c.id}/${metricId} confirmed but no page`).toBe("number");
+          }
+        }
+      }
+    }
+  });
+
+  it("a citationPages entry can never promote a null value to confirmed", () => {
+    for (const set of [peerCompanies, bankCompanies]) {
+      for (const c of set) {
+        for (const [metricId, get] of PEER_METRIC_IDS) {
+          if (get(c) === null) {
+            const mv = peerMetricValue(c, null, "unit", undefined, metricId);
+            expect(mv.status, `${c.id}/${metricId}`).toBe("unverified");
           }
         }
       }
@@ -165,6 +205,27 @@ describe("Healthcare provenance", () => {
       for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
         if (mv.citation === null) {
           expect(effectiveFlag(mv), `${e.id}/${key}`).not.toBe("confirmed");
+        }
+      }
+    }
+  });
+
+  it("a citation with no recorded page can never be effectively confirmed", () => {
+    for (const e of healthcareEntities) {
+      for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
+        if (mv.citation !== null && typeof mv.citation.page !== "number") {
+          expect(effectiveFlag(mv), `${e.id}/${key}`).not.toBe("confirmed");
+        }
+      }
+    }
+  });
+
+  it("every effectively-confirmed value carries a numeric page", () => {
+    for (const e of healthcareEntities) {
+      for (const [key, mv] of Object.entries(e.metrics) as [string, HcMetricValue][]) {
+        if (effectiveFlag(mv) === "confirmed") {
+          expect(mv.citation, `${e.id}/${key}`).not.toBeNull();
+          expect(typeof mv.citation?.page, `${e.id}/${key} confirmed but no page`).toBe("number");
         }
       }
     }

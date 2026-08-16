@@ -92,14 +92,32 @@ export interface PeerCompany {
 
   naMetrics: string[];          // metric keys that are N/A for this business model
   dataNotes: string[];
+
+  /**
+   * Known page references in the source report, keyed by the row `key` used
+   * in PeerComparison's row list / PeerCompanyCard's stat keys (e.g. "s1",
+   * "s2", "s3", "total", "sf6", "intensity", "normIntensity", "systemLoss",
+   * "netzero", "headcount", "femaleBoard", "femaleWorkforce",
+   * "femaleSeniorMgmt", "training", "turnover", "engagement", "injury",
+   * "indepDir"). Only populated where a page was actually recorded during
+   * extraction — never guessed. See lib/peerMetrics.ts.
+   */
+  citationPages?: Record<string, number>;
 }
 
 export const peerCompanies: PeerCompany[] = [
   /* ═══════════════════════════════════════════════════════════════
-     MERALCO (Manila Electric Company) — "One Meralco" group
-     Source: One Meralco 2024 Integrated Report (FY2024, calendar year)
-     PDF: meralcomain.s3.../one_meralco_2024_integrated_report_0.pdf
-     Figures = equity-adjusted, One Meralco group. Verified June 2026.
+     MERALCO (Manila Electric Company)
+     Source: SEC Form 17-A Annual Report (incl. Part V Sustainability
+     Report), for the fiscal year ended 31 December 2025.
+     Filed with the Philippine SEC; Drive copy verified July 2026.
+     NOTE: text extraction reached only the front matter through Item 13
+     (Corporate Governance), i.e. printed pages up to ~149 of ~162. Part V
+     "Sustainability Report" (printed page 157 onward per the filing's own
+     Table of Contents) — which holds the GHG, energy, safety and
+     community-investment KPIs — was NOT reached, so most environmental/
+     social metrics are N/D this cycle rather than carried forward from
+     the FY2024 Integrated Report previously cited here.
   ═══════════════════════════════════════════════════════════════ */
   {
     id: "meralco",
@@ -111,53 +129,59 @@ export const peerCompanies: PeerCompany[] = [
     city: "Metro Manila",
     climateContext: "Dense tropical megacity, tropical climate",
     businessModel: "Integrated electric utility (distribution + generation)",
-    reportingPeriod: "FY2024",
+    reportingPeriod: "FY2025",
     dataSource: {
-      reportTitle: "One Meralco 2024 Integrated Report",
-      reportingPeriod: "FY2024 (1 Jan – 31 Dec 2024)",
-      url: "https://company.meralco.com.ph/node/13077",
-      accessDate: "June 2026",
+      reportTitle: "MERALCO SEC Form 17-A Annual Report (incl. Part V Sustainability Report) 2025",
+      reportingPeriod: "FY2025 (1 Jan – 31 Dec 2025)",
+      url: "https://edge.pse.com.ph/",
+      accessDate: "July 2026",
     },
-    scope1: 6_630_953,           // equity-adjusted; dominated by MGen coal/gas generation
-    scope2: 2_418_234,           // dominated by system loss (2,350,989 tCO2e)
-    scope3: 37_671_744,
-    totalGHG: 46_720_931,
-    scope2Basis: "Location-based (energy purchased) + system loss",
-    intensityValue: 134,         // combined Scope 1+2 emission intensity
-    intensityUnit: "tCO2e/GWh (S1+2)",
-    normalizedIntensityKgPerKwh: 0.134, // exact conversion of 134 tCO2e/GWh (S1+2)
-    normalizedIntensityNote: "Exact unit conversion of the reported 134 tCO₂e/GWh (Scope 1+2): 134 tCO₂e/GWh = 0.134 kg CO₂e/kWh.",
-    sf6tCO2e: 4_208,             // 4,207.90 tCO2e (166.98 kg SF6)
-    systemLossPct: 5.99,         // 2024, below the 6.50% regulatory cap
-    renewableNote:
-      "Secured 2,329 MW of new renewable energy power-supply agreements (target was 1,500 MW). Group GHG inventory covers CO₂ and SF₆.",
-    netZeroYear: null,           // No explicit dated net-zero commitment found
-    reductionTarget:
-      "Stated goals: 'coal-free by 2050' and a '30 by '30' interim programme. No single dated company-wide net-zero year disclosed.",
-    headcount: 19_623,
-    femaleBoardPct: null,        // report notes ≥1 female independent director; exact board gender % not disclosed
-    femaleWorkforcePct: 23,
-    trainingHoursPerEmployee: 45, // "over 45 training hours per employee" (2024); Meralco DU overall avg 45.4
-    injuryMetricValue: 1.42,
-    injuryMetricUnit: "LTIFR (lost-time injury freq. rate, per million hours)",
-    communityInvestmentNative: "PhP 224M",
+    scope1: null,              // not re-verified for FY2025 — see dataNotes (Part V not reached)
+    scope2: null,              // not re-verified for FY2025 — see dataNotes
+    scope3: null,              // not re-verified for FY2025 — see dataNotes
+    totalGHG: null,            // not re-verified for FY2025 — see dataNotes
+    scope2Basis: "N/D — not re-verified for FY2025",
+    intensityValue: null,      // not re-verified for FY2025 — see dataNotes
+    intensityUnit: "N/D",
+    normalizedIntensityKgPerKwh: null,
+    normalizedIntensityNote: "Not re-verified for FY2025 — see dataNotes.",
+    sf6tCO2e: null,             // not re-verified for FY2025 — see dataNotes
+    systemLossPct: 5.85,        // FY2025; down from 5.99% in FY2024, below the 6.50% regulatory cap
+    renewableNote: "Not re-verified for FY2025 — see dataNotes (Part V not reached).",
+    netZeroYear: null,           // No explicit dated net-zero commitment found in the extracted portion
+    reductionTarget: "Not re-verified for FY2025 — see dataNotes (Part V not reached).",
+    headcount: null,            // "MERALCO has a total of 6,175 regular employees" (FY2025) is PARENT-COMPANY-ONLY — a narrower scope than the "One Meralco" group figure (19,623) previously stored, so not used as a replacement — see dataNotes
+    femaleBoardPct: 18.2,        // newly confirmed: 2 of 11 directors
+    femaleWorkforcePct: null,   // not re-verified for FY2025 — see dataNotes
+    trainingHoursPerEmployee: null, // not re-verified for FY2025 — see dataNotes
+    injuryMetricValue: null,    // not re-verified for FY2025 — see dataNotes ("LTI cases declining by 21%" found, but not the LTIFR rate itself)
+    injuryMetricUnit: "N/D — LTIFR rate not located within the extracted portion",
+    communityInvestmentNative: "N/D",
     communityInvestmentNote:
-      "PhP 224 million CSR project expenses (2024, GRI 201-1). ≈ S$5.1M at PhP→SGD ≈ 0.0228 (mid-2025, approximate). One Meralco Foundation programmes reported separately.",
-    independentDirectorsPct: 27.3, // 3 independent of 11 directors
-    antiCorruptionTrainingPct: null, // GRI 205-2 reported & DNV-assured, but % not in extracted data
-    externalAssurance: true,
-    externalAssuranceProvider: "DNV (VeriSustain v6.0; AA1000AS v3)",
+      "PhP 224M was the FY2024 CSR project-expense figure (GRI 201-1); the FY2025 equivalent was not located within the extracted portion of the 17-A (Part V not reached) and is not carried forward.",
+    independentDirectorsPct: 27.3, // confirmed unchanged: 3 independent of 11 directors
+    antiCorruptionTrainingPct: null, // not re-verified for FY2025 (Anti-Bribery and Corruption Policy referenced, but no % found)
+    externalAssurance: null,    // not re-verified for FY2025 — see dataNotes
+    externalAssuranceProvider: null,
     frameworks: ["GRI 2021", "GRI G4 Electric Utilities", "SASB (IF-EU)", "IFRS S2", "TCFD-aligned"],
     naMetrics: [],
     dataNotes: [
-      "CRITICAL: the 'One Meralco' report CONSOLIDATES generation via subsidiary MGen (coal/gas), so group Scope 1 (6.63M tCO₂e) is dominated by power GENERATION, not the distribution 'wires' business. At group level Meralco is effectively an integrated utility, not pure distribution.",
-      "Scope 2 (2.42M tCO₂e) is dominated by system (distribution) loss emissions: 2.35M tCO₂e.",
-      "System loss 5.99% (2024) is the distribution-network loss rate, below the 6.50% regulatory cap.",
-      "Carbon intensity (134 tCO₂e/GWh, Scope 1+2) uses a per-GWh denominator; CLP reports per-kWh — convert before comparing.",
-      "LTIFR rose to 1.42 (2024) from 0.35 (2023). Figures are equity-adjusted group totals.",
-      "No explicit dated net-zero commitment found in the report; targets are 'coal-free by 2050' plus '30 by '30' interim goals.",
-      "Community investment: PhP 224M (2024) ≈ S$5.1M at PhP→SGD ≈ 0.0228 (mid-2025, approximate); the native PhP figure is authoritative. CLP reports in HK$ — figures are shown in native currency and not ranked against each other.",
+      "This 17-A filing's Part V 'Sustainability Report' (printed page 157 onward, per the filing's own Table of Contents) is where GHG emissions, energy, safety and community-investment KPIs live — that section was NOT reached by text extraction this cycle (which covered roughly the front matter through Item 13, Corporate Governance, ending around printed page 149). Rather than carry forward the FY2024 Integrated Report's figures under a new FY2025 reportingPeriod, those fields are left N/D — see individual field comments for what each N/D represents.",
+      "System loss IS confirmed for FY2025 from the Operational Data table in Item 6 (MD&A): 5.85% (FY2025), 5.99% (FY2024, matching the figure previously stored), 5.88% (FY2023) — all below the 6.50% regulatory cap.",
+      "Board composition confirmed unchanged: 11 directors, 3 independent (incl. 1 female independent director), 7 non-executive, 1 executive — independentDirectorsPct 27.3% matches the figure previously stored. Board gender split is now also confirmed: 9 male, 2 female directors (18.2%) — this was previously N/D ('exact board gender % not disclosed'); it is disclosed in this filing's Board Diversity section.",
+      "Headcount: the filing states 'MERALCO has a total of 6,175 regular employees' as at 31 Dec 2025, but this is the MERALCO parent-company headcount only (Managerial/Executive 1,822 + Supervisory/Rank-and-file 4,353) — a materially narrower scope than the 'One Meralco' consolidated-group figure (19,623, including MGen and other subsidiaries) previously stored under this field. Left N/D rather than substituting a different-scope number.",
+      "'Lost Time Injury (\"LTI\") cases declining by 21%' is stated in Item 6, but this is a year-over-year change in case count, not the LTIFR rate itself (the metric this field represents) — left N/D.",
+      "No net-zero target, external-assurance statement, SF₆ figure, training-hours figure, or community-investment SGD/PhP figure for FY2025 was found within the extracted portion.",
     ],
+    citationPages: {
+      // Verified July 2026 against MERALCO's SEC Form 17-A (incl. Part V Sustainability Report) for FY2025 (Drive copy).
+      // Operational Data — "System loss (in percentage): MERALCO 5.85 5.99 5.88" (2025/2024/2023 columns).
+      systemLoss: 42,
+      // Board Diversity: "the Board has two (2) female directors" of 11 — "9 male and 2 female directors".
+      femaleBoard: 134,
+      // Board Composition: "The Board consists of eleven (11) directors, three (3) of whom are independent directors".
+      indepDir: 133,
+    },
   },
 
   /* ═══════════════════════════════════════════════════════════════
@@ -233,7 +257,22 @@ export const peerCompanies: PeerCompany[] = [
       "System/T&D loss % is N/D (not disclosed); CLP reports reliability indices instead (e.g. supply availability 99.999%). The metric applies to its business — this is N/D, not N/A.",
       "Injury rate uses a per-200,000-work-hours basis — different from Meralco's per-million-hours LTIFR; not directly comparable.",
       "Community figure is the HK$240M CLP Community Energy Saving Fund allocation; a consolidated community-investment total is not disclosed in the Annual Report.",
+      "Verified July 2026 against the CLP Holdings 2025 Sustainability Report (a different CLP document than the Annual Report originally cited, but the same FY2025 period, and CLP's own official report). That document does not carry CLP's absolute Scope 1/2/3/total GHG tonnages, its 0.58 kg CO2e/kWh S1+2-only intensity, female workforce/senior-management %, or board independence % — those live in the Annual Report's Five-Year ESG Data table or the separate ESG Databook, neither available in Drive — so scope1, scope2, scope3, total, normIntensity, femaleWorkforce, femaleSeniorMgmt and indepDir remain uncited (reported, not confirmed).",
+      "The Sustainability Report's 'Employees and contractors by region' table (Group total Average FTE 8,467.2) is close to but does not exactly match the stored headcount of 8,539 (a different metric — average FTE across the year vs. the Annual Report's point-in-time headcount) — left uncited rather than treated as a straight match.",
     ],
+    citationPages: {
+      // Verified July 2026 against CLP Holdings 2025 Sustainability Report (Drive copy).
+      // "...further reduced the Group's GHG emissions intensity to 0.50kg CO2e per kilowatt hour in 2025."
+      intensity: 25,
+      // "...achieve net-zero GHG emissions across our value chain by 2050."
+      netzero: 6,
+      // Sustainability agenda scorecard: Board diversity target >30% female — "2025 performance: 38%".
+      femaleBoard: 7,
+      // "51.9 training hours/employee (in line with 2024)".
+      training: 28,
+      // "The lost-time injury rate fell to a record low of 0.04."
+      injury: 79,
+    },
   },
 
   /* ═══════════════════════════════════════════════════════════════
@@ -310,6 +349,24 @@ export const peerCompanies: PeerCompany[] = [
       "Independent directors 81.8% (9 of 11) uses the Companies Act basis (8 independent NEDs + Chair independent on appointment); NED-only would be 72.7%.",
       "External assurance by Deloitte LLP (limited assurance, ISAE 3000 / ISAE 3410) on ESG/Responsible Business metrics.",
       "Data taken from the SEC-filed Form 20-F because nationalgrid.com is Cloudflare-blocked to automated access. Fiscal year ends 31 March.",
+      "Verified July 2026 against the 'Responsible Business review' chapter (pp.38-52) of the National Grid plc Annual Report and Accounts 2025/26 itself (a Drive upload of that excerpt, distinct from the SEC 20-F originally cited). totalGHG, netZeroYear, headcount, femaleBoard/Workforce/SeniorMgmt %, employee engagement, LTIFR and the external assurance provider all matched exactly. Scope 1/2/3 individual absolute figures, GHG intensity (425 tCO2e/£M revenue), and independent-directors % were not present in this excerpt (the first two likely sit in the separate Responsible Business data tables; board independence is a Corporate Governance-chapter disclosure) — left uncited rather than guessed.",
+      "Community investment also corroborated in this excerpt: 'the fund commits £3.5 million of support in the UK and £3.3 million in the US' each year — not formally cited (communityInvestmentNative is a free-text field, not run through the citation system) but confirms the existing £6.8M/yr figure.",
     ],
+    citationPages: {
+      // Verified July 2026 against the Annual Report and Accounts 2025/26 "Responsible Business review" excerpt (Drive copy).
+      // "Achieve net zero by 2050."
+      netzero: 40,
+      // "Our 2025/26 GHG emissions footprint across direct and indirect sources was 37,015 ktCO2e."
+      total: 42,
+      // "Our 33,017 colleagues across the UK and US" / Gender demographic table (Board, Senior management, Whole company).
+      headcount: 48,
+      femaleBoard: 48,
+      femaleWorkforce: 48,
+      femaleSeniorMgmt: 48,
+      // "81% ... Employee engagement index in 2025/26" (Grid:Voice).
+      engagement: 48,
+      // "We have recorded a Group LTIFR of 0.11 this year."
+      injury: 49,
+    },
   },
 ];
