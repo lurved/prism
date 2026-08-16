@@ -15,6 +15,7 @@ makes "usage across all my sites" answerable in a single query:
 | `typeme`         | Type Me app (`/typeme`, `/typeme/u/*`)            |
 | `esg`            | ESG Tracker (Next.js, `/sustainability/report_comparison`) |
 | `sustainability` | SP Group report (`/sustainability`, `/sustainability/sr2026`) |
+| `werewolf`       | Werewolf party game (`/werewolf`, `/werewolf/guide`) |
 
 Captured automatically: `$pageview` (SPA-aware), `$pageleave`, and autocapture
 clicks. Custom **Type Me funnel** events (the viral loop):

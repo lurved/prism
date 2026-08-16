@@ -4,7 +4,8 @@
  *
  * This is the tool Claude / cowork uses to answer "analyse usage across all my
  * sites". Every pris.la page tags its events with a `site` property
- * ("home" | "typeme" | "esg" | "sustainability"), so one query compares them.
+ * ("home" | "typeme" | "esg" | "sustainability" | "werewolf"), so one query
+ * compares them.
  *
  * Usage:
  *   node scripts/posthog-usage.mjs                 # default 30-day site summary
