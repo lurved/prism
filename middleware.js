@@ -27,6 +27,15 @@ function timingSafeEqualHex(a, b) {
   return mismatch === 0;
 }
 
+// Constant-time compare of two arbitrary (possibly different-length) strings:
+// hash both to a fixed-length digest first, then use the fixed-length
+// comparison above. The password itself is short-lived, low-value, and not
+// used as key material elsewhere, so it's fine as the HMAC key here.
+async function timingSafeEqualString(a, b) {
+  const [ha, hb] = await Promise.all([hmacHex(a, 'pw-check'), hmacHex(b, 'pw-check')]);
+  return timingSafeEqualHex(ha, hb);
+}
+
 // Session token = "<expiryMs>.<hmac(password, expiryMs)>" — self-expiring and
 // unforgeable without the password. Replaces the old static "granted" cookie
 // that any visitor could set by hand to bypass the gate.
@@ -165,7 +174,7 @@ export default async function middleware(request) {
     const params = new URLSearchParams(body);
     const submitted = params.get('password');
 
-    if (submitted != null && submitted.length > 0 && submitted === PASSWORD) {
+    if (submitted != null && submitted.length > 0 && (await timingSafeEqualString(submitted, PASSWORD))) {
       // Set signed session cookie and redirect back to the protected page
       return new Response(null, {
         status: 302,
