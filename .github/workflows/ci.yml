@@ -68,5 +68,26 @@ jobs:
           done
           exit $status
 
+      # Vercel turns every api/**/*.js file (except _-prefixed helpers, which
+      # aren't routes) into its own Serverless Function. This already broke a
+      # deploy once: commit 603ebdb — six new /who endpoints took the project
+      # from 10 to 16, past the plan's per-deployment cap, the whole build
+      # failed, and the site silently kept serving the last good deployment
+      # with no alert. The fix at the time was collapsing /who into one
+      # file, bringing the count back to 12 — which is the only number this
+      # project has ever been confirmed to deploy on. This check fails the
+      # PR the moment a new file would push past that, instead of failing
+      # silently at deploy time. If the account is confirmed to be on a plan
+      # with a higher cap, raise MAX_FUNCTIONS accordingly.
+      - name: Guard against exceeding the Vercel function cap
+        run: |
+          MAX_FUNCTIONS=12
+          count=$(find api -name "*.js" -not -name "_*" | wc -l)
+          echo "Deployable functions in api/: $count (cap: $MAX_FUNCTIONS)"
+          if [ "$count" -gt "$MAX_FUNCTIONS" ]; then
+            echo "::error::api/ has $count deployable functions, over the $MAX_FUNCTIONS cap that has broken a deploy before (see commit 603ebdb). Consolidate routes behind a single dispatcher file (see api/werewolf/index.js or api/typeme/hub.js) before merging."
+            exit 1
+          fi
+
       - name: Build (Eleventy; Tina build is best-effort without cloud creds)
         run: npm run build
