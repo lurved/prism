@@ -1,5 +1,5 @@
 export const config = {
-  matcher: ['/sustainability/sr2026', '/sustainability/sr2026/(.*)'],
+  matcher: ['/sustainability/sr2026', '/sustainability/sr2026/(.*)', '/api/pet'],
 };
 
 const COOKIE_NAME = 'sr2026_auth';
@@ -132,8 +132,84 @@ const LOGIN_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
+
+/* ── /api/pet — the global pat counter for Pris, the desk pet ──────────
+   This lives in middleware rather than api/pet.js on purpose: Vercel counts
+   every api/*.js file as a Serverless Function and this project already sits
+   on the plan's per-deployment cap (see api/werewolf/index.js). Middleware
+   does not count against it, and a single INCR needs nothing more.
+
+     GET  /api/pet            -> { total }
+     POST /api/pet  { n }     -> { total }   n clamped to 1..20
+
+   Storage is the Upstash REST API already configured for /api/chat. With no
+   credentials set the endpoint answers { total: null } so the widget quietly
+   falls back to its local count instead of erroring.
+
+     pet:pats            str   lifetime pats
+     pet:rl:{ip}:{min}   str   per-IP rate-limit counter (60s TTL)          */
+
+const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+const PAT_RATE_LIMIT = 60; // pats per IP per minute
+
+const petJson = (body, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
+
+// Upstash REST pipeline: one round trip, returns an array of results.
+async function redisPipeline(commands) {
+  const res = await fetch(`${UPSTASH_URL}/pipeline`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${UPSTASH_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(commands),
+  });
+  if (!res.ok) throw new Error(`upstash ${res.status}`);
+  return (await res.json()).map((r) => r.result);
+}
+
+async function handlePet(request) {
+  if (!UPSTASH_URL || !UPSTASH_TOKEN) return petJson({ total: null });
+
+  try {
+    if (request.method === 'GET') {
+      const [raw] = await redisPipeline([['GET', 'pet:pats']]);
+      return petJson({ total: Number(raw) || 0 });
+    }
+
+    if (request.method === 'POST') {
+      const ip = (request.headers.get('x-forwarded-for') || 'unknown').split(',')[0].trim();
+      const key = `pet:rl:${ip}:${Math.floor(Date.now() / 60000)}`;
+      const [hits] = await redisPipeline([['INCR', key], ['EXPIRE', key, 60]]);
+      if (hits > PAT_RATE_LIMIT) return petJson({ error: 'rate-limited' }, 429);
+
+      let n = 1;
+      try {
+        const body = await request.json();
+        n = Math.min(20, Math.max(1, Math.floor(Number(body?.n)) || 1));
+      } catch {
+        // No body, or not JSON — one pat is a fine default.
+      }
+      const [total] = await redisPipeline([['INCRBY', 'pet:pats', n]]);
+      return petJson({ total: Number(total) || 0 });
+    }
+
+    return petJson({ error: 'method-not-allowed' }, 405);
+  } catch {
+    // A counter is not worth a visible failure; the widget falls back locally.
+    return petJson({ total: null });
+  }
+}
+
 export default async function middleware(request) {
   const { pathname } = new URL(request.url);
+
+  if (pathname === '/api/pet') return handlePet(request);
 
   // Only guard /sustainability/sr2026 paths
   if (!pathname.startsWith('/sustainability/sr2026')) {
