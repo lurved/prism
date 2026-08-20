@@ -71,9 +71,15 @@
     }
   }
 
-  // Wire toggle buttons
-  document.querySelectorAll('[data-chat-toggle]').forEach(el => {
-    el.addEventListener('click', () => setOpen(!isOpen));
+  // Delegated so toggles that mount later still work — Pris (pris-pet.js) is
+  // injected after this script runs and is one of them.
+  document.addEventListener('click', e => {
+    const toggle = e.target.closest && e.target.closest('[data-chat-toggle]');
+    if (!toggle) return;
+    setOpen(!isOpen);
+    document.querySelectorAll('[data-chat-toggle]').forEach(el => {
+      if (el.hasAttribute('aria-expanded')) el.setAttribute('aria-expanded', String(isOpen));
+    });
   });
   document.getElementById('chat-close').addEventListener('click', () => setOpen(false));
   document.getElementById('chat-send').addEventListener('click', send);

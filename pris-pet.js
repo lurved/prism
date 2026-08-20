@@ -14,6 +14,10 @@
  *    on Vercel's per-deployment function cap, so she cannot have a Serverless
  *    Function of her own. If that endpoint is missing she falls back to the
  *    local count and nothing breaks.
+ *  - She is the way into Priscilla's agent. Her button carries
+ *    data-chat-toggle, so chat-widget.js opens the panel on the same click
+ *    that pats her. Where a .chat-widget container exists she docks inside it
+ *    as its launcher; anywhere else she floats in the bottom-left corner.
  *  - The render loop sleeps with her: no repaint while the tab is hidden, and
  *    a slow tick once she is asleep and nothing is animating.
  */
@@ -50,8 +54,10 @@
   /* ── shell ──────────────────────────────────────────────────────── */
   var style = document.createElement("style");
   style.textContent = [
-    ".pris-pet{position:fixed;left:clamp(10px,2.4vw,22px);bottom:clamp(10px,2.4vw,22px);",
-      "z-index:55;pointer-events:none;display:flex;align-items:flex-end;gap:10px}",
+    ".pris-pet{pointer-events:none;display:flex;align-items:flex-end;gap:10px}",
+    ".pris-pet.is-floating{position:fixed;left:clamp(10px,2.4vw,22px);",
+      "bottom:clamp(10px,2.4vw,22px);z-index:55}",
+    ".pris-pet.is-docked{flex-direction:row-reverse}",
     ".pris-pet-btn{pointer-events:auto;width:" + SIZE + "px;height:" + SIZE + "px;padding:0;",
       "border:0;background:none;cursor:pointer;display:block;line-height:0;",
       "-webkit-tap-highlight-color:transparent;touch-action:manipulation}",
@@ -66,25 +72,37 @@
       "letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#9897b7);line-height:1.7}",
     ".pris-pet-tip.on{opacity:1;transform:translateY(0)}",
     ".pris-pet-tip b{display:block;font-weight:400;color:var(--ink,#ecebf3);letter-spacing:.14em}",
-    "@media (max-width:640px){.pris-pet{transform:scale(.8);transform-origin:left bottom}}",
+    ".pris-pet-cta{display:block;color:var(--accent,#f0a8b8)}",
+    ".pris-pet-count{display:block;opacity:.72}",
+    "@media (max-width:640px){.pris-pet{transform:scale(.82)}",
+      ".pris-pet.is-floating{transform-origin:left bottom}",
+      ".pris-pet.is-docked{transform-origin:right bottom}}",
     "@media print{.pris-pet{display:none}}"
   ].join("");
   document.head.appendChild(style);
 
+  // She is the agent's front door, so she lives in the chat widget where one
+  // exists and the panel can open directly above her.
+  var dock = document.querySelector(".chat-widget");
+
   var root = document.createElement("div");
-  root.className = "pris-pet";
+  root.className = "pris-pet " + (dock ? "is-docked" : "is-floating");
   root.innerHTML =
-    '<button class="pris-pet-btn" type="button" aria-label="Pris, the desk pet. Press to pat her.">' +
+    '<button class="pris-pet-btn" type="button" data-chat-toggle aria-expanded="false"' +
+      ' aria-label="Pris. Press to talk to Priscilla\'s agent.">' +
       '<canvas width="1" height="1"></canvas>' +
     '</button>' +
-    '<div class="pris-pet-tip" role="status"><b>Pris</b><span></span></div>';
-  document.body.appendChild(root);
+    '<div class="pris-pet-tip" role="status">' +
+      '<b>Pris</b><span class="pris-pet-cta">Talk to my agent &rarr;</span>' +
+      '<span class="pris-pet-count"></span>' +
+    '</div>';
+  (dock || document.body).appendChild(root);
 
   var btn = root.querySelector(".pris-pet-btn");
   var cv = root.querySelector("canvas");
   var ctx = cv.getContext("2d");
   var tip = root.querySelector(".pris-pet-tip");
-  var tipLine = tip.querySelector("span");
+  var tipCount = tip.querySelector(".pris-pet-count");
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   cv.width = SIZE * dpr; cv.height = SIZE * dpr;
@@ -120,9 +138,9 @@
   function fmt(n) { return n.toLocaleString(); }
 
   function renderTip() {
-    if (globalPats != null) tipLine.textContent = fmt(globalPats) + " pats";
-    else if (pats > 0) tipLine.textContent = fmt(pats) + (pats === 1 ? " pat from you" : " pats from you");
-    else tipLine.textContent = "Give her a pat";
+    if (globalPats != null) tipCount.textContent = fmt(globalPats) + " hellos so far";
+    else if (pats > 0) tipCount.textContent = fmt(pats) + (pats === 1 ? " hello from you" : " hellos from you");
+    else tipCount.textContent = "";
   }
   renderTip();
 
@@ -160,6 +178,9 @@
   window.addEventListener("pagehide", function () { if (pending) flush(); });
 
   /* ── interaction ────────────────────────────────────────────────── */
+  var panel = document.getElementById("chat-panel");
+  function chatOpen() { return !!(panel && panel.classList.contains("open")); }
+
   function wake() {
     lastActive = Date.now();
     if (asleep) { asleep = false; wokeAt = performance.now(); squashV -= 0.5; }
@@ -185,10 +206,15 @@
     }
     renderTip();
     queueFlush();
-    if (typeof window.track === "function") window.track("pet_patted", { pats: pats });
+    if (typeof window.track === "function") window.track("pet_patted", { pats: pats, opensChat: !!panel });
   }
 
-  btn.addEventListener("click", pat);
+  btn.addEventListener("click", function () {
+    pat();
+    // chat-widget.js handles the toggle via data-chat-toggle; read the result
+    // back so her button reports the panel's real state.
+    setTimeout(function () { btn.setAttribute("aria-expanded", String(chatOpen())); }, 0);
+  });
   btn.addEventListener("pointerenter", function () { tip.classList.add("on"); });
   btn.addEventListener("pointerleave", function () { tip.classList.remove("on"); });
   btn.addEventListener("focus", function () { tip.classList.add("on"); wake(); });
@@ -356,6 +382,7 @@
   function frame(now) {
     raf = requestAnimationFrame(frame);
 
+    if (chatOpen()) lastActive = Date.now();   // never nap mid-conversation
     if (!asleep && Date.now() - lastActive > SLEEP_AFTER) asleep = true;
 
     // While asleep with nothing animating there is nothing worth 60fps for.
