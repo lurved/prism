@@ -3,7 +3,9 @@
   "outputDirectory": ".",
   "redirects": [
     { "source": "/who", "destination": "/werewolf", "permanent": true },
-    { "source": "/who/:path*", "destination": "/werewolf/:path*", "permanent": true }
+    { "source": "/who/:path*", "destination": "/werewolf/:path*", "permanent": true },
+    { "source": "/wolf", "destination": "/werewolf", "permanent": false },
+    { "source": "/wolf/:path*", "destination": "/werewolf/:path*", "permanent": false }
   ],
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
