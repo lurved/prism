@@ -1,5 +1,5 @@
 /**
- * PRIS — the desk pet.
+ * PRISM — the desk pet.
  *
  * A small prism creature that lives in the bottom-left corner of the site.
  * She watches the cursor, blinks, falls asleep when the page goes quiet, and
@@ -24,8 +24,8 @@
 (function () {
   "use strict";
 
-  if (window.__prisPet) return;              // never mount twice
-  window.__prisPet = true;
+  if (window.__prismPet) return;              // never mount twice
+  window.__prismPet = true;
 
   var SIZE = 112;                            // canvas edge, CSS px
   var CX = SIZE / 2, CY = SIZE / 2 + 6;      // she sits a little low in the box
@@ -54,30 +54,30 @@
   /* ── shell ──────────────────────────────────────────────────────── */
   var style = document.createElement("style");
   style.textContent = [
-    ".pris-pet{pointer-events:none;display:flex;align-items:flex-end;gap:10px}",
-    ".pris-pet.is-floating{position:fixed;left:clamp(10px,2.4vw,22px);",
+    ".prism-pet{pointer-events:none;display:flex;align-items:flex-end;gap:10px}",
+    ".prism-pet.is-floating{position:fixed;left:clamp(10px,2.4vw,22px);",
       "bottom:clamp(10px,2.4vw,22px);z-index:55}",
-    ".pris-pet.is-docked{flex-direction:row-reverse}",
-    ".pris-pet-btn{pointer-events:auto;width:" + SIZE + "px;height:" + SIZE + "px;padding:0;",
+    ".prism-pet.is-docked{flex-direction:row-reverse}",
+    ".prism-pet-btn{pointer-events:auto;width:" + SIZE + "px;height:" + SIZE + "px;padding:0;",
       "border:0;background:none;cursor:pointer;display:block;line-height:0;",
       "-webkit-tap-highlight-color:transparent;touch-action:manipulation}",
-    ".pris-pet-btn canvas{width:100%;height:100%;display:block}",
-    ".pris-pet-btn:focus{outline:none}",
-    ".pris-pet-btn:focus-visible{outline:2px solid var(--accent,#f0a8b8);outline-offset:-8px;border-radius:12px}",
-    ".pris-pet-tip{pointer-events:none;opacity:0;transform:translateY(4px);",
+    ".prism-pet-btn canvas{width:100%;height:100%;display:block}",
+    ".prism-pet-btn:focus{outline:none}",
+    ".prism-pet-btn:focus-visible{outline:2px solid var(--accent,#f0a8b8);outline-offset:-8px;border-radius:12px}",
+    ".prism-pet-tip{pointer-events:none;opacity:0;transform:translateY(4px);",
       "transition:opacity .18s ease,transform .18s ease;margin-bottom:26px;",
       "padding:7px 11px;border-radius:3px;white-space:nowrap;",
       "background:var(--surface-card,#2e3360);border:1px solid var(--line,#393d63);",
       "font-family:var(--font-mono,'Space Mono',ui-monospace,monospace);font-size:10px;",
       "letter-spacing:.08em;text-transform:uppercase;color:var(--soft,#9897b7);line-height:1.7}",
-    ".pris-pet-tip.on{opacity:1;transform:translateY(0)}",
-    ".pris-pet-tip b{display:block;font-weight:400;color:var(--ink,#ecebf3);letter-spacing:.14em}",
-    ".pris-pet-cta{display:block;color:var(--accent,#f0a8b8)}",
-    ".pris-pet-count{display:block;opacity:.72}",
-    "@media (max-width:640px){.pris-pet{transform:scale(.82)}",
-      ".pris-pet.is-floating{transform-origin:left bottom}",
-      ".pris-pet.is-docked{transform-origin:right bottom}}",
-    "@media print{.pris-pet{display:none}}"
+    ".prism-pet-tip.on{opacity:1;transform:translateY(0)}",
+    ".prism-pet-tip b{display:block;font-weight:400;color:var(--ink,#ecebf3);letter-spacing:.14em}",
+    ".prism-pet-cta{display:block;color:var(--accent,#f0a8b8)}",
+    ".prism-pet-count{display:block;opacity:.72}",
+    "@media (max-width:640px){.prism-pet{transform:scale(.82)}",
+      ".prism-pet.is-floating{transform-origin:left bottom}",
+      ".prism-pet.is-docked{transform-origin:right bottom}}",
+    "@media print{.prism-pet{display:none}}"
   ].join("");
   document.head.appendChild(style);
 
@@ -86,23 +86,23 @@
   var dock = document.querySelector(".chat-widget");
 
   var root = document.createElement("div");
-  root.className = "pris-pet " + (dock ? "is-docked" : "is-floating");
+  root.className = "prism-pet " + (dock ? "is-docked" : "is-floating");
   root.innerHTML =
-    '<button class="pris-pet-btn" type="button" data-chat-toggle aria-expanded="false"' +
-      ' aria-label="Pris. Press to talk to Priscilla\'s agent.">' +
+    '<button class="prism-pet-btn" type="button" data-chat-toggle aria-expanded="false"' +
+      ' aria-label="Prism. Press to talk to Priscilla\'s agent.">' +
       '<canvas width="1" height="1"></canvas>' +
     '</button>' +
-    '<div class="pris-pet-tip" role="status">' +
-      '<b>Pris</b><span class="pris-pet-cta">Talk to my agent &rarr;</span>' +
-      '<span class="pris-pet-count"></span>' +
+    '<div class="prism-pet-tip" role="status">' +
+      '<b>Prism</b><span class="prism-pet-cta">Talk to my agent &rarr;</span>' +
+      '<span class="prism-pet-count"></span>' +
     '</div>';
   (dock || document.body).appendChild(root);
 
-  var btn = root.querySelector(".pris-pet-btn");
+  var btn = root.querySelector(".prism-pet-btn");
   var cv = root.querySelector("canvas");
   var ctx = cv.getContext("2d");
-  var tip = root.querySelector(".pris-pet-tip");
-  var tipCount = tip.querySelector(".pris-pet-count");
+  var tip = root.querySelector(".prism-pet-tip");
+  var tipCount = tip.querySelector(".prism-pet-count");
 
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   cv.width = SIZE * dpr; cv.height = SIZE * dpr;

@@ -71,7 +71,7 @@
     }
   }
 
-  // Delegated so toggles that mount later still work — Pris (pris-pet.js) is
+  // Delegated so toggles that mount later still work — Prism (prism-pet.js) is
   // injected after this script runs and is one of them.
   document.addEventListener('click', e => {
     const toggle = e.target.closest && e.target.closest('[data-chat-toggle]');

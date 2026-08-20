@@ -133,7 +133,7 @@ const LOGIN_HTML = `<!DOCTYPE html>
 </html>`;
 
 
-/* ── /api/pet — the global pat counter for Pris, the desk pet ──────────
+/* ── /api/pet — the global pat counter for Prism, the desk pet ──────────
    This lives in middleware rather than api/pet.js on purpose: Vercel counts
    every api/*.js file as a Serverless Function and this project already sits
    on the plan's per-deployment cap (see api/werewolf/index.js). Middleware
