@@ -1,13 +1,9 @@
 {
-  "$comment": "Scope for the knowledge ingest. Edit this, then run `npm run ingest:preview` from /agent before writing.",
+  "$comment": "Scope for the knowledge ingest. Run `npm run ingest:preview` from /agent to see what this picks up before writing.",
 
-  "sourceDir": "/Users/priscilla",
+  "sourceDir": "/Users/priscilla/jobagent",
 
-  "include": [
-    "Documents/**",
-    "Desktop/**",
-    "agent-knowledge/**"
-  ],
+  "include": ["**"],
 
   "exclude": [
     "**/node_modules/**",

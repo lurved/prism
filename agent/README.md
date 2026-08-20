@@ -37,22 +37,22 @@ Vercel redeploys on push, and the agent is answering from the new corpus.
 
 ```jsonc
 {
-  "sourceDir": "/Users/priscilla",   // override with --src or AGENT_SOURCE_DIR
-  "include":   ["Documents/**", "Desktop/**", "agent-knowledge/**"],
+  "sourceDir": "/Users/priscilla/jobagent",  // override: --src or AGENT_SOURCE_DIR
+  "include":   ["**"],                       // everything under sourceDir
   "exclude":   ["**/node_modules/**", ...],
   "extensions": [".md", ".txt", ".pdf", ".docx", ...]
 }
 ```
 
-`include` is deliberately **not** the whole of `/Users/priscilla`. A home folder
-holds tax records, client material and half-finished drafts, and everything
-ingested becomes answerable by a public chat widget. Widen `include` only to
-folders whose contents could sit on the public site.
+The source is a dedicated folder, `~/jobagent`, rather than the home folder
+itself — so `include` can safely be everything under it. Put in only what the
+agent should know: CV, bio, talk abstracts, project write-ups, FAQ answers.
+Drop a file in, re-ingest, done.
 
-The cleanest setup is a dedicated folder — `/Users/priscilla/agent-knowledge` —
-holding only what the agent should know: CV, bio, talk abstracts, project
-write-ups, FAQ answers. Drop a file in, re-ingest, done. It is already in the
-default `include` list.
+Keep it that way. Everything ingested becomes answerable by a public chat
+widget, so pointing `sourceDir` at a broader folder means tax records, client
+material and half-finished drafts are all fair game for the agent to quote to
+a stranger.
 
 ### What is refused regardless of config
 
