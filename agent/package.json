@@ -4,9 +4,15 @@
   "description": "AI headhunter agent for Priscilla Liu's personal site",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "ingest": "node ingest.js",
+    "ingest:preview": "node ingest.js --dry-run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0"
+  },
+  "optionalDependencies": {
+    "mammoth": "^1.8.0",
+    "pdf-parse": "^1.1.1"
   }
 }

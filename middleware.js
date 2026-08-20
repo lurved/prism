@@ -1,5 +1,5 @@
 export const config = {
-  matcher: ['/sustainability/sr2026', '/sustainability/sr2026/(.*)', '/api/pet'],
+  matcher: ['/sustainability/sr2026', '/sustainability/sr2026/(.*)', '/api/pet', '/agent/(.*)'],
 };
 
 const COOKIE_NAME = 'sr2026_auth';
@@ -210,6 +210,16 @@ export default async function middleware(request) {
   const { pathname } = new URL(request.url);
 
   if (pathname === '/api/pet') return handlePet(request);
+
+  // The static output directory is the repo root, so /agent/* would otherwise
+  // serve the agent's knowledge base — profile.js and the ingested corpus —
+  // as plain files. Those are inputs to the chat API, not public assets.
+  if (pathname.startsWith('/agent/')) {
+    return new Response('Not found', {
+      status: 404,
+      headers: { 'Content-Type': 'text/plain' },
+    });
+  }
 
   // Only guard /sustainability/sr2026 paths
   if (!pathname.startsWith('/sustainability/sr2026')) {

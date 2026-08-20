@@ -1,0 +1,32 @@
+{
+  "$comment": "Scope for the knowledge ingest. Edit this, then run `npm run ingest:preview` from /agent before writing.",
+
+  "sourceDir": "/Users/priscilla",
+
+  "include": [
+    "Documents/**",
+    "Desktop/**",
+    "agent-knowledge/**"
+  ],
+
+  "exclude": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/venv/**",
+    "**/__pycache__/**",
+    "**/*.lock",
+    "**/package-lock.json"
+  ],
+
+  "extensions": [
+    ".md", ".markdown", ".txt", ".rst",
+    ".html", ".htm",
+    ".csv", ".json",
+    ".pdf", ".docx"
+  ],
+
+  "maxFileBytes": 2000000,
+  "maxFiles": 400,
+  "chunkChars": 1200,
+  "chunkOverlapChars": 150
+}

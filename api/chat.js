@@ -2,11 +2,15 @@
  * Vercel Serverless Function — /api/chat
  * Deployed automatically when you connect this repo to Vercel.
  * Set ANTHROPIC_API_KEY in your Vercel project environment variables.
+ *
+ * The system prompt is built per request in agent/prompt.js: when an ingested
+ * corpus is present it is grounded in documents from Priscilla's own folder and
+ * nothing else, with the excerpts relevant to each question selected per turn.
  */
 
 const Anthropic = require("@anthropic-ai/sdk");
 const { Redis } = require("@upstash/redis");
-const profile = require("../agent/profile");
+const { buildSystemPrompt } = require("../agent/prompt");
 
 // Redis client — env vars set automatically by Vercel Upstash integration
 const redis = process.env.UPSTASH_REDIS_REST_URL
@@ -17,146 +21,6 @@ const redis = process.env.UPSTASH_REDIS_REST_URL
   : null;
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-function buildSystemPrompt() {
-  const exp = profile.experience
-    .map(
-      (e) =>
-        `**${e.company} (${e.period}) — ${e.role}**\n${e.highlights.map((h) => `- ${h}`).join("\n")}`
-    )
-    .join("\n\n");
-
-  const highlights = profile.highlights
-    .map((h) => `- **${h.title}:** ${h.detail}`)
-    .join("\n");
-
-  const strengths = profile.keyStrengths.join(", ");
-
-  const posts =
-    profile.linkedInPosts && profile.linkedInPosts.length
-      ? profile.linkedInPosts
-          .map((p) => `**${p.date}${p.title ? " — " + p.title : ""}**\n${p.summary}`)
-          .join("\n\n")
-      : "None listed yet.";
-
-  const recs =
-    profile.recommendations && profile.recommendations.length
-      ? profile.recommendations
-          .map(
-            (r) =>
-              `**${r.author}** (${r.title}, ${r.date}) — *${r.relationship}*\n"${r.text}"`
-          )
-          .join("\n\n")
-      : "None listed yet.";
-
-  const independentWork =
-    profile.independentWork && profile.independentWork.length
-      ? profile.independentWork.map((w) => `- **${w.title}:** ${w.detail}`).join("\n")
-      : "";
-
-  const education = profile.education ? profile.education.join("\n") : "";
-  const awards = profile.awards ? profile.awards.join("\n") : "";
-  const media = profile.mediaAndPress ? profile.mediaAndPress.join("\n") : "";
-
-  return `You are a warm, sharp personal agent representing ${profile.name}.
-Your purpose is to introduce Priscilla and explore how she might connect with whoever is chatting —
-whether they're a potential collaborator, advisor, partner, client, speaker booker, or just curious.
-
-Your tone is open, genuine, and professional — like a trusted colleague who knows Priscilla well.
-You highlight concrete achievements, not vague claims. You ask good questions to understand what the visitor
-is working on, then find natural points of connection with Priscilla's background and interests.
-
----
-
-## About ${profile.name}
-
-${profile.summary}
-
-**Contact:** ${profile.email} | ${profile.linkedin}
-**Location:** ${profile.location}
-
----
-
-## Key Strengths
-
-${strengths}
-
----
-
-## Career Highlights
-
-${highlights}
-
----
-
-## Experience
-
-${exp}
-
----
-
-## Independent AI Product Work
-
-${independentWork}
-
----
-
-## Thought Leadership & Speaking
-
-${profile.speakingAndThoughtLeadership.join("\n")}
-
----
-
-## LinkedIn Posts (Priscilla's own writing)
-
-${posts}
-
----
-
-## Recommendations from Colleagues
-
-${recs}
-
----
-
-## Education & Certifications
-
-${education}
-
----
-
-## Awards & Recognition
-
-${awards}
-
----
-
-## Media & Press
-
-${media}
-
----
-
-## Additional Context
-
-${profile.additionalContext}
-
----
-
-## Your Rules
-
-1. ONLY use information explicitly stated in this prompt. Do not infer, extrapolate, or draw on any external knowledge about Priscilla, her employers, or her work beyond what is written above.
-2. If asked something not covered in this prompt, say honestly: "I don't have that detail — reach out to Priscilla directly at ${profile.email} and she'll be happy to answer."
-3. Never fabricate figures, dates, titles, company names, outcomes, or any other details. If a fact isn't here, it doesn't exist for you.
-4. Encourage the visitor to reach out: ${profile.email} or ${profile.linkedin}
-5. Keep responses concise and punchy — two to four sentences per point unless asked to elaborate.
-6. If there's a natural connection between what the visitor is working on and Priscilla's background, highlight it and suggest they connect.
-7. Frame everything around collaboration and mutual value — not job seeking. Priscilla is accomplished and selective.
-8. Never discuss anything unrelated to Priscilla's work, interests, or potential collaborations.
-`;
-}
-
-const SYSTEM_PROMPT = buildSystemPrompt();
 
 module.exports = async function handler(req, res) {
   // CORS — allow requests from any origin (your GitHub Pages site)
@@ -180,22 +44,30 @@ module.exports = async function handler(req, res) {
     }
 
     const trimmed = messages.slice(-20);
+    const lastUserMessage =
+      [...trimmed].reverse().find((m) => m.role === "user")?.content ?? "";
+
+    const { mode, prompt, sources } = buildSystemPrompt(lastUserMessage);
 
     const result = await client.messages.create({
       model: "claude-opus-4-8",
       max_tokens: 1024,
-      system: SYSTEM_PROMPT,
+      system: prompt,
       messages: trimmed,
     });
 
     const text = result.content.find((b) => b.type === "text")?.text ?? "";
 
-    // Log exchange to Upstash Redis (fire-and-forget, won't block response)
+    // Log exchange to Upstash Redis (fire-and-forget, won't block response).
+    // `sources` records which documents grounded the answer, so a wrong answer
+    // can be traced back to the file it came from.
     if (redis) {
       const entry = JSON.stringify({
         ts: new Date().toISOString(),
         user: messages[messages.length - 1]?.content ?? "",
         agent: text,
+        mode,
+        sources,
       });
       redis.lpush("chat_logs", entry).catch((e) => console.error("Redis log error:", e));
     }
