@@ -169,6 +169,40 @@
       font-family: var(--font-mono); font-size: 10px; color: var(--soft);
     }
 
+    /* ── Dials ────────────────────────────────────────────── */
+    .cc-dials {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px clamp(16px, 2.4vw, 26px); margin: 0 0 26px;
+    }
+    .cc-dial label {
+      display: block; font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: .13em; text-transform: uppercase; color: var(--soft);
+      margin: 0 0 2px;
+    }
+    .cc-dial .cc-ticks { margin: 9px 2px 0; }
+    .cc-dial:nth-child(2) input[type="range"]::-webkit-slider-thumb { background: var(--email); box-shadow: 0 0 0 1px var(--email); }
+    .cc-dial:nth-child(2) input[type="range"]::-moz-range-thumb { background: var(--email); box-shadow: 0 0 0 1px var(--email); }
+    .cc-dial:nth-child(3) input[type="range"]::-webkit-slider-thumb { background: var(--ai); box-shadow: 0 0 0 1px var(--ai); }
+    .cc-dial:nth-child(3) input[type="range"]::-moz-range-thumb { background: var(--ai); box-shadow: 0 0 0 1px var(--ai); }
+
+    .cc-o-latte { color: var(--latte) !important; }
+    .cc-o-email { color: var(--email) !important; }
+    .cc-o-ai    { color: var(--ai) !important; }
+
+    /* the per-item breakdown sits quieter than the totals it adds up to */
+    .cc-row.cc-sub { padding: 10px 0; }
+    .cc-row.cc-sub .cc-label { font-size: 13.5px; display: flex; align-items: center; }
+    .cc-row.cc-sub .cc-val {
+      font-size: clamp(16px, 2vw, 19px); color: var(--soft);
+    }
+    .cc-label i {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--d);
+      margin-right: 10px; flex: 0 0 auto; display: inline-block;
+    }
+    .cc-row.cc-hero { border-top: 1px solid var(--line); }
+
+    @media (max-width: 560px) { .cc-dials { grid-template-columns: 1fr; gap: 14px; } }
+
     .cc-results { display: grid; gap: 2px; border-top: 1px solid var(--line); }
     .cc-row {
       display: grid; grid-template-columns: 1fr auto; align-items: baseline;
@@ -288,26 +322,53 @@
     <section class="cc-band">
       <h2>So how much is your habit?</h2>
       <div class="cc-calc">
-        <p class="cc-calc-q">I drink <output id="out-n" for="cups">3</output> coffees a week.</p>
+        <p class="cc-calc-q">I drink <output class="cc-o-latte" id="out-c" for="cups">3</output>
+           coffees a week, and send <output class="cc-o-email" id="out-e" for="mails">40</output>
+           emails and <output class="cc-o-ai" id="out-p" for="prompts">20</output> AI prompts a day.</p>
         <p class="cc-calc-sub">Drag to change</p>
 
-        <label class="cc-visually-hidden" for="cups">Coffees per week</label>
-        <input type="range" id="cups" min="0" max="21" step="1" value="3"
-               aria-describedby="calc-year" />
-        <div class="cc-ticks" aria-hidden="true"><span>0</span><span>7</span><span>14</span><span>21</span></div>
+        <div class="cc-dials">
+          <div class="cc-dial">
+            <label for="cups">Coffees / week</label>
+            <input type="range" id="cups" min="0" max="21" step="1" value="3" />
+            <div class="cc-ticks" aria-hidden="true"><span>0</span><span>21</span></div>
+          </div>
+          <div class="cc-dial">
+            <label for="mails">Emails / day</label>
+            <input type="range" id="mails" min="0" max="200" step="5" value="40" />
+            <div class="cc-ticks" aria-hidden="true"><span>0</span><span>200</span></div>
+          </div>
+          <div class="cc-dial">
+            <label for="prompts">AI prompts / day</label>
+            <input type="range" id="prompts" min="0" max="200" step="5" value="20" />
+            <div class="cc-ticks" aria-hidden="true"><span>0</span><span>200</span></div>
+          </div>
+        </div>
 
         <div class="cc-results">
+          <div class="cc-row cc-sub">
+            <span class="cc-label"><i style="--d:var(--latte)"></i>Coffee</span>
+            <span class="cc-val" id="out-coffee">86<small>kg</small></span>
+          </div>
+          <div class="cc-row cc-sub">
+            <span class="cc-label"><i style="--d:var(--email)"></i>Email</span>
+            <span class="cc-val" id="out-email">4.4<small>kg</small></span>
+          </div>
+          <div class="cc-row cc-sub">
+            <span class="cc-label"><i style="--d:var(--ai)"></i>AI prompts</span>
+            <span class="cc-val" id="out-ai">0.2&ndash;8.3<small>kg</small></span>
+          </div>
           <div class="cc-row cc-hero">
-            <span class="cc-label" id="calc-year"><b>That is your coffee, for a year</b></span>
-            <span class="cc-val" id="out-year">86<small>kg CO₂e</small></span>
+            <span class="cc-label" id="calc-year"><b>All of it, for a year</b></span>
+            <span class="cc-val" id="out-year">90&ndash;99<small>kg CO₂e</small></span>
           </div>
           <div class="cc-row">
             <span class="cc-label">As a share of <b>one return flight</b> to New York</span>
-            <span class="cc-val" id="out-flight">6.6<small>%</small></span>
+            <span class="cc-val" id="out-flight">7.0&ndash;7.6<small>%</small></span>
           </div>
           <div class="cc-row">
             <span class="cc-label">As a share of <b>the average person's entire year</b> &mdash; 6.6 t CO₂e</span>
-            <span class="cc-val" id="out-person">1.3<small>%</small></span>
+            <span class="cc-val" id="out-person">1.4&ndash;1.5<small>%</small></span>
           </div>
         </div>
 
@@ -315,7 +376,7 @@
           <input type="checkbox" id="sustainable" />
           <label for="sustainable"><b>Buy beans grown sustainably</b> &mdash; shade-grown, less
             fertiliser, less water. Same drink, same milk. Drops a latte from 550&thinsp;g to
-            330&thinsp;g.<sup>2</sup></label>
+            330&thinsp;g.<sup>3</sup></label>
         </div>
       </div>
     </section>
@@ -396,15 +457,16 @@
   var EMAIL = 0.3;
   var LATTE = 550;
   var LATTE_SUSTAINABLE = 330;
+  var AI_LO = 0.03;                    // Google, median Gemini text prompt
+  var AI_HI = 1.14;                    // Mistral Large 2 LCA, 400-token query
   var FLIGHT = 11110 * 0.117 * 1000;   // km × kg CO2e/passenger-km → grams
   var PERSON_YEAR = 6.6e6;             // UNEP 2024 global average, grams
 
   var cups = document.getElementById("cups");
+  var mails = document.getElementById("mails");
+  var prompts = document.getElementById("prompts");
   var sustainable = document.getElementById("sustainable");
-  var outN = document.getElementById("out-n");
-  var outYear = document.getElementById("out-year");
-  var outFlight = document.getElementById("out-flight");
-  var outPerson = document.getElementById("out-person");
+  var out = function (id) { return document.getElementById(id); };
 
   // One significant figure below 10, none above — the inputs do not justify more.
   function pct(x) {
@@ -413,20 +475,41 @@
     if (x < 10) return x.toFixed(1);
     return Math.round(x).toString();
   }
-
-  function render() {
-    var n = Number(cups.value);
-    var perCup = sustainable.checked ? LATTE_SUSTAINABLE : LATTE;
-    var yearG = n * 52 * perCup;
-
-    outN.textContent = n;
-    outYear.innerHTML = (yearG === 0 ? "0" : (yearG / 1000).toFixed(yearG < 10000 ? 1 : 0)) +
-      '<small>kg CO₂e</small>';
-    outFlight.innerHTML = pct(yearG / FLIGHT * 100) + '<small>%</small>';
-    outPerson.innerHTML = pct(yearG / PERSON_YEAR * 100) + '<small>%</small>';
+  function kg(g) {
+    var v = g / 1000;
+    if (v === 0) return "0";
+    if (v < 10) return v.toFixed(1);
+    return Math.round(v).toString();
+  }
+  // The AI figure is a range, so anything containing it is a range too. Collapse
+  // it when both ends round to the same string rather than printing "4–4".
+  function span(lo, hi, f) {
+    var a = f(lo), b = f(hi);
+    return a === b ? a : a + "\u2013" + b;
   }
 
-  cups.addEventListener("input", render);
+  function render() {
+    var c = Number(cups.value), e = Number(mails.value), p = Number(prompts.value);
+    out("out-c").textContent = c;
+    out("out-e").textContent = e;
+    out("out-p").textContent = p;
+
+    var coffeeG = c * 52 * (sustainable.checked ? LATTE_SUSTAINABLE : LATTE);
+    var emailG  = e * 365 * EMAIL;
+    var aiLo    = p * 365 * AI_LO;
+    var aiHi    = p * 365 * AI_HI;
+    var lo = coffeeG + emailG + aiLo;
+    var hi = coffeeG + emailG + aiHi;
+
+    out("out-coffee").innerHTML = kg(coffeeG) + '<small>kg</small>';
+    out("out-email").innerHTML  = kg(emailG) + '<small>kg</small>';
+    out("out-ai").innerHTML     = span(aiLo, aiHi, kg) + '<small>kg</small>';
+    out("out-year").innerHTML   = span(lo, hi, kg) + '<small>kg CO₂e</small>';
+    out("out-flight").innerHTML = span(lo, hi, function (g) { return pct(g / FLIGHT * 100); }) + '<small>%</small>';
+    out("out-person").innerHTML = span(lo, hi, function (g) { return pct(g / PERSON_YEAR * 100); }) + '<small>%</small>';
+  }
+
+  [cups, mails, prompts].forEach(function (el) { el.addEventListener("input", render); });
   sustainable.addEventListener("change", render);
   render();
 
