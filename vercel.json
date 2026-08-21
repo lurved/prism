@@ -2,6 +2,7 @@
   "buildCommand": "npm run build && cd sustainability/report_comparison && npm ci && npm run build && cp -r ../esg-export/. .",
   "outputDirectory": ".",
   "redirects": [
+    { "source": "/coffee", "destination": "/carbon", "permanent": false },
     { "source": "/who", "destination": "/werewolf", "permanent": true },
     { "source": "/who/:path*", "destination": "/werewolf/:path*", "permanent": true },
     { "source": "/wolf", "destination": "/werewolf", "permanent": false },
@@ -10,7 +11,7 @@
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
     { "source": "/sides", "destination": "/sides/index.html" },
-    { "source": "/coffee", "destination": "/coffee/index.html" },
+    { "source": "/carbon", "destination": "/carbon/index.html" },
     { "source": "/talk", "destination": "/talk/index.html" },
     { "source": "/post", "destination": "/post.html" },
     { "source": "/typeme/u/:slug/rate", "destination": "/api/typeme/hub?slug=:slug&mode=rate" },
