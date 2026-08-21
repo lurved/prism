@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="One email, one latte, one flight — measured the same way. A small calculator about which climate habits actually move the needle." />
+  <meta name="description" content="One AI prompt, one email, one latte, one flight — measured the same way, with every number sourced and the shakiest one clearly flagged." />
   <title>Your coffee, in carbon — pris.la</title>
   <link rel="icon" href="/favicon.png" type="image/png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
@@ -27,6 +27,11 @@
       --email:  var(--viz-green);
       --latte:  var(--viz-amber);
       --flight: var(--viz-purple);
+      /* Deliberately the desaturated slot. It fails the categorical chroma
+         floor — it "reads gray" — and that is the point: this figure is not the
+         same class of evidence as the other three, and should not look like it.
+         A dashed rule and an explicit label carry the same message. */
+      --ai: var(--viz-grey);
     }
 
     body { background: var(--bg); }
@@ -53,7 +58,7 @@
 
     /* ── The three units ──────────────────────────────────── */
     .cc-units {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
       margin: clamp(40px, 6vw, 64px) 0 0;
     }
     .cc-unit {
@@ -72,7 +77,10 @@
       line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums;
     }
     .cc-unit .cc-fig span { font-size: .46em; color: var(--tone); margin-left: 3px; }
-    .cc-unit .cc-note { font-size: 12.5px; line-height: 1.5; color: var(--soft); margin-top: auto; }
+    .cc-fig-range { font-size: clamp(18px, 2.3vw, 25px) !important; letter-spacing: -.015em; white-space: nowrap; }
+    .cc-unit .cc-note a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+    .cc-unit .cc-note { font-size: 12px; line-height: 1.5; color: var(--soft); margin-top: auto; }
+    .cc-u-ai     { --tone: var(--ai); border-top-style: dashed; }
     .cc-u-email  { --tone: var(--email); }
     .cc-u-latte  { --tone: var(--latte); }
     .cc-u-flight { --tone: var(--flight); }
@@ -184,6 +192,35 @@
     .cc-swap label { font-size: 13.5px; line-height: 1.55; color: var(--soft); cursor: pointer; }
     .cc-swap label b { color: var(--ink); font-weight: 600; }
 
+
+    /* ── The AI caveat ────────────────────────────────────────
+       Dashed and desaturated to match its tile: this is the one figure on the
+       page that is not a settled number. */
+    .cc-caveat {
+      border: 1px dashed var(--ai); border-radius: 3px;
+      background: var(--surface-card); padding: clamp(22px, 3.4vw, 32px);
+      margin: 30px 0 0;
+    }
+    .cc-caveat > p:first-of-type {
+      font-family: var(--font-display); font-size: clamp(19px, 2.5vw, 24px);
+      line-height: 1.38; color: var(--ink); margin: 0 0 20px; text-wrap: balance;
+    }
+    .cc-caveat ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+    .cc-caveat li {
+      padding: 13px 0; border-top: 1px solid var(--line);
+      font-size: 14px; line-height: 1.62; color: var(--soft);
+    }
+    .cc-caveat li b { color: var(--ink); font-weight: 600; }
+    .cc-caveat li code {
+      font-family: var(--font-mono); font-size: 12px; color: var(--ink);
+      background: var(--bg); padding: 1px 5px; border-radius: 2px;
+    }
+    .cc-caveat .cc-lands {
+      margin: 22px 0 0; padding: 18px 0 0; border-top: 1px solid var(--line);
+      font-size: 14.5px; line-height: 1.65; color: var(--soft);
+    }
+    .cc-caveat .cc-lands b { color: var(--ink); font-weight: 600; }
+
     /* ── Takeaway ─────────────────────────────────────────── */
     .cc-takeaway {
       border-left: 2px solid var(--accent); padding: 4px 0 4px 24px;
@@ -232,6 +269,7 @@
     .cc-foot a { color: var(--accent); text-decoration: none; }
     .cc-foot a:hover { text-decoration: underline; }
 
+    @media (max-width: 900px) { .cc-units { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 620px) {
       .cc-units { grid-template-columns: 1fr; }
       .cc-unit { flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; }
@@ -257,12 +295,18 @@
     <section class="cc-top">
       <p class="eyebrow"><span class="eyebrow-rule"></span> Sustainability / back-of-envelope</p>
       <h1>Your coffee, <em>in carbon.</em></h1>
-      <p class="cc-lede">Three ordinary things, measured the same way, in grams of CO<sub>2</sub>-equivalent.
-         Two of them you do every day without thinking. One of them you think about for months.
-         Only one of them matters.</p>
+      <p class="cc-lede">Four ordinary things, measured the same way, in grams of CO<sub>2</sub>-equivalent.
+         Three of them you do without thinking. One of them you plan for months.
+         Only one of them really matters &mdash; and it is not the one being argued about.</p>
     </section>
 
-    <section class="cc-units" aria-label="Carbon cost of one email, one latte and one flight">
+    <section class="cc-units" aria-label="Carbon cost of one AI prompt, one email, one latte and one flight">
+      <article class="cc-unit cc-u-ai">
+        <span class="cc-glyph" aria-hidden="true">✦</span>
+        <span class="cc-name">One AI prompt</span>
+        <span class="cc-fig cc-fig-range">0.03&ndash;1.1<span>g</span></span>
+        <span class="cc-note">A range, not a number. <a href="#ai-caveat">Read the caveat &darr;</a></span>
+      </article>
       <article class="cc-unit cc-u-email">
         <span class="cc-glyph" aria-hidden="true">✉︎</span>
         <span class="cc-name">One email</span>
@@ -302,6 +346,41 @@
            you cannot see the latte. To draw the email you would need a screen about
            <b>1.1 kilometres wide.</b> Every chart you have seen comparing these things
            used a log scale, and a log scale is where the intuition goes to die.</p>
+      </div>
+    </section>
+
+
+    <section class="cc-band" id="ai-caveat">
+      <h2>Read this before you quote the AI number</h2>
+      <div class="cc-caveat">
+        <p>It is the weakest figure on this page by some distance, and it is shown as a
+           range because a single number would be false confidence dressed up as data.</p>
+        <ul>
+          <li><b>It is a vendor measuring itself.</b> Google reports its median Gemini text
+            prompt at <code>0.24 Wh</code> and <code>0.03 g CO₂e</code>. The methodology is
+            unusually thorough &mdash; it counts idle capacity and datacentre overhead, which
+            most estimates quietly skip &mdash; but the underlying data was not released, and
+            it has not been peer reviewed.</li>
+          <li><b>One accounting choice moves it threefold.</b> That <code>0.03 g</code> is
+            market-based: renewable energy certificates netted off. Measure the electricity
+            that actually flowed on the grid &mdash; location-based &mdash; and the same prompt
+            is <code>0.09 g</code>. Both are permitted under the GHG Protocol. A company
+            reporting its own footprint chose the flattering one.</li>
+          <li><b>Training is not included.</b> These are inference-only numbers. Everything
+            spent building the model sits outside the boundary.</li>
+          <li><b>Vendors are about 38&times; apart.</b> Mistral's published life-cycle
+            assessment puts a 400-token query at <code>1.14 g CO₂e</code> &mdash; the top of
+            the range above. &ldquo;One AI prompt&rdquo; is not one thing, and the model you
+            happen to be using matters more than anything you do.</li>
+          <li><b>&ldquo;Median prompt&rdquo; is undefined.</b> No token count, no complexity.
+            A long reasoning answer with a document attached is not a median prompt.</li>
+        </ul>
+        <p class="cc-lands">Here is what survives all of that. A hundred prompts a day, every
+           day for a year, lands somewhere between <b>two lattes and seventy-six.</b> Even at
+           the pessimistic end it belongs in the same column as the email: small. That is a
+           statement about <b>your prompts</b> &mdash; not about AI. The datacentres being
+           built behind them are a different question with a different answer, and treating
+           the two as one is the most common mistake in this entire argument.</p>
       </div>
     </section>
 
@@ -375,6 +454,14 @@
           <code>1.4 t</code>. There is no single agreed multiplier for the non-CO<sub>2</sub>
           warming effects of contrails, and that disagreement is worth more than the third
           significant figure.</li>
+        <li><b>AI prompt &mdash; 0.03 to 1.1&thinsp;g CO<sub>2</sub>e.</b> Low end: Google,
+          <i>Measuring the environmental impact of delivering AI at Google Scale</i>, August
+          2025 &mdash; median Gemini Apps text prompt, <code>0.24 Wh</code>,
+          <code>0.03 g</code> market-based, <code>0.09 g</code> location-based, inference
+          only, not peer reviewed. High end: Mistral's published life-cycle assessment for
+          Mistral Large 2, <code>1.14 g</code> per 400-token query. OpenAI has published one
+          energy figure with no methodology; Anthropic has published no per-query figure at
+          all. Treat this row as an order of magnitude, not a measurement.</li>
         <li><b>The average person &mdash; 6.6&thinsp;t CO<sub>2</sub>e a year.</b> UNEP
           <i>Emissions Gap Report 2024</i>, global average per-capita greenhouse gas emissions
           for 2023. Wealthy countries run around three times that.</li>
