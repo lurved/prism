@@ -10,6 +10,7 @@
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
     { "source": "/sides", "destination": "/sides/index.html" },
+    { "source": "/coffee", "destination": "/coffee/index.html" },
     { "source": "/talk", "destination": "/talk/index.html" },
     { "source": "/post", "destination": "/post.html" },
     { "source": "/typeme/u/:slug/rate", "destination": "/api/typeme/hub?slug=:slug&mode=rate" },
