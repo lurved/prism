@@ -261,10 +261,18 @@ body {
   gap: var(--gap-card);
 }
 .projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+  display: flex;
+  overflow-x: auto;
   gap: var(--gap-card);
+  padding-bottom: 20px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
 }
+.projects-grid::-webkit-scrollbar { height: 4px; }
+.projects-grid::-webkit-scrollbar-track { background: transparent; }
+.projects-grid::-webkit-scrollbar-thumb { background: var(--line); border-radius: 2px; }
 
 .tool-card {
   display: flex;
@@ -317,7 +325,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--gap-inner);
-  min-height: 300px;
+  flex-shrink: 0;
+  width: clamp(280px, 75vw, 320px);
+  scroll-snap-align: start;
   background: var(--surface-card);
   border: 1px solid var(--line);
   border-radius: var(--radius-card);
