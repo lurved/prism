@@ -84,6 +84,8 @@
       ? "esg"
       : p.indexOf("/sustainability") === 0
       ? "sustainability"
+      : p.indexOf("/blog") === 0
+      ? "blog"
       : "home";
   }
 
