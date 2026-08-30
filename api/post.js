@@ -13,6 +13,9 @@
  *   ANTHROPIC_API_KEY — (optional) enables Claude cleanup of the transcript
  *
  * Body: { text, cleanup?, inline?, title?, tag?, secret? }
+ *
+ * Send { probe: true } instead to get a config health report (which env vars
+ * are set, whether GITHUB_TOKEN still works) without publishing anything.
  */
 
 const Anthropic = require("@anthropic-ai/sdk");
@@ -20,6 +23,12 @@ const Anthropic = require("@anthropic-ai/sdk");
 const REPO = "lurved/prism";
 const BRANCH = "main";
 const TAGS = ["AI", "Design", "Product", "Data", "Tools"];
+
+const MODEL = "claude-opus-5";
+// The function gets 60s (see `functions` in vercel.json). Cap the editing pass
+// well inside that so there is always time left to commit — a note that
+// publishes unedited beats a note that does not publish at all.
+const EDIT_BUDGET_MS = 32000;
 
 const anthropic = process.env.ANTHROPIC_API_KEY
   ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -48,9 +57,50 @@ const EDIT_INSTRUCTIONS = {
     "Rewrite into clear, natural, well-structured English: fix all grammar, spelling and punctuation, improve flow, word choice and sentence structure. Preserve the author's meaning, every point they make, and their casual personal voice — do NOT add new ideas, facts, or opinions, and do NOT make it formal or corporate.",
 };
 
-async function polish(rawText, level) {
+// The model is told to answer in JSON, but a stray sentence either side of it
+// is cheap to survive — pull out the outermost object rather than trusting the
+// whole reply to parse.
+function extractJson(text) {
+  const stripped = text.replace(/^```(?:json)?\s*|\s*```$/g, "").trim();
+  const start = stripped.indexOf("{");
+  const end = stripped.lastIndexOf("}");
+  if (start === -1 || end <= start) throw new Error("no JSON object in reply");
+  return JSON.parse(stripped.slice(start, end + 1));
+}
+
+const rawMeta = (rawText, tag) => ({
+  title: "",
+  description: "",
+  tag: TAGS.includes(tag) ? tag : "",
+  inline: true,
+  body: rawText,
+});
+
+// One streamed request to Claude. Streaming keeps the connection alive for the
+// whole generation, so a long note can't trip an idle gateway timeout the way
+// a single blocking POST can.
+async function requestEdit(rawText, system, maxTokens, signal, withEffort) {
+  const body = {
+    model: MODEL,
+    max_tokens: maxTokens,
+    system,
+    messages: [{ role: "user", content: rawText }],
+  };
+  // Copy-editing does not need deep reasoning, and low effort is markedly
+  // faster — which is what keeps this inside the function's time budget.
+  if (withEffort) body.output_config = { effort: "low" };
+
+  const stream = anthropic.messages.stream(body, { signal, timeout: EDIT_BUDGET_MS });
+  return stream.finalMessage();
+}
+
+async function polish(rawText, level, tag) {
   if (!anthropic) {
-    return { title: "", description: "", tag: "", inline: true, body: rawText };
+    return {
+      meta: rawMeta(rawText, tag),
+      applied: false,
+      error: "ANTHROPIC_API_KEY is not set",
+    };
   }
 
   const editRule = EDIT_INSTRUCTIONS[level] || EDIT_INSTRUCTIONS.format;
@@ -68,26 +118,52 @@ Return ONLY minified JSON, no markdown fences, with this exact shape:
 {"title": string, "description": string, "tag": string, "inline": boolean, "body": string}
 For inline notes set "title" to "".`;
 
+  // The reply carries the whole body back, so the ceiling has to scale with the
+  // note. Too low and the JSON is cut mid-string and nothing survives parsing.
+  const maxTokens = Math.min(24000, 4096 + rawText.length);
+
+  const controller = new AbortController();
+  const abort = setTimeout(() => controller.abort(), EDIT_BUDGET_MS);
+
   try {
-    const result = await anthropic.messages.create({
-      model: "claude-opus-4-8",
-      max_tokens: 2048,
-      system,
-      messages: [{ role: "user", content: rawText }],
-    });
+    let result;
+    try {
+      result = await requestEdit(rawText, system, maxTokens, controller.signal, true);
+    } catch (err) {
+      // `output_config` is the only optional parameter here; if the API rejects
+      // the request shape, retry once without it rather than losing the edit.
+      if (err && err.status === 400) {
+        result = await requestEdit(rawText, system, maxTokens, controller.signal, false);
+      } else {
+        throw err;
+      }
+    }
+
+    if (result.stop_reason === "max_tokens") throw new Error("reply hit the token ceiling");
+    if (result.stop_reason === "refusal") throw new Error("model declined the request");
+
     const text = result.content.find((b) => b.type === "text")?.text ?? "";
-    const json = text.replace(/^```(?:json)?\s*|\s*```$/g, "").trim();
-    const parsed = JSON.parse(json);
+    const parsed = extractJson(text);
     return {
-      title: typeof parsed.title === "string" ? parsed.title : "",
-      description: typeof parsed.description === "string" ? parsed.description : "",
-      tag: TAGS.includes(parsed.tag) ? parsed.tag : "",
-      inline: parsed.inline !== false && !parsed.title,
-      body: typeof parsed.body === "string" && parsed.body.trim() ? parsed.body : rawText,
+      meta: {
+        title: typeof parsed.title === "string" ? parsed.title : "",
+        description: typeof parsed.description === "string" ? parsed.description : "",
+        tag: TAGS.includes(parsed.tag) ? parsed.tag : "",
+        inline: parsed.inline !== false && !parsed.title,
+        body: typeof parsed.body === "string" && parsed.body.trim() ? parsed.body : rawText,
+      },
+      applied: true,
+      error: "",
     };
   } catch (err) {
+    // Never fail the publish over the edit: the words are already written.
+    const reason = controller.signal.aborted
+      ? `editing took longer than ${Math.round(EDIT_BUDGET_MS / 1000)}s`
+      : String((err && err.message) || err);
     console.error("Claude cleanup failed, using raw text:", err);
-    return { title: "", description: "", tag: "", inline: true, body: rawText };
+    return { meta: rawMeta(rawText, tag), applied: false, error: reason };
+  } finally {
+    clearTimeout(abort);
   }
 }
 
@@ -126,28 +202,117 @@ function sanitizeMedia(media) {
     .slice(0, 20);
 }
 
-async function commitToGitHub(filename, contents, message) {
+function githubHeaders() {
+  return {
+    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "prism-blog-poster",
+    "Content-Type": "application/json",
+  };
+}
+
+// GitHub failures are almost always credentials, and "Publish failed" tells you
+// nothing about that. Name the actual cause so the fix is obvious.
+function githubHint(status) {
+  if (status === 401) {
+    return "GITHUB_TOKEN is invalid or expired. Generate a new fine-grained token with Contents: Read and write on " +
+      REPO + ", then update it in the Vercel project settings and redeploy.";
+  }
+  if (status === 403) {
+    return "GITHUB_TOKEN was rejected. It most likely lacks Contents: Read and write on " + REPO +
+      " (or the token's expiry or IP allow-list has caught up with it).";
+  }
+  if (status === 404) {
+    return "GitHub cannot see " + REPO + " with this token — a fine-grained token has to list this repository explicitly.";
+  }
+  if (status === 422 || status === 409) {
+    return "GitHub refused the commit — a file with that name already exists on " + BRANCH + ".";
+  }
+  return "";
+}
+
+class GitHubError extends Error {
+  constructor(status, detail) {
+    super(`GitHub API ${status}: ${detail}`);
+    this.status = status;
+    this.hint = githubHint(status);
+  }
+}
+
+async function putFile(filename, contents, message) {
   const url = `https://api.github.com/repos/${REPO}/contents/notes/${filename}`;
   const res = await fetch(url, {
     method: "PUT",
-    headers: {
-      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "User-Agent": "prism-blog-poster",
-      "Content-Type": "application/json",
-    },
+    headers: githubHeaders(),
     body: JSON.stringify({
       message,
       content: Buffer.from(contents, "utf8").toString("base64"),
       branch: BRANCH,
     }),
   });
-  if (!res.ok) {
-    const detail = await res.text();
-    throw new Error(`GitHub API ${res.status}: ${detail}`);
-  }
+  if (!res.ok) throw new GitHubError(res.status, await res.text());
   return res.json();
+}
+
+// Two notes with the same title on the same day collide, and an unconditional
+// PUT over an existing path is rejected rather than merged. Retry once under a
+// unique name instead of losing the note.
+async function commitToGitHub(filename, contents, message) {
+  try {
+    return await putFile(filename, contents, message);
+  } catch (err) {
+    if (err instanceof GitHubError && (err.status === 409 || err.status === 422)) {
+      const unique = filename.replace(/\.md$/, `-${Date.now().toString(36)}.md`);
+      return putFile(unique, contents, message);
+    }
+    throw err;
+  }
+}
+
+// Health report for the settings screen: which pieces are configured, and does
+// the GitHub token still work. Never returns a secret, only whether it is set.
+async function probeConfig() {
+  const checks = {
+    publishing: {
+      ok: !!process.env.GITHUB_TOKEN,
+      label: "Publishing to GitHub",
+      detail: process.env.GITHUB_TOKEN ? "" : "GITHUB_TOKEN is not set in the Vercel project.",
+    },
+    editing: {
+      ok: !!anthropic,
+      label: "Claude editing",
+      detail: anthropic ? "" : "ANTHROPIC_API_KEY is not set — notes publish exactly as written.",
+    },
+    transcription: {
+      ok: !!process.env.GROQ_API_KEY,
+      label: "Voice transcription",
+      detail: process.env.GROQ_API_KEY ? "" : "GROQ_API_KEY is not set — recording will fail.",
+    },
+    media: {
+      ok: !!(process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN),
+      label: "Photo / video uploads",
+      detail: process.env.BLOB_STORE_ID || process.env.BLOB_READ_WRITE_TOKEN
+        ? ""
+        : "No Vercel Blob store is configured — uploads will fail.",
+    },
+  };
+
+  if (checks.publishing.ok) {
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO}/contents/notes?ref=${BRANCH}`,
+        { headers: githubHeaders() },
+      );
+      checks.publishing.ok = res.ok;
+      if (!res.ok) checks.publishing.detail = githubHint(res.status) || `GitHub API ${res.status}.`;
+    } catch (err) {
+      checks.publishing.ok = false;
+      checks.publishing.detail = `Could not reach GitHub: ${String((err && err.message) || err)}`;
+    }
+  }
+
+  return { ok: true, probe: true, repo: REPO, branch: BRANCH, checks };
 }
 
 module.exports = async function handler(req, res) {
@@ -155,15 +320,26 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
+  const body = (() => {
+    try {
+      return typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
+    } catch (_) {
+      return {};
+    }
+  })();
+
   // --- Auth ---
-  const secret = req.headers["x-blog-secret"] || (req.body && req.body.secret);
+  const secret = req.headers["x-blog-secret"] || body.secret;
   const expected = process.env.BLOG_POST_SECRET;
   if (!expected || !secret || secret !== expected) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
+  if (body.probe === true) {
+    return res.status(200).json(await probeConfig());
+  }
+
   try {
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
     const rawText = (body.text || "").trim();
     const media = sanitizeMedia(body.media);
     if (!rawText && media.length === 0) {
@@ -177,13 +353,18 @@ module.exports = async function handler(req, res) {
     if (!["off", "format", "correct", "polish"].includes(level)) level = "format";
 
     let meta;
+    let editApplied = true;
+    let editError = "";
     if (!rawText) {
       // Media-only post — nothing to clean, keep it an inline note.
       meta = { title: "", description: "", tag: body.tag || "", inline: true, body: "" };
     } else if (level === "off") {
       meta = { title: body.title || "", description: "", tag: body.tag || "", inline: body.inline !== false, body: rawText };
     } else {
-      meta = await polish(rawText, level);
+      const edited = await polish(rawText, level, body.tag);
+      meta = edited.meta;
+      editApplied = edited.applied;
+      editError = edited.error;
     }
 
     // Explicit overrides from the client win over inferred values.
@@ -208,6 +389,8 @@ module.exports = async function handler(req, res) {
       ok: true,
       path: `notes/${filename}`,
       edit: level,
+      editApplied,
+      editError,
       title: meta.title,
       tag: meta.tag,
       inline: meta.inline,
@@ -217,6 +400,10 @@ module.exports = async function handler(req, res) {
     });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Publish failed", detail: String(err.message || err) });
+    return res.status(500).json({
+      error: "Publish failed",
+      detail: String((err && err.message) || err),
+      hint: (err && err.hint) || "",
+    });
   }
 };

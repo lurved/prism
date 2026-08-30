@@ -106,7 +106,7 @@
     dialog .cancel { background: transparent; color: var(--muted); border: 1px solid var(--line); }
     dialog .save { background: var(--pink); color: var(--pink-ink); }
     .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
-    .keycheck { font-size: 13px; margin: -6px 0 12px; min-height: 18px; }
+    .keycheck { font-size: 13px; line-height: 1.5; margin: -6px 0 12px; min-height: 18px; overflow-wrap: anywhere; }
     .keycheck.ok { color: #9be7c0; }
     .keycheck.err { color: #ff9db3; }
 
@@ -202,7 +202,7 @@
     function setKeyCheck(msg, kind) {
       const el = $("keyCheck");
       el.className = "keycheck " + (kind || "");
-      el.textContent = msg || "";
+      el.innerHTML = msg || "";
     }
     $("gear").onclick = () => {
       $("secretInput").value = localStorage.getItem(KEY) || "";
@@ -217,8 +217,10 @@
       setStatus(v ? "Key saved on this device." : "Key cleared.", "");
     };
 
-    // Verify a key against the server without publishing anything: an empty
-    // body passes auth then fails validation, so 400 = good key, 401 = bad key.
+    // Verify the key *and* report what the server can actually do. `probe`
+    // runs after auth, so 401 still means a bad key — and a good key now also
+    // tells you whether the GitHub token has expired, which is otherwise
+    // invisible until a publish fails.
     $("checkSettings").onclick = async () => {
       const v = $("secretInput").value.trim();
       if (!v) { setKeyCheck("Enter a key first.", "err"); return; }
@@ -227,13 +229,24 @@
         const res = await fetch("/api/post", {
           method: "POST",
           headers: { "Content-Type": "application/json", "x-blog-secret": v },
-          body: JSON.stringify({}),
+          body: JSON.stringify({ probe: true }),
         });
-        if (res.status === 401) setKeyCheck("✕ Wrong key — the server rejected it.", "err");
-        else if (res.status === 400) setKeyCheck("✓ Key works. Tap Save.", "ok");
-        else setKeyCheck("Unexpected response (" + res.status + ").", "err");
+        if (res.status === 401) { setKeyCheck("✕ Wrong key — the server rejected it.", "err"); return; }
+        const data = await readResponse(res);
+        if (!res.ok || !data.checks) {
+          setKeyCheck("✓ Key works, but the check failed: " + esc(errorText(data, res)), "err");
+          return;
+        }
+        const rows = Object.keys(data.checks).map((k) => {
+          const c = data.checks[k];
+          return (c.ok ? "✓ " : "✕ ") + esc(c.label) + (c.detail ? " — " + esc(c.detail) : "");
+        });
+        setKeyCheck(
+          "✓ Key works. Tap Save.<br>" + rows.join("<br>"),
+          data.checks.publishing && data.checks.publishing.ok ? "ok" : "err",
+        );
       } catch (err) {
-        setKeyCheck("Couldn't reach the server: " + err.message, "err");
+        setKeyCheck("Couldn't reach the server: " + esc(err.message), "err");
       }
     };
 
@@ -248,6 +261,41 @@
     }
 
     function setStatus(msg, kind) { statusEl.className = "status " + (kind || ""); statusEl.innerHTML = msg; }
+
+    function esc(str) {
+      return String(str == null ? "" : str).replace(/[&<>"']/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    }
+
+    // The API answers in JSON, but a platform-level failure (a function that
+    // timed out, a bad gateway) answers in HTML. Reading it as text first means
+    // those surface as a real message instead of a JSON parse error.
+    async function readResponse(res) {
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch (_) {
+        const plain = text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        return {
+          error: "HTTP " + res.status + (res.statusText ? " " + res.statusText : ""),
+          detail: plain.slice(0, 200),
+          nonJson: true,
+        };
+      }
+    }
+
+    // Flatten { error, detail, hint } into one sentence worth reading.
+    function errorText(data, res) {
+      const parts = [];
+      if (data && data.error) parts.push(data.error);
+      else parts.push("HTTP " + res.status);
+      if (data && data.detail && data.detail !== data.error) parts.push(data.detail);
+      if (data && data.hint) parts.push(data.hint);
+      if (res.status === 504 || (data && data.nonJson && res.status >= 500)) {
+        parts.push("The server took too long to answer — try again with editing set to off.");
+      }
+      return parts.join(" — ");
+    }
 
     // ── Media: upload photos/videos directly to Vercel Blob ──
     const strip = $("mediaStrip");
@@ -316,7 +364,7 @@
         const msg = document.createElement("div");
         msg.className = "spin"; msg.textContent = "Failed";
         item.el.appendChild(msg);
-        setStatus("Upload failed: " + err.message, "err");
+        setStatus("Upload failed: " + esc(err.message), "err");
       }
     }
 
@@ -402,14 +450,14 @@
           body: blob,
         });
         if (res.status === 401) { handleUnauthorized("Transcription"); return; }
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        const data = await readResponse(res);
+        if (!res.ok) throw new Error(errorText(data, res));
         const text = (data.text || "").trim();
         if (!text) { setStatus("Didn't catch anything — try again.", "err"); return; }
         ta.value = ta.value.trim() ? ta.value.replace(/\s+$/, "") + "\n\n" + text : text;
         setStatus("Transcribed. Review, then Publish.", "ok");
       } catch (err) {
-        setStatus("Transcription failed: " + err.message, "err");
+        setStatus("Transcription failed: " + esc(err.message), "err");
       } finally {
         mic.disabled = false;
       }
@@ -443,16 +491,21 @@
           }),
         });
         if (res.status === 401) { handleUnauthorized("Publish"); return; }
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        const data = await readResponse(res);
+        if (!res.ok) throw new Error(errorText(data, res));
         ta.value = "";
         mediaItems.splice(0).forEach((m) => m.el?.remove());
         const mediaNote = data.media ? ` with ${data.media} media` : "";
-        const label = (data.title ? `“${data.title}”` : "Note") + mediaNote;
-        const link = data.commit ? ` <a href="${data.commit}" target="_blank" rel="noopener">View commit ↗</a>` : "";
-        setStatus(`Published ${label} ✓ — committed. Building now; live on the blog in a few minutes.${link}`, "ok");
+        const label = (data.title ? `“${esc(data.title)}”` : "Note") + mediaNote;
+        const link = data.commit ? ` <a href="${esc(data.commit)}" target="_blank" rel="noopener">View commit ↗</a>` : "";
+        // The note is committed either way; say so when Claude's pass was
+        // skipped rather than letting it look like the edit silently applied.
+        const skipped = data.editApplied === false && data.edit !== "off"
+          ? ` Published as written — editing was skipped (${esc(data.editError || "unavailable")}).`
+          : "";
+        setStatus(`Published ${label} ✓ — committed. Building now; live on the blog in a few minutes.${skipped}${link}`, "ok");
       } catch (err) {
-        setStatus("Failed: " + err.message, "err");
+        setStatus("Failed: " + esc(err.message), "err");
       } finally {
         btn.disabled = false;
       }

@@ -20,9 +20,6 @@ const MODEL = "whisper-large-v3-turbo";
 const PROMPT =
   "pris.la, Priscilla, Claude, Anthropic, TinaCMS, Vercel, Eleventy, ESG, AI, blog.";
 
-// Disable Vercel's automatic body parsing so we get the raw audio stream.
-module.exports.config = { api: { bodyParser: false } };
-
 async function readRawBody(req) {
   if (Buffer.isBuffer(req.body)) return req.body;
   const chunks = [];
@@ -77,3 +74,8 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "Transcription failed", detail: String(err.message || err) });
   }
 };
+
+// Disable Vercel's automatic body parsing so we get the raw audio stream.
+// This has to come *after* the handler assignment above: `module.exports = fn`
+// replaces the exports object wholesale, so a `config` set before it is lost.
+module.exports.config = { api: { bodyParser: false } };

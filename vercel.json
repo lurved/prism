@@ -1,6 +1,10 @@
 {
   "buildCommand": "npm run build && cd sustainability/report_comparison && npm ci && npm run build && cp -r ../esg-export/. .",
   "outputDirectory": ".",
+  "functions": {
+    "api/post.js": { "maxDuration": 60 },
+    "api/transcribe.js": { "maxDuration": 60 }
+  },
   "redirects": [
     { "source": "/who", "destination": "/werewolf", "permanent": true },
     { "source": "/who/:path*", "destination": "/werewolf/:path*", "permanent": true },
