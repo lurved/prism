@@ -23,17 +23,64 @@ Rare combination of board-level product leadership, sustainability domain depth,
 builder capability.
   `,
 
+  /**
+   * Key strengths are deliberately written in the vocabulary job postings
+   * screen on, not only in outcome language. The achievements below describe
+   * results ("grew MAU from 80K to 800K"); these name the same work the way a
+   * recruiter or an applicant tracking system searches for it.
+   */
   keyStrengths: [
-    "AI & Agentic Development (Claude Code, agentic workflow design, prompt-pipeline engineering, LLM product evaluation, React, Vercel)",
+    "Applied AI Delivery (production GenAI, AI-enabled workflows, agentic workflow design, prompt-pipeline engineering, LLM product evaluation, responsible AI practice, run-and-maintain)",
+    "AI Adoption & Organisational Change (adoption strategy and roadmapping, capability building, training and enablement, playbooks, champions networks, behaviour change, organisational readiness)",
+    "Programme & Portfolio Management (portfolio planning, prioritisation, milestone tracking, governance, RAID and decision management, dependency coordination, value tracking, blocker escalation)",
+    "Transformation Delivery & Digital Enablement (planning through deployment, adoption, operational transition and continuous improvement)",
+    "Executive Communication & Governance Reporting (C-level and board engagement, portfolio reviews, OKR frameworks)",
     "0→1 Product Creation & Product Strategy",
     "Subscription & Revenue Products",
     "UI/UX, Design Systems & Service Design",
-    "C-Level & Board Stakeholder Engagement",
-    "OKR Frameworks & Transformation Delivery",
-    "Cross-functional Team Building & Coaching",
-    "Data & Technology (PowerBI, enterprise platforms, SaaS, mobile, AI/IoT)",
+    "Cross-functional Team Building, Coaching & Succession Planning",
+    "Measurement (KPI definition, adoption analytics, product analytics, user research, segmentation, PowerBI)",
+    "Data & Technology (enterprise platforms, SaaS, mobile, AI/IoT)",
     "Sustainability Domain & ESG Disclosure",
-    "Agile Portfolio Management",
+    "AI & Agentic Development (Claude Code, React, Vercel)",
+  ],
+
+  /**
+   * Applied AI experience, dated.
+   *
+   * Postings increasingly gate on "N years of applied AI", and that clock is
+   * hard to read off a career history where the AI work sits inside a broader
+   * transformation role. This section states it plainly.
+   *
+   * TODO — Priscilla: confirm the month the GenAI work actually began. The
+   * period below is the tenure of the role it sat inside, which is the widest
+   * defensible reading, not a verified start date.
+   */
+  appliedAI: [
+    {
+      period: "2022 – 2025",
+      context: "SP Group — Director, Product and Experience",
+      detail:
+        "Led business units through delivery of four AI-enabled workflows into production — customer-query support, meter and AMI fieldwork, installation training, and an HR assistant. Each shipped within three to six months on an agile delivery framework. Information-processing accuracy improved approximately 50%; 80% of users reported reduced effort. Covered the full lifecycle from workflow design through deployment, adoption and operational transition.",
+    },
+    {
+      period: "2024",
+      context: "SP Group — internal AI tool",
+      detail:
+        "Delivered an internal AI safety tool serving 8,000+ contractors and staff with a four-person squad (domain expert, product owner, designer, developer), all holding other roles. Product CSAT above 80%.",
+    },
+    {
+      period: "2025 – present",
+      context: "SP Group — Director, Sustainability",
+      detail:
+        "Driving the group sustainability data platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
+    },
+    {
+      period: "2025 – 2026",
+      context: "Independent",
+      detail:
+        "Designed, built and deployed production AI applications end to end using Claude Code, agentic workflows, React and Vercel. Includes a citation-grounded extraction pipeline enforcing verbatim source quotation, a strict no-interpolation data model, and automated verification classifying every extraction as exact, fuzzy or rejected — a responsible-AI design addressing hallucination risk in regulated disclosure data.",
+    },
   ],
 
   highlights: [
@@ -87,6 +134,84 @@ builder capability.
     },
   ],
 
+  /**
+   * DESIGN PORTFOLIO
+   *
+   * The agent previously had nothing to offer anyone who asked to see design
+   * work, which is the largest hole in a profile whose most senior credential
+   * is design leadership.
+   *
+   * The entries below are scaffolded from work already documented elsewhere in
+   * this file, so `problem`, `role` and `outcome` are accurate. The `craft` and
+   * `link` fields are the ones only Priscilla can fill — what was actually
+   * designed (IA, flows, system, final UI) and where the artefacts live.
+   *
+   * TODO — Priscilla:
+   *   1. Fill `craft` for each: the design decisions, not the outcome.
+   *   2. Add `link` — a case-study URL, or a password-protected page for
+   *      anything NDA-constrained.
+   *   3. Add any recent (2020+) work missing here. Recency is what closes the
+   *      "last design-titled role was 2017" gap, so it matters most.
+   */
+  portfolio: [
+    {
+      title: "Agent Boost — PropertyGuru",
+      year: "2017",
+      role: "Head of Product and UX",
+      problem:
+        "Property agents needed a way to buy visibility for individual listings on a marketplace where organic reach was flattening.",
+      craft: "TODO — IA, purchase flow, pricing comprehension, final UI.",
+      outcome:
+        "Zero-to-one paid-visibility product on the agent platform, PropertyGuru's primary revenue line; agent subscription products delivered 25% CAGR and contributed to the Series D valuation increase.",
+      link: "TODO",
+    },
+    {
+      title: "SP app — consumer utility experience",
+      year: "2017 – 2022",
+      role: "Director, SP Digital",
+      problem:
+        "A utility app that households were required to use but did not want to, rated 2.4, reaching a fraction of the customer base.",
+      craft: "TODO — onboarding redesign, information architecture, billing and usage comprehension, design system.",
+      outcome:
+        "Monthly active users grew from 80,000 to 800,000 of 1.4 million households; app rating improved from 2.4 to 4.6.",
+      link: "TODO",
+    },
+    {
+      title: "Enterprise workflow redesign — SP Group",
+      year: "2022 – 2025",
+      role: "Director, Product and Experience",
+      problem:
+        "Customer service, IT and field operations ran on disconnected platforms and manual handoffs across 3,000+ frontline and back-office staff.",
+      craft: "TODO — service blueprints, workflow redesign, field tooling interaction design.",
+      outcome:
+        "Integrated digital platforms and redesigned workflows; 20–50% time-to-task reduction per product; 40% reduction in process redundancies.",
+      link: "TODO",
+    },
+    {
+      title: "ESG Report Comparison Platform — pris.la",
+      year: "2025 – 2026",
+      role: "Independent — design and build",
+      problem:
+        "Sustainability disclosures are incomparable across companies, and the tools that try to compare them quietly interpolate missing figures.",
+      craft:
+        "Comparison IA across companies and metrics, per-figure citation affordances, comparability flags, and an explicit N/D versus N/A distinction so gaps read as gaps rather than zeroes.",
+      outcome:
+        "Live multi-company disclosure tracker across utilities, healthcare and Temasek portfolio companies, built on a strict no-interpolation data model.",
+      link: "https://pris.la/sustainability",
+    },
+    {
+      title: "Type Me",
+      year: "2025 – 2026",
+      role: "Independent — design and build",
+      problem:
+        "Personality typing is self-reported; the interesting version is how the people who know you actually perceive you.",
+      craft:
+        "Deterministic scoring model, share-card mechanics, self-contained React build with a full engineering specification.",
+      outcome: "Shipped consumer prototype.",
+      link: "TODO",
+    },
+  ],
+
   experience: [
     {
       company: "SP Group",
@@ -104,11 +229,16 @@ builder capability.
       period: "2022 – Sep 2025",
       role: "Director, Product and Experience",
       highlights: [
-        "Led enterprise transformation across customer service, IT, and field operations — integrated digital platforms and redesigned workflows for 3,000+ frontline and back-office staff.",
-        "Guided business units in shipping production GenAI products (customer-query support, meter/AMI fieldwork, installation training; HR chatbot in rollout) — delivered within 3–6 months, improving information-processing accuracy by ~50% with 80% of users reporting reduced effort.",
-        "Cut process redundancies 40% through shared-services alignment across HR, Finance, and Ops.",
-        "Secured C-level and board buy-in for a 3-year transformation roadmap through OKR-driven reporting.",
-        "Rebuilt data and CX capability post-restructure — in-house teams, redefined role matrices, coached senior leaders on digital ways of working.",
+        // TODO — Priscilla: the adoption and change work behind these results is
+        // not written down anywhere, and postings screen hard on it. Add a bullet
+        // naming what you actually ran to get uptake: onboarding, demonstrations,
+        // internal communications, training, champions, office hours. I have left
+        // it out rather than guess at activities you may not have run.
+        "Led an enterprise transformation programme across customer service, IT, and field operations — integrated digital platforms and redesigned workflows for 3,000+ frontline and back-office staff, from planning through deployment.",
+        "Guided business units in shipping production GenAI products (customer-query support, meter/AMI fieldwork, installation training; HR chatbot in rollout) — AI-enabled workflows delivered within 3–6 months, improving information-processing accuracy by ~50% with 80% of users reporting reduced effort.",
+        "Cut process redundancies 40% through shared-services alignment across HR, Finance, and Ops — aligning business owners across three functions and escalating blockers to resolution.",
+        "Secured C-level and board buy-in for a 3-year transformation roadmap through OKR-driven portfolio governance and executive reporting.",
+        "Rebuilt data and CX capability post-restructure — in-house teams, redefined role matrices, organisational capability planning, and coached senior leaders on digital ways of working.",
       ],
     },
     {

@@ -1,0 +1,37 @@
+Endowus — Design Lead
+
+The role
+
+Endowus is hiring a Design Lead, the most senior design role at the company. Over 300,000 clients use our platform to invest their cash, CPF, and SRS savings in Singapore and Hong Kong, and the experiences they move through every day — spanning onboarding, funding, goal tracking, portfolio management, retirement solutions across pension scheme and cash savings, and private wealth — are this role's responsibility.
+
+The flagship mandate for this seat is our retirement proposition. Endowus is the only digital advisor in the region spanning private wealth and public pension, and how clients plan for, invest towards, and ultimately draw down for retirement is the experience we most need design leadership on. You'll own that end to end, alongside the broader platform.
+
+This is a player-coach seat. You'll manage the design team working across both markets, and you'll keep designing yourself; the balance between the two is yours to manage as the product and team evolve. You'll work directly with the CEO and with product and engineering leaders, close enough to the business that design decisions and business decisions are often the same conversation.
+
+What you'll do
+
+Set the direction. Design at Endowus should have a point of view, and yours will carry the most weight. You'll define a design vision that holds together across everything a client touches, from their first deposit through goal tracking, portfolio management, and private wealth, so the platform feels like one product across two markets rather than a collection of features. A key focus will be advancing our retirement solutions — how clients plan, invest and ultimately draw down their pension funds and cash savings for retirement, across both Singapore and Hong Kong — an area where design quality directly determines whether people trust the platform with decades-long decisions. Much of the work is translation: taking financial concepts that are genuinely complex and making them feel simple and honest. You'll also shape the evolution of our advisory experience, ensuring that every design decision directly builds value for our clients. You'll be in the room when problems are framed, not brought in after they've been scoped.
+
+Hold the bar. We ship often, and the pace is real, so we build quality into our team processes to ensure consistent excellence from the start. You'll set the processes, standards, and frameworks that let the team move fast without the work getting thin, and you'll stay hands on yourself, taking the most complex problems from research through information architecture, interaction, and final UI. Design calls get backed by evidence: user research, experimentation, product analytics.
+
+Build the team. You'll lead, mentor, and grow a small team of product designers across Singapore and Hong Kong workstreams, and build the kind of team culture that good designers seek out and stay for. Partnerships matter as much as management here: with product and engineering from problem framing through launch, and with the compliance, legal, and marketing teams a regulated wealth platform can't ship without. You'll also be design's voice at the leadership level, connecting client needs, business goals, and the team's output into a narrative that senior stakeholders can act on.
+
+Reshape the practice. AI is changing what it means to practise design, and we'd rather lead that shift than absorb it. You'll decide how the team adopts AI-assisted workflows, which parts of the traditional process to rethink, and how design's role at Endowus evolves as the tools do. This isn't a side project; the same shift is happening inside our product, and the team that designs AI features should be fluent in working with AI itself.
+
+Who we're looking for
+
+8+ years in product or UX design, with meaningful time on consumer-facing products
+You've led designers before, whether as a formal manager or as the person a team looked to
+Deep strengths in interaction design, information architecture, and UX for complex workflows; your portfolio should show product thinking as well as visual quality
+You can set direction, align stakeholders, and debate trade-offs with senior product and engineering leaders while keeping the client outcome in view
+Comfortable partnering on user research and quantitative analysis to inform decisions and measure impact
+You can make complex financial concepts feel simple and trustworthy, in the product and in the room
+You genuinely want a leaner team where you own outcomes end to end, rather than a large org with heavy resourcing around you
+
+Bonus points
+
+Experience in designing digital experiences around wealth management
+Experience designing retirement, pension, or long-horizon savings products
+Products that span markets or languages
+AI-integrated product design
+Side projects or entrepreneurial work that shows initiative beyond the day job
