@@ -13,6 +13,7 @@
   ],
   "rewrites": [
     { "source": "/about", "destination": "/about.html" },
+    { "source": "/work", "destination": "/work/index.html" },
     { "source": "/sides", "destination": "/sides/index.html" },
     { "source": "/carbon", "destination": "/carbon/index.html" },
     { "source": "/talk", "destination": "/talk/index.html" },
