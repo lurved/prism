@@ -1,0 +1,42 @@
+[
+  {
+    "role": "AI Programme and Adoption Lead",
+    "org": "A*STAR",
+    "slug": "a-star-ai-programme-and-adoption-lead",
+    "verdict": "Credible",
+    "requirementCoverage": 56,
+    "cvKeywordCoverage": 96,
+    "gapsInRequirements": [
+      "adoption",
+      "implementing applied ai",
+      "applied ai technology",
+      "programme management",
+      "ai-enabled",
+      "decisions",
+      "organisational",
+      "responsible ai",
+      "business owners",
+      "executive communication",
+      "translate ai",
+      "programmes",
+      "planning",
+      "tracking",
+      "knowledge",
+      "technical",
+      "sustained",
+      "capacity",
+      "governance",
+      "readiness",
+      "skills",
+      "deployment",
+      "usage",
+      "enablement",
+      "operational",
+      "sequenced"
+    ],
+    "summaryDraftedBy": "template",
+    "generated": "2026-08-31T11:46:45.276Z",
+    "status": "drafted",
+    "submitted": null
+  }
+]

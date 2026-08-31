@@ -1,0 +1,15 @@
+{
+  "name": "prism-jobs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Job application pipeline — scores a posting against agent/profile.js and generates a tailored ATS CV, cover note and fit report.",
+  "main": "apply.js",
+  "scripts": {
+    "apply": "node apply.js",
+    "score": "node apply.js --score-only"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "docx": "^9.0.0"
+  }
+}
