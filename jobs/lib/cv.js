@@ -20,7 +20,6 @@ const {
 } = require("docx");
 const fs = require("fs");
 const path = require("path");
-const { load: loadPrivate } = require("./private");
 
 // The .docx uses Georgia and Calibri rather than the pris.la webfaces:
 // an unavailable font is silently substituted by Word, and an unpredictable
@@ -42,7 +41,11 @@ function blocks({ profile, headline, summary, groups, spotlight }) {
   b.push({ t: "name", text: profile.name.toUpperCase() });
   if (headline) b.push({ t: "sub", text: headline });
 
-  const contact = [profile.location, profile.email, loadPrivate().phone].filter(Boolean);
+  // CV_PHONE lets a machine override the committed number without editing
+  // the profile; the placeholder makes a missing one visible rather than
+  // silently shipping a CV with no way to call the candidate.
+  const phone = process.env.CV_PHONE || profile.phone || "[Phone number]";
+  const contact = [profile.location, profile.email, phone].filter(Boolean);
   b.push({ t: "contact", text: contact.join("  |  ") });
   b.push({
     t: "contact",
@@ -92,9 +95,9 @@ const run = (text, o = {}) => new TextRun({ text, font: o.font || FONT, color: o
 
 function toDocx(model, outPath) {
   const children = [];
-  // The contact block is closed with a pink rule, so only the last contact
-  // line carries the border — track which one that is.
-  model.forEach((blk, idx) => {
+  // The contact block is closed with a pink rule; blk.last marks the line
+  // that carries it.
+  model.forEach((blk) => {
     switch (blk.t) {
       case "name":
         children.push(new Paragraph({ spacing: { after: 50 }, children: [run(blk.text, { font: DISPLAY, size: 40, color: NAVY, spacing: 12 })] }));

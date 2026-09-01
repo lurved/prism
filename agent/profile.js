@@ -10,6 +10,11 @@ const profile = {
   title: "Director, Sustainability — SP Group | Product & Experience Leader | AI Product Builder",
   location: "Singapore",
   email: "prisms@outlook.com",
+  // Published deliberately. This repo is public, so the number is indexed and
+  // scraped like the email address is — the trade is that the site agent can
+  // give it to a recruiter who asks, and the CV picks it up automatically.
+  // CV_PHONE in the environment overrides it without editing this file.
+  phone: "+65 9107 1104",
   linkedin: "https://www.linkedin.com/in/prisc/",
 
   summary: `

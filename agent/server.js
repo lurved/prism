@@ -83,7 +83,7 @@ is working on, then find natural points of connection with Priscilla's backgroun
 
 ${profile.summary}
 
-**Contact:** ${profile.email} | ${profile.linkedin}
+**Contact:** ${profile.email}${profile.phone ? ` | ${profile.phone}` : ""} | ${profile.linkedin}
 **Location:** ${profile.location}
 
 ---
