@@ -21,7 +21,7 @@ const profile = {
 Priscilla Liu is a product and experience leader with 15+ years shipping across energy, proptech,
 and financial services — now leading sustainability and digital at SP Group and building AI products hands-on,
 end to end. She led the narrative, structure and design of SP Group's 2026 sustainability report
-and helps build its sustainability data platform; previously led enterprise transformation for
+and manages its Sustainability Data Platform; previously led enterprise transformation for
 3,000+ staff and launched business-unit AI agents in production. She independently designs,
 codes, and deploys AI products using Claude Code, agentic workflows, and modern web tooling.
 Rare combination of board-level product leadership, sustainability domain depth, and current
@@ -85,7 +85,7 @@ builder capability.
       period: "2025 – present",
       context: "SP Group — Director, Sustainability and Digital",
       detail:
-        "Driving the group sustainability data platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
+        "Manage the SP Group Sustainability Data Platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
     },
     {
       period: "2025 – 2026",
@@ -259,10 +259,12 @@ developing the next generation of leaders within it.`,
       period: "Sep 2025 – Present",
       role: "Director, Sustainability and Digital",
       highlights: [
+        // The platform is the digital half of the title, so it leads the role
+        // rather than trailing three sustainability bullets.
+        "Manage the SP Group Sustainability Data Platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
         "Led the narrative, structure and visualisation of SP Group's 2026 sustainability report.",
-        "Helps set sustainability targets and metrics and collects disclosure data.",
-        "Leads sustainability communications across the group.",
-        "Driving SP Group's sustainability data platform — disclosure and reporting data infrastructure.",
+        "Set sustainability targets and metrics and govern group-wide disclosure data collection.",
+        "Lead sustainability communications across the group.",
       ],
     },
     {
