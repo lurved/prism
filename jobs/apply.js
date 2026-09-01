@@ -43,6 +43,23 @@ function parseArgs(argv) {
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
 
+/**
+ * The CV filename is named for the candidate, not the posting.
+ *
+ * The directory already carries the role, which is what you need locally; the
+ * file is what reaches a recruiter, who sorts by candidate and already knows
+ * the role. A neutral name also fails quietly if it ever goes to the wrong
+ * employer, where one naming the posting would announce it. Proper case
+ * because a lowercase slug reads machine-generated on an emailed attachment.
+ */
+const cvFileBase = (profile) =>
+  profile.name
+    .split(/\s+/)
+    .map((w) => w.replace(/[^\p{L}\p{N}'-]/gu, ""))
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join("-") + "-CV";
+
 /** Best-effort role/org from the posting's opening lines. */
 function infer(jd, file) {
   const head = jd.split(/\r?\n/).slice(0, 12).map((l) => l.trim()).filter(Boolean);
@@ -129,7 +146,7 @@ async function main() {
     spotlight,
   });
 
-  const base = `${slugify(profile.name)}-cv-${slugify(role)}`;
+  const base = cvFileBase(profile);
   await cv.toDocx(model, path.join(outDir, `${base}.docx`));
   const txt = cv.toText(model);
   fs.writeFileSync(path.join(outDir, `${base}.txt`), txt);

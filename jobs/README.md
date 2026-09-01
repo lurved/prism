@@ -16,12 +16,18 @@ Output lands in `jobs/applications/<org-role>/`:
 
 | File | What it is |
 |---|---|
-| `*.docx` | ATS-safe CV, tailored emphasis. **The file you upload.** |
-| `*.pdf` | Typeset in the pris.la faces. The file you send to a person. |
-| `*.txt` | Same content, plain text. For forms with a paste box. |
-| `*.html` | Source for the PDF; ignore unless you want to tweak the print CSS. |
+| `Priscilla-Liu-CV.docx` | ATS-safe CV, tailored emphasis. **The file you upload.** |
+| `Priscilla-Liu-CV.pdf` | Typeset in the pris.la faces. The file you send to a person. |
+| `Priscilla-Liu-CV.txt` | Same content, plain text. For forms with a paste box. |
+| `Priscilla-Liu-CV.html` | Source for the PDF; ignore unless you want to tweak the print CSS. |
 | `cover-note.md` | Draft letter. |
 | `fit-report.md` | Which requirements the profile evidences, with quoted evidence, and which it does not. |
+
+The CV is named for the candidate, never the posting. The directory carries the
+role, which is what you need locally; the file is what reaches a recruiter, who
+sorts by candidate and already knows the role. A neutral name also fails quietly
+if it ever goes to the wrong employer, where one naming the posting would
+announce it. Rename on send in the rare case a portal demands unique filenames.
 
 Every run also appends to `pipeline.json` so you can see what was generated for whom, and mark what you actually sent.
 
