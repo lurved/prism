@@ -22,6 +22,8 @@ const fit = require("./lib/fit");
 const grouping = require("./lib/grouping");
 const cv = require("./lib/cv");
 const tailor = require("./lib/tailor");
+const fonts = require("./lib/fonts");
+const pdf = require("./lib/pdf");
 
 const ROOT = __dirname;
 
@@ -31,6 +33,7 @@ function parseArgs(argv) {
     const a = argv[i];
     if (a === "--score-only") args.scoreOnly = true;
     else if (a === "--no-letter") args.noLetter = true;
+    else if (a === "--no-pdf") args.noPdf = true;
     else if (a.startsWith("--")) args[a.slice(2)] = argv[++i];
     else args._.push(a);
   }
@@ -109,7 +112,14 @@ async function main() {
   fs.mkdirSync(outDir, { recursive: true });
 
   const spotlight = tailor.spotlightFor(profile, leadTheme);
-  const { text: summary, drafted } = await tailor.summaryFor({ profile, jd, groups, fitResult: result });
+
+  // A hand-written summary in summaries/<slug>.txt wins over anything the
+  // tool drafts. The summary is the most-read block on the page and the one
+  // most worth writing yourself; generation is the fallback, not the ceiling.
+  const override = path.join(ROOT, "summaries", `${path.basename(outDir)}.txt`);
+  const { text: summary, drafted } = fs.existsSync(override)
+    ? { text: fs.readFileSync(override, "utf8").trim(), drafted: "hand-written" }
+    : await tailor.summaryFor({ profile, jd, groups, fitResult: result });
 
   const model = cv.blocks({
     profile,
@@ -123,6 +133,14 @@ async function main() {
   await cv.toDocx(model, path.join(outDir, `${base}.docx`));
   const txt = cv.toText(model);
   fs.writeFileSync(path.join(outDir, `${base}.txt`), txt);
+
+  // Typeset PDF in the pris.la faces, for sending to a person rather than a
+  // portal. Same block model, so it can never disagree with the .docx.
+  if (!args.noPdf) {
+    const html = cv.toHtml(model, { fontCss: await fonts.embeddedCss() });
+    fs.writeFileSync(path.join(outDir, `${base}.html`), html);
+    pdf.render(html, path.join(outDir, `${base}.pdf`));
+  }
 
   // Verify the tailored CV actually carries the terms it was built for.
   const cov = keywords.coverage(txt, result.matched);

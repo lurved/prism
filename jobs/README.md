@@ -16,8 +16,10 @@ Output lands in `jobs/applications/<org-role>/`:
 
 | File | What it is |
 |---|---|
-| `*.docx` | ATS-safe CV, tailored emphasis. The file you upload. |
+| `*.docx` | ATS-safe CV, tailored emphasis. **The file you upload.** |
+| `*.pdf` | Typeset in the pris.la faces. The file you send to a person. |
 | `*.txt` | Same content, plain text. For forms with a paste box. |
+| `*.html` | Source for the PDF; ignore unless you want to tweak the print CSS. |
 | `cover-note.md` | Draft letter. |
 | `fit-report.md` | Which requirements the profile evidences, with quoted evidence, and which it does not. |
 
@@ -38,6 +40,37 @@ The workflow it is built for:
 3. `--score-only` to triage. Most postings die here, which is the point.
 4. Full run on the survivors, read the fit report, edit the letter.
 5. Upload and submit by hand.
+
+## Design versus parsing
+
+The two pull against each other, and the resolution is that they are the same
+document rendered twice from one block model, so they can never disagree.
+
+What actually breaks an applicant tracking system is *layout*: multiple
+columns, tables used for positioning, text boxes, contact details stranded in
+a header, text baked into an image. None of that appears in either file. What
+parsers ignore harmlessly is *colour and type* — which is exactly where the
+pris.la system lives here.
+
+- **`.docx`** uses Georgia and Calibri, not the pris.la webfaces. An
+  unavailable font is silently substituted by Word, and an unpredictable
+  substitution is a functional defect. Navy headings, the pink rule under the
+  contact block, and the pink bullet dashes all survive intact.
+- **`.pdf`** embeds Newsreader, Hanken Grotesk and Space Mono, so it renders
+  identically anywhere. Chrome prints real text rather than outlines, so it
+  still parses — but the `.docx` remains the safer upload for older systems.
+
+The site is light type on navy; a CV cannot be. Navy becomes the ink, the pink
+survives as hairline rules only — at 12px on white it fails contrast as text,
+so it is never used for any — and the ground is white because someone may
+print it.
+
+## Writing the summary yourself
+
+Drop a file at `summaries/<slug>.txt` and it overrides whatever the tool would
+draft. The slug is the application directory name. The summary is the
+most-read block on the page and the one most worth writing by hand;
+generation is the fallback, not the ceiling.
 
 ## How scoring works
 
