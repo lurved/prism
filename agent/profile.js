@@ -53,13 +53,19 @@ builder capability.
    * hard to read off a career history where the AI work sits inside a broader
    * transformation role. This section states it plainly.
    *
-   * TODO — Priscilla: confirm the month the GenAI work actually began. The
-   * period below is the tenure of the role it sat inside, which is the widest
-   * defensible reading, not a verified start date.
+   * Confirmed: the GenAI work began in 2024. Production applied AI therefore
+   * runs 2024 to present — roughly two and a half years, not three. Postings
+   * that gate on "3+ years of applied AI" are not cleared by this work alone.
+   *
+   * TODO — Priscilla: earlier AI/ML work would change that. "AI/IoT" appears
+   * under Data & Technology in keyStrengths, and SP Digital ran from 2017. If
+   * you owned predictive, ML, recommendation or AI/IoT products before 2024,
+   * add them here — applied AI is not only GenAI, and it is the difference
+   * between clearing that filter and arguing around it.
    */
   appliedAI: [
     {
-      period: "2022 – 2025",
+      period: "2024 – 2025",
       context: "SP Group — Director, Product and Experience",
       detail:
         "Implementing applied AI technology in real-world professional applications: led business units through delivery of four AI-enabled workflows into production — customer-query support, meter and AMI fieldwork, installation training, and an HR assistant. Each shipped within three to six months on an agile delivery framework. Information-processing accuracy improved approximately 50%; 80% of users reported reduced effort. Covered the full lifecycle from workflow design through deployment, adoption and operational transition.",
@@ -259,11 +265,7 @@ developing the next generation of leaders within it.`,
       period: "2022 – Sep 2025",
       role: "Director, Product and Experience",
       highlights: [
-        // TODO — Priscilla: the adoption and change work behind these results is
-        // not written down anywhere, and postings screen hard on it. Add a bullet
-        // naming what you actually ran to get uptake: onboarding, demonstrations,
-        // internal communications, training, champions, office hours. I have left
-        // it out rather than guess at activities you may not have run.
+        "Drove adoption of new ways of working across the organisation — set the product delivery framework on Lean and Agile foundations, established playbooks, stood up the programme, coached product and scrum teams, measured outcomes, and communicated those outcomes to C-level stakeholders to secure buy-in.",
         "Led an enterprise transformation programme across customer service, IT, and field operations — integrated digital platforms and redesigned workflows for 3,000+ frontline and back-office staff, from planning through deployment.",
         "Guided business units in shipping production GenAI products (customer-query support, meter/AMI fieldwork, installation training; HR chatbot in rollout) — AI-enabled workflows delivered within 3–6 months, improving information-processing accuracy by ~50% with 80% of users reporting reduced effort.",
         "Cut process redundancies 40% through shared-services alignment across HR, Finance, and Ops — aligning business owners across three functions and escalating blockers to resolution.",
