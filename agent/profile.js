@@ -7,7 +7,7 @@
 
 const profile = {
   name: "Priscilla Liu",
-  title: "Director, Sustainability — SP Group | Product & Experience Leader | AI Product Builder",
+  title: "Director, Sustainability and Digital — SP Group | Product & Experience Leader | AI Product Builder",
   location: "Singapore",
   email: "prisms@outlook.com",
   // Published deliberately. This repo is public, so the number is indexed and
@@ -19,7 +19,7 @@ const profile = {
 
   summary: `
 Priscilla Liu is a product and experience leader with 15+ years shipping across energy, proptech,
-and financial services — now leading sustainability at SP Group and building AI products hands-on,
+and financial services — now leading sustainability and digital at SP Group and building AI products hands-on,
 end to end. She led the narrative, structure and design of SP Group's 2026 sustainability report
 and helps build its sustainability data platform; previously led enterprise transformation for
 3,000+ staff and launched business-unit AI agents in production. She independently designs,
@@ -83,7 +83,7 @@ builder capability.
     },
     {
       period: "2025 – present",
-      context: "SP Group — Director, Sustainability",
+      context: "SP Group — Director, Sustainability and Digital",
       detail:
         "Driving the group sustainability data platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
     },
@@ -257,7 +257,7 @@ developing the next generation of leaders within it.`,
     {
       company: "SP Group",
       period: "Sep 2025 – Present",
-      role: "Director, Sustainability",
+      role: "Director, Sustainability and Digital",
       highlights: [
         "Led the narrative, structure and visualisation of SP Group's 2026 sustainability report.",
         "Helps set sustainability targets and metrics and collects disclosure data.",
