@@ -62,7 +62,7 @@ builder capability.
       period: "2022 – 2025",
       context: "SP Group — Director, Product and Experience",
       detail:
-        "Led business units through delivery of four AI-enabled workflows into production — customer-query support, meter and AMI fieldwork, installation training, and an HR assistant. Each shipped within three to six months on an agile delivery framework. Information-processing accuracy improved approximately 50%; 80% of users reported reduced effort. Covered the full lifecycle from workflow design through deployment, adoption and operational transition.",
+        "Implementing applied AI technology in real-world professional applications: led business units through delivery of four AI-enabled workflows into production — customer-query support, meter and AMI fieldwork, installation training, and an HR assistant. Each shipped within three to six months on an agile delivery framework. Information-processing accuracy improved approximately 50%; 80% of users reported reduced effort. Covered the full lifecycle from workflow design through deployment, adoption and operational transition.",
     },
     {
       period: "2024",

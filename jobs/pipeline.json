@@ -4,11 +4,9 @@
     "org": "A*STAR",
     "slug": "a-star-ai-programme-and-adoption-lead",
     "verdict": "Strong",
-    "requirementCoverage": 83,
+    "requirementCoverage": 87,
     "cvKeywordCoverage": 93,
     "gapsInRequirements": [
-      "implementing applied ai",
-      "applied ai technology",
       "decisions",
       "translate ai",
       "programmes",
@@ -21,7 +19,7 @@
       "sequenced"
     ],
     "summaryDraftedBy": "template",
-    "generated": "2026-09-01T10:53:23.241Z",
+    "generated": "2026-09-01T10:55:13.502Z",
     "status": "drafted",
     "submitted": null
   },
@@ -48,7 +46,8 @@
     ],
     "summaryDraftedBy": "template",
     "generated": "2026-09-01T10:53:23.026Z",
-    "status": "drafted",
-    "submitted": null
+    "status": "not pursuing",
+    "submitted": null,
+    "note": "Decided against — pursuing A*STAR instead."
   }
 ]
