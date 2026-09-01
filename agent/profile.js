@@ -342,8 +342,31 @@ developing the next generation of leaders within it.`,
   education: [
     "M.Sc. — Nanyang Technological University (2007–2008)",
     "B.A. — National University of Singapore (2001–2004)",
-    "Certified Professional Scrum Master & Product Owner — Scrum.org",
-    "Finance & Quantitative Modeling for Analysts — University of Pennsylvania",
+  ],
+
+  /**
+   * Certifications, newest first. Kept separate from education so issue dates
+   * and credential IDs can be rendered properly — a recruiter can verify a
+   * credential they can look up, and a bare "Certified Scrum Master" line
+   * carries less weight than a dated one.
+   */
+  certifications: [
+    {
+      name: "Finance & Quantitative Modeling for Analysts Specialization",
+      issuer: "University of Pennsylvania",
+      issued: "Jan 2021",
+      credentialId: "9BQ58CTFV35X",
+    },
+    {
+      name: "Professional Scrum Master",
+      issuer: "Scrum.org",
+      issued: "Nov 2014",
+    },
+    {
+      name: "Scrum Product Owner",
+      issuer: "Scrum.org",
+      issued: "Nov 2013",
+    },
   ],
 
   awards: [

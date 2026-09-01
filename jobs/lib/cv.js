@@ -75,9 +75,15 @@ function blocks({ profile, headline, summary, groups, spotlight }) {
     for (const h of e.highlights || []) b.push({ t: "bullet", text: h });
   }
 
-  if ((profile.education || []).length) {
+  if ((profile.education || []).length || (profile.certifications || []).length) {
     b.push({ t: "h2", text: "Education and Certifications" });
-    for (const e of profile.education) b.push({ t: "bullet", text: e });
+    for (const e of profile.education || []) b.push({ t: "bullet", text: e });
+    for (const c of profile.certifications || []) {
+      const parts = [`${c.name} — ${c.issuer}`];
+      if (c.issued) parts.push(`Issued ${c.issued}`);
+      if (c.credentialId) parts.push(`Credential ID ${c.credentialId}`);
+      b.push({ t: "bullet", text: parts.join("  ·  ") });
+    }
   }
   if ((profile.awards || []).length) {
     b.push({ t: "h2", text: "Awards and Recognition" });

@@ -66,6 +66,9 @@ function buildSystemPrompt() {
       : "";
 
   const education = profile.education ? profile.education.join("\n") : "";
+  const certifications = (profile.certifications || [])
+    .map((c) => `- ${c.name} — ${c.issuer}${c.issued ? ` (issued ${c.issued})` : ""}`)
+    .join("\n");
   const awards = profile.awards ? profile.awards.join("\n") : "";
   const media = profile.mediaAndPress ? profile.mediaAndPress.join("\n") : "";
 
@@ -137,9 +140,10 @@ ${recs}
 
 ---
 
-## Education & Certifications
+## Education
 
 ${education}
+${certifications ? `\n## Certifications\n\n${certifications}\n` : ""}
 
 ---
 

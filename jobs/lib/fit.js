@@ -38,6 +38,7 @@ function corpus(profile) {
     (e.highlights || []).forEach((h) => push(h, `${e.company} (${e.period})`));
   });
   (profile.education || []).forEach((e) => push(e, "Education"));
+  (profile.certifications || []).forEach((c) => push(`${c.name} ${c.issuer}`, "Certifications"));
   (profile.awards || []).forEach((a) => push(a, "Awards"));
   (profile.speakingAndThoughtLeadership || []).forEach((s) => push(s, "Speaking"));
   (profile.linkedInPosts || []).forEach((p) => push(`${p.title || ""} ${p.summary} ${p.fullText || ""}`, `LinkedIn post ${p.date}`));
