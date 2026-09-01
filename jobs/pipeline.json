@@ -21,7 +21,7 @@
       "sequenced"
     ],
     "summaryDraftedBy": "template",
-    "generated": "2026-08-31T11:51:40.087Z",
+    "generated": "2026-09-01T10:53:23.241Z",
     "status": "drafted",
     "submitted": null
   },
@@ -30,8 +30,8 @@
     "org": "Endowus",
     "slug": "endowus-design-lead",
     "verdict": "Credible",
-    "requirementCoverage": 67,
-    "cvKeywordCoverage": 87,
+    "requirementCoverage": 73,
+    "cvKeywordCoverage": 82,
     "gapsInRequirements": [
       "retirement",
       "pension",
@@ -41,16 +41,13 @@
       "feel simple",
       "information architecture",
       "around",
-      "markets",
       "client",
-      "designers",
-      "direction",
       "genuinely",
       "room",
       "stakeholders"
     ],
     "summaryDraftedBy": "template",
-    "generated": "2026-08-31T11:51:40.246Z",
+    "generated": "2026-09-01T10:53:23.026Z",
     "status": "drafted",
     "submitted": null
   }

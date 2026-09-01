@@ -43,6 +43,10 @@ function buildSystemPrompt() {
       ? profile.independentWork.map((w) => `- **${w.title}:** ${w.detail}`).join("\n")
       : "";
 
+  const designLeadership = profile.designLeadership
+    ? `${profile.designLeadership.summary.trim()}\n\n${(profile.designLeadership.practice || []).map((p) => `- ${p}`).join("\n")}`
+    : "";
+
   const appliedAI =
     profile.appliedAI && profile.appliedAI.length
       ? profile.appliedAI.map((a) => `- **${a.period} — ${a.context}:** ${a.detail}`).join("\n")
@@ -100,7 +104,7 @@ ${highlights}
 
 ${exp}
 
----
+${designLeadership ? `---\n\n## Design Leadership\n\n${designLeadership}\n\n` : ""}---
 
 ## Applied AI Experience (dated)
 

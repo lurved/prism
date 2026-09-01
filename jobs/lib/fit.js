@@ -25,6 +25,10 @@ function corpus(profile) {
   (profile.highlights || []).forEach((h) => push(`${h.title}. ${h.detail}`, `Highlight — ${h.title}`));
   (profile.independentWork || []).forEach((w) => push(`${w.title}. ${w.detail}`, `Independent — ${w.title}`));
   (profile.appliedAI || []).forEach((a) => push(`${a.context}. ${a.detail}`, `Applied AI (${a.period})`));
+  if (profile.designLeadership) {
+    push(profile.designLeadership.summary, "Design leadership");
+    (profile.designLeadership.practice || []).forEach((x) => push(x, "Design leadership — practice"));
+  }
   // Portfolio entries only count as evidence once the craft field is written.
   (profile.portfolio || [])
     .filter((p) => p.craft && !/^TODO/i.test(p.craft))

@@ -37,6 +37,7 @@ builder capability.
     "Executive Communication & Governance Reporting (C-level and board engagement, portfolio reviews, OKR frameworks)",
     "0→1 Product Creation & Product Strategy",
     "Subscription & Revenue Products",
+    "Design Leadership (strategic design direction, design systems, design ways of working; hiring, managing and developing designers, user researchers and data analysts)",
     "UI/UX, Design Systems & Service Design",
     "Cross-functional Team Building, Coaching & Succession Planning",
     "Measurement (KPI definition, adoption analytics, product analytics, user research, segmentation, PowerBI)",
@@ -135,23 +136,49 @@ builder capability.
   ],
 
   /**
+   * DESIGN LEADERSHIP
+   *
+   * The shape of the design contribution across the director-level roles.
+   * It is practice-level rather than per-project: direction, frameworks, the
+   * design system, and the team. Kept separate from `portfolio` below so the
+   * two are not confused — postings that ask for a design lead are asking
+   * about this section; postings that ask for a portfolio are asking about
+   * that one.
+   */
+  designLeadership: {
+    summary: `Across SP Group, SP Digital and PropertyGuru, Priscilla's design contribution has been
+setting direction and building the practice rather than owning individual screens: defining the
+strategic design direction, establishing the ways of working and frameworks that give structure to
+how products and projects get created and managed, setting up the design system, and hiring and
+managing a multi-disciplinary team of designers, user researchers and data analysts — including
+developing the next generation of leaders within it.`,
+    practice: [
+      "Set strategic design direction across product portfolios.",
+      "Established ways of working and delivery frameworks providing structure for product and project creation and management.",
+      "Set up and owned the design system.",
+      "Hired and managed designers, user researchers and data analysts as a single multi-disciplinary practice.",
+      "Built next-generation leaders within the team through coaching, succession and capability planning.",
+    ],
+  },
+
+  /**
    * DESIGN PORTFOLIO
    *
    * The agent previously had nothing to offer anyone who asked to see design
    * work, which is the largest hole in a profile whose most senior credential
    * is design leadership.
    *
-   * The entries below are scaffolded from work already documented elsewhere in
-   * this file, so `problem`, `role` and `outcome` are accurate. The `craft` and
-   * `link` fields are the ones only Priscilla can fill — what was actually
-   * designed (IA, flows, system, final UI) and where the artefacts live.
+   * `craft` describes the contribution honestly at the level it was made. On
+   * the three enterprise entries that is direction, system and team — see
+   * `designLeadership` above; on the two independent builds it is hands-on
+   * design and code.
    *
    * TODO — Priscilla:
-   *   1. Fill `craft` for each: the design decisions, not the outcome.
-   *   2. Add `link` — a case-study URL, or a password-protected page for
-   *      anything NDA-constrained.
-   *   3. Add any recent (2020+) work missing here. Recency is what closes the
-   *      "last design-titled role was 2017" gap, so it matters most.
+   *   1. Add `link` where artefacts exist — a case-study URL, or a
+   *      password-protected page for anything NDA-constrained.
+   *   2. Add any recent (2020+) hands-on work missing here. Postings that ask
+   *      for a portfolio want craft artefacts and recency; the leadership
+   *      narrative above answers a different question.
    */
   portfolio: [
     {
@@ -160,7 +187,8 @@ builder capability.
       role: "Head of Product and UX",
       problem:
         "Property agents needed a way to buy visibility for individual listings on a marketplace where organic reach was flattening.",
-      craft: "TODO — IA, purchase flow, pricing comprehension, final UI.",
+      craft:
+        "Director-level: set the design direction for the agent platform and the ways of working the product and UX team delivered against, across four markets.",
       outcome:
         "Zero-to-one paid-visibility product on the agent platform, PropertyGuru's primary revenue line; agent subscription products delivered 25% CAGR and contributed to the Series D valuation increase.",
       link: "TODO",
@@ -171,7 +199,8 @@ builder capability.
       role: "Director, SP Digital",
       problem:
         "A utility app that households were required to use but did not want to, rated 2.4, reaching a fraction of the customer base.",
-      craft: "TODO — onboarding redesign, information architecture, billing and usage comprehension, design system.",
+      craft:
+        "Director-level: owned user experience, customer insights and digital strategy across B2B, B2C and B2E; set up the design system and hired and managed the designers, user researchers and data analysts behind the app.",
       outcome:
         "Monthly active users grew from 80,000 to 800,000 of 1.4 million households; app rating improved from 2.4 to 4.6.",
       link: "TODO",
@@ -182,7 +211,8 @@ builder capability.
       role: "Director, Product and Experience",
       problem:
         "Customer service, IT and field operations ran on disconnected platforms and manual handoffs across 3,000+ frontline and back-office staff.",
-      craft: "TODO — service blueprints, workflow redesign, field tooling interaction design.",
+      craft:
+        "Director-level: set the design and delivery frameworks structuring how workflows were redesigned and shipped, and led the multi-disciplinary design, research and analytics practice delivering them.",
       outcome:
         "Integrated digital platforms and redesigned workflows; 20–50% time-to-task reduction per product; 40% reduction in process redundancies.",
       link: "TODO",
