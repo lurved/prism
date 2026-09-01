@@ -1,2 +1,4 @@
 node_modules/
 applications/
+.fonts/
+.private.json

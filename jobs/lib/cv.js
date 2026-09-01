@@ -20,6 +20,7 @@ const {
 } = require("docx");
 const fs = require("fs");
 const path = require("path");
+const { load: loadPrivate } = require("./private");
 
 // The .docx uses Georgia and Calibri rather than the pris.la webfaces:
 // an unavailable font is silently substituted by Word, and an unpredictable
@@ -41,7 +42,7 @@ function blocks({ profile, headline, summary, groups, spotlight }) {
   b.push({ t: "name", text: profile.name.toUpperCase() });
   if (headline) b.push({ t: "sub", text: headline });
 
-  const contact = [profile.location, profile.email, "[Phone number]"].filter(Boolean);
+  const contact = [profile.location, profile.email, loadPrivate().phone].filter(Boolean);
   b.push({ t: "contact", text: contact.join("  |  ") });
   b.push({
     t: "contact",

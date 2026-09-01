@@ -108,9 +108,28 @@ applications/       generated packs (gitignored)
 pipeline.json       tracker
 ```
 
+## Private contact details
+
+`lurved/prism` is a **public** repository. Anything committed here is indexed,
+scraped, and permanent in git history even after a later deletion — so the
+phone number is never committed. Only the loader is.
+
+Set it either way:
+
+```bash
+export CV_PHONE="+65 0000 0000"     # durable, never touches the repo
+cp .private.example.json .private.json   # local file, gitignored
+```
+
+`.private.json` is convenient but lives only on the machine that has it, so a
+rebuilt container loses it. `CV_PHONE` set in the environment config survives.
+With neither, the CV prints a visible `[Phone number]` placeholder rather than
+silently shipping without one.
+
 ## Config
 
 | Env var | Effect |
 |---|---|
+| `CV_PHONE` | Phone number for the CV contact line. Beats `.private.json`. |
 | `ANTHROPIC_API_KEY` | Enables Claude-drafted summary and cover note. Without it, templates. |
 | `JOBS_MODEL` | Override the model. Defaults to `claude-opus-5`. |
