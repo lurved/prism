@@ -48,7 +48,7 @@ builder capability.
     "Cross-functional Team Building, Coaching & Succession Planning",
     "Measurement (KPI definition, adoption analytics, product analytics, user research, segmentation, PowerBI)",
     "Data & Technology (enterprise platforms, SaaS, mobile, AI/IoT)",
-    "Sustainability Domain & ESG Disclosure",
+    "Sustainability & Climate Disclosure Compliance (IFRS S1 and S2, GHG Protocol, ESG disclosure, regulated sustainability reporting)",
     "AI & Agentic Development (Claude Code, React, Vercel)",
   ],
 
@@ -264,6 +264,7 @@ developing the next generation of leaders within it.`,
         // rather than trailing three sustainability bullets.
         "Run and manage the SP Group Sustainability Data Platform in production — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
         "Led the narrative, structure and visualisation of SP Group's 2026 sustainability report.",
+        "Lead sustainability disclosure compliance against the IFRS S1 and S2 standards and the GHG Protocol.",
         "Set sustainability targets and metrics and govern group-wide disclosure data collection.",
         "Lead sustainability communications across the group.",
       ],

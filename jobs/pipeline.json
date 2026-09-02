@@ -4,14 +4,12 @@
     "org": "A*STAR",
     "slug": "a-star-ai-programme-and-adoption-lead",
     "verdict": "Strong",
-    "requirementCoverage": 87,
-    "cvKeywordCoverage": 95,
+    "requirementCoverage": 90,
+    "cvKeywordCoverage": 96,
     "gapsInRequirements": [
-      "decisions",
       "translate ai",
       "programmes",
       "knowledge",
-      "technical",
       "sustained",
       "capacity",
       "skills",
@@ -19,9 +17,11 @@
       "sequenced"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-01T13:37:15.784Z",
+    "generated": "2026-09-02T12:25:31.078Z",
     "status": "drafted",
-    "submitted": null
+    "submitted": null,
+    "overallCoverage": 84,
+    "thinRequirementsSection": false
   },
   {
     "role": "Design Lead",
@@ -63,7 +63,7 @@
       "people leadership"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-02T12:19:02.729Z",
+    "generated": "2026-09-02T12:25:29.912Z",
     "status": "drafted",
     "submitted": null
   }
