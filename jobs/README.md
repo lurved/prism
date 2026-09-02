@@ -84,6 +84,19 @@ generation is the fallback, not the ceiling.
 
 `lib/fit.js` matches those terms against `agent/profile.js` and reports coverage **with the evidence quoted**. A term only counts as covered if something in the profile actually supports it.
 
+### When the requirements section is boilerplate
+
+Plenty of postings put soft-skill filler under "Requirements" — *able to work
+independently, thinks out of the box, strong team player* — and hide the real
+demands in the responsibilities above it. Weighting that block 2.5x then scores
+the filler and flatters badly.
+
+When the requirements block yields fewer than 20 distinct terms, the tool says
+so, scores on the whole posting instead, and prints what the requirement-only
+figure would have claimed. OCBC's Platform Lead posting is the case that
+prompted this: 92% on requirements alone, 71% across the posting, and the gap
+list full of production-operations terms the requirements block never mentions.
+
 ### Read the score for what it is
 
 The percentage measures **how much of the posting's own vocabulary the profile can evidence**. It predicts whether a keyword screen passes you through. It does not predict whether you can do the job.

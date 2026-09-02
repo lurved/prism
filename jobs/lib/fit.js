@@ -96,8 +96,17 @@ function score(profile, keywords) {
       const hit = matched.filter((k) => k.inRequirements);
       return Math.round((weightOf(hit) / (weightOf(req) || 1)) * 100);
     })(),
+    // Plenty of postings put soft-skill boilerplate under "Requirements" and
+    // the real demands in the responsibilities above it. When the
+    // requirements block yields few distinct terms, requirementCoverage is
+    // measuring the boilerplate and flatters badly — the overall figure is
+    // the honest one, and the caller should say so.
+    requirementTermCount: keywords.filter((k) => k.inRequirements).length,
   };
 }
+
+/** Below this, treat requirementCoverage as unreliable. */
+const THIN_REQUIREMENTS = 20;
 
 /**
  * Verdict bands.
@@ -109,11 +118,14 @@ function score(profile, keywords) {
  * finding, not a flaw in the score.
  */
 function verdict(result) {
-  const c = result.requirementCoverage ?? result.coverage;
+  // A thin requirements block means requirementCoverage is scoring
+  // boilerplate, so judge on overall coverage instead.
+  const thin = result.requirementTermCount != null && result.requirementTermCount < THIN_REQUIREMENTS;
+  const c = thin ? result.coverage : (result.requirementCoverage ?? result.coverage);
   if (c >= 75) return { band: "Strong", note: "The profile speaks this posting's language. Generate and send." };
   if (c >= 55) return { band: "Credible", note: "Passes a keyword screen. Use the letter to carry the terms the CV cannot." };
   if (c >= 35) return { band: "Vocabulary gap", note: "Likely screens out on wording, which is fixable. Check the gap list: if the experience is real but unnamed in profile.js, add it and re-run before deciding anything." };
   return { band: "Weak", note: "Either a genuine mismatch, or the profile is missing most of this domain. Read the gaps before writing it off." };
 }
 
-module.exports = { corpus, score, verdict };
+module.exports = { corpus, score, verdict, THIN_REQUIREMENTS };

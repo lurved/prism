@@ -49,5 +49,22 @@
     "status": "not pursuing",
     "submitted": null,
     "note": "Decided against — pursuing A*STAR instead."
+  },
+  {
+    "role": "Platform Lead / Program Director, Consumer Self-Service Channels",
+    "org": "OCBC",
+    "slug": "ocbc-platform-lead-program-director-consumer-self-service-ch",
+    "verdict": "Credible",
+    "requirementCoverage": 92,
+    "overallCoverage": 71,
+    "thinRequirementsSection": true,
+    "cvKeywordCoverage": 70,
+    "gapsInRequirements": [
+      "people leadership"
+    ],
+    "summaryDraftedBy": "hand-written",
+    "generated": "2026-09-02T09:31:25.904Z",
+    "status": "drafted",
+    "submitted": null
   }
 ]

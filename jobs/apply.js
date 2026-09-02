@@ -115,9 +115,17 @@ async function main() {
   const v = fit.verdict(result);
   const { groups, leadTheme } = grouping.group(result.matched);
 
+  const thinReqs = result.requirementTermCount != null && result.requirementTermCount < fit.THIN_REQUIREMENTS;
+  const headline = thinReqs ? result.coverage : (result.requirementCoverage ?? result.coverage);
+
   console.log(`\n  ${role}${org ? `  ·  ${org}` : ""}`);
-  console.log(`  ${v.band} — ${result.requirementCoverage ?? result.coverage}% of the posting's stated-requirement vocabulary evidenced`);
+  console.log(`  ${v.band} — ${headline}% of the posting's vocabulary evidenced`);
   console.log(`  ${v.note}`);
+  if (thinReqs) {
+    console.log(`  NOTE: the requirements section is thin (${result.requirementTermCount} terms) and reads as boilerplate.`);
+    console.log(`        Scored on the whole posting instead; requirement-only coverage would say ${result.requirementCoverage}%, which flatters.`);
+    console.log(`        The real demands are in the responsibilities — read the gap list, not the number.`);
+  }
   console.log(`  Evidenced ${result.matched.length}/${kw.length} terms · lead theme: ${leadTheme || "n/a"}`);
   if (result.gaps.filter((g) => g.inRequirements).length) {
     console.log(`  Gaps in stated requirements: ${result.gaps.filter((g) => g.inRequirements).map((g) => g.term).join(", ")}`);
@@ -175,6 +183,8 @@ async function main() {
     slug: path.basename(outDir),
     verdict: v.band,
     requirementCoverage: result.requirementCoverage ?? result.coverage,
+    overallCoverage: result.coverage,
+    thinRequirementsSection: thinReqs,
     cvKeywordCoverage: cov.pct,
     gapsInRequirements: result.gaps.filter((g) => g.inRequirements).map((g) => g.term),
     summaryDraftedBy: drafted,
