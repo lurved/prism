@@ -110,7 +110,13 @@ async function main() {
   const role = args.role || guessed.role;
   const org = args.org || guessed.org;
 
-  const kw = keywords.extract(jd, { limit: 60 });
+  // The employer's own name and product nouns are not candidate requirements —
+  // no CV contains them — so scoring against them just depresses coverage.
+  const orgWords = (org || "").toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length > 2);
+  const kw = keywords
+    .extract(jd, { limit: 66 })
+    .filter((t) => !orgWords.some((w) => t.term.includes(w)))
+    .slice(0, 60);
   const result = fit.score(profile, kw);
   const v = fit.verdict(result);
   const { groups, leadTheme } = grouping.group(result.matched);

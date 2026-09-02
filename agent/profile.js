@@ -37,6 +37,7 @@ builder capability.
   keyStrengths: [
     "Applied AI Delivery (production GenAI, AI-enabled workflows, agentic workflow design, prompt-pipeline engineering, LLM product evaluation, responsible AI practice, run-and-maintain)",
     "AI Adoption & Organisational Change (adoption strategy and roadmapping, capability building, training and enablement, playbooks, champions networks, behaviour change, organisational readiness)",
+    "Platform Ownership & Run (named system ownership, production stability and availability against SLA, incident response and escalation, root-cause analysis, release go/no-go, technical debt decisions)",
     "Programme & Portfolio Management (portfolio planning, prioritisation, milestone tracking, governance, RAID and decision management, dependency coordination, value tracking, blocker escalation)",
     "Transformation Delivery & Digital Enablement (planning through deployment, adoption, operational transition and continuous improvement)",
     "Executive Communication & Governance Reporting (C-level and board engagement, portfolio reviews, OKR frameworks)",
@@ -85,7 +86,7 @@ builder capability.
       period: "2025 – present",
       context: "SP Group — Director, Sustainability and Digital",
       detail:
-        "Manage the SP Group Sustainability Data Platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
+        "Run and manage the SP Group Sustainability Data Platform in production — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
     },
     {
       period: "2025 – 2026",
@@ -261,7 +262,7 @@ developing the next generation of leaders within it.`,
       highlights: [
         // The platform is the digital half of the title, so it leads the role
         // rather than trailing three sustainability bullets.
-        "Manage the SP Group Sustainability Data Platform — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
+        "Run and manage the SP Group Sustainability Data Platform in production — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
         "Led the narrative, structure and visualisation of SP Group's 2026 sustainability report.",
         "Set sustainability targets and metrics and govern group-wide disclosure data collection.",
         "Lead sustainability communications across the group.",
@@ -315,10 +316,16 @@ developing the next generation of leaders within it.`,
     {
       company: "First Advantage (Nasdaq: FA)",
       period: "2011 – 2013",
-      role: "Product and Operations Platform Lead",
+      role: "Platform Lead, International",
+      // Deliberately no headcount. The team was matrixed across two sites and
+      // the only public figures are present-day company-wide numbers, which
+      // would not survive a follow-up question in an interview.
       highlights: [
-        "Global product lead for background-screening platforms across EMEA and APAC (incl. Japan, China).",
-        "Owned end-to-end operations platform with Manila-based delivery.",
+        "Named platform owner for First Advantage's global background-screening platform, reporting to the COO, International — global scope excluding the Americas, with operations in Manila and in-house engineering in India.",
+        "Accountable for platform stability and availability in production against a formal service-level agreement; co-owned incident response and post-incident root-cause analysis with the India engineering lead, feeding findings back into the roadmap.",
+        "Owned the platform roadmap and book of work, the change-request pipeline, release go/no-go, and technical debt decisions across both sites.",
+        "Partnered directly with client directors on platform change for enterprise banking clients including Standard Chartered and Citi.",
+        "Led a matrixed organisation across operations in Manila and engineering in India, spanning EMEA and APAC including Japan and China.",
       ],
     },
     {

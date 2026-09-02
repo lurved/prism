@@ -56,14 +56,14 @@
     "slug": "ocbc-platform-lead-program-director-consumer-self-service-ch",
     "verdict": "Credible",
     "requirementCoverage": 92,
-    "overallCoverage": 71,
+    "overallCoverage": 72,
     "thinRequirementsSection": true,
-    "cvKeywordCoverage": 70,
+    "cvKeywordCoverage": 76,
     "gapsInRequirements": [
       "people leadership"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-02T09:31:25.904Z",
+    "generated": "2026-09-02T12:19:02.729Z",
     "status": "drafted",
     "submitted": null
   }
