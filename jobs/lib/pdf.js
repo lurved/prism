@@ -56,6 +56,10 @@ function render(html, outPdf) {
       "--disable-gpu",
       "--no-sandbox",
       "--no-pdf-header-footer",
+      // Without this, Chrome can snapshot the page before the embedded fonts
+      // have applied and silently print in a fallback face — the failure is
+      // invisible unless you inspect the PDF's font table.
+      "--virtual-time-budget=10000",
       `--print-to-pdf=${outPdf}`,
       `file://${src}`,
     ],

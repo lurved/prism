@@ -21,21 +21,23 @@ const {
 const fs = require("fs");
 const path = require("path");
 
-// The .docx uses Georgia and Calibri rather than the pris.la webfaces:
-// an unavailable font is silently substituted by Word, and an unpredictable
-// substitution is a functional defect. Georgia carries the same warm serif
-// role as Newsreader and is present on effectively every machine.
-// Colour is the part of the system that survives intact — ATS parsers strip
-// it, so it costs nothing and is the whole visual signature.
-const DISPLAY = "Georgia";
-const FONT = "Calibri";
-const INK = "1A1C2E";    // navy-biased near-black
-const NAVY = "262A4F";   // pris.la navy-700
-const MUTED = "5A5F7D";
-const RULE = "F0A8B8";   // pris.la pink — rules only, never type
-const HAIR = "DCDAE6";
+// Aptos throughout — Microsoft's Office default since 2023, so present on any
+// current Office install, and gracefully substituted on older ones. Font
+// choice does not affect ATS parsing at all; parsers read text and discard
+// typeface. This is a legibility and impression decision, not a technical one.
+//
+// Greyscale by design. Nothing here is borrowed from the pris.la site: a CV
+// is a different document with a different job, it may be printed, and a
+// restrained neutral palette carries the hierarchy without a house style.
+const DISPLAY = "Aptos";
+const FONT = "Aptos";
+const INK = "1A1A1A";
+const NAVY = "111111";   // heading ink
+const MUTED = "6B6B6B";
+const RULE = "9A9A9A";   // the rule under the contact block
+const HAIR = "D8D8D8";   // section underlines
 // Width of the date rail, in twips. Wide enough for "Sep 2025 – Present".
-const GUTTER = 1450;
+const GUTTER = 1650;
 
 /** Build the flat block model for a tailored CV. */
 function blocks({ profile, headline, summary, groups, flatTerms, spotlight }) {
@@ -265,36 +267,33 @@ function toHtml(model, { fontCss = "" } = {}) {
 <style>
 ${fontCss}
 :root{
-  --ink:#1a1c2e;        /* navy-biased near-black, not a default grey */
-  --navy:#262a4f;       /* pris.la navy-700 — headings and name */
-  --muted:#5a5f7d;      /* navy-biased secondary */
-  --rule:#f0a8b8;       /* pris.la pink — decorative rules only, never type */
-  --hair:#dcdae6;
+  --ink:#1a1a1a;
+  --navy:#111111;   /* heading ink */
+  --muted:#6b6b6b;
+  --rule:#9a9a9a;   /* rule under the contact block */
+  --hair:#d8d8d8;   /* section underlines */
 }
 @page{ size:A4; margin:13mm 15mm; }
 *{ box-sizing:border-box; }
 html,body{ margin:0; padding:0; background:#fff; }
 body{
-  font-family:'Hanken Grotesk','Helvetica Neue',Arial,sans-serif;
+  font-family:'Aptos','Inter','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
   color:var(--ink); font-size:9.6pt; line-height:1.46;
   -webkit-font-smoothing:antialiased;
 }
 h1{
-  font-family:'Newsreader',Georgia,serif; font-weight:400;
-  font-size:27pt; line-height:1.02; letter-spacing:-.015em;
+  font-weight:700; font-size:24pt; line-height:1.05; letter-spacing:-.01em;
   color:var(--navy); margin:0 0 3pt;
 }
 .headline{
   font-size:10.5pt; color:var(--muted); margin:0 0 5pt; letter-spacing:.005em;
 }
 .contact{
-  font-family:'Space Mono',ui-monospace,'Courier New',monospace;
-  font-size:7.8pt; color:var(--ink); margin:0 0 2pt; letter-spacing:.01em;
+  font-size:8.6pt; color:var(--ink); margin:0 0 2pt;
 }
 .contact.last{ padding-bottom:7pt; border-bottom:1.2pt solid var(--rule); margin-bottom:0; }
 h2{
-  font-family:'Space Mono',ui-monospace,'Courier New',monospace;
-  font-size:8pt; font-weight:700; text-transform:uppercase; letter-spacing:.15em;
+  font-size:8.2pt; font-weight:700; text-transform:uppercase; letter-spacing:.16em;
   color:var(--navy); margin:15pt 0 6pt; padding-bottom:3pt;
   border-bottom:.75pt solid var(--hair);
   break-after:avoid; page-break-after:avoid;
@@ -308,8 +307,8 @@ p{ margin:0 0 5pt; }
   break-after:avoid; page-break-after:avoid;
 }
 .entry .when{
-  flex:0 0 82pt; padding-right:8pt; padding-top:1pt;
-  font-size:8.4pt; color:var(--muted);
+  flex:0 0 88pt; padding-right:8pt; padding-top:1pt;
+  font-size:8pt; color:var(--muted);
   font-variant-numeric:tabular-nums;
 }
 .entry .what{ flex:1; min-width:0; }
@@ -320,7 +319,7 @@ p{ margin:0 0 5pt; }
 .entry .c{ margin:1.5pt 0 0; color:var(--muted); }
 .labelled b{ color:var(--navy); }
 ul.b{ margin:0 0 5pt; padding:0; list-style:none; }
-ul.b.rail{ padding-left:82pt; }
+ul.b.rail{ padding-left:88pt; }
 ul.b li{
   position:relative; padding-left:11pt; margin-bottom:3.2pt;
   break-inside:avoid; page-break-inside:avoid;

@@ -1,7 +1,7 @@
 /**
  * Font embedding for the print CV.
  *
- * The pris.la faces (Newsreader, Hanken Grotesk, Space Mono) are fetched once,
+ * The print faces are fetched once,
  * cached in .fonts/, and inlined as base64 @font-face rules so the PDF embeds
  * them and renders identically on any machine.
  *
@@ -17,10 +17,12 @@ const CACHE = path.join(__dirname, "..", ".fonts");
 const UA =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36";
 
+// Aptos is Microsoft's Office default and the preferred face, but it is not
+// on Google Fonts and cannot be embedded here. Inter is the closest widely
+// available humanist sans and stands in for the PDF only; the .docx asks for
+// Aptos by name, so anyone with Office sees the real thing.
 const FAMILIES = [
-  { css: "Newsreader:opsz,wght@6..72,400;6..72,500", family: "Newsreader" },
-  { css: "Hanken+Grotesk:wght@400;600;700", family: "Hanken Grotesk" },
-  { css: "Space+Mono:wght@400;700", family: "Space Mono" },
+  { css: "Inter:wght@400;500;600;700", family: "Inter" },
 ];
 
 async function fetchText(url) {
@@ -57,7 +59,11 @@ async function embeddedCss() {
         const url = (block.match(/url\((https:[^)]+\.woff2)\)/) || [])[1];
         if (!url) continue;
         const buf = await fetchBuffer(url);
-        out += block.replace(
+        // Google ships font-display:swap. Headless Chrome can snapshot the
+        // page before a swapped face applies, silently printing the fallback
+        // — which is how a cold cache produced a DejaVu PDF. block makes it
+        // wait; the face is a data URI, so there is nothing to wait for.
+        out += block.replace(/font-display:\s*swap/g, "font-display: block").replace(
           /url\(https:[^)]+\.woff2\)/,
           `url(data:font/woff2;base64,${buf.toString("base64")})`
         );
