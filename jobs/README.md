@@ -17,7 +17,7 @@ Output lands in `jobs/applications/<org-role>/`:
 | File | What it is |
 |---|---|
 | `Priscilla-Liu-CV.docx` | ATS-safe CV, tailored emphasis. **The file you upload.** |
-| `Priscilla-Liu-CV.pdf` | Typeset in the pris.la faces. The file you send to a person. |
+| `Priscilla-Liu-CV.pdf` | Typeset for print. The file you send to a person. |
 | `Priscilla-Liu-CV.txt` | Same content, plain text. For forms with a paste box. |
 | `Priscilla-Liu-CV.html` | Source for the PDF; ignore unless you want to tweak the print CSS. |
 | `cover-note.md` | Draft letter. |
@@ -54,26 +54,32 @@ The workflow it is built for:
 ## Design versus parsing
 
 The two pull against each other, and the resolution is that they are the same
-document rendered twice from one block model, so they can never disagree.
+document rendered from one block model, so the formats can never disagree.
 
 What actually breaks an applicant tracking system is *layout*: multiple
 columns, tables used for positioning, text boxes, contact details stranded in
-a header, text baked into an image. None of that appears in either file. What
-parsers ignore harmlessly is *colour and type* — which is exactly where the
-pris.la system lives here.
+a header, text baked into an image. None of that appears here. What parsers
+ignore harmlessly is *type and colour* — so that is where the design lives,
+over a strictly single-column document.
 
-- **`.docx`** uses Georgia and Calibri, not the pris.la webfaces. An
-  unavailable font is silently substituted by Word, and an unpredictable
-  substitution is a functional defect. Navy headings, the pink rule under the
-  contact block, and the pink bullet dashes all survive intact.
-- **`.pdf`** embeds Newsreader, Hanken Grotesk and Space Mono, so it renders
-  identically anywhere. Chrome prints real text rather than outlines, so it
-  still parses — but the `.docx` remains the safer upload for older systems.
+The experience entries use a left date rail. It is a tab stop with a hanging
+indent, never a table: extraction reads `Sep 2025 - Present<tab>DIRECTOR,
+SUSTAINABILITY AND DIGITAL` as one continuous line.
 
-The site is light type on navy; a CV cannot be. Navy becomes the ink, the pink
-survives as hairline rules only — at 12px on white it fails contrast as text,
-so it is never used for any — and the ground is white because someone may
-print it.
+**This is deliberately not the pris.la design system.** The site is navy with
+a pink accent in Newsreader and Hanken Grotesk; the CV is Aptos, greyscale, on
+white. A CV is printed, parsed by machines, and read by people who have never
+seen the site — a house style is noise there. See `CLAUDE.md`.
+
+- **`.docx`** asks for Aptos alone. It has been Microsoft Office's default
+  since 2023, so any current install has it and older ones substitute
+  gracefully — a far smaller risk than a webfont with no local presence.
+  Font choice does not affect parsing at all; parsers read text and discard
+  typeface.
+- **`.pdf`** embeds Inter, the closest widely available stand-in, since Aptos
+  is not on Google Fonts and cannot be embedded here. Aptos is listed first in
+  the stack, so anyone who has it sees it. Chrome prints real text rather than
+  outlines, so the PDF parses too — but the `.docx` remains the safer upload.
 
 ## Writing the summary yourself
 
