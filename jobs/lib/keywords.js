@@ -18,7 +18,7 @@ excellent solid deep meaningful significant genuine right whether across broad w
 least years year plus multiple several many every` .split(/\s+/).filter(Boolean));
 
 // Headings that mark the start of the requirements half of a posting.
-const REQ_HEADING = /^(what you bring|what we.{0,3}re looking for|who we.{0,3}re looking for|requirements?|qualifications?|about you|you have|skills|experience required|minimum|preferred)\b/i;
+const REQ_HEADING = /^(what you bring|what we.{0,3}re looking for|who we.{0,3}re looking for|require(d|ments?)|qualifications?|competenc(y|ies)|about you|you (have|will need|.{0,3}ll need)|skills|experience required|minimum|preferred|essential|desired)\b/i;
 
 const clean = (s) =>
   s.toLowerCase()

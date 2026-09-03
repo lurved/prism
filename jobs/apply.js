@@ -130,7 +130,11 @@ async function main() {
   console.log(`  ${v.note}`);
   if (thinReqs) {
     console.log(`  NOTE: the requirements section is thin (${result.requirementTermCount} terms) and reads as boilerplate.`);
-    console.log(`        Scored on the whole posting instead; requirement-only coverage would say ${result.requirementCoverage}%, which flatters.`);
+    if (result.requirementCoverage != null) {
+      console.log(`        Scored on the whole posting instead; requirement-only coverage would say ${result.requirementCoverage}%.`);
+    } else {
+      console.log(`        No requirements heading was recognised at all, so the whole posting is weighted evenly.`);
+    }
     console.log(`        The real demands are in the responsibilities — read the gap list, not the number.`);
   }
   console.log(`  Evidenced ${result.matched.length}/${kw.length} terms · lead theme: ${leadTheme || "n/a"}`);
