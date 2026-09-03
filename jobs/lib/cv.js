@@ -16,7 +16,7 @@
 
 const {
   Document, Packer, Paragraph, TextRun, AlignmentType,
-  BorderStyle, LevelFormat, ExternalHyperlink,
+  BorderStyle, LevelFormat, ExternalHyperlink, TabStopType,
 } = require("docx");
 const fs = require("fs");
 const path = require("path");
@@ -34,9 +34,11 @@ const NAVY = "262A4F";   // pris.la navy-700
 const MUTED = "5A5F7D";
 const RULE = "F0A8B8";   // pris.la pink — rules only, never type
 const HAIR = "DCDAE6";
+// Width of the date rail, in twips. Wide enough for "Sep 2025 – Present".
+const GUTTER = 1450;
 
 /** Build the flat block model for a tailored CV. */
-function blocks({ profile, headline, summary, groups, spotlight }) {
+function blocks({ profile, headline, summary, groups, flatTerms, spotlight }) {
   const b = [];
   b.push({ t: "name", text: profile.name.toUpperCase() });
   if (headline) b.push({ t: "sub", text: headline });
@@ -60,6 +62,9 @@ function blocks({ profile, headline, summary, groups, spotlight }) {
   if (groups && groups.length) {
     b.push({ t: "h2", text: "Core Competencies" });
     for (const g of groups) b.push({ t: "labelled", label: g.name, text: g.terms.join(", ") });
+  } else if (flatTerms && flatTerms.length) {
+    b.push({ t: "h2", text: "Core Competencies" });
+    b.push({ t: "para", text: flatTerms.join("  ·  ") });
   }
 
   if (spotlight && spotlight.items.length) {
@@ -70,9 +75,15 @@ function blocks({ profile, headline, summary, groups, spotlight }) {
 
   b.push({ t: "h2", text: "Professional Experience" });
   for (const e of profile.experience || []) {
-    b.push({ t: "company", text: `${e.company.toUpperCase()} — ${profile.location || "Singapore"}` });
-    b.push({ t: "role", role: e.role, dates: e.period });
-    for (const h of e.highlights || []) b.push({ t: "bullet", text: h });
+    // Role leads, company sits under it: a reader scans for what you did
+    // before where you did it, and the roles are the interesting part here.
+    b.push({
+      t: "entry",
+      dates: e.period,
+      role: e.role,
+      company: `${e.company} — ${profile.location || "Singapore"}`,
+    });
+    for (const h of e.highlights || []) b.push({ t: "bullet", text: h, indent: true });
   }
 
   if ((profile.education || []).length || (profile.certifications || []).length) {
@@ -130,14 +141,26 @@ function toDocx(model, outPath) {
           children: [run(blk.text.toUpperCase(), { bold: true, size: 17, color: NAVY, spacing: 34 })],
         }));
         break;
-      case "company":
-        children.push(new Paragraph({ spacing: { before: 210, after: 0 }, keepNext: true, children: [run(blk.text, { bold: true, size: 21, color: NAVY })] }));
-        break;
-      case "role":
+      case "entry":
+        // The date rail is a tab stop with a hanging indent, not a table or a
+        // text box. Extraction sees one continuous line — "Sep 2025 – Present
+        // Director, Sustainability and Digital" — which every parser handles.
         children.push(new Paragraph({
-          spacing: { before: 20, after: 70 },
+          spacing: { before: 230, after: 0 },
           keepNext: true,
-          children: [run(blk.role, { italics: true }), run("  ·  ", { color: MUTED }), run(blk.dates, { color: MUTED })],
+          indent: { left: GUTTER, hanging: GUTTER },
+          tabStops: [{ type: TabStopType.LEFT, position: GUTTER }],
+          children: [
+            run(blk.dates, { color: MUTED, size: 18 }),
+            run("\t"),
+            run(blk.role.toUpperCase(), { bold: true, size: 20, color: NAVY, spacing: 16 }),
+          ],
+        }));
+        children.push(new Paragraph({
+          spacing: { before: 20, after: 80 },
+          keepNext: true,
+          indent: { left: GUTTER },
+          children: [run(blk.company, { color: MUTED })],
         }));
         break;
       case "labelled":
@@ -148,7 +171,7 @@ function toDocx(model, outPath) {
         break;
       case "bullet":
         children.push(new Paragraph({
-          numbering: { reference: "cv-bullets", level: 0 },
+          numbering: { reference: blk.indent ? "cv-bullets-rail" : "cv-bullets", level: 0 },
           spacing: { after: 65 },
           children: [run(blk.text)],
         }));
@@ -162,14 +185,24 @@ function toDocx(model, outPath) {
     creator: "Priscilla Liu",
     title: "Curriculum Vitae",
     numbering: {
-      config: [{
-        reference: "cv-bullets",
-        levels: [{
-          level: 0, format: LevelFormat.BULLET, text: "–", alignment: AlignmentType.LEFT,
-          run: { color: RULE, font: FONT },
-          style: { paragraph: { indent: { left: 288, hanging: 180 } } },
-        }],
-      }],
+      config: [
+        {
+          reference: "cv-bullets",
+          levels: [{
+            level: 0, format: LevelFormat.BULLET, text: "–", alignment: AlignmentType.LEFT,
+            run: { color: RULE, font: FONT },
+            style: { paragraph: { indent: { left: 288, hanging: 180 } } },
+          }],
+        },
+        {
+          reference: "cv-bullets-rail",
+          levels: [{
+            level: 0, format: LevelFormat.BULLET, text: "–", alignment: AlignmentType.LEFT,
+            run: { color: RULE, font: FONT },
+            style: { paragraph: { indent: { left: GUTTER + 240, hanging: 180 } } },
+          }],
+        },
+      ],
     },
     styles: { default: { document: { run: { font: FONT, size: 21, color: INK } } } },
     sections: [{
@@ -211,11 +244,16 @@ function toHtml(model, { fontCss = "" } = {}) {
       case "sub": parts.push(`<p class="headline">${esc(blk.text)}</p>`); break;
       case "contact": parts.push(`<p class="contact${blk.last ? " last" : ""}">${esc(blk.text)}</p>`); break;
       case "h2": parts.push(`<h2>${esc(blk.text)}</h2>`); break;
-      case "company": parts.push(`<p class="company">${esc(blk.text)}</p>`); break;
-      case "role": parts.push(`<p class="role"><span class="rt">${esc(blk.role)}</span><span class="rd">${esc(blk.dates)}</span></p>`); break;
+      case "entry":
+        parts.push(
+          `<div class="entry"><div class="when">${esc(blk.dates)}</div>` +
+          `<div class="what"><p class="r">${esc(blk.role)}</p>` +
+          `<p class="c">${esc(blk.company)}</p></div></div>`
+        );
+        break;
       case "labelled": parts.push(`<p class="labelled"><b>${esc(blk.label)}</b> ${esc(blk.text)}</p>`); break;
       case "bullet":
-        if (!openList) { parts.push('<ul class="b">'); openList = true; }
+        if (!openList) { parts.push(`<ul class="b${blk.indent ? " rail" : ""}">`); openList = true; }
         parts.push(`<li>${esc(blk.text)}</li>`);
         break;
       default: parts.push(`<p>${esc(blk.text)}</p>`);
@@ -262,19 +300,27 @@ h2{
   break-after:avoid; page-break-after:avoid;
 }
 p{ margin:0 0 5pt; }
-.company{
-  font-weight:700; font-size:10pt; color:var(--navy);
-  margin:9pt 0 0; letter-spacing:.005em;
+/* Date rail. Visual only — the DOM order is dates, role, company, bullets,
+   so extracted text still reads in the right sequence. */
+.entry{
+  display:flex; gap:0; margin:9pt 0 3pt;
+  break-inside:avoid; page-break-inside:avoid;
   break-after:avoid; page-break-after:avoid;
 }
-.role{
-  display:flex; justify-content:space-between; gap:12pt;
-  margin:1pt 0 4pt; break-after:avoid; page-break-after:avoid;
+.entry .when{
+  flex:0 0 82pt; padding-right:8pt; padding-top:1pt;
+  font-size:8.4pt; color:var(--muted);
+  font-variant-numeric:tabular-nums;
 }
-.rt{ font-style:italic; color:var(--ink); }
-.rd{ color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.entry .what{ flex:1; min-width:0; }
+.entry .r{
+  margin:0; font-weight:700; font-size:9.6pt; color:var(--navy);
+  text-transform:uppercase; letter-spacing:.055em;
+}
+.entry .c{ margin:1.5pt 0 0; color:var(--muted); }
 .labelled b{ color:var(--navy); }
 ul.b{ margin:0 0 5pt; padding:0; list-style:none; }
+ul.b.rail{ padding-left:82pt; }
 ul.b li{
   position:relative; padding-left:11pt; margin-bottom:3.2pt;
   break-inside:avoid; page-break-inside:avoid;
@@ -293,10 +339,11 @@ function toText(model) {
   for (const blk of model) {
     switch (blk.t) {
       case "h2": out.push("", blk.text.toUpperCase(), "-".repeat(blk.text.length)); break;
-      case "role": out.push(`${blk.role}  |  ${blk.dates}`); break;
+      case "entry":
+        out.push("", `${blk.role.toUpperCase()}  |  ${blk.dates}`, blk.company);
+        break;
       case "labelled": out.push(`${blk.label}: ${blk.text}`); break;
       case "bullet": out.push(`- ${blk.text}`); break;
-      case "company": out.push("", blk.text); break;
       default: out.push(blk.text);
     }
   }

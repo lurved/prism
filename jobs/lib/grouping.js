@@ -92,11 +92,27 @@ function group(matched) {
   // "Additional" is by definition the terms that fit no theme — generic words
   // like "experience" or "initiatives". They belong in the report, never in a
   // competencies block, where they read as padding.
+  // A block with one or two generic terms reads as filler and makes the whole
+  // section look padded. Better to show fewer, fuller blocks — or none.
   const groups = [...buckets.values()]
-    .filter((g) => g.terms.length >= 2)
+    .filter((g) => g.terms.length >= 3)
     .sort((a, b) => b.weight - a.weight);
 
-  return { groups, unclassified: extra.terms, leadTheme: groups.length ? groups[0].name : null };
+  // One themed block is not a section. But dropping the competencies
+  // outright would cost real keyword density, so fall back to a flat list of
+  // the strongest terms — no stub headings, keywords intact.
+  const enough = groups.length >= 2;
+  const flat = [...buckets.values(), extra]
+    .flatMap((g) => g.terms)
+    .filter((t, i, a) => a.indexOf(t) === i)
+    .slice(0, 18);
+
+  return {
+    groups: enough ? groups : [],
+    flat: enough ? [] : flat,
+    unclassified: extra.terms,
+    leadTheme: groups.length ? groups[0].name : null,
+  };
 }
 
 module.exports = { group, titleCase, BUCKETS };

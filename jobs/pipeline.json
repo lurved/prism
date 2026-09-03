@@ -16,7 +16,7 @@
       "sequenced"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:18:15.647Z",
+    "generated": "2026-09-03T05:28:02.811Z",
     "status": "submitted",
     "submitted": "2026-09-03",
     "overallCoverage": 86,
@@ -57,12 +57,12 @@
     "requirementCoverage": 92,
     "overallCoverage": 76,
     "thinRequirementsSection": true,
-    "cvKeywordCoverage": 71,
+    "cvKeywordCoverage": 85,
     "gapsInRequirements": [
       "people leadership"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:22:28.799Z",
+    "generated": "2026-09-03T05:27:43.850Z",
     "status": "drafted",
     "submitted": null
   }

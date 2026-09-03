@@ -119,7 +119,7 @@ async function main() {
     .slice(0, 60);
   const result = fit.score(profile, kw);
   const v = fit.verdict(result);
-  const { groups, leadTheme } = grouping.group(result.matched);
+  const { groups, flat: flatTerms, leadTheme } = grouping.group(result.matched);
 
   const thinReqs = result.requirementTermCount != null && result.requirementTermCount < fit.THIN_REQUIREMENTS;
   const headline = thinReqs ? result.coverage : (result.requirementCoverage ?? result.coverage);
@@ -157,6 +157,7 @@ async function main() {
     headline: tailor.headlineFor(profile, leadTheme),
     summary,
     groups,
+    flatTerms,
     spotlight,
   });
 
