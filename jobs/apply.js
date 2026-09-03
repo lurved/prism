@@ -178,7 +178,11 @@ async function main() {
   fs.writeFileSync(path.join(outDir, "fit-report.md"), fitReport({ role, org, result, v, kw, groups, file }));
 
   if (!args.noLetter) {
-    fs.writeFileSync(path.join(outDir, "cover-note.md"), await tailor.letterFor({ profile, jd, role, org, fitResult: result }));
+    const letterOverride = path.join(ROOT, "letters", `${path.basename(outDir)}.md`);
+    const letter = fs.existsSync(letterOverride)
+      ? fs.readFileSync(letterOverride, "utf8")
+      : await tailor.letterFor({ profile, jd, role, org, fitResult: result });
+    fs.writeFileSync(path.join(outDir, "cover-note.md"), letter);
   }
 
   // Pipeline record — the tracker exists so you can see what was sent where.
@@ -195,11 +199,10 @@ async function main() {
     gapsInRequirements: result.gaps.filter((g) => g.inRequirements).map((g) => g.term),
     summaryDraftedBy: drafted,
     generated: new Date().toISOString(),
-    status: "drafted",
-    submitted: null,
   };
   const i = pipeline.findIndex((p) => p.slug === entry.slug);
-  if (i >= 0) pipeline[i] = { ...pipeline[i], ...entry }; else pipeline.push(entry);
+  if (i >= 0) pipeline[i] = { ...pipeline[i], ...entry };
+  else pipeline.push({ ...entry, status: "drafted", submitted: null });
   fs.writeFileSync(pipePath, JSON.stringify(pipeline, null, 2) + "\n");
 
   console.log(`\n  CV carries ${cov.pct}% of the evidenced terms`);

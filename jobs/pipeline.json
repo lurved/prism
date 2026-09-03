@@ -17,8 +17,8 @@
     ],
     "summaryDraftedBy": "hand-written",
     "generated": "2026-09-03T05:18:15.647Z",
-    "status": "drafted",
-    "submitted": null,
+    "status": "submitted",
+    "submitted": "2026-09-03",
     "overallCoverage": 86,
     "thinRequirementsSection": false
   },
@@ -62,7 +62,7 @@
       "people leadership"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:18:14.765Z",
+    "generated": "2026-09-03T05:22:28.799Z",
     "status": "drafted",
     "submitted": null
   }
