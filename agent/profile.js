@@ -342,7 +342,9 @@ developing the next generation of leaders within it.`,
       period: "2008 – 2009",
       role: "Web Manager",
       highlights: [
-        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg.",
+        // Phrased as "worked within" rather than "owned" — the interview
+        // established the environment, not accountability for audit outcomes.
+        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg, working within an externally audited, high-compliance government security environment.",
       ],
     },
   ],
