@@ -34,6 +34,7 @@ function parseArgs(argv) {
     if (a === "--score-only") args.scoreOnly = true;
     else if (a === "--no-letter") args.noLetter = true;
     else if (a === "--no-pdf") args.noPdf = true;
+    else if (a === "--force") args.force = true;
     else if (a.startsWith("--")) args[a.slice(2)] = argv[++i];
     else args._.push(a);
   }
@@ -102,7 +103,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   const file = args._[0];
   if (!file) {
-    console.error("usage: node jobs/apply.js <jd-file> [--role R] [--org O] [--score-only] [--no-letter]");
+    console.error("usage: node jobs/apply.js <jd-file> [--role R] [--org O] [--score-only] [--no-letter] [--force]");
     process.exit(1);
   }
   const jd = fs.readFileSync(file, "utf8");
@@ -140,6 +141,19 @@ async function main() {
   if (args.scoreOnly) return;
 
   const outDir = path.join(ROOT, "applications", slugify(`${org || ""} ${role}`));
+
+  // A submitted application is a record of what was actually sent.
+  // Regenerating it silently rewrites that record — the profile has moved on
+  // since, so the files would no longer match the ones the employer has.
+  const pipePathEarly = path.join(ROOT, "pipeline.json");
+  const existing = fs.existsSync(pipePathEarly)
+    ? JSON.parse(fs.readFileSync(pipePathEarly, "utf8")).find((p) => p.slug === path.basename(outDir))
+    : null;
+  if (existing && existing.status === "submitted" && !args.force) {
+    console.log(`\n  Already submitted${existing.submitted ? ` on ${existing.submitted}` : ""} — not regenerating.`);
+    console.log(`  The files on disk are what was sent. Pass --force to overwrite them.\n`);
+    return;
+  }
   fs.mkdirSync(outDir, { recursive: true });
 
   const spotlight = tailor.spotlightFor(profile, leadTheme);

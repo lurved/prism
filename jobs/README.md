@@ -29,6 +29,10 @@ sorts by candidate and already knows the role. A neutral name also fails quietly
 if it ever goes to the wrong employer, where one naming the posting would
 announce it. Rename on send in the rare case a portal demands unique filenames.
 
+Once an application is marked `submitted` in `pipeline.json`, re-running it
+does nothing: the files on disk are the record of what was actually sent, and
+the profile has usually moved on since. `--force` overwrites them anyway.
+
 Every run also appends to `pipeline.json` so you can see what was generated for whom, and mark what you actually sent.
 
 ## What it will not do
