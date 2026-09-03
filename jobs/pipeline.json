@@ -5,7 +5,7 @@
     "slug": "a-star-ai-programme-and-adoption-lead",
     "verdict": "Strong",
     "requirementCoverage": 91,
-    "cvKeywordCoverage": 92,
+    "cvKeywordCoverage": 91,
     "gapsInRequirements": [
       "translate ai",
       "programmes",
@@ -16,10 +16,10 @@
       "sequenced"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:09:32.436Z",
+    "generated": "2026-09-03T05:18:15.647Z",
     "status": "drafted",
     "submitted": null,
-    "overallCoverage": 87,
+    "overallCoverage": 86,
     "thinRequirementsSection": false
   },
   {
@@ -62,7 +62,7 @@
       "people leadership"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:09:31.737Z",
+    "generated": "2026-09-03T05:18:14.765Z",
     "status": "drafted",
     "submitted": null
   }
