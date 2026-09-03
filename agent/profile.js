@@ -347,6 +347,8 @@ developing the next generation of leaders within it.`,
       highlights: [
         // Phrased as "worked within" rather than "owned" — the interview
         // established the environment, not accountability for audit outcomes.
+        // Confirmed: 160 webmasters across 60 sites — several per site, spread
+        // across units. Not a typo for 60; do not "correct" it.
         "Managed 60 websites and 160 webmasters for MINDEF.gov.sg, within a high-compliance government environment externally audited against ISO information-security management standards.",
         "Built webmaster capability across units through training and published best-practice standards.",
       ],
