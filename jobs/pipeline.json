@@ -4,23 +4,22 @@
     "org": "A*STAR",
     "slug": "a-star-ai-programme-and-adoption-lead",
     "verdict": "Strong",
-    "requirementCoverage": 90,
-    "cvKeywordCoverage": 96,
+    "requirementCoverage": 91,
+    "cvKeywordCoverage": 92,
     "gapsInRequirements": [
       "translate ai",
       "programmes",
       "knowledge",
       "sustained",
-      "capacity",
       "skills",
       "usage",
       "sequenced"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:05:06.860Z",
+    "generated": "2026-09-03T05:09:32.436Z",
     "status": "drafted",
     "submitted": null,
-    "overallCoverage": 84,
+    "overallCoverage": 87,
     "thinRequirementsSection": false
   },
   {
@@ -54,16 +53,16 @@
     "role": "Platform Lead / Program Director, Consumer Self-Service Channels",
     "org": "OCBC",
     "slug": "ocbc-platform-lead-program-director-consumer-self-service-ch",
-    "verdict": "Credible",
+    "verdict": "Strong",
     "requirementCoverage": 92,
-    "overallCoverage": 72,
+    "overallCoverage": 76,
     "thinRequirementsSection": true,
-    "cvKeywordCoverage": 76,
+    "cvKeywordCoverage": 71,
     "gapsInRequirements": [
       "people leadership"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-03T05:05:06.091Z",
+    "generated": "2026-09-03T05:09:31.737Z",
     "status": "drafted",
     "submitted": null
   }

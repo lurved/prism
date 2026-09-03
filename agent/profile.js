@@ -45,9 +45,10 @@ builder capability.
     "Subscription & Revenue Products",
     "Design Leadership (strategic design direction, design systems, design ways of working; hiring, managing and developing designers, user researchers and data analysts)",
     "UI/UX, Design Systems & Service Design",
-    "Cross-functional Team Building, Coaching & Succession Planning",
+    "Team Leadership, Direct & Matrixed (leading direct reports and matrixed members across sites and markets — operations, engineering, product, research and data; hiring, capacity planning, coaching, succession planning)",
     "Measurement (KPI definition, adoption analytics, product analytics, user research, segmentation, PowerBI)",
     "Data & Technology (enterprise platforms, SaaS, mobile, AI/IoT)",
+    "Regulated & Externally Audited Environments (ISO information-security management standards at MINDEF, risk and compliance partnership in financial services, IFRS S1 and S2 and GHG Protocol disclosure compliance)",
     "Sustainability & Climate Disclosure Compliance (IFRS S1 and S2, GHG Protocol, ESG disclosure, regulated sustainability reporting)",
     "AI & Agentic Development (Claude Code, React, Vercel)",
   ],
@@ -162,7 +163,7 @@ builder capability.
 setting direction and building the practice rather than owning individual screens: defining the
 strategic design direction, establishing the ways of working and frameworks that give structure to
 how products and projects get created and managed, setting up the design system, and hiring and
-managing a multi-disciplinary team of designers, user researchers and data analysts — including
+managing a multi-disciplinary team of designers, user researchers and data analysts, direct and matrixed — including
 developing the next generation of leaders within it.`,
     practice: [
       "Set strategic design direction across product portfolios.",
@@ -170,6 +171,7 @@ developing the next generation of leaders within it.`,
       "Set up and owned the design system.",
       "Hired and managed designers, user researchers and data analysts as a single multi-disciplinary practice.",
       "Built next-generation leaders within the team through coaching, succession and capability planning.",
+    "Led direct reports and matrixed members alike, setting direction and priorities where authority had to be earned rather than assigned.",
     ],
   },
 
