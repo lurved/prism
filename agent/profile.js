@@ -344,7 +344,7 @@ developing the next generation of leaders within it.`,
       highlights: [
         // Phrased as "worked within" rather than "owned" — the interview
         // established the environment, not accountability for audit outcomes.
-        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg, working within an externally audited, high-compliance government security environment.",
+        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg, within a high-compliance government environment externally audited against ISO information-security management standards.",
       ],
     },
   ],
