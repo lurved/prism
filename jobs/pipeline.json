@@ -65,5 +65,43 @@
     "generated": "2026-09-03T05:41:41.262Z",
     "status": "drafted",
     "submitted": null
+  },
+  {
+    "role": "Director, Innovation and Technology",
+    "org": "Singapore Fashion Council",
+    "slug": "singapore-fashion-council-director-innovation-and-technology",
+    "verdict": "Vocabulary gap",
+    "requirementCoverage": 50,
+    "overallCoverage": 51,
+    "thinRequirementsSection": false,
+    "cvKeywordCoverage": 90,
+    "gapsInRequirements": [
+      "innovation",
+      "skills",
+      "programmes",
+      "sfc",
+      "ecosystem",
+      "represent sfc",
+      "kpis",
+      "partnerships",
+      "investors",
+      "deliverables",
+      "credibility",
+      "apparel",
+      "performance",
+      "venture",
+      "competencies",
+      "ideally",
+      "understanding",
+      "reshaping",
+      "commercially",
+      "comfort",
+      "written",
+      "familiarity"
+    ],
+    "summaryDraftedBy": "hand-written",
+    "generated": "2026-09-03T13:43:01.165Z",
+    "status": "drafted",
+    "submitted": null
   }
 ]
