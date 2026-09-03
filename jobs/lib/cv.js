@@ -122,7 +122,7 @@ function toDocx(model, outPath) {
         children.push(new Paragraph({ spacing: { after: 50 }, children: [run(blk.text, { font: DISPLAY, size: 40, color: NAVY, spacing: 12 })] }));
         break;
       case "sub":
-        children.push(new Paragraph({ spacing: { after: 70 }, children: [run(blk.text, { size: 21, color: MUTED })] }));
+        children.push(new Paragraph({ spacing: { after: 70 }, children: [run(blk.text, { size: 21, bold: true, color: INK })] }));
         break;
       case "contact":
         children.push(new Paragraph({
@@ -286,7 +286,8 @@ h1{
   color:var(--navy); margin:0 0 3pt;
 }
 .headline{
-  font-size:10.5pt; color:var(--muted); margin:0 0 5pt; letter-spacing:.005em;
+  font-size:10.5pt; font-weight:700; color:var(--ink);
+  margin:0 0 5pt; letter-spacing:.005em;
 }
 .contact{
   font-size:8.6pt; color:var(--ink); margin:0 0 2pt;
