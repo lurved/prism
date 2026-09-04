@@ -123,10 +123,10 @@ async function main() {
   const { groups, flat: flatTerms, leadTheme } = grouping.group(result.matched);
 
   const thinReqs = result.requirementTermCount != null && result.requirementTermCount < fit.THIN_REQUIREMENTS;
-  const headline = thinReqs ? result.coverage : (result.requirementCoverage ?? result.coverage);
+  const coveragePct = thinReqs ? result.coverage : (result.requirementCoverage ?? result.coverage);
 
   console.log(`\n  ${role}${org ? `  ·  ${org}` : ""}`);
-  console.log(`  ${v.band} — ${headline}% of the posting's vocabulary evidenced`);
+  console.log(`  ${v.band} — ${coveragePct}% of the posting's vocabulary evidenced`);
   console.log(`  ${v.note}`);
   if (thinReqs) {
     console.log(`  NOTE: the requirements section is thin (${result.requirementTermCount} terms) and reads as boilerplate.`);
@@ -170,9 +170,15 @@ async function main() {
     ? { text: fs.readFileSync(override, "utf8").trim(), drafted: "hand-written" }
     : await tailor.summaryFor({ profile, jd, groups, fitResult: result });
 
+  // The headline is positioning, like the summary — a hand-written one wins.
+  const headlineFile = path.join(ROOT, "headlines", `${path.basename(outDir)}.txt`);
+  const headline = fs.existsSync(headlineFile)
+    ? fs.readFileSync(headlineFile, "utf8").trim()
+    : tailor.headlineFor(profile, leadTheme);
+
   const model = cv.blocks({
     profile,
-    headline: tailor.headlineFor(profile, leadTheme),
+    headline,
     summary,
     groups,
     flatTerms,
@@ -226,6 +232,7 @@ async function main() {
 
   console.log(`\n  CV carries ${cov.pct}% of the evidenced terms`);
   console.log(`  Summary drafted by: ${drafted}`);
+  console.log(`  Headline: ${headline}`);
   console.log(`  → ${path.relative(process.cwd(), outDir)}\n`);
 }
 

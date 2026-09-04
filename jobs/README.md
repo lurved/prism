@@ -81,12 +81,21 @@ seen the site — a house style is noise there. See `CLAUDE.md`.
   the stack, so anyone who has it sees it. Chrome prints real text rather than
   outlines, so the PDF parses too — but the `.docx` remains the safer upload.
 
-## Writing the summary yourself
+## Writing it yourself
 
-Drop a file at `summaries/<slug>.txt` and it overrides whatever the tool would
-draft. The slug is the application directory name. The summary is the
-most-read block on the page and the one most worth writing by hand;
-generation is the fallback, not the ceiling.
+Three things override anything the tool drafts, all keyed on the application
+directory name:
+
+| File | Overrides |
+|---|---|
+| `summaries/<slug>.txt` | The professional summary |
+| `headlines/<slug>.txt` | The one-line title under the name |
+| `letters/<slug>.md` | The cover note |
+
+These are the parts that carry positioning rather than fact, and generation is
+the fallback for them, not the ceiling. Anything hand-written survives
+regeneration; without an override the tool derives one and prints what it
+chose, so a wrong guess is visible rather than silent.
 
 ## How scoring works
 

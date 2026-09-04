@@ -45,18 +45,31 @@ function spotlightFor(profile, leadTheme) {
   return { title: SPOTLIGHT_TITLES[leadTheme] || "Selected Achievements", intro: null, items };
 }
 
+// Only themes that actually name a domain get a headline. "Leadership and
+// Stakeholder Management" deliberately has none: it is the bucket that wins
+// whenever a posting is heavy on leadership vocabulary, which is most senior
+// postings, and it says nothing about what the person leads. Mapping it to a
+// domain claim produced "Product and Experience Leader" on a platform role
+// and on an innovation role alike.
 const HEADLINES = {
   "AI and Technology": "AI, Product and Technology Leader",
   "Programme and Portfolio Delivery": "Transformation, Programme and Delivery Leader",
   "Design, Product and Research": "Product and Design Leader",
   "Adoption, Change and Capability": "Transformation, Adoption and Change Leader",
-  "Leadership and Stakeholder Management": "Product and Experience Leader",
   "Measurement and Analytics": "Product, Data and Insight Leader",
 };
 
-/** Headline for the posting's dominant theme, falling back to the profile's own. */
+/**
+ * A headline is a positioning claim, and a keyword bucket cannot make one
+ * reliably. Where no theme names a domain, fall back to the current role,
+ * which is always true. Write headlines/<slug>.txt to say something better.
+ */
 function headlineFor(profile, leadTheme) {
-  return HEADLINES[leadTheme] || (profile.title || "").split("|").pop().trim() || null;
+  return (
+    HEADLINES[leadTheme] ||
+    (profile.experience && profile.experience[0] && profile.experience[0].role) ||
+    null
+  );
 }
 
 /**
