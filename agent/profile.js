@@ -41,7 +41,8 @@ builder capability.
     "Programme & Portfolio Management (portfolio planning, prioritisation, milestone tracking, governance, RAID and decision management, dependency coordination, value tracking, blocker escalation)",
     "Transformation Delivery & Digital Enablement (planning through deployment, adoption, operational transition and continuous improvement)",
     "Executive Communication & Governance Reporting (C-level and board engagement, portfolio reviews, OKR frameworks)",
-    "0→1 Product Creation & Product Strategy",
+    "Zero-to-One (0-1) Product Creation, Innovation & Venture Building (new propositions and business models, discovery, prototyping, MVP development, validation, pilots, stage-gate decisions, product strategy)",
+    "Corporate Innovation (innovation capability build, experimentation and moonshot-to-MVP delivery, commercial proposition design, new revenue streams to profitability)",
     "Subscription & Revenue Products",
     "Design Leadership (strategic design direction, design systems, design ways of working; hiring, managing and developing designers, user researchers and data analysts)",
     "UI/UX, Design Systems & Service Design",
@@ -116,7 +117,7 @@ builder capability.
     {
       title: "Transformation at Scale — SP Group",
       detail:
-        "Set up and led an agile delivery capability at SP Group — 13 products shipped in 2024, six-figure annual cost savings, 20–50% time-to-task reductions per product, and 3-month time-to-value versus a 12–24-month norm.",
+        "Set up and led an agile innovation and delivery capability at SP Group — 13 products shipped in 2024, six-figure annual cost savings, 20–50% time-to-task reductions per product, and 3-month time-to-value versus a 12–24-month norm.",
     },
     {
       title: "Consumer Growth — SP App",
@@ -291,8 +292,8 @@ developing the next generation of leaders within it.`,
       highlights: [
         "Part of the executive leadership team — accountable for user experience, customer insights, and digital strategy across B2B, B2C, and B2E.",
         "Grew monthly active users from 80K to 800K out of 1.4M households; app rating improved from 2.4 to 4.6.",
-        "Delivered new digital revenue streams in sustainable energy and enterprise design-thinking consulting — NPAT positive within 4 years.",
-        "Championed agile, experimental delivery and design-thinking ways of working — the foundation later formalised as SP Group's Area49 delivery capability.",
+        "Built new ventures inside the corporate: digital revenue streams in sustainable energy and enterprise design-thinking consulting, taken from zero to net profit after tax within 4 years.",
+        "Championed agile, experimental delivery and design-thinking ways of working — running discovery, prototyping and validation before commitment — the foundation later formalised as SP Group's Area49 innovation delivery capability.",
       ],
     },
     {
