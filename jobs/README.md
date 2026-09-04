@@ -116,6 +116,39 @@ figure would have claimed. OCBC's Platform Lead posting is the case that
 prompted this: 92% on requirements alone, 71% across the posting, and the gap
 list full of production-operations terms the requirements block never mentions.
 
+### Hard gates — what the percentage cannot see
+
+`lib/gates.js` reports separately on the requirements that are answered yes or
+no: "at least three years implementing applied AI", "Bachelor's degree
+required". These are usually enforced as **application-form questions** rather
+than by reading the CV, so no amount of rewording argues past one. A posting
+can score 91% and still be gated.
+
+They are also what the recruiter screen turns on. A recruiter forwards the
+candidate they can defend in one sentence; a stated requirement you are
+marginally short of turns that sentence into a paragraph, and a paragraph is a
+risk they need not take. So the gates are printed apart from the coverage
+figure and never folded into it.
+
+Two failure modes, not one:
+
+- **Short of the bar.** The obvious one.
+- **Far above it.** A role banded at "5+ years" is written for someone eight
+  to twelve years in; fifteen years reads as flight risk and salary mismatch
+  and screens out just as fast. Flagged as `BAND`.
+
+**Year bars against a speciality are deliberately not adjudicated.** Deciding
+whether a past role counts towards "ten years of programme management" is a
+judgment about the career, and word overlap cannot make it. Matching loosely
+let the applied-AI entries satisfy a UX design bar; matching tightly scored an
+eighteen-year career as three years, because older roles describe the same work
+in different words. Both readings were confident and wrong, in opposite
+directions. So the tool names the bar, lists the dated entries that look
+related with their term overlap, and leaves the call to you — a gate it cannot
+judge is worth surfacing, not worth guessing.
+
+What it does decide: total career length, degree requirements, and banding.
+
 ### Read the score for what it is
 
 The percentage measures **how much of the posting's own vocabulary the profile can evidence**. It predicts whether a keyword screen passes you through. It does not predict whether you can do the job.
@@ -138,6 +171,7 @@ Verify the output anyway. It drafts; you send.
 apply.js            CLI
 lib/keywords.js     term extraction and coverage
 lib/fit.js          evidence matching, coverage, verdict bands
+lib/gates.js        hard gates — year bars, degrees, stated must-haves
 lib/grouping.js     themed competency blocks
 lib/cv.js           ATS-safe .docx and .txt from one block model
 lib/tailor.js       summary, spotlight, cover note (Claude optional)

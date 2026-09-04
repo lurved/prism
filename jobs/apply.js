@@ -21,6 +21,7 @@ const keywords = require("./lib/keywords");
 const fit = require("./lib/fit");
 const grouping = require("./lib/grouping");
 const cv = require("./lib/cv");
+const gates = require("./lib/gates");
 const tailor = require("./lib/tailor");
 const fonts = require("./lib/fonts");
 const pdf = require("./lib/pdf");
@@ -72,13 +73,35 @@ function infer(jd, file) {
   };
 }
 
-function fitReport({ role, org, result, v, kw, groups, file }) {
+function fitReport({ role, org, result, v, kw, groups, file, gateEval }) {
   const L = [];
   L.push(`# Fit report — ${role}${org ? `, ${org}` : ""}`, "");
   L.push(`Source: \`${path.relative(process.cwd(), file)}\`  ·  Generated ${new Date().toISOString().slice(0, 10)}`, "");
   L.push(`## Verdict: ${v.band} (${result.requirementCoverage ?? result.coverage}% weighted coverage of stated requirements)`, "");
   L.push(v.note, "");
   L.push(`Overall keyword coverage: ${result.coverage}%  ·  Terms extracted: ${kw.length}  ·  Evidenced: ${result.matched.length}  ·  Gaps: ${result.gaps.length}`, "");
+
+  if (gateEval && (gateEval.years.length || gateEval.degrees.length || gateEval.musts.length)) {
+    L.push("## Hard gates", "");
+    L.push("Binary requirements — answered yes or no, usually as application-form questions rather than by reading the CV. The coverage percentage above cannot see these, and no amount of rewording argues past one. This is what a recruiter screens on.", "");
+    if (gateEval.careerYears) L.push(`Total professional experience in the profile: **${gateEval.careerYears} years**.`, "");
+    for (const g of gateEval.years) {
+      L.push(`**${g.required}+ years${g.subject ? ` — ${g.subject}` : ""}** — _${g.verdict}_`);
+      L.push(`> ${g.note}`);
+      for (const s of g.sources || []) L.push(`> - related: ${s}`);
+      L.push("");
+    }
+    for (const d of gateEval.degrees) {
+      L.push(`**${d.raw}** — _${d.verdict}_`);
+      if (d.evidence) L.push(`> Profile holds: ${d.evidence}`);
+      L.push("");
+    }
+    if (gateEval.musts.length) {
+      L.push("Stated as mandatory in the posting:", "");
+      for (const m of gateEval.musts) L.push(`- ${m}`);
+      L.push("");
+    }
+  }
 
   L.push("## Requirements the profile evidences", "");
   for (const m of result.matched.slice(0, 20)) {
@@ -142,6 +165,22 @@ async function main() {
     console.log(`  Gaps in stated requirements: ${result.gaps.filter((g) => g.inRequirements).map((g) => g.term).join(", ")}`);
   }
 
+  // Hard gates are reported separately from the percentage and never folded
+  // into it: a posting can score 91% and still be gated on one checkbox.
+  // Shown during --score-only too, since triage is exactly when they matter.
+  const gateEval = gates.evaluate(profile, gates.detect(jd));
+  const gateLines = gates.lines(gateEval);
+  if (gateLines.length || gateEval.musts.length) {
+    console.log(`\n  Hard gates — binary, and invisible to the percentage above:`);
+    for (const l of gateLines) console.log(`  ${l}`);
+    if (gateEval.musts.length) {
+      console.log(`  Stated as mandatory:`);
+      for (const m of gateEval.musts) console.log(`    - ${m.slice(0, 120)}`);
+    }
+    const blocked = gateEval.blocking.length;
+    if (blocked) console.log(`  ${blocked} gate${blocked > 1 ? "s" : ""} not cleared — route via a referral rather than a portal.`);
+  }
+
   if (args.scoreOnly) return;
 
   const outDir = path.join(ROOT, "applications", slugify(`${org || ""} ${role}`));
@@ -200,7 +239,7 @@ async function main() {
 
   // Verify the tailored CV actually carries the terms it was built for.
   const cov = keywords.coverage(txt, result.matched);
-  fs.writeFileSync(path.join(outDir, "fit-report.md"), fitReport({ role, org, result, v, kw, groups, file }));
+  fs.writeFileSync(path.join(outDir, "fit-report.md"), fitReport({ role, org, result, v, kw, groups, file, gateEval }));
 
   if (!args.noLetter) {
     const letterOverride = path.join(ROOT, "letters", `${path.basename(outDir)}.md`);
@@ -222,6 +261,11 @@ async function main() {
     thinRequirementsSection: thinReqs,
     cvKeywordCoverage: cov.pct,
     gapsInRequirements: result.gaps.filter((g) => g.inRequirements).map((g) => g.term),
+    careerYears: gateEval.careerYears,
+    hardGates: [
+      ...gateEval.years.map((g) => ({ kind: "years", required: g.required, subject: g.subject || null, verdict: g.verdict })),
+      ...gateEval.degrees.map((d) => ({ kind: "degree", requirement: d.raw, verdict: d.verdict })),
+    ],
     summaryDraftedBy: drafted,
     generated: new Date().toISOString(),
   };
