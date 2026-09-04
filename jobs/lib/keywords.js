@@ -15,7 +15,10 @@ role roles job jobs work working works new also well including include includes
 about have has had within while per e g etc via ability able ensure ensuring
 strong proven relevant complex timely clear various key core best good high low real
 excellent solid deep meaningful significant genuine right whether across broad wide
-least years year plus multiple several many every` .split(/\s+/).filter(Boolean));
+least years year plus multiple several many every
+quickly toward towards strongest focused move moving shape shaping turn turning
+help helping bring bringing keep keeping make making take taking push pushing
+love comfortable simple clear structured pragmatic hands-on` .split(/\s+/).filter(Boolean));
 
 // Headings that mark the start of the requirements half of a posting.
 const REQ_HEADING = /^(what you bring|what we.{0,3}re looking for|who we.{0,3}re looking for|require(d|ments?)|qualifications?|competenc(y|ies)|about you|you (have|will need|.{0,3}ll need)|skills|experience required|minimum|preferred|essential|desired)\b/i;
