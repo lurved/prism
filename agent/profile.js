@@ -44,6 +44,7 @@ builder capability.
     "Zero-to-One (0-1) Product Creation, Innovation & Venture Building (new propositions and business models, discovery, prototyping, MVP development, validation, pilots, stage-gate decisions, product strategy)",
     "Corporate Innovation (innovation capability build, experimentation and moonshot-to-MVP delivery, commercial proposition design, new revenue streams to profitability)",
     "Subscription & Revenue Products",
+    "Payments & Billing (consumer payment flow design across cards, GIRO, PayNow and points-and-rewards; e-wallet MVP; billing platforms and bill presentment; billing-on-behalf for third-party retailers)",
     "Design Leadership (strategic design direction, design systems, design ways of working; hiring, managing and developing designers, user researchers and data analysts)",
     "UI/UX, Design Systems & Service Design",
     "Team Leadership, Direct & Matrixed (matrixed organisations of up to ~270 across operations, engineering, product, research and data, spanning sites and markets; hiring, capacity planning, coaching, training, succession planning)",
@@ -118,6 +119,16 @@ builder capability.
       title: "Transformation at Scale — SP Group",
       detail:
         "Set up and led an agile innovation and delivery capability at SP Group — 13 products shipped in 2024, six-figure annual cost savings, 20–50% time-to-task reductions per product, and 3-month time-to-value versus a 12–24-month norm.",
+    },
+    {
+      title: "Payments and Billing — SP Digital",
+      detail:
+        "Designed the SP app payment experience across cards, GIRO, PayNow and a points-and-rewards system for 800K monthly active users; built an internal e-wallet MVP; and worked in product and design on billing-on-behalf, through which SP bills end customers for other electricity retailers in Singapore's liberalised market.",
+    },
+    {
+      title: "GET® (Green Energy Tech) — SP Digital",
+      detail:
+        "Led the research and design of SP Digital's B2B energy platform for commercial and industrial buildings — IoT- and AI-driven consumption and renewable-generation insights, asset performance monitoring, consumption thresholds and alerts, with integrated billing.",
     },
     {
       title: "Consumer Growth — SP App",
@@ -292,6 +303,10 @@ developing the next generation of leaders within it.`,
       highlights: [
         "Part of the executive leadership team — accountable for user experience, customer insights, and digital strategy across B2B, B2C, and B2E.",
         "Grew monthly active users from 80K to 800K out of 1.4M households; app rating improved from 2.4 to 4.6.",
+        "Designed the SP app payment experience across cards, GIRO, PayNow and a points-and-rewards system.",
+        "Built an e-wallet at MVP stage, deployed for internal use.",
+        "Worked in product and design on billing-on-behalf services, through which SP bills end customers for other electricity retailers in Singapore's liberalised electricity market — making SP the billing infrastructure competing retailers operate on.",
+        "Led the research and design of GET® (Green Energy Tech), SP Digital's B2B energy platform for commercial and industrial buildings: IoT- and AI-driven consumption and renewable-generation insights, asset performance monitoring, threshold alerts, and integrated billing.",
         "Built new ventures inside the corporate: digital revenue streams in sustainable energy and enterprise design-thinking consulting, taken from zero to net profit after tax within 4 years.",
         "Championed agile, experimental delivery and design-thinking ways of working — running discovery, prototyping and validation before commitment — the foundation later formalised as SP Group's Area49 innovation delivery capability.",
       ],
