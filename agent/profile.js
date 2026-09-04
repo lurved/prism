@@ -7,33 +7,97 @@
 
 const profile = {
   name: "Priscilla Liu",
-  title: "Director, Sustainability — SP Group | Product & Experience Leader | AI Product Builder",
+  title: "Director, Sustainability and Digital — SP Group | Product & Experience Leader | AI Product Builder",
   location: "Singapore",
   email: "prisms@outlook.com",
+  // Published deliberately. This repo is public, so the number is indexed and
+  // scraped like the email address is — the trade is that the site agent can
+  // give it to a recruiter who asks, and the CV picks it up automatically.
+  // CV_PHONE in the environment overrides it without editing this file.
+  phone: "+65 9107 1104",
   linkedin: "https://www.linkedin.com/in/prisc/",
 
   summary: `
 Priscilla Liu is a product and experience leader with 15+ years shipping across energy, proptech,
-and financial services — now leading sustainability at SP Group and building AI products hands-on,
+and financial services — now leading sustainability and digital at SP Group and building AI products hands-on,
 end to end. She led the narrative, structure and design of SP Group's 2026 sustainability report
-and helps build its sustainability data platform; previously led enterprise transformation for
+and manages its Sustainability Data Platform; previously led enterprise transformation for
 3,000+ staff and launched business-unit AI agents in production. She independently designs,
 codes, and deploys AI products using Claude Code, agentic workflows, and modern web tooling.
 Rare combination of board-level product leadership, sustainability domain depth, and current
 builder capability.
   `,
 
+  /**
+   * Key strengths are deliberately written in the vocabulary job postings
+   * screen on, not only in outcome language. The achievements below describe
+   * results ("grew MAU from 80K to 800K"); these name the same work the way a
+   * recruiter or an applicant tracking system searches for it.
+   */
   keyStrengths: [
-    "AI & Agentic Development (Claude Code, agentic workflow design, prompt-pipeline engineering, LLM product evaluation, React, Vercel)",
-    "0→1 Product Creation & Product Strategy",
+    "Applied AI Delivery (production GenAI, AI-enabled workflows, agentic workflow design, prompt-pipeline engineering, LLM product evaluation, responsible AI practice, run-and-maintain)",
+    "AI Adoption & Organisational Change (adoption strategy and roadmapping, capability building, training and enablement, playbooks, champions networks, behaviour change, organisational readiness)",
+    "Platform Ownership & Run (named system ownership, production stability and availability against SLA, incident response and escalation, root-cause analysis, release go/no-go, technical debt decisions)",
+    "Programme & Portfolio Management (portfolio planning, prioritisation, milestone tracking, governance, RAID and decision management, dependency coordination, value tracking, blocker escalation)",
+    "Transformation Delivery & Digital Enablement (planning through deployment, adoption, operational transition and continuous improvement)",
+    "Executive Communication & Governance Reporting (C-level and board engagement, portfolio reviews, OKR frameworks)",
+    "Zero-to-One (0-1) Product Creation, Innovation & Venture Building (new propositions and business models, discovery, sprint-based delivery, prototyping, MVP development, validation, pilots, stage-gate decisions, product strategy)",
+    "Corporate Innovation (innovation capability build, experimentation and moonshot-to-MVP delivery, commercial proposition design, new revenue streams to profitability)",
     "Subscription & Revenue Products",
+    "Payments & Billing (consumer payment flow design across cards, GIRO, PayNow and points-and-rewards; e-wallet MVP; billing platforms and bill presentment; billing-on-behalf for third-party retailers)",
+    "End-to-End Product Discovery (problem framing, generative and evaluative user research, concept design, prototyping, usability testing, validation and iteration to launch — run personally, not commissioned)",
+    "Design Leadership (strategic design direction, design systems, design ways of working; hiring, managing and developing designers, user researchers and data analysts)",
     "UI/UX, Design Systems & Service Design",
-    "C-Level & Board Stakeholder Engagement",
-    "OKR Frameworks & Transformation Delivery",
-    "Cross-functional Team Building & Coaching",
-    "Data & Technology (PowerBI, enterprise platforms, SaaS, mobile, AI/IoT)",
-    "Sustainability Domain & ESG Disclosure",
-    "Agile Portfolio Management",
+    "Team Leadership, Direct & Matrixed (matrixed organisations of up to ~270 across operations, engineering, product, research and data, spanning sites and markets; hiring, capacity planning, coaching, training, succession planning)",
+    "Measurement (KPI definition, adoption analytics, product analytics, user research, segmentation, PowerBI)",
+    "Data & Technology (enterprise platforms, SaaS, mobile, AI/IoT)",
+    "Regulated & Externally Audited Environments (ISO information-security management standards at MINDEF, risk and compliance partnership in financial services, IFRS S1 and S2 and GHG Protocol disclosure compliance)",
+    "Sustainability & Climate Disclosure Compliance (IFRS S1 and S2, GHG Protocol, ESG disclosure, regulated sustainability reporting)",
+    "AI & Agentic Development (Claude Code, React, Vercel)",
+  ],
+
+  /**
+   * Applied AI experience, dated.
+   *
+   * Postings increasingly gate on "N years of applied AI", and that clock is
+   * hard to read off a career history where the AI work sits inside a broader
+   * transformation role. This section states it plainly.
+   *
+   * Confirmed: the GenAI work began in 2024. Production applied AI therefore
+   * runs 2024 to present — roughly two and a half years, not three. Postings
+   * that gate on "3+ years of applied AI" are not cleared by this work alone.
+   *
+   * TODO — Priscilla: earlier AI/ML work would change that. "AI/IoT" appears
+   * under Data & Technology in keyStrengths, and SP Digital ran from 2017. If
+   * you owned predictive, ML, recommendation or AI/IoT products before 2024,
+   * add them here — applied AI is not only GenAI, and it is the difference
+   * between clearing that filter and arguing around it.
+   */
+  appliedAI: [
+    {
+      period: "2024 – 2025",
+      context: "SP Group — Director, Product and Experience",
+      detail:
+        "Implementing applied AI technology in real-world professional applications: led business units through delivery of four AI-enabled workflows into production — customer-query support, meter and AMI fieldwork, installation training, and an HR assistant. Each shipped within three to six months on an agile delivery framework. Information-processing accuracy improved approximately 50%; 80% of users reported reduced effort. Covered the full lifecycle from workflow design through deployment, adoption and operational transition.",
+    },
+    {
+      period: "2024",
+      context: "SP Group — internal AI tool",
+      detail:
+        "Delivered an internal AI safety tool serving 8,000+ contractors and staff with a four-person squad (domain expert, product owner, designer, developer), all holding other roles. Product CSAT above 80%.",
+    },
+    {
+      period: "2025 – present",
+      context: "SP Group — Director, Sustainability and Digital",
+      detail:
+        "Run and manage the SP Group Sustainability Data Platform in production — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
+    },
+    {
+      period: "2025 – 2026",
+      context: "Independent",
+      detail:
+        "Designed, built and deployed production AI applications end to end using Claude Code, agentic workflows, React and Vercel. Includes a citation-grounded extraction pipeline enforcing verbatim source quotation, a strict no-interpolation data model, and automated verification classifying every extraction as exact, fuzzy or rejected — a responsible-AI design addressing hallucination risk in regulated disclosure data.",
+    },
   ],
 
   highlights: [
@@ -55,7 +119,17 @@ builder capability.
     {
       title: "Transformation at Scale — SP Group",
       detail:
-        "Set up and led an agile delivery capability at SP Group — 13 products shipped in 2024, six-figure annual cost savings, 20–50% time-to-task reductions per product, and 3-month time-to-value versus a 12–24-month norm.",
+        "Set up and led an agile innovation and delivery capability at SP Group — 13 products shipped in 2024, six-figure annual cost savings, 20–50% time-to-task reductions per product, and 3-month time-to-value versus a 12–24-month norm.",
+    },
+    {
+      title: "Payments and Billing — SP Digital",
+      detail:
+        "Designed the SP app payment experience across cards, GIRO, PayNow and a points-and-rewards system for 800K monthly active users; built an internal e-wallet MVP; and worked in product and design on billing-on-behalf, through which SP bills end customers for other electricity retailers in Singapore's liberalised market.",
+    },
+    {
+      title: "GET® (Green Energy Tech) — SP Digital",
+      detail:
+        "Led the research and design of SP Digital's B2B energy platform for commercial and industrial buildings — IoT- and AI-driven consumption and renewable-generation insights, asset performance monitoring, consumption thresholds and alerts, with integrated billing.",
     },
     {
       title: "Consumer Growth — SP App",
@@ -87,16 +161,128 @@ builder capability.
     },
   ],
 
+  /**
+   * DESIGN LEADERSHIP
+   *
+   * The shape of the design contribution across the director-level roles.
+   * It is practice-level rather than per-project: direction, frameworks, the
+   * design system, and the team. Kept separate from `portfolio` below so the
+   * two are not confused — postings that ask for a design lead are asking
+   * about this section; postings that ask for a portfolio are asking about
+   * that one.
+   */
+  designLeadership: {
+    summary: `Across SP Group, SP Digital and PropertyGuru, Priscilla's design contribution has been
+setting direction and building the practice rather than owning individual screens: defining the
+strategic design direction, establishing the ways of working and frameworks that give structure to
+how products and projects get created and managed, setting up the design system, and hiring and
+managing a multi-disciplinary team of designers, user researchers and data analysts, direct and matrixed — including
+developing the next generation of leaders within it.`,
+    practice: [
+      "Set strategic design direction across product portfolios.",
+      "Established ways of working and delivery frameworks providing structure for product and project creation and management.",
+      "Set up and owned the design system.",
+      "Hired and managed designers, user researchers and data analysts as a single multi-disciplinary practice.",
+      "Built next-generation leaders within the team through coaching, succession and capability planning.",
+    "Led direct reports and matrixed members alike, setting direction and priorities where authority had to be earned rather than assigned.",
+    "Works at either altitude: setting practice direction at director level, and running discovery, design and prototyping personally where the problem warrants — including designing, building and shipping products in code independently.",
+    ],
+  },
+
+  /**
+   * DESIGN PORTFOLIO
+   *
+   * The agent previously had nothing to offer anyone who asked to see design
+   * work, which is the largest hole in a profile whose most senior credential
+   * is design leadership.
+   *
+   * `craft` describes the contribution honestly at the level it was made. On
+   * the three enterprise entries that is direction, system and team — see
+   * `designLeadership` above; on the two independent builds it is hands-on
+   * design and code.
+   *
+   * TODO — Priscilla:
+   *   1. Add `link` where artefacts exist — a case-study URL, or a
+   *      password-protected page for anything NDA-constrained.
+   *   2. Add any recent (2020+) hands-on work missing here. Postings that ask
+   *      for a portfolio want craft artefacts and recency; the leadership
+   *      narrative above answers a different question.
+   */
+  portfolio: [
+    {
+      title: "Agent Boost — PropertyGuru",
+      year: "2017",
+      role: "Head of Product and UX",
+      problem:
+        "Property agents needed a way to buy visibility for individual listings on a marketplace where organic reach was flattening.",
+      craft:
+        "Director-level: set the design direction for the agent platform and the ways of working the product and UX team delivered against, across four markets.",
+      outcome:
+        "Zero-to-one paid-visibility product on the agent platform, PropertyGuru's primary revenue line; agent subscription products delivered 25% CAGR and contributed to the Series D valuation increase.",
+      link: "TODO",
+    },
+    {
+      title: "SP app — consumer utility experience",
+      year: "2017 – 2022",
+      role: "Director, SP Digital",
+      problem:
+        "A utility app that households were required to use but did not want to, rated 2.4, reaching a fraction of the customer base.",
+      craft:
+        "Director-level: owned user experience, customer insights and digital strategy across B2B, B2C and B2E; set up the design system and hired and managed the designers, user researchers and data analysts behind the app.",
+      outcome:
+        "Monthly active users grew from 80,000 to 800,000 of 1.4 million households; app rating improved from 2.4 to 4.6.",
+      link: "TODO",
+    },
+    {
+      title: "Enterprise workflow redesign — SP Group",
+      year: "2022 – 2025",
+      role: "Director, Product and Experience",
+      problem:
+        "Customer service, IT and field operations ran on disconnected platforms and manual handoffs across 3,000+ frontline and back-office staff.",
+      craft:
+        "Director-level: set the design and delivery frameworks structuring how workflows were redesigned and shipped, and led the multi-disciplinary design, research and analytics practice delivering them.",
+      outcome:
+        "Integrated digital platforms and redesigned workflows; 20–50% time-to-task reduction per product; 40% reduction in process redundancies.",
+      link: "TODO",
+    },
+    {
+      title: "ESG Report Comparison Platform — pris.la",
+      year: "2025 – 2026",
+      role: "Independent — design and build",
+      problem:
+        "Sustainability disclosures are incomparable across companies, and the tools that try to compare them quietly interpolate missing figures.",
+      craft:
+        "Comparison IA across companies and metrics, per-figure citation affordances, comparability flags, and an explicit N/D versus N/A distinction so gaps read as gaps rather than zeroes.",
+      outcome:
+        "Live multi-company disclosure tracker across utilities, healthcare and Temasek portfolio companies, built on a strict no-interpolation data model.",
+      link: "https://pris.la/sustainability",
+    },
+    {
+      title: "Type Me",
+      year: "2025 – 2026",
+      role: "Independent — design and build",
+      problem:
+        "Personality typing is self-reported; the interesting version is how the people who know you actually perceive you.",
+      craft:
+        "Deterministic scoring model, share-card mechanics, self-contained React build with a full engineering specification.",
+      outcome: "Shipped consumer prototype.",
+      link: "TODO",
+    },
+  ],
+
   experience: [
     {
       company: "SP Group",
       period: "Sep 2025 – Present",
-      role: "Director, Sustainability",
+      role: "Director, Sustainability and Digital",
       highlights: [
+        // The platform is the digital half of the title, so it leads the role
+        // rather than trailing three sustainability bullets.
+        "Run and manage the SP Group Sustainability Data Platform in production — disclosure and reporting data infrastructure supporting regulated sustainability reporting.",
         "Led the narrative, structure and visualisation of SP Group's 2026 sustainability report.",
-        "Helps set sustainability targets and metrics and collects disclosure data.",
-        "Leads sustainability communications across the group.",
-        "Driving SP Group's sustainability data platform — disclosure and reporting data infrastructure.",
+        "Lead sustainability disclosure compliance against the IFRS S1 and S2 standards and the GHG Protocol.",
+        "Set sustainability targets and metrics and govern group-wide disclosure data collection.",
+        "Lead sustainability communications across the group.",
       ],
     },
     {
@@ -104,11 +290,12 @@ builder capability.
       period: "2022 – Sep 2025",
       role: "Director, Product and Experience",
       highlights: [
-        "Led enterprise transformation across customer service, IT, and field operations — integrated digital platforms and redesigned workflows for 3,000+ frontline and back-office staff.",
-        "Guided business units in shipping production GenAI products (customer-query support, meter/AMI fieldwork, installation training; HR chatbot in rollout) — delivered within 3–6 months, improving information-processing accuracy by ~50% with 80% of users reporting reduced effort.",
-        "Cut process redundancies 40% through shared-services alignment across HR, Finance, and Ops.",
-        "Secured C-level and board buy-in for a 3-year transformation roadmap through OKR-driven reporting.",
-        "Rebuilt data and CX capability post-restructure — in-house teams, redefined role matrices, coached senior leaders on digital ways of working.",
+        "Drove adoption of new ways of working across the organisation — set the product delivery framework on Lean and Agile foundations, established playbooks, stood up the programme, coached product and scrum teams, measured outcomes, and communicated those outcomes to C-level stakeholders to secure buy-in.",
+        "Led an enterprise transformation programme across customer service, IT, and field operations — integrated digital platforms and redesigned workflows for 3,000+ frontline and back-office staff, from planning through deployment.",
+        "Guided business units in shipping production GenAI products (customer-query support, meter/AMI fieldwork, installation training; HR chatbot in rollout) — AI-enabled workflows delivered within 3–6 months, improving information-processing accuracy by ~50% with 80% of users reporting reduced effort.",
+        "Cut process redundancies 40% through shared-services alignment across HR, Finance, and Ops — aligning business owners across three functions and escalating blockers to resolution.",
+        "Secured C-level and board buy-in for a 3-year transformation roadmap through OKR-driven portfolio governance and executive reporting.",
+        "Rebuilt data and CX capability post-restructure — in-house teams, redefined role matrices, organisational capability planning, and coached senior leaders on digital ways of working.",
       ],
     },
     {
@@ -118,8 +305,12 @@ builder capability.
       highlights: [
         "Part of the executive leadership team — accountable for user experience, customer insights, and digital strategy across B2B, B2C, and B2E.",
         "Grew monthly active users from 80K to 800K out of 1.4M households; app rating improved from 2.4 to 4.6.",
-        "Delivered new digital revenue streams in sustainable energy and enterprise design-thinking consulting — NPAT positive within 4 years.",
-        "Championed agile, experimental delivery and design-thinking ways of working — the foundation later formalised as SP Group's Area49 delivery capability.",
+        "Designed the SP app payment experience across cards, GIRO, PayNow and a points-and-rewards system.",
+        "Built an e-wallet at MVP stage, deployed for internal use.",
+        "Worked in product and design on billing-on-behalf services, through which SP bills end customers for other electricity retailers in Singapore's liberalised electricity market — making SP the billing infrastructure competing retailers operate on.",
+        "Led the research and design of GET® (Green Energy Tech), SP Digital's B2B energy platform for commercial and industrial buildings: IoT- and AI-driven consumption and renewable-generation insights, asset performance monitoring, threshold alerts, and integrated billing.",
+        "Built new ventures inside the corporate: digital revenue streams in sustainable energy and enterprise design-thinking consulting, taken from zero to net profit after tax within 4 years.",
+        "Championed agile, experimental delivery and design-thinking ways of working — running discovery, prototyping and validation before commitment — the foundation later formalised as SP Group's Area49 innovation delivery capability.",
       ],
     },
     {
@@ -129,8 +320,9 @@ builder capability.
       highlights: [
         "Regional product and UX leadership across Singapore, Vietnam, Malaysia, and Thailand for SEA's leading PropTech platform.",
         "Launched 'Agent Boost' (2017), a 0-to-1 paid-visibility product for agents; led product and UX for the agent platform — PropertyGuru's primary revenue line — where agent subscription products delivered 25% CAGR and contributed to the Series D valuation increase.",
-        "+20% conversion rate within 6 months from core user-journey optimisation; 40% YoY revenue growth from new product initiatives.",
+        "+20% conversion rate within 6 months from core user-journey research and redesign; 40% YoY revenue growth from new product initiatives.",
         "Scaled platform to 2.7M listings and 45K active agents; MAUs grew 50% to 24M; listing approval time cut from 3 days to 1 through automation.",
+        "Led a matrixed team of approximately 40 across the consumer product portfolio — frontend engineers, UX designers and UX researchers.",
       ],
     },
     {
@@ -146,10 +338,16 @@ builder capability.
     {
       company: "First Advantage (Nasdaq: FA)",
       period: "2011 – 2013",
-      role: "Product and Operations Platform Lead",
+      role: "Platform Lead, International",
+      // Deliberately no headcount. The team was matrixed across two sites and
+      // the only public figures are present-day company-wide numbers, which
+      // would not survive a follow-up question in an interview.
       highlights: [
-        "Global product lead for background-screening platforms across EMEA and APAC (incl. Japan, China).",
-        "Owned end-to-end operations platform with Manila-based delivery.",
+        "Named platform owner for First Advantage's global background-screening platform, reporting to the COO, International — global scope excluding the Americas, with operations in Manila and in-house engineering in India.",
+        "Accountable for platform stability and availability in production against a formal service-level agreement; co-owned incident response and post-incident root-cause analysis with the India engineering lead, feeding findings back into the roadmap.",
+        "Owned the platform roadmap and book of work, the change-request pipeline, release go/no-go, and technical debt decisions across both sites.",
+        "Partnered directly with client directors on platform change for enterprise banking clients including Standard Chartered and Citi.",
+        "Led a matrixed organisation of approximately 270 across three functions — 200 in background-screening operations in Manila, 50 software engineers in India, and 20 client and account managers — spanning EMEA and Asia Pacific (APAC) including Japan and China.",
       ],
     },
     {
@@ -165,7 +363,12 @@ builder capability.
       period: "2008 – 2009",
       role: "Web Manager",
       highlights: [
-        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg.",
+        // Phrased as "worked within" rather than "owned" — the interview
+        // established the environment, not accountability for audit outcomes.
+        // Confirmed: 160 webmasters across 60 sites — several per site, spread
+        // across units. Not a typo for 60; do not "correct" it.
+        "Managed 60 websites and 160 webmasters for MINDEF.gov.sg, within a high-compliance government environment externally audited against ISO information-security management standards.",
+        "Built webmaster capability across units through training and published best-practice standards.",
       ],
     },
   ],
@@ -173,8 +376,31 @@ builder capability.
   education: [
     "M.Sc. — Nanyang Technological University (2007–2008)",
     "B.A. — National University of Singapore (2001–2004)",
-    "Certified Professional Scrum Master & Product Owner — Scrum.org",
-    "Finance & Quantitative Modeling for Analysts — University of Pennsylvania",
+  ],
+
+  /**
+   * Certifications, newest first. Kept separate from education so issue dates
+   * and credential IDs can be rendered properly — a recruiter can verify a
+   * credential they can look up, and a bare "Certified Scrum Master" line
+   * carries less weight than a dated one.
+   */
+  certifications: [
+    {
+      name: "Finance & Quantitative Modeling for Analysts Specialization",
+      issuer: "University of Pennsylvania",
+      issued: "Jan 2021",
+      credentialId: "9BQ58CTFV35X",
+    },
+    {
+      name: "Professional Scrum Master",
+      issuer: "Scrum.org",
+      issued: "Nov 2014",
+    },
+    {
+      name: "Scrum Product Owner",
+      issuer: "Scrum.org",
+      issued: "Nov 2013",
+    },
   ],
 
   awards: [

@@ -1,0 +1,43 @@
+A*STAR — AI Programme and Adoption Lead
+
+About The Role
+
+The AI Programme and Adoption Lead drives integrated delivery and organisation-wide adoption across the AI Factory. The role leads programme management, capability building, and change efforts to move priority AI-enabled workflows from development to sustained use, while aligning stakeholders, removing blockers, and embedding AI-enabled ways of working across A*STAR.
+
+What You Will Do
+
+Lead the programme and adoption function: Set priorities, allocate work, coach team members, and ensure coordinated delivery across programme management, adoption, capability building, and change.
+Manage end-to-end programme delivery: Oversee priority initiatives, milestones, risks, issues, decisions, dependencies, and blockers across AI Factory pods.
+Lead by example: There will be many projects that require implementing AI workflows. As these are being developed, the Adoption Lead should have the capacity to demonstrate best practices to the broader team he/she leads, and to those to whom AI products are developed. Hence, skills and experience on hands-on use of AI tools is necessary.
+Own governance, prioritisation, and portfolio reporting: Evaluate and prioritise initiatives, run portfolio reviews and leadership forums, and provide an integrated view of delivery, adoption, risk, value, and decisions.
+Link delivery to value: Define and track KPIs covering deployment, usage, proficiency, productivity, user experience, and organisational outcomes.
+Set the adoption strategy: Maintain an organisation-wide roadmap for priority AI-enabled workflows based on user needs, readiness, and change impacts.
+Drive rollout and sustained use: Lead onboarding, communications, demonstrations, office hours, campaigns, and champions networks that embed AI in daily work.
+Build organisational capability: Partner with Learning and Organisation Development and functional leaders to deliver scalable training, practical guidance, playbooks, and role-based enablement.
+Lead change and build trust: Address adoption barriers, strengthen organisational readiness, and reinforce responsible AI practices.
+Measure and improve adoption: Use analytics, segmentation, feedback, and change indicators to identify friction and refine interventions.
+Close the user feedback loop: Translate user insights and adoption data into product backlogs, workflow improvements, release priorities, and operational plans.
+Coordinate execution and resolve blockers: Align business owners, product and platform teams, governance stakeholders, communications, HR, and change teams; escalate critical issues for timely resolution.
+Maintain programme controls and executive communication: Own core management artefacts and provide senior leaders with concise updates, decisions, and actions required.
+
+Team Leadership Responsibilities
+
+Provide clear direction, performance expectations, and decision rights for team members across programme delivery and adoption workstreams.
+Translate AI Factory priorities into team objectives, capacity plans, and sequenced work.
+Coach and develop team members, build succession and capability plans, and foster a culture of accountability, collaboration, learning, and responsible experimentation. Coaching will include demonstration of best practices in implementing applied AI technology in practical scenarios.
+Review the quality of programme plans, stakeholder strategies, adoption interventions, reporting, and executive materials.
+Create an inclusive, high-trust team environment in which risks are surfaced early, constructive challenge is encouraged, and lessons are shared across initiatives.
+Mobilise internal and external resources as required and manage delivery partners against agreed outcomes.
+
+What You Bring
+
+Relevant experience: 10+ years in programme management, transformation delivery, change and adoption, digital enablement, or cross-functional operations with at least 3 years of experience on implementing applied AI technology in real world, professional applications.
+People leadership: Proven ability to lead, coach, and develop teams delivering complex enterprise programmes and adoption initiatives.
+Transformation delivery: Track record of taking technology, data, digital, or AI initiatives from planning through deployment, adoption, operational transition, and continuous improvement.
+Programme discipline: Strong capability in portfolio planning, milestone tracking, governance, RAID and decision management, dependency coordination, and value tracking.
+AI and change knowledge: Working knowledge of AI-enabled workflow lifecycles, agile delivery, responsible AI, security, organisational change, and run-and-maintain considerations.
+Adoption leadership: Experience designing and executing adoption, capability-building, and change programmes that deliver measurable behaviour change and sustained usage.
+Enterprise influence: Ability to align senior leaders, technical teams, business owners, and enabling functions in complex matrixed environments.
+Strategic judgement: Able to translate AI ambition into a sequenced roadmap and make timely trade-offs across value, speed, risk, capacity, and adoption readiness.
+Executive communication: Strong facilitation and communication skills, with the ability to turn complex programme and technical information into clear decisions and actions.
+Leadership attributes: Collaborative, calm under pressure, highly organised, outcome-oriented, adaptable, and comfortable operating with ambiguity while maintaining delivery momentum.

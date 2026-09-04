@@ -1,0 +1,69 @@
+OCBC — Platform Lead / Program Director, Consumer Self-Service Channels (MD/ED)
+
+Role Overview
+
+This role serves as the Platform Lead and System Owner for OCBC's Consumer Internet and Mobile Banking platforms, our most visible and heavily used customer channels.
+
+As the steward of these strategic digital touchpoints, the Platform Lead is responsible for ensuring a consistent, seamless, and secure customer experience across all online and mobile interfaces. This includes driving alignment in technology stack, architecture, and design patterns to maximise reuse, scalability, and speed of delivery.
+
+Our Consumer Internet and Mobile Banking applications are critical gateways through which millions of customers engage, transact, and experience the OCBC brand. Their performance and reliability directly shape customer trust and digital adoption.
+
+In this capacity, the Platform Lead is fully accountable for:
+
+Run: the stability, resilience, performance, and operational excellence of the suite of applications under the platform in production.
+Change: the delivery of new digital capabilities that fuel revenue growth, strengthen customer engagement, and provide cost-efficient, innovative ways for the bank to serve its customers.
+
+This role is pivotal in shaping the bank's digital identity and ensuring our platforms remain best-in-class in a fast-evolving digital landscape.
+
+Key Responsibilities
+
+Change — Delivery of Business & Technology Capabilities
+
+Lead business partnership and prioritisation, working closely with Business to shape and maintain the platform's book of work in line with the business strategy and technology roadmap.
+Own end-to-end delivery of business and technology outcomes, ensuring alignment with strategic priorities and maximising value from investment.
+Influence and align stakeholders across Business, Technology, and regional teams to ensure consistent, scalable, and channel-aligned solutions.
+Partner with Architecture and Engineering to define, govern, and enforce architecture and design patterns that drive reusability, scalability, and maintainability across the region.
+Champion customer and employee experience, collaborating with Product Owners and GCOO partners to ensure frictionless journeys and high-quality internal processes.
+Establish the right team structure, governance, and operating model, including defining roadmaps, resources, budgets, schedules, and delivery milestones; ensuring deliverables comply with bank policies and regulatory requirements; and providing timely and transparent updates to project sponsors and senior stakeholders.
+Proactively address delivery obstacles and ensure timely resolution of issues to keep execution on track.
+Drive continuous improvement to uplift delivery quality, engineering standards, and productivity.
+Manage stakeholders and communication across multiple functions and geographies.
+
+Run — Platform Stability, Resilience & Operational Excellence
+
+Accountable for the overall health and performance of the platform in production, ensuring stability and availability against committed service levels.
+Lead incident management, ensuring robust processes for rapid triage, escalation, and timely service restoration.
+Coordinate cross-team recovery efforts involving downstream systems, infrastructure, network, and other shared services.
+Implement proactive monitoring and preventive controls to detect issues early and reduce recurrence whether arising from technology, processes, or operations.
+Own platform risk management, including vulnerabilities, capacity planning, obsolescence, and operational risks.
+Bridge Change and Run, leading root-cause analysis and ensuring learnings feed back into both delivery and operations teams.
+Plan and manage the platform's operating budget, ensuring accurate forecasting within the annual Operating Plan.
+
+Risk Management — Governance, Compliance & Controls
+
+Own comprehensive risk management across both project delivery and BAU operations, ensuring timely remediation of vulnerabilities, audit findings, and risk issues.
+Ensure compliance with Technology Architecture standards, Information Security policies, and all regulatory requirements applicable to the platform.
+Ensure full adherence to bank policies in day-to-day platform management and change execution.
+
+Financial Management — Investment, Cost Efficiency & Resource Optimisation
+
+Manage the platform's annual technology investment budget, ensuring effective allocation of vendor and internal resources to priority initiatives.
+Drive cost optimisation across both Change and Run activities by improving efficiency, reducing duplication, and managing vendor spend.
+Continuously optimise resource utilisation across regional teams and technology domains.
+
+People Leadership — Capability Building & Engagement
+
+Lead and develop the scrum masters supporting the platform, including capacity planning, upskilling and hiring.
+Collaborate across job families and regional teams to plan, hire, and develop capabilities required to meet current and future business demand.
+Provide leadership and coaching to both direct and matrixed team members, ensuring clear direction, performance support, and growth opportunities.
+Own the platform's employee engagement outcomes, fostering a culture of accountability, collaboration, and continuous improvement.
+
+Requirements
+
+Able to work independently with minimum supervision.
+Ability to adapt, strong team player, self-driven and results-oriented with strong analytical and problem-solving capability.
+Strong sense of ownership and entrepreneurship spirit to get things done, result oriented and driven to succeed.
+Able to think out of the box.
+Relevant experience of more than 12 years as a Product Owner or Project Manager in large-scale BPM programs.
+Thought leadership in conceptualizing ideas and translating them into tangible outcomes and benefits.
+People leadership to manage a team and influence stakeholders on the digital transformation journey.

@@ -43,7 +43,32 @@ function buildSystemPrompt() {
       ? profile.independentWork.map((w) => `- **${w.title}:** ${w.detail}`).join("\n")
       : "";
 
+  const designLeadership = profile.designLeadership
+    ? `${profile.designLeadership.summary.trim()}\n\n${(profile.designLeadership.practice || []).map((p) => `- ${p}`).join("\n")}`
+    : "";
+
+  const appliedAI =
+    profile.appliedAI && profile.appliedAI.length
+      ? profile.appliedAI.map((a) => `- **${a.period} — ${a.context}:** ${a.detail}`).join("\n")
+      : "None listed yet.";
+
+  // Portfolio entries are only worth showing once someone has filled in what
+  // was actually designed; a case study whose craft field still says TODO
+  // tells a visitor nothing.
+  const portfolio =
+    profile.portfolio && profile.portfolio.length
+      ? profile.portfolio
+          .filter((p) => p.craft && !/^TODO/i.test(p.craft))
+          .map((p) =>
+            `- **${p.title}** (${p.year}, ${p.role})\n  - Problem: ${p.problem}\n  - Design work: ${p.craft}\n  - Outcome: ${p.outcome}${p.link && !/^TODO/i.test(p.link) ? `\n  - Link: ${p.link}` : ""}`
+          )
+          .join("\n")
+      : "";
+
   const education = profile.education ? profile.education.join("\n") : "";
+  const certifications = (profile.certifications || [])
+    .map((c) => `- ${c.name} — ${c.issuer}${c.issued ? ` (issued ${c.issued})` : ""}`)
+    .join("\n");
   const awards = profile.awards ? profile.awards.join("\n") : "";
   const media = profile.mediaAndPress ? profile.mediaAndPress.join("\n") : "";
 
@@ -61,7 +86,7 @@ is working on, then find natural points of connection with Priscilla's backgroun
 
 ${profile.summary}
 
-**Contact:** ${profile.email} | ${profile.linkedin}
+**Contact:** ${profile.email}${profile.phone ? ` | ${profile.phone}` : ""} | ${profile.linkedin}
 **Location:** ${profile.location}
 
 ---
@@ -82,11 +107,18 @@ ${highlights}
 
 ${exp}
 
+${designLeadership ? `---\n\n## Design Leadership\n\n${designLeadership}\n\n` : ""}---
+
+## Applied AI Experience (dated)
+
+${appliedAI}
+
 ---
 
 ## Independent AI Product Work
 
 ${independentWork}
+${portfolio ? `\n---\n\n## Design Portfolio\n\n${portfolio}\n` : ""}
 
 ---
 
@@ -108,9 +140,10 @@ ${recs}
 
 ---
 
-## Education & Certifications
+## Education
 
 ${education}
+${certifications ? `\n## Certifications\n\n${certifications}\n` : ""}
 
 ---
 
