@@ -20,7 +20,8 @@
     "status": "submitted",
     "submitted": "2026-09-03",
     "overallCoverage": 86,
-    "thinRequirementsSection": false
+    "thinRequirementsSection": false,
+    "note": "Score unchanged since submission — re-scored 2026-09-04, still 91%. But the files on disk are NOT the ones sent: the submission freeze was added after this application, and the pack was regenerated in between for the date-rail layout change and the Aptos/greyscale change. A*STAR received the earlier company-first layout in Georgia/Calibri with the navy and pink palette."
   },
   {
     "role": "Design Lead",
