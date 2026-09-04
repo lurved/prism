@@ -21,13 +21,15 @@
     "submitted": "2026-09-03",
     "overallCoverage": 86,
     "thinRequirementsSection": false,
-    "note": "Score unchanged since submission — re-scored 2026-09-04, still 91%. But the files on disk are NOT the ones sent: the submission freeze was added after this application, and the pack was regenerated in between for the date-rail layout change and the Aptos/greyscale change. A*STAR received the earlier company-first layout in Georgia/Calibri with the navy and pink palette.",
+    "note": "Score unchanged since submission — re-scored 2026-09-04, still 91%. But the files on disk are NOT the ones sent: the submission freeze was added after this application, and the pack was regenerated in between for the date-rail layout change and the Aptos/greyscale change. A*STAR received the earlier company-first layout in Georgia/Calibri with the navy and pink palette. Closed out 2026-09-04 — no further work. Still live with the employer and awaiting a response; this is a stop-work marker, not a withdrawal.",
     "framingDoc": {
       "title": "A*STAR Adoption Lead Brief",
       "url": "https://claude.ai/code/artifact/0775198b-82b5-48ad-8bd1-15278b248d8c",
       "contents": "Positioning and headline, the applied-AI duration read, requirement-to-evidence map, cover note draft, five likely interview questions, diligence questions to ask them, and open items before sending.",
       "whyNotInRepo": "Private artifact, deliberately not committed. It states the duration shortfall against the three-year bar and the programme-governance framing gap — a written record of the candidate's weaknesses, which CLAUDE.md keeps out of this public repo."
-    }
+    },
+    "active": false,
+    "closedOut": "2026-09-04"
   },
   {
     "role": "Design Lead",
@@ -54,7 +56,9 @@
     "generated": "2026-09-01T10:53:23.026Z",
     "status": "not pursuing",
     "submitted": null,
-    "note": "Decided against — pursuing A*STAR instead."
+    "note": "Decided against — pursuing A*STAR instead. Closed out 2026-09-04 — not being worked on.",
+    "active": false,
+    "closedOut": "2026-09-04"
   },
   {
     "role": "Platform Lead / Program Director, Consumer Self-Service Channels",
@@ -71,7 +75,10 @@
     "summaryDraftedBy": "hand-written",
     "generated": "2026-09-04T03:37:05.820Z",
     "status": "submitted",
-    "submitted": "2026-09-04"
+    "submitted": "2026-09-04",
+    "active": false,
+    "closedOut": "2026-09-04",
+    "note": "Closed out 2026-09-04 — no further work. Still live with the employer and awaiting a response; this is a stop-work marker, not a withdrawal."
   },
   {
     "role": "Director, Innovation and Technology",
@@ -110,8 +117,10 @@
     "generated": "2026-09-04T03:37:04.756Z",
     "status": "closed",
     "submitted": null,
-    "note": "Posting closed before submission. Pack built and kept — role may still be live; a direct approach is the remaining option.",
-    "closed": "2026-09-04"
+    "note": "Posting closed before submission. Pack built and kept — role may still be live; a direct approach is the remaining option. Closed out 2026-09-04 — not being worked on.",
+    "closed": "2026-09-04",
+    "active": false,
+    "closedOut": "2026-09-04"
   },
   {
     "role": "Director, Innovation, Asia Pacific",
@@ -154,7 +163,9 @@
         "subject": "experience in product innovation, venture building, corporate innovation, strategy, fintec",
         "verdict": "judgment"
       }
-    ]
+    ],
+    "active": true,
+    "focus": "Sole active application from 2026-09-04. Everything else is closed out."
   },
   {
     "role": "Digital Experience Leader",
@@ -181,6 +192,8 @@
     "scored": "2026-09-04",
     "status": "not pursuing",
     "submitted": null,
-    "note": "Triaged with --score-only; no pack built. Do not read the 77% as a signal — the posting yielded only 20 terms and no competency theme survived, so a short JD scores high by having little to miss. Skipped on three structural grounds: the bar is set at '5+ years of experience in digital leadership roles', which bands the role for someone eight to twelve years in; it is a marketing role rather than a product or platform one (Digital Marketing degree, data-driven marketing, brand consistency, Marketing among the four teams it leads); and 'experience with large-scale CMS and personalization tools' (AEM, Sitecore, Optimizely) sits under Requirements, with nothing in the profile evidencing any martech stack. The overlap is real — digital experience roadmap, leading UI/UX, frontend, product and marketing, engagement and conversion KPIs, and 'user journey optimization' is the PropertyGuru +20% conversion line — but it is a sideways move, not an upward one."
+    "note": "Triaged with --score-only; no pack built. Do not read the 77% as a signal — the posting yielded only 20 terms and no competency theme survived, so a short JD scores high by having little to miss. Skipped on three structural grounds: the bar is set at '5+ years of experience in digital leadership roles', which bands the role for someone eight to twelve years in; it is a marketing role rather than a product or platform one (Digital Marketing degree, data-driven marketing, brand consistency, Marketing among the four teams it leads); and 'experience with large-scale CMS and personalization tools' (AEM, Sitecore, Optimizely) sits under Requirements, with nothing in the profile evidencing any martech stack. The overlap is real — digital experience roadmap, leading UI/UX, frontend, product and marketing, engagement and conversion KPIs, and 'user journey optimization' is the PropertyGuru +20% conversion line — but it is a sideways move, not an upward one. Closed out 2026-09-04 — not being worked on.",
+    "active": false,
+    "closedOut": "2026-09-04"
   }
 ]

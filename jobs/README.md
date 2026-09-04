@@ -33,7 +33,12 @@ Once an application is marked `submitted` in `pipeline.json`, re-running it
 does nothing: the files on disk are the record of what was actually sent, and
 the profile has usually moved on since. `--force` overwrites them anyway.
 
-Every run also appends to `pipeline.json` so you can see what was generated for whom, and mark what you actually sent.
+Every run also appends to `pipeline.json` so you can see what was generated for whom, and mark what you actually sent. Fields added by hand survive regeneration.
+
+`active` marks what is actually being worked on. It is separate from `status`
+on purpose: a submitted application stays live with the employer whether or
+not you are still working it, so closing one out sets `active: false` and
+leaves `status: "submitted"` alone. Nothing here withdraws an application.
 
 ## What it will not do
 
