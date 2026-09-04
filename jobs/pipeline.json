@@ -105,5 +105,39 @@
     "submitted": null,
     "note": "Posting closed before submission. Pack built and kept — role may still be live; a direct approach is the remaining option.",
     "closed": "2026-09-04"
+  },
+  {
+    "role": "Director, Innovation, Asia Pacific",
+    "org": "Visa",
+    "slug": "visa-director-innovation-asia-pacific",
+    "verdict": "Credible",
+    "requirementCoverage": 69,
+    "overallCoverage": 67,
+    "thinRequirementsSection": false,
+    "cvKeywordCoverage": 83,
+    "gapsInRequirements": [
+      "commerce",
+      "digital commerce",
+      "fast",
+      "emerging technology",
+      "innovation sprints",
+      "business value",
+      "fintech",
+      "large",
+      "judgment",
+      "skills",
+      "start-up",
+      "narratives",
+      "opportunity",
+      "qualifications",
+      "launching",
+      "scaling",
+      "scale-up",
+      "comfort"
+    ],
+    "summaryDraftedBy": "hand-written",
+    "generated": "2026-09-04T08:30:35.204Z",
+    "status": "drafted",
+    "submitted": null
   }
 ]
