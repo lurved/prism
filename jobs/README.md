@@ -146,6 +146,23 @@ applications/       generated packs (gitignored)
 pipeline.json       tracker
 ```
 
+## What does not go in this repo
+
+`lurved/prism` is public. `applications/` is gitignored and should stay that
+way: `fit-report.md` is a list of what the profile cannot evidence, which is a
+written record of the candidate's weaknesses. The same goes for application
+framing and interview preparation — the honest read on where an application is
+short is the most useful document in the process and the one least suited to a
+public repository.
+
+Keep those private, and record a **pointer** in `pipeline.json` instead, so a
+later session knows the document exists without the content being published.
+The A\*STAR entry's `framingDoc` is the pattern.
+
+The consequence is that `applications/` dies with the container it was
+generated in. That is the right trade, but it means downloading a pack you
+actually sent, if you want to keep it.
+
 ## Contact details
 
 The phone number lives in `agent/profile.js` alongside the email, published

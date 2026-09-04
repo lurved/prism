@@ -21,7 +21,13 @@
     "submitted": "2026-09-03",
     "overallCoverage": 86,
     "thinRequirementsSection": false,
-    "note": "Score unchanged since submission — re-scored 2026-09-04, still 91%. But the files on disk are NOT the ones sent: the submission freeze was added after this application, and the pack was regenerated in between for the date-rail layout change and the Aptos/greyscale change. A*STAR received the earlier company-first layout in Georgia/Calibri with the navy and pink palette."
+    "note": "Score unchanged since submission — re-scored 2026-09-04, still 91%. But the files on disk are NOT the ones sent: the submission freeze was added after this application, and the pack was regenerated in between for the date-rail layout change and the Aptos/greyscale change. A*STAR received the earlier company-first layout in Georgia/Calibri with the navy and pink palette.",
+    "framingDoc": {
+      "title": "A*STAR Adoption Lead Brief",
+      "url": "https://claude.ai/code/artifact/0775198b-82b5-48ad-8bd1-15278b248d8c",
+      "contents": "Positioning and headline, the applied-AI duration read, requirement-to-evidence map, cover note draft, five likely interview questions, diligence questions to ask them, and open items before sending.",
+      "whyNotInRepo": "Private artifact, deliberately not committed. It states the duration shortfall against the three-year bar and the programme-governance framing gap — a written record of the candidate's weaknesses, which CLAUDE.md keeps out of this public repo."
+    }
   },
   {
     "role": "Design Lead",
@@ -140,5 +146,32 @@
     "generated": "2026-09-04T08:30:35.204Z",
     "status": "drafted",
     "submitted": null
+  },
+  {
+    "role": "Digital Experience Leader",
+    "org": "GenScript",
+    "slug": "genscript-digital-experience-leader",
+    "verdict": "Strong",
+    "requirementCoverage": 75,
+    "overallCoverage": 77,
+    "thinRequirementsSection": true,
+    "cvKeywordCoverage": null,
+    "gapsInRequirements": [
+      "marketing",
+      "skills",
+      "personalization",
+      "bachelors",
+      "understanding",
+      "practices",
+      "familiarity",
+      "knowledge"
+    ],
+    "summaryDraftedBy": null,
+    "generated": null,
+    "triagedOnly": true,
+    "scored": "2026-09-04",
+    "status": "not pursuing",
+    "submitted": null,
+    "note": "Triaged with --score-only; no pack built. Do not read the 77% as a signal — the posting yielded only 20 terms and no competency theme survived, so a short JD scores high by having little to miss. Skipped on three structural grounds: the bar is set at '5+ years of experience in digital leadership roles', which bands the role for someone eight to twelve years in; it is a marketing role rather than a product or platform one (Digital Marketing degree, data-driven marketing, brand consistency, Marketing among the four teams it leads); and 'experience with large-scale CMS and personalization tools' (AEM, Sitecore, Optimizely) sits under Requirements, with nothing in the profile evidencing any martech stack. The overlap is real — digital experience roadmap, leading UI/UX, frontend, product and marketing, engagement and conversion KPIs, and 'user journey optimization' is the PropertyGuru +20% conversion line — but it is a sideways move, not an upward one."
   }
 ]
