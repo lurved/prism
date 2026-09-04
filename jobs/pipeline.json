@@ -101,7 +101,9 @@
     ],
     "summaryDraftedBy": "hand-written",
     "generated": "2026-09-04T03:37:04.756Z",
-    "status": "drafted",
-    "submitted": null
+    "status": "closed",
+    "submitted": null,
+    "note": "Posting closed before submission. Pack built and kept — role may still be live; a direct approach is the remaining option.",
+    "closed": "2026-09-04"
   }
 ]
