@@ -278,7 +278,7 @@ ${fontCss}
 html,body{ margin:0; padding:0; background:#fff; }
 body{
   font-family:'Aptos','Inter','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
-  color:var(--ink); font-size:9.6pt; line-height:1.46;
+  color:var(--ink); font-size:9.6pt; line-height:1.40;
   -webkit-font-smoothing:antialiased;
 }
 h1{
@@ -295,7 +295,7 @@ h1{
 .contact.last{ padding-bottom:7pt; border-bottom:1.2pt solid var(--rule); margin-bottom:0; }
 h2{
   font-size:8.2pt; font-weight:700; text-transform:uppercase; letter-spacing:.16em;
-  color:var(--navy); margin:15pt 0 6pt; padding-bottom:3pt;
+  color:var(--navy); margin:11pt 0 5pt; padding-bottom:3pt;
   border-bottom:.75pt solid var(--hair);
   break-after:avoid; page-break-after:avoid;
 }
@@ -303,7 +303,7 @@ p{ margin:0 0 5pt; }
 /* Date rail. Visual only — the DOM order is dates, role, company, bullets,
    so extracted text still reads in the right sequence. */
 .entry{
-  display:flex; gap:0; margin:9pt 0 3pt;
+  display:flex; gap:0; margin:7pt 0 3pt;
   break-inside:avoid; page-break-inside:avoid;
   break-after:avoid; page-break-after:avoid;
 }

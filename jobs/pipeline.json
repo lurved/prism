@@ -121,7 +121,7 @@
     "requirementCoverage": 69,
     "overallCoverage": 67,
     "thinRequirementsSection": false,
-    "cvKeywordCoverage": 83,
+    "cvKeywordCoverage": 80,
     "gapsInRequirements": [
       "commerce",
       "digital commerce",
@@ -143,7 +143,7 @@
       "comfort"
     ],
     "summaryDraftedBy": "hand-written",
-    "generated": "2026-09-04T09:08:29.237Z",
+    "generated": "2026-09-04T09:16:27.338Z",
     "status": "drafted",
     "submitted": null,
     "careerYears": 18,

@@ -33,6 +33,31 @@ const DISPLAY_STOP = new Set([
   "outcomes", "members", "coach", "lead", "usage",
 ]);
 
+// Bare single words that survive inside a themed block but read as keyword
+// stuffing on a flat line, where no heading gives them context. "Teams" under
+// "Leadership and Stakeholder Management" is fine; "Discovery · Prototyping ·
+// Teams · Senior · Business · Ideas · Problem · Test" is not a competencies
+// list, it is a word cloud, and a person reads this line before a parser does.
+// The distinction is domain versus abstraction. "Payments", "Discovery",
+// "Prototyping", "Innovation" and "Sustainability" each name a discipline and
+// survive alone. "Management", "Performance", "Enterprise" and "Build" name
+// nothing, and a line of them reads as padding whoever is scanning it.
+const FLAT_STOP = new Set([
+  "teams", "team", "senior", "business", "ideas", "idea", "corporate",
+  "problem", "problems", "test", "tests", "stakeholders", "people", "partners",
+  "members", "leaders", "areas", "concepts", "solutions", "opportunities",
+  "methods", "tools", "systems", "processes", "topics", "themes",
+  "risk", "enterprise", "deployment", "build", "building", "industry",
+  "development", "strategic", "management", "managers", "digital", "owners",
+  "requirements", "project", "projects", "performance", "influence",
+  "readiness", "reporting", "capability", "delivery", "operations",
+]);
+
+// Below this the line is too thin to be worth a heading of its own. Dropping
+// the section costs some keyword density; printing three words of filler under
+// a "Core Competencies" heading costs more.
+const FLAT_MIN = 3;
+
 const SMALL = new Set(["and", "or", "of", "for", "the", "in", "on", "to", "with", "a", "an"]);
 
 const capPart = (w) =>
@@ -101,15 +126,20 @@ function group(matched) {
   // One themed block is not a section. But dropping the competencies
   // outright would cost real keyword density, so fall back to a flat list of
   // the strongest terms — no stub headings, keywords intact.
+  // "Additional" stays in the flat list even though it is excluded from the
+  // themed blocks: for a posting like Visa's it holds "Product Innovation",
+  // "Asia Pacific" and "Payments" — the three strongest terms on the page.
+  // What has to go is the bare generic words, not the unbucketed ones.
   const enough = groups.length >= 2;
   const flat = [...buckets.values(), extra]
     .flatMap((g) => g.terms)
     .filter((t, i, a) => a.indexOf(t) === i)
+    .filter((t) => t.includes(" ") || !FLAT_STOP.has(t.toLowerCase()))
     .slice(0, 18);
 
   return {
     groups: enough ? groups : [],
-    flat: enough ? [] : flat,
+    flat: enough || flat.length < FLAT_MIN ? [] : flat,
     unclassified: extra.terms,
     leadTheme: groups.length ? groups[0].name : null,
   };
